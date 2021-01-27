@@ -43,6 +43,9 @@ export const getVendorList = () => {
 export const getmanufacturer = () => {
     return axios.get(url+"manufacturer");
 };
+export const getpaymentaccount = () => {
+    return axios.get(url+"payment-account");
+};
   
 
 export default url;

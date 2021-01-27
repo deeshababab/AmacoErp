@@ -82,7 +82,12 @@ const setstatus=(id)=>{
                 {moment(invoice.paid_date).format('DD  MMM, YYYY ')}
                 </TableCell>
                 <TableCell className="py-2 capitalize" align="left" colSpan={1}>
-                  Purchase
+                  {invoice.payment_account_id==1 &&(
+                    <p>Purchase</p>
+                  )}
+                  {invoice.payment_account_id==2 &&(
+                    <p>Other</p>
+                  )}
                 </TableCell>
                 <TableCell className="py-2 capitalize" align="left" colSpan={2}>
                   {invoice.referrence_bill_no}

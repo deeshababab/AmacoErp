@@ -520,7 +520,7 @@ const SimpleForm = ({ open, handleClose }) => {
                         </div>
                         <div className="flex mb-4">
                             <TextField
-                                className="mr-2"
+                                className="mb-4 w-full"
                                 label="product type"
                                 name="selectedvalue"
                                 size="small"

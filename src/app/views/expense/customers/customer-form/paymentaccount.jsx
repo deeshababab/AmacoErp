@@ -18,9 +18,9 @@ import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories}from "../../../../views/invoice/InvoiceService"
+import url, {getcategories,getpaymentaccount}from "../../../../views/invoice/InvoiceService"
 
-const MemberEditorDialog = ({ uid, open, handleClose }) => {
+const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -32,10 +32,10 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     isActive: false,
     isAlive: true,
   });
-  const [cname, setcname] = useState('');
+  const [name, setname] = useState('');
   const [cdescription, setcdescription] = useState('');
   const [arr, setarr] = useState([]);
-  const [userList, setUserList] = useState([]);
+  const [accountList, setaccountList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const styles = {
     customMaxWidth: {
@@ -68,30 +68,31 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     
     const frmdetails = {
 
-      name: cname,
-      description: cdescription
-
+      name: name,
 
     }
     // setcdescription('')
-    // setcname('')
+    // setname('')
    
 
-    Axios.post(url+'categories', frmdetails)
+    Axios.post(url+'payment-account', frmdetails)
       .then(function (response) {
         Swal.fire({
           title: 'Success',
           type: 'success',
           text: 'Data saved successfully.',
         });
-        getcategories()
-        history.push('/product/viewproduct');
+        getpaymentaccount().then(({ data }) => {
+          accounttype(data)
+  
+        });
+        handleClose()
       })
       .catch(function (error) {
        
       })
     setcdescription('')
-    setcname('')
+    setname('')
     
 
   };
@@ -131,13 +132,13 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
 
   useEffect(() => {
     // Axios.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
-    //   if (isAlive) setUserList(data);
+    //   if (isAlive) setaccountList(data);
     
 
     // Object.keys(data).forEach(function(key) {
 
     //   arr.push(data[key]);
-    //   setUserList(arr)
+    //   setaccountList(arr)
     // });
 
 
@@ -145,8 +146,9 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     
   })
   function getrow(e) {
-    Axios.get(url+"products-in-category").then(({ data }) => {
-      if (isAlive) setUserList(data);
+    getpaymentaccount().then(({ data }) => {
+      console.log(data)
+      // accountList(data)
 
     });
     // return () => setIsAlive(true);
@@ -204,12 +206,12 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
                 label="Enter Account Name"
                 
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setname(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
-                name="cname"
-                value={cname}
+                name="name"
+                value={name}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -248,7 +250,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
           <MUIDataTable
             title={"Category"}
             columns={columns}
-            data={userList}
+            data={accountList}
             options={{
               filterType: "textField",
               responsive: "simple",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Formik } from "formik";
 import Axios from "axios";
 import Swal from "sweetalert2";
@@ -33,7 +33,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import url from "../../../../views/invoice/InvoiceService"
+import url,{getpaymentaccount} from "../../../../views/invoice/InvoiceService"
 
 const CustomerForm = () => {
   const options = [
@@ -55,6 +55,7 @@ const optionss = [
   const [payment_account_id, setpayment_account_id] = useState(null);
   const [description, setdescription] = useState('');
   const [referrence_bill_no, setreferrence_bill_no] = useState('');
+  const [accounttype, setaccounttype] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
   const [
@@ -73,7 +74,17 @@ const optionss = [
     
     setShouldOpenConfirmationDialog(true);
   };
+  
+  useEffect(() => {
+    getpaymentaccount().then(({ data }) => {
+      setaccounttype(data)
+
+    }); 
+    
+  },[])
+  
  
+  
   
   const handleSubmit = async (values, { isSubmitting ,resetForm}) => {
     console.log(values);
@@ -139,6 +150,7 @@ const optionss = [
           <MemberEditorDialog
             handleClose={handleDialogClose}
             open={shouldOpenEditorDialog}
+            accounttype={setaccounttype}
           />
         )}
         {shouldOpenConfirmationDialog && (
@@ -322,7 +334,7 @@ const optionss = [
                 <Grid item md={10} sm={8} xs={12}>
                   <TextField
                     
-                    
+                    style={{width:'200px'}}
                     name="email"
                     size="small"
                     type="text"
@@ -331,9 +343,18 @@ const optionss = [
                     onChange={e => setpayment_account_id(e.target.value)}
                     select 
                   >
-                      {optionss.map((item, ind) => (
-                      <MenuItem value={item.value} key={item}>
-                        {item.label}
+                    <MenuItem>
+                    <Button
+                  onClick={() => {
+                    setShouldOpenEditorDialog(true);
+                  }}
+                >
+                  <Icon>add</Icon>New
+                </Button>
+               </MenuItem>
+                      {accounttype.map((item, ind) => (
+                      <MenuItem value={item.id} key={item}>
+                        {item.name}
                       </MenuItem>
                     ))}
                 </TextField>
