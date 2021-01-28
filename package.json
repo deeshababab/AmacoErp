@@ -75,6 +75,7 @@
     "sweetalert2": "^10.11.1",
     "sweetalert2-react": "^0.8.3",
     "swiper": "^4.5.0",
+    "translate-google-api": "^1.0.4",
     "uuid": "^8.3.0",
     "victory": "^32.3.3",
     "yup": "^0.29.3"

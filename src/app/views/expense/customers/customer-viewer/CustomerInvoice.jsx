@@ -8,6 +8,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip
 } from "@material-ui/core";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -29,21 +30,89 @@ const CustomerInvoice = () => {
  
 }, []);
 const setstatus=(id)=>{
-
-  Axios.put(url+`expense/${id}`).then(({ data }) => {
+  Swal.fire({
+    text: 'Are you sure you want to Verify?',
+    // text: 'Any products, services, or categories in it will be uncategorised.',
+    icon: 'warning',
+    showCancelButton: true,
+    customClass: {
+      zIndex: 1000
+    },
+    confirmButtonText: 'Yes, Verify it!',
+    cancelButtonText: 'No, keep it',
+  }).then((result) => {
+    if (result.value) {
+      Axios.put(url+`expense/${id}`).then(({ data }) => {
+        Swal.fire({
+          title: 'Success',
+          type: 'success',
+          text: 'Updated successfully.',
+        });
+        Axios.get(url+"expense").then(({ data }) => {
+          console.log(data)
+           setexpenseList(data);
+           
+        });
+      
+     
+    })
+  }
+  else if (result.dismiss === Swal.DismissReason.cancel) {
     Swal.fire({
-      title: 'Success',
-      type: 'success',
-      text: 'Updated successfully.',
-    });
-    Axios.get(url+"expense").then(({ data }) => {
-      console.log(data)
-       setexpenseList(data);
-       
-    });
+      customClass:{
+        zIndex: 1000
+      },
+       title:'Cancelled'
+      // 'Cancelled',
+      // 'Your imaginary file is safe :)',
+      // 'error',
+      
+    })
+  }
+})
   
-    
- });
+}
+const removeData = (id) => {
+  Swal.fire({
+    text: 'Are you sure you want to delete?',
+    // text: 'Any products, services, or categories in it will be uncategorised.',
+    icon: 'warning',
+    showCancelButton: true,
+    customClass: {
+      zIndex: 1000
+    },
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, keep it',
+  }).then((result) => {
+    if (result.value) {
+      Axios.delete(url+`expense/${id}`)
+        .then(res => {
+          Axios.get(url+"expense").then(({ data }) => {
+            console.log(data)
+             setexpenseList(data);
+             
+          });
+          Swal.fire(
+            'Deleted!',
+            'Expense Details has been deleted.',
+            'success'
+          )
+
+        })
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        customClass:{
+          zIndex: 1000
+        },
+         title:'Cancelled'
+        // 'Cancelled',
+        // 'Your imaginary file is safe :)',
+        // 'error',
+        
+      })
+    }
+  })
+
 }
   return (
     <Fade in timeout={300}>
@@ -61,7 +130,8 @@ const setstatus=(id)=>{
               <TableCell colSpan={2}>Referrence Bill Number</TableCell>
               <TableCell colSpan={1}>Paid To</TableCell>
               <TableCell colSpan={1}>Amount</TableCell>
-              <TableCell colSpan={1}>Status</TableCell>
+              <TableCell colSpan={1}>Tax Amount</TableCell>
+              <TableCell colSpan={1}>Action</TableCell>
               {/* <TableCell colSpan={1}>Action</TableCell> */}
             </TableRow>
           </TableHead>
@@ -98,6 +168,9 @@ const setstatus=(id)=>{
                 <TableCell className="py-2 capitalize" align="left" colSpan={1}>
                   {invoice.amount} SAR
                 </TableCell>
+                <TableCell className="py-2 capitalize" align="left" colSpan={1}>
+                  {invoice.tax}
+                </TableCell>
                 <TableCell className="py-2 capitalize" colSpan={1}>
                   {/* <small
                     className={clsx({
@@ -108,7 +181,14 @@ const setstatus=(id)=>{
                   >
                     {invoice.is_paid}
                   </small> */}
-                  <IconButton onClick={e => setstatus(invoice.id)}><Icon>check</Icon></IconButton>
+                 <Tooltip title="Verify">
+                  <Icon color="primary" onClick={e => setstatus(invoice.id)} style={{cursor:'pointer'}}>check</Icon>
+                  </Tooltip>
+                  <Tooltip title="delete">
+                  <Icon color="error" onClick={() => removeData(invoice.id)
+            } style={{cursor:'pointer'}}>close</Icon>
+            </Tooltip>
+         
                 </TableCell>
                 {/* <TableCell className="py-2" colSpan={1}>
                   <IconButton>

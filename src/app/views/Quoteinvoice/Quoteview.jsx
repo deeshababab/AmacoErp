@@ -139,6 +139,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [contactpersonemail, setcontactpersonemail] = useState('');
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
   const [designation, setdesignation] = useState('')
+  const [vendor_id,setvendor_id]=useState('')
   const { id } = useParams();
   const classes = useStyles();
   var fval =10;
@@ -158,7 +159,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     updateSidebarMode({ mode: "close" })
     document.title="Request for quoatation - Amaco"
     axios.get(url+"quotation/"+id).then(({ data }) => {
-    
+    console.log(data)
     // setcname(data[0].party.fname)
       setrfq(data[0].rfq_id)
       setqid(data[0].quotation_no)
@@ -184,6 +185,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       setcontactpersonemail(data[0].contact.email)
       setcontactpersoncontact(data[0].contact.mobno)
       setdesignation(data[0].contact.designation)
+      setvendor_id(data[0].party.vendor_id)
 
 
 
@@ -599,6 +601,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <td><strong>Mob/Tel.</strong></td>
               <td>535515212</td>
             </tr>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+              <td><strong>Vendor Id.</strong></td>
+              <td>{vendor_id}</td>
+            </tr>
 
             {/* <h5 className="font-normal capitalize">
               <strong>Due date: </strong>{" "}
@@ -659,9 +665,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 <TableCell className="pl-0" colspan={1} style={{border: "1px solid rgb(0, 0, 0)",width:"50px"}} align="center">S.No.</TableCell>
                 {/* <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">ITEM NAME</TableCell>
          */}
-                <TableCell className="px-0" colspan={4} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">RFQ DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={4} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">AMACO DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">AMACO DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3}  style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">REMARK</TableCell>
                 <TableCell className="px-0" style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">QTY</TableCell>
                 <TableCell className="px-0"style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">UOM</TableCell>
                 
@@ -684,12 +691,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                     </TableCell> */}
 
-                    <TableCell className="pl-0 capitalize" align="center" colspan={4}  style={{border: "1px solid rgb(0, 0, 0)"}}>
+                    <TableCell className="pl-0 capitalize" align="center" colspan={3}  style={{border: "1px solid rgb(0, 0, 0)"}}>
                      {item.description}
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" colspan={4}  style={{border: "1px solid rgb(0, 0, 0)"}}>
+                    <TableCell className="pl-0 capitalize" align="center" colspan={3}  style={{border: "1px solid rgb(0, 0, 0)"}}>
                      {item.product.description}
+
+                    </TableCell>
+                    <TableCell className="pl-0 capitalize" align="center"  colspan={3}  style={{border: "1px solid rgb(0, 0, 0)"}}>
+                     {item.remark}
 
                     </TableCell>
                     
@@ -719,7 +730,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 );
               })}
               <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
-            <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={11}>TOTAL VALUE</TableCell>
+            <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={12}>TOTAL VALUE</TableCell>
             <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >SAR</TableCell>
             <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
                 >
@@ -731,7 +742,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </TableRow>
               <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
              
-                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={11}>VAT(15%)</TableCell>
+                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={12}>VAT(15%)</TableCell>
                   <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >SAR</TableCell>
                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
                  >
@@ -740,7 +751,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </TableRow>
               <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
-                 colspan={11}
+                 colspan={12}
                  >
                      <span>TOTAL MATERIAL VALUE INC.VAT</span> 
                 </TableCell> 

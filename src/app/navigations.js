@@ -42,6 +42,24 @@ export const navigations = [
       },
     ],
   },
+  
+  {
+    name: "Account",
+    icon: "developer_board",
+    children: [
+      {
+    name: "Expense",
+    icon: "attach_money",
+    path: "/expenseview",
+      },
+      {
+        name: "Receipt",
+        icon: "receipt",
+        path: "/",
+          }
+    ]
+    
+  },
   {
     name: "Report",
     icon: "assignment",
@@ -52,12 +70,6 @@ export const navigations = [
         icon:"folder",
       },
     ]
-  },
-  {
-    name: "Expense",
-    icon: "assignment",
-    path: "/expenseview",
-    
   }
   // {
   //   name: "Purchase",

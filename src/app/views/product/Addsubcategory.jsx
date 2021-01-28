@@ -325,8 +325,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
           </Grid>
           
           <div className="flex justify-between items-center">
-            <Button variant="contained" color="primary" type="submit">
-              Save
+            <Button variant="outlined" color="primary" type="submit">
+             <Icon>save</Icon> Save
             </Button>
             <div className="flex justify-between items-center">
             <Button

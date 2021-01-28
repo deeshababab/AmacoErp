@@ -98,9 +98,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
   };
   const removeData = (id) => {
     Swal.fire({
-      title: 'Are you sure you want to delete this category?',
-      text: 'Any products, services, or categories in it will be uncategorised.',
-      icon: 'danger',
+      text: 'Are you sure you want to delete this Account?',
+      // text: 'Any products, services, or categories in it will be uncategorised.',
+      icon: 'warning',
       showCancelButton: true,
       customClass: {
         zIndex: 1000
@@ -109,9 +109,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        Axios.delete(url+`payment-account/${id}`)
           .then(res => {
-            
+            getrow()
+            Swal.fire(
+              'Deleted!',
+              'Account has been deleted.',
+              'success'
+            )
 
           })
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -148,7 +153,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
   function getrow(e) {
     getpaymentaccount().then(({ data }) => {
       console.log(data)
-      // accountList(data)
+      setaccountList(data)
 
     });
     // return () => setIsAlive(true);
@@ -161,23 +166,17 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
         filter: true,
       },
     },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
-    },
+    
     {
       name: "id",
       label: "Action",
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-
+          console.log(tableMeta.rowData)
   
           return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
+            <IconButton onClick={() => removeData(tableMeta.rowData[1])
             }
             >
               <Icon color="error">delete</Icon>

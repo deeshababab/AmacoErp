@@ -50,6 +50,7 @@ const setstatus=(id)=>{
               <TableCell colSpan={3}>Referrence Bill Number</TableCell>
               <TableCell colSpan={1}>Paid To</TableCell>
               <TableCell colSpan={1}>Amount</TableCell>
+              <TableCell colSpan={1}>Tax Amount</TableCell>
       
             </TableRow>
           </TableHead>
@@ -80,6 +81,9 @@ const setstatus=(id)=>{
                 </TableCell>
                 <TableCell className="py-2 capitalize" align="left" colSpan={1}>
                   {invoice.amount} SAR
+                </TableCell>
+                <TableCell className="py-2 capitalize" align="left" colSpan={1}>
+                  {invoice.tax} SAR
                 </TableCell>
                 
                 {/* <TableCell className="py-2" colSpan={1}>

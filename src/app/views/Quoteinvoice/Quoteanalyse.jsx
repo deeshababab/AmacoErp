@@ -15,7 +15,8 @@ import {
   TableBody,
   Link,
   Icon,
-  TextField
+  TextField,
+  Tooltip
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -141,6 +142,31 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       },
     });
   };
+  const setremark = (event, index) => {
+    event.persist()
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+        element[event.target.name] = event.target.value;
+        
+      
+
+      }
+      return element;
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+     
+  }
 
   const handleIvoiceListChange = (event, index) => {
     event.persist()
@@ -183,7 +209,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       quotedescription: "",
       qtotal:"",
       qprice:"",
-      margin:""
+      margin:"",
+      remark:""
     });
     setState({
       ...state,
@@ -375,6 +402,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     currency,
     loading,
     margin,
+    remark
     
   } = state;
   
@@ -455,8 +483,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:50}}>S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'180px'}}>Item Name</TableCell>
+              <TableCell className="pl-sm-24" style={{width:50}} align="left">S.No.</TableCell>
               <TableCell className="px-0" style={{width:'180px'}}>Rfq description</TableCell>
               <TableCell className="px-0" style={{width:'180px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
@@ -464,6 +491,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Sprice</TableCell>
               <TableCell className="px-0"style={{width:'80px'}}>Total</TableCell>
+              <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
               {/* <TableCell className="px-0">Action</TableCell> */}
             </TableRow>
           </TableHead>
@@ -498,29 +526,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     
                   </TableCell>
                  
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
-                    
                   
-                    <TextValidator
-                      label="Item Name"
-                      variant="outlined"
-                      size="small"
-                      className="mr-2"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
-                      type="text"
-                      name="name"
-                      
-                      fullWidth
-                      value={item? item.product[0].name : null}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                      
-                      
-                    >
-                      
-                      
-                    </TextValidator>
-                  </TableCell>
 
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
                     <TextValidator
@@ -608,11 +614,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
               
                     />
-                  <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left'}} onClick={() => {
+                    <Tooltip title="Reference">
+                  <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
                         setMargin(item.product_id,index);
                       }}>
                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </Icon>
+                </Tooltip>
   
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
@@ -645,6 +653,24 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                     />
                   </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                    <TextValidator
+                      label="Remark"
+                      onChange={(event) => setremark(event, index)}
+                      // onBlur={(event) => handleIvoiceListChange(event, index)}
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      name="remark"
+                      style={{width:'75%',float:'left'}}
+                      fullWidth
+                      value={item.remark ?item.remark:"" }
+                      validators={["required"]}
+                      errorMessages={["this field is required"]}
+              
+                    />
+  
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -659,11 +685,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         
 
         
-              <span>Quotation Validity:</span>
-              <p className="mb-10">payment Terms:</p>
-              <p className="mb-10">Waranty:</p>
-              <p className="mb-10">Delivery Time:</p>
-              <p className="mb-10">Inco-Term:</p>
+        <p className="mb-8">Quotation Validity:</p>
+              <p className="mb-8">payment Terms:</p>
+              <p className="mb-8">Waranty:</p>
+              <p className="mb-8">Delivery Time:</p>
+              <p className="mb-8">Inco-Term:</p>
           </div>
           <div>
           <TextValidator
@@ -807,6 +833,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
+              
                
             </div>
           </div>

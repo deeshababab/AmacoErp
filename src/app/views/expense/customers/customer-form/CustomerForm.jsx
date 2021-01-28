@@ -33,7 +33,8 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import url,{getpaymentaccount} from "../../../../views/invoice/InvoiceService"
+import url,{getpaymentaccount} from "../../../../views/invoice/InvoiceService";
+import FormLabel from "@material-ui/core/FormLabel";
 
 const CustomerForm = () => {
   const options = [
@@ -54,7 +55,9 @@ const optionss = [
   const [amount, setamount] = useState('');
   const [payment_account_id, setpayment_account_id] = useState(null);
   const [description, setdescription] = useState('');
+  const [taxamount, settaxamount] = useState(0);
   const [referrence_bill_no, setreferrence_bill_no] = useState('');
+  const [tax, settax] = useState(false);
   const [accounttype, setaccounttype] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
@@ -92,14 +95,13 @@ const optionss = [
       paid_date:paid_date,
       referrence_bill_no: parseInt(referrence_bill_no),
       description: description,
-      amount: amount,
+      amount: (parseFloat(amount).toFixed(2)),
       paid_to:paid_to,
       paid_by: paid_by,
       created_by: created_by,
       payment_account_id:parseInt(payment_account_id),
-      created_by:created_by
-      
-
+      created_by:created_by,
+      tax:(parseFloat(taxamount).toFixed(2))
     }
  
     console.log(frmdetails)
@@ -186,65 +188,16 @@ const optionss = [
             resetForm
           }) => (
             <form className="p-4" onSubmit={handleSubmit}>
-              <Grid container spacing={3} alignItems="center">
-                <Grid item md={2} sm={4} xs={12}>
-                 
-                </Grid>
-                {/* <Grid item md={2} sm={4} xs={12}>
-                  Paid By
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+              <Grid container spacing={6}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+                
+              
+                
+                
                  
                     
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
-                        margin="none"
-                        label="Invoice Date"
-                        inputVariant="outlined"
-                        type="text"
-                        size="small"
-                        autoOk={true}
-                        value={paid_date}
-                        format="MMMM dd, yyyy"
-                        onChange={(date) => setFieldValue("paid_date", date)}
-                      />
-                    </MuiPickersUtilsProvider>
-                    
-                 
-                </Grid> */}
-              <Grid item md={10} sm={8} xs={12}>
-              {/* <FormGroup row>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={checkedA}
-            onChange={e => setcheckedA(e.target.checked)}
-            value="checkedA"
-          />
-        }
-        label=""
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={checkedA}
-            onChange={e => setcheckedA(e.target.checked)}
-            value="checkedA"
-          />
-        }
-        label="Secondary"
-      />
-      </FormGroup> */}
-                </Grid> 
-
-                <Grid item md={2} sm={4} xs={12}>
-                  Paid By
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
-                 
-                    <div>
                     <TextField
-                      
+                      className="mb-4 w-full"
                       label="Paid By"
                       name="firstName"
                       size="small"
@@ -270,18 +223,16 @@ const optionss = [
                     ))}
                     {/* </MenuItem> */}
                     </TextField>
-                    </div>
+                 
                     
                  
-                </Grid>
-                <Grid item md={2} sm={4} xs={12}>
-                  Paid To
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+                
+                
+                
                  
                     
                     <TextField
-                      
+                      className="mb-4 w-full"
                       label="Paid To"
                       name="firstName"
                       size="small"
@@ -291,14 +242,9 @@ const optionss = [
                     />
                     
                  
-                </Grid>
-
-
-                <Grid item md={2} sm={4} xs={12}>
-                  Amount
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+            
                   <TextField
+                    className="mb-4 w-full"
                     label="Amount"
                     name="Amount"
                     size="small"
@@ -306,14 +252,13 @@ const optionss = [
                     value={values.amount}
                     onChange={e => setamount(e.target.value)}
                   />
-                </Grid>
+               
 
-                <Grid item md={2} sm={4} xs={12}>
-                Payment Date
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+               
+               
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+                        className="mb-4 w-full"
                         margin="none"
                         label="Payment Date"
                         inputVariant="outlined"
@@ -325,16 +270,14 @@ const optionss = [
                         onChange={handleDateChange}
                       />
                     </MuiPickersUtilsProvider>
-                    
-                </Grid>
+                    </Grid>
+           
 
-                <Grid item md={2} sm={4} xs={12}>
-                Payment Account
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+               
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
-                    
-                    style={{width:'200px'}}
+                    className="mb-4 w-full"
+                    label="Payment Account"
                     name="email"
                     size="small"
                     type="text"
@@ -358,15 +301,12 @@ const optionss = [
                       </MenuItem>
                     ))}
                 </TextField>
-                </Grid>
+               
 
-                <Grid item md={2} sm={4} xs={12}>
-               Description
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
-                  <div className="flex flex-wrap m--2">
+                
+               
                     <TextField
-                      className="m-2"
+                      className="mb-4 w-full"
                       label="Description"
                       name="workPhone"
                       size="small"
@@ -375,14 +315,11 @@ const optionss = [
                       onChange={e => setdescription(e.target.value)}
                     />
                     
-                  </div>
-                </Grid>
+                 
 
-                <Grid item md={2} sm={4} xs={12}>
-                Referrence Bill No
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
+            
                   <TextField
+                    className="mb-4 w-full"
                     label="Referrence Bill No"
                     name="website"
                     size="small"
@@ -391,62 +328,60 @@ const optionss = [
                     value={referrence_bill_no}
                     onChange={e => setreferrence_bill_no(e.target.value)}
                   />
-                </Grid>
-                {/* <Grid item md={2} sm={4} xs={12}>
-                Tax Value
-                </Grid>
-                <Grid item md={10} sm={8} xs={12}>
-                  <TextField
-                    label="Tax Value"
+               
+               <FormLabel component="legend" labelPlacement="start">Tax paid?</FormLabel>
+                <RadioGroup
+              className="mb-4"
+              // value={gender || ""}
+              name="gender"
+              onChange={handleChange}
+              row
+            >
+               
+              <FormControlLabel
+               value="yes"
+                control={<Radio color="secondary" />}
+                label="Yes"
+                onChange={() => settax(true)
+                }
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="no"
+                control={<Radio color="secondary" />}
+                label="No"
+                onChange={()=> settax(false)
+                }
+                labelPlacement="end"
+              />   {tax &&(
+                                <TextField
+                               style={{width:'430px'}}
+                    label="Tax Amount"
                     name="website"
                     size="small"
-                    type="email"
+                    type="text"
                     variant="outlined"
-                    value={values.website}
-                    onChange={handleChange}
+                    value={taxamount}
+                    onChange={e => settaxamount(e.target.value)}
                   />
-                </Grid> */}
+              )}
+              
+            </RadioGroup>
+              
+            
+              
               </Grid>
-              {/* <Tabs
-                className="mt-4 mb-6"
-                value={tabIndex}
-                onChange={handleTabChange}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                {tabList.map((item, ind) => (
-                  <Tab
-                    className="capitalize"
-                    value={ind}
-                    label={item}
-                    key={ind}
-                  />
-                ))}
-              </Tabs> */}
-              {/* {tabIndex === 0 && (
-                <OtherDetailsForm values={values} handleChange={handleChange} />
-              )}
-              {tabIndex === 1 && (
-                <AddressForm
-                  values={values}
-                  setFieldValue={setFieldValue}
-                  handleChange={handleChange}
-                />
-              )}
-              {tabIndex === 2 && (
-                <ContactPersonForm
-                  values={values}
-                  setFieldValue={setFieldValue}
-                  handleChange={handleChange}
-                />
-              )} */}
+              </Grid>
+              
 
+              
               <div className="mt-6">
-                <Button color="primary" variant="contained" type="submit">
-                  Submit
+                <Button color="primary" variant="outlined" type="submit">
+                 <Icon>save</Icon> Save
                 </Button>
               </div>
             </form>
+            
           )}
         </Formik>
       </Card>

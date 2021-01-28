@@ -138,6 +138,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [contactperson, setcontactperson] = useState('');
   const [contactpersonemail, setcontactpersonemail] = useState('');
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
+  const [vendor_id,setvendor_id]=useState('')
   const [designation, setdesignation] = useState('');
   const { id } = useParams();
   const classes = useStyles();
@@ -213,6 +214,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
      
       setfiles(data[0].files)
       setcontact(data[0].party[0].contact)
+      setvendor_id(data[0].party[0].vendor_id)
       // for (var a = 0; a < data[0].files.length; a++) {
       //  
       //   var words = data[0].files[a].file_name.split('.');
@@ -457,6 +459,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             
             
             
+            
         
 
 
@@ -500,6 +503,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
               <td><strong>Mob/Tel:</strong></td>
               <td>535515212</td>
+            </tr>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+              <td><strong>Vendor Id.</strong></td>
+              <td>{vendor_id}</td>
             </tr>
 
             

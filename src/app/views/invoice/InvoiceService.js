@@ -24,6 +24,8 @@ export const getInvoice = () => {
 const  url = "http://www.amacoerp.com/amaco/public/api/";
 
 // const  url = "http://dataqueuesystems.com/amaco/amaco/public/api/";
+const  phpurl = "http://www.amacoerp.com/amaco/public/api/";
+// const  phpurl = "http://dataqueuesystems.com/amaco/amaco/public/api/";
 export const getparties= () => {
     return axios.get(url+"parties")
 }

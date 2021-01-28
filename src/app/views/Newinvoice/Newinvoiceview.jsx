@@ -5,6 +5,7 @@ import Arabic from '../../../lang/ar.json';
 import { IntlProvider } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import moment from "moment";
+import translate from 'translate-google-api';
 import {
   Icon,
   Divider,
@@ -32,6 +33,7 @@ import logos from './../invoice/vision2030.png';
 import Swal from "sweetalert2";
 import useSettings from '../../hooks/useSettings';
 const locale = navigator.language;
+
 
 // import Image from 'react-image-resizer';
 
@@ -148,6 +150,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   let fval;
 
   useEffect(() => {
+
+
+    
     updateSidebarMode({ mode: "close" })
     document.title = "VAT Invoice - Amaco"
     axios.get(url + "invoice/" + id).then(({ data }) => {

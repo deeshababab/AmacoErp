@@ -184,7 +184,7 @@ const InvoiceForm = ({ }) => {
     // setstatus(true)
   };
   useEffect(() => {
-    axios.get(url + "parties").then(({ data }) => {
+    axios.get(url + "customer-list").then(({ data }) => {
       setCustomerList(data);
       // console.log(data)
 
