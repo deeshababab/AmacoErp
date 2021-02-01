@@ -131,7 +131,7 @@ const getData = () => {
             }}
           >
           <Icon>add</Icon>
-          Add new
+          Add New
           </Button>
          
           </div>

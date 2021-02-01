@@ -129,7 +129,8 @@ const getData = () => {
   return (
     <div>
     <Card elevation={3}>
-      
+    <div className="flex flex-wrap justify-between mb-6"> 
+    <h5 className="p-4">Contact</h5>
       <div className="text-right">
                 
                 <Button
@@ -142,20 +143,24 @@ const getData = () => {
             }}
           >
           <Icon>add</Icon>
-          Add new
+          Add New
           </Button>
          
           </div>
-          <h5 className="p-2">Contact</h5>
+          
+          </div>
       <Divider />
       <Table >
         <TableHead>
           <TableRow>
             <TableCell className="pl-0" align="center">S.No.</TableCell>
             <TableCell className="px-0">Name</TableCell>
-            <TableCell className="px-0" colspan={2}>Email</TableCell>
-            <TableCell className="px-0">Contact</TableCell>
             <TableCell className="px-0" >Designation</TableCell>
+            <TableCell className="px-0" colspan={2}>Address</TableCell>
+            <TableCell className="px-0">Contact</TableCell>
+            <TableCell className="px-0" colspan={2}>Email</TableCell>
+           
+            
             <TableCell className="px-4" align="center" >Action</TableCell>
           </TableRow>
         </TableHead>
@@ -167,11 +172,13 @@ const getData = () => {
                 <TableCell className="pl-0" align="center">{i++}</TableCell>
 
                 <TableCell className="pl-0">{item.fname}</TableCell>
-
+                <TableCell className="pl-0" style={{whiteSpace:'nowrap'}}>{item.designation}</TableCell>
+                <TableCell className="pl-0" colspan={2}>{item.address}</TableCell>
+                <TableCell className="pl-0">{item.mobno}</TableCell>
                 <TableCell className="pl-0" colspan={2}>{item.email}</TableCell>
 
-                <TableCell className="pl-0">{item.mobno}</TableCell>
-                <TableCell className="pl-0" style={{whiteSpace:'nowrap'}}>{item.designation}</TableCell>
+                
+              
                 <TableCell className="pl-0" align="center">
                 <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
                         aria-haspopup="true"
@@ -237,45 +244,7 @@ const getData = () => {
       </div>
     </Card>
     
-      <Card className="mt-6" elevation={3}>
-      <h5 className="p-2">Bank Details</h5>
-      <Table>
-      <TableHead>
-      <TableRow>
-     
-        
-            
-            <TableCell className="px-0" align="center">Bank Name</TableCell>
-            <TableCell className="px-0" >Account Number</TableCell>
-            <TableCell className="px-0">IBAN Number</TableCell>
-            <TableCell className="px-0">Bank Address</TableCell>
-        
-        
-        </TableRow>
-        </TableHead>
-        <TableBody>
-        {bankdetails.map((item, index) => {
-          console.log(item)
-          return(
-              <TableRow key={index}>
-              
-              <TableCell className="pl-0" align="center">{item.bank_name}</TableCell>
-            
-            
-              <TableCell className="pl-0">{item.account_no}</TableCell>
-           
-    
-              <TableCell className="pl-0">{item.iban_no}</TableCell>
-            
-             
-              <TableCell className="pl-0">{item.bank_address}</TableCell>
-            </TableRow>
-          )
-        })
-      }
-            </TableBody>
-            </Table>
-      </Card>
+      
       </div>
   );
 };

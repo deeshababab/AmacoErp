@@ -8,6 +8,9 @@ import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MemberEditorDialog from "../../partycontact"
 import FormDialog from "../../partycontact"
+import CustomerBillings from "./CustomerBillings";
+import CustomerInfo from "./CustomerInfo";
+import BankDetails from "./BankDetails";
 
 const CustomerViewer = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -72,12 +75,12 @@ const CustomerViewer = () => {
       <Divider className="mb-6" />
 
        {tabIndex === 0 && <CustomerDetails />}
-      {/* {tabIndex === 1 && <CustomerInvoice />}
-      {tabIndex === 2 && <CustomerLogs />}  */}
+       {tabIndex === 1 && <CustomerBillings />}
+      {tabIndex === 2 && <BankDetails />}  
     </div>
   );
 };
 
-const tabList = ["Details", "", ""];
+const tabList = ["Company Details", "Contact Details", "Bank Details","Invoices"];
 
 export default CustomerViewer;

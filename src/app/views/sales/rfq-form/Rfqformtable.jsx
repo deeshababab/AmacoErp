@@ -76,6 +76,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                           });
                           // console.log(`rfq_details[${ind}]`)
                         }}
+                        required
                       />
                     </div>
                   </TableCell>
@@ -89,6 +90,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                       fullWidth
                       defaultValue={item.quantity || ""}
                       onChange={handleChange}
+                      required
                     />
                   </TableCell>
                   <TableCell colSpan={5} className="p-0" align="left">
@@ -100,6 +102,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                       fullWidth
                       value={item.descriptionss || ""}
                       onChange={handleChange}
+                      required
                     />
                   </TableCell>
                   <TableCell colSpan={2} className="p-0" align="left">

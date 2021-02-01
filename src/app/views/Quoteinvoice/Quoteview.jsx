@@ -115,7 +115,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [state, setState] = useState({});
   const [rfq, setrfq] = useState();
-  const [rdate, setrdate] = useState([]);
+  const [psdate, setpsdate] = useState([]);
   const [ddate, setddate] = useState([]);
   const [cname, setcname] = useState([]);
   const [company, setcompany] = useState("");
@@ -158,13 +158,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     
     updateSidebarMode({ mode: "close" })
     document.title="Request for quoatation - Amaco"
-    axios.get(url+"quotation/"+id).then(({ data }) => {
+    axios.get(url+"sale-quotation/"+id).then(({ data }) => {
     console.log(data)
     // setcname(data[0].party.fname)
       setrfq(data[0].rfq_id)
       setqid(data[0].quotation_no)
-      setrdate(moment(data[0].rfq.requested_date).format('DD MMM YYYY'))
-      setddate(moment(data[0].rfq.require_date).format('DD MMM YYYY'))
+      setpsdate(moment(data[0].ps_date).format('DD MMM YYYY'))
+      // setddate(moment(data[0].rfq.require_date).format('DD MMM YYYY'))
       setcompany(data[0].party.firm_name)
       setcity(data[0].party.city)
       setstreet(data[0].party.street)
@@ -269,57 +269,57 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
   const invoicegenrate= (sidebarSettings) => {
     // alert(id)
-    const postatus={
-      status:"po"
-    }
-    // let url = `https://jsonplaceholder.typicode.com/users/${id}`
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to convert this quotation into Purchase Order !',
-      icon: 'danger',
-      showCancelButton: true,
-      confirmButtonText: 'Yes,!',
-      icon: 'warning',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
+    // const postatus={
+    //   status:"po"
+    // }
+    // // let url = `https://jsonplaceholder.typicode.com/users/${id}`
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'You want to convert this quotation into Purchase Order !',
+    //   icon: 'danger',
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Yes,!',
+    //   icon: 'warning',
+    //   cancelButtonText: 'No, keep it'
+    // }).then((result) => {
+    //   if (result.value) {
        
-        Axios.put(url+'quotation/'+id,postatus)
-    .then(res => {
+    //     Axios.put(url+'quotation/'+id,postatus)
+    // .then(res => {
       
-        let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    let activeLayoutSettings = settings[activeLayoutSettingsName];
-    updateSettings({
-      ...settings,
-      [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
-        leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
-          ...sidebarSettings,
-        },
-      },
-    });
+    //     let activeLayoutSettingsName = settings.activeLayout + "Settings";
+    // let activeLayoutSettings = settings[activeLayoutSettingsName];
+    // updateSettings({
+    //   ...settings,
+    //   [activeLayoutSettingsName]: {
+    //     ...activeLayoutSettings,
+    //     leftSidebar: {
+    //       ...activeLayoutSettings.leftSidebar,
+    //       ...sidebarSettings,
+    //     },
+    //   },
+    // });
      
-       window.location.href="../Newinvoiceview"
-        Swal.fire(
-          'Purchase Order !',
-          ' has been generated.',
-          'success'
-        )
+       window.location.href=`../Quoteinvoice/${id}`
         
-    })
+        
+    // })
     
         
 
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          '........:)',
-          'error'
-        )
-      }
-    })
+    //   } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //     Swal.fire(
+    //       'Cancelled',
+    //       '........:)',
+    //       'error'
+    //     )
+    //   }
+    // })
     
+}
+const editqoute = () => {
+  updateSidebarMode({ mode: "close" })
+  window.location.href = `../Quoteedit/${id}`
 }
 
 
@@ -383,8 +383,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       <MenuItem  onClick={() => handlePrint()}>
                       Print Quotation
                       </MenuItem>
-                      <MenuItem  onClick={() => history.push()}>
-                      Update Quotaion
+                      <MenuItem  onClick={() => editqoute()}>
+                      Edit Quotaion
                       </MenuItem>
                     
           </Menu>
@@ -395,7 +395,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             variant="outlined"
             onClick={() => invoicegenrate({ mode: "on" })}
           >
-            Genrate Purchase Order
+            Genrate Invoice
           </Button>
            {/*<Button
             className="mr-4 py-2"
@@ -464,11 +464,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         {/* <Divider  style={{marginBottom: '15px'}}/> */}
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           <div>
-            <h5 className="font-normal t-4 capitalize">
-              <strong>RFQ No.: </strong>{" "}
-             
-                {rfq}
-              
+          <h5 className="font-normal capitalize">
+              <strong>Quotation Number: </strong>{" "}
+              <span>
+               {qid}
+              </span>
             </h5>
           </div>
           <div className="text-center">
@@ -476,12 +476,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
            
           </div>
           <div className="text-right">
-            <h5 className="font-normal capitalize">
-              <strong>Quotation Number: </strong>{" "}
-              <span>
-               {qid}
-              </span>
-            </h5>
+            
             <h5 className="font-normal capitalize">
               <strong>Date: </strong>{" "}
               <span>
@@ -539,13 +534,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <td style={{ height: 'auto !important' }}>{contactpersoncontact}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Requested Date:</strong></td>
-              <td style={{ height: 'auto !important' }}>{rdate}</td>
+              <td style={{ height: 'auto !important' }}><strong>Quoate Date:</strong></td>
+              <td style={{ height: 'auto !important' }}>{psdate}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Due Date:</strong></td>
-              <td style={{ height: 'auto !important' }}>{ddate}</td>
-            </tr>
+            
             <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>C.R No:</strong></td>
               <td style={{ height: 'auto !important' }}>{regno}</td>

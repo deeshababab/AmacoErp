@@ -7,7 +7,8 @@ import {
   Divider,
   Switch,
   IconButton,
-  Fab
+  Fab,
+  Tooltip
 } from "@material-ui/core";
 import history from "history.js";
 
@@ -23,7 +24,7 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import url, {getcategories}from "../invoice/InvoiceService"
 
-const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,marginprice,calcualteprice }) => {
+const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,marginprice,calcualteprice,productname }) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -186,18 +187,17 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
       },
     {
       name: "id",
-      label: "Action",
+      label: "Select",
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
 
         console.log(tableMeta.rowData)
           return (
-            <IconButton onClick={() => setmargin(tableMeta.rowData[2],tableMeta.rowData[1],tableMeta.rowData[3])
-            }
-            >
-              <Icon color="primary">check_circle</Icon>
-            </IconButton>
+            <Tooltip title="Select">
+              <Icon color="primary" onClick={() => setmargin(tableMeta.rowData[2],tableMeta.rowData[1],tableMeta.rowData[3])
+            }>check_circle</Icon>
+           </Tooltip> 
 
 
 
@@ -228,7 +228,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
      
         {isAlive && (
           <MUIDataTable
-            title={"Quotation Reference"}
+            title={`Quotation Reference For ${productname}`}
             columns={columns}
             data={marginList}
             options={{

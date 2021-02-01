@@ -286,14 +286,12 @@ const optionss = [
                     onChange={e => setpayment_account_id(e.target.value)}
                     select 
                   >
-                    <MenuItem>
-                    <Button
-                  onClick={() => {
+                    <MenuItem onClick={() => {
                     setShouldOpenEditorDialog(true);
-                  }}
-                >
+                  }}>
+                    
                   <Icon>add</Icon>New
-                </Button>
+                
                </MenuItem>
                       {accounttype.map((item, ind) => (
                       <MenuItem value={item.id} key={item}>

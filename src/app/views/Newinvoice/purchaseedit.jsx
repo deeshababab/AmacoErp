@@ -44,8 +44,6 @@ import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./Addmargin";
-import MemberEditorDialog from "./Addmargin";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
 
@@ -180,9 +178,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       {
         // console.log(element.product[0].product_price.price)
         // element['purchase_price']=price;
-        element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
+        element['total_amount']=((event.target.value)*element.quantity_required).toFixed(2);
         element[event.target.name] = event.target.value;
+        element.margin="";
+        element.sell_price="";
         
       
 
@@ -253,33 +253,35 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       rdate: date
     });
   };
-  const calcualteprice = (pprice,marginprice) => {
+  const calcualteprice = (event,index) => {
+    event.persist()
     let tempItemList = [...state.item];
+    console.log(tempItemList)
     
     tempItemList.map((element, i) => {
       let sum=0;
     
-      if (indexset === i) 
+      if (index === i) 
       {
-        // console.log(element.product[0].product_price.price)
-        element['purchase_price']=pprice;
-        element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
-        element['margin'] = marginprice;
-        element['name'] = pprice;
+        
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
+        element['total_amount']=((event.target.value)*element.purchase_price).toFixed(2);
+        element[event.target.name] = event.target.value;
         
       
 
       }
+      
       return element;
       
     });
+   
 
     setState({
       ...state,
       item: tempItemList,
     });
-  
     // setprice(parseInt(event.target.value))
   }
   const priceset = (a,b,c) => {
@@ -305,8 +307,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       if (index === i) 
       {
         console.log(event.target.value)
-     
-        element['purchase_price']= event.target.value;
+        
+        element['quantity_required']= event.target.value;
         
       
 
@@ -330,12 +332,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let arr = []
     delete tempState.loading;
     let tempItemList =[...state.item];
+    
 
     // arr.push({
     // Quotedetails:tempItemList,
     // });
     arr.quotation_details=tempItemList
-    arr.discount_in_p=discount
+    arr.discount_in_p=0
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
     arr.net_amount=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
@@ -348,6 +351,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.inco_terms=inco_terms
     arr.payment_terms=payment_terms
     arr.contact_id=contactid
+    arr.transaction_type="purchase"
     const json = Object.assign({}, arr);
     console.log(json)
     Axios.post(url+'quotation', json)
@@ -360,14 +364,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           text: 'Data saved successfully.',
         });
         // history.push("/product/viewproduct")
-        window.location.href="../quoateview"
+        window.location.href="../Newinvoiceview"
       })
       .catch(function (error) {
         
       })
   };
   function cancelform() {
-    history.push("/quoateview")
+    history.push("/Newinvoiceview")
   }
   
   const handleDialogClose = () => {
@@ -434,7 +438,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Create Quotation</h3>
+          <h3 align="left">Edit PurchaseOrder</h3>
           </div>
           <div className="mb-6">
          
@@ -470,7 +474,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </h5>
             
            <h5 className="font-normal capitalize">
-              <strong>Firm Name: </strong>{" "}
+              <strong>Vendor Name: </strong>{" "}
               <span>
                 {cname}
               </span>
@@ -504,13 +508,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:50}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'180px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'180px'}}>Our Description</TableCell>
+              <TableCell className="pl-sm-24"  align="left">S.No.</TableCell>
+              <TableCell className="px-0" >Rfq description</TableCell>
+              <TableCell className="px-0" >Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Sprice</TableCell>
               <TableCell className="px-0"style={{width:'80px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
                <TableCell className="px-0">Action</TableCell> 
@@ -581,14 +583,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize"  align="left" style={{width:'80px'}}>
                     <TextValidator
                       label="Quantity"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
+                      onChange={(event) => calcualteprice(event, index)}
                       type="text"
                       variant="outlined"
                       size="small"
                       fullWidth
             
-                      name="quantity_requried"
-                      value={item ? item.quantity_required:null}
+                      name="quantity_required"
+                      value={item.quantity_required? item.quantity_required:""}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
@@ -597,14 +599,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TextValidator
                       label="Unit Price"
                       variant="outlined"
-                      onChange={(event) => calcualtep(event,index)}
+                      onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
-                      name="name"
+                      name="purchase_price"
                       size="small"
                       
                       fullWidth
                       value={item.purchase_price? item.purchase_price:""}
-                      select
+                     
                       
                       
                     >
@@ -619,46 +621,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                    <TextValidator
-                      label="Margin"
-                      onChange={(event) => handleIvoiceListChange(event, index)}
-                      // onBlur={(event) => handleIvoiceListChange(event, index)}
-                      type="text"
-                      variant="outlined"
-                      size="small"
-                      name="margin"
-                      style={{width:'75%',float:'left'}}
-                      fullWidth
-                      value={item.margin ?item.margin:"" }
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-              
-                    />
-                    <Tooltip title="Reference">
-                  <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
-                        setMargin(item.product_id,index,item.product[0].name);
-                      }}>
-                   {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                </Icon>
-                </Tooltip>
-  
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
-                    <TextValidator
-                      label="price"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
-                      type="text"
-                     
-                      variant="outlined"
-                      size="small"
-                      
-                      name="sell_price"
-                      
-                      value={item.sell_price? item.sell_price :""}
-      
-                    />
-                  </TableCell>
+                  
+                  
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
                     <TextValidator
                       label="QTotal"
@@ -686,8 +650,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.remark ?item.remark:"" }
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
+                      
               
                     />
   
@@ -796,7 +759,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <div className="flex " >
               <div className="pr-12">
               <p className="mb-8">Sub Total:</p>
-              <p className="mb-8">Discount:</p>
+              {/* <p className="mb-8">Discount:</p> */}
               <p className="mb-8">Vat(15%):</p>
               {/* <p className="mb-5">currency:</p> */}
               <strong>
@@ -806,7 +769,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             <div>
               
               <p className="mb-4">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
-              <div>
+              {/* <div>
               <TextField
                 className="mb-4 mr-2"
                 label="Discount %"
@@ -835,7 +798,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
               />
-             </div>
+             </div> */}
               
               <TextValidator
                 className="mb-4 "
@@ -869,28 +832,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         </div>
       </ValidatorForm>
       </div>
-      
-      {shouldOpenEditorDialog && (
-          <MemberEditorDialog
-            handleClose={handleDialogClose}
-            open={shouldOpenEditorDialog}
-            productid={productid}
-            margin={margin}
-            marginprice={setmarginprice}
-            pprice={setpprice}
-            calcualteprice={calcualteprice}
-            productname={productname}
-            
-          />
-        )}
-        {shouldOpenConfirmationDialog && (
-          <ConfirmationDialog
-            open={shouldOpenConfirmationDialog}
-            onConfirmDialogClose={handleDialogClose}
-            
-            text="Are you sure to delete?"
-          />
-        )}
+    
     </div>
   );
 };

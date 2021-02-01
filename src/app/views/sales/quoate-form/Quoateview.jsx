@@ -37,7 +37,7 @@ const SimpleMuiTable = () => {
     wordBreak: "break-all",
   }
   useEffect(() => {
-    Axios.get(url+"quotation").then(({ data }) => {
+    Axios.get(url+"sales-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
       // console.log(myJSON)
@@ -249,12 +249,12 @@ const SimpleMuiTable = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Quotation" },
+            { name: "Sales Quotation" },
           ]}
         />
 
         <div className="text-right">
-          {/* <Link to={"/quoteedit"}>
+          <Link to={"/Newquoteanalysis"}>
             <Button
               className="py-2"
               variant="outlined"
@@ -262,11 +262,11 @@ const SimpleMuiTable = () => {
             >
               <Icon>add</Icon> Add New 
           </Button>
-          </Link> */}
+          </Link>
         </div>
       </div>
       <MUIDataTable
-        title={"Quotation"}
+        title={"Sales Quotation"}
         data={qdetails.map((item, index) => {
        
             return [

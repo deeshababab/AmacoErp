@@ -534,14 +534,17 @@ const SimpleForm = ({open, handleClose}) => {
                 select
                 fullWidth
               > 
-              <MenuItem>
-               <Button
+              <MenuItem  onClick={() => {
+                    setShouldOpenEditorDialog1(true);
+                  }}>
+               {/* <Button
                   onClick={() => {
                     setShouldOpenEditorDialog1(true);
                   }}
-                >
-                  <Icon>add</Icon>New
-                </Button>
+                
+                > */}
+                  <Icon >add</Icon>New
+                {/* </Button> */}
                </MenuItem>
                {manufacture.map((item, ind) => (
                 <MenuItem value={item.id} key={item}>
@@ -643,7 +646,7 @@ const SimpleForm = ({open, handleClose}) => {
           <span className="pl-2 capitalize">Save</span>
         </Button>
         
-        <Button className="mr-4 py-2" color="secondary" variant="outlined" onClick={cancelform}>
+        <Button className="mr-4 py-2" color="secondary" variant="outlined" onClick={() => history.push(`/product/viewproduct/${id}`)}>
           <Icon>cancel</Icon>
           <span className="pl-2 capitalize">cancel</span>
         </Button>

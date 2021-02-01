@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import axios from "axios";
 import moment from "moment";
 import history from "history.js";
-import url, { getrfq } from "../../invoice/InvoiceService"
+import url, { getrfq,getVendorList } from "../../invoice/InvoiceService"
 
 
 
@@ -184,7 +184,7 @@ const InvoiceForm = ({ }) => {
     // setstatus(true)
   };
   useEffect(() => {
-    axios.get(url + "customer-list").then(({ data }) => {
+    getVendorList().then(({ data }) => {
       setCustomerList(data);
       // console.log(data)
 
@@ -334,25 +334,25 @@ const InvoiceForm = ({ }) => {
                 <div className="flex justify-between">
                   <div className="flex">
                   <TextField
-                    className="min-w-188"
-                    label="Customer Name"
+                    
+                    label="Supplier Name"
+                    style={{minWidth:200,maxWidth:'250px'}}
                     name="party_id"
                     size="small"
                     variant="outlined"
                     select
+                    
                     value={values.CustomerList}
                     // onChange={handleChange}
                     onClick={(event)=>setrfq(event)}
                     required
                   >
-                    <MenuItem>
-                      <Button
-                        onClick={() => {
+                    <MenuItem onClick={() => {
                           history.push("/party/addparty");
-                        }}
-                      >
+                        }}>
+                      
                         <Icon>add</Icon>new
-                </Button>
+                {/* </Button> */}
                     </MenuItem>
                     {CustomerList.map((item) => (
                       <MenuItem value={item.id} key={item.id}>
@@ -409,10 +409,12 @@ const InvoiceForm = ({ }) => {
 
                 </Grid>
                 <Grid item xs={4}>
+                <div className="flex">
                 {rfqstatus &&
                   <TextField
-                    className="min-w-10"
+                    
                     label="Contact Person"
+                    style={{minWidth:200,maxWidth:'250px'}}
                     name="party_id"
                     size="small"
                     variant="outlined"
@@ -420,7 +422,7 @@ const InvoiceForm = ({ }) => {
                     value={values.contact_id}
                     onChange={handleChange}
                     required
-                    fullWidth
+                   
                   >
                     
                     {customercontact.map((item) => (
@@ -431,6 +433,7 @@ const InvoiceForm = ({ }) => {
 
                   </TextField>
                   }
+                  </div>
                   </Grid>
 
 

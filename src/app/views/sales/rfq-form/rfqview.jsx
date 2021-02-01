@@ -226,6 +226,7 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
+      <div className="flex flex-wrap justify-between mb-6">
         <Breadcrumb
           routeSegments={[
             { name: "Add new", path: "/sales/rfq-form/Rfqform" },
@@ -243,6 +244,7 @@ const SimpleMuiTable = () => {
               <Icon>add</Icon> Add New 
           </Button>
           </Link>
+        </div>
         </div>
       </div>
       <MUIDataTable

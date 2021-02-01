@@ -59,6 +59,10 @@ const salesRoutes = [
         component: React.lazy(() => import("./inv")),
     },
     {
+        path: "/poinv",
+        component: React.lazy(() => import("./poinv")),
+    },
+    {
         path: "/updatesidebar",
         component: React.lazy(() => import("./updatesidebar")),
     },

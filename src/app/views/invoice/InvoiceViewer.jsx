@@ -296,7 +296,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     });
 
     // history.push('/quoteedit/'+id)
-    window.location.href = `/quoteanalysis/${id}`
+    window.location.href = `/purchaseanalysis/${id}`
   }
 
   let subTotalCost = 0;
@@ -345,7 +345,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       Print RFQ
                       </MenuItem>
                       <MenuItem  onClick={() => updateRfq()}>
-                      Update RFQ
+                      Edit RFQ
                       </MenuItem>
                     
           </Menu>
@@ -356,7 +356,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             variant="outlined"
             onClick={() => quoteView({ mode: "on" })}
           >
-            Genrate Quoate
+            Genrate Purchase Order
           </Button>
           
         </div>

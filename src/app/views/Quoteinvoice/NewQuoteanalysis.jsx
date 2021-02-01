@@ -30,7 +30,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
 import axios from "axios";
-import url from "../invoice/InvoiceService";
+import url,{getVendorList} from "../invoice/InvoiceService";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -76,6 +76,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
+  const [ProductList1, setProductList1] = useState([]);
   const [validity,setvalidity] =useState('3 Days')
   const [payment_terms,setpayment_terms] =useState('100% Advance')
   const [warranty,setwarranty] =useState('NA')
@@ -90,14 +91,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
-  
+  const [CustomerList, setCustomerList] = useState([]);
+  const [customercontact, setcustomercontact] = useState([]);
+  const [PriceList, setPriceList] = useState([]);
+  const [rfqstatus, setrfqstatus] = useState(false);
+  const [pricestatus, setpricestatus] = useState(false);
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
-
+  const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
   const [
     shouldOpenConfirmationDialog,
     setShouldOpenConfirmationDialog,
@@ -171,6 +176,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   const handleIvoiceListChange = (event, index) => {
     event.persist()
+   
     let tempItemList = [...state.item];
     
     tempItemList.map((element, i) => {
@@ -178,10 +184,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        // console.log(element.product[0].product_price.price)
-        // element['purchase_price']=price;
-        element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
         element[event.target.name] = event.target.value;
         
       
@@ -196,7 +201,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       item: tempItemList,
     });
   
-     
+ 
    
   };
 
@@ -204,14 +209,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempItemList = [...state.item];
     
     tempItemList.push({
-      name: "",
-      unit: "",
-      price: "",
-      quotedescription: "",
-      qtotal:"",
-      qprice:"",
-      margin:"",
-      remark:""
+      product_id: "",
+      description:"",
+      descriptions:"",
+      quantity:0,
+      purchase_price:0.00,
+      margin:0,
+      sell_price:0.00,
+      remark:"",
+      total_amount:0.00
+      
     });
     setState({
       ...state,
@@ -284,6 +291,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
   const priceset = (a,b,c) => {
     Axios.get(url+"parties/" + c).then(({ data }) => {
+
       setproList(data[0].contacts);
       
     });
@@ -304,9 +312,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        console.log(event.target.value)
-     
-        element['purchase_price']= event.target.value;
+        
+        // element.sell_price=parseFloat((element.margin * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element.total_amount=((element.sell_price)*element.quantity).toFixed(2);
+        element[event.target.name] = event.target.value;
+        element.sell_price=parseFloat((element.margin * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        element.total_amount=((element.sell_price)*element.quantity).toFixed(2);
         
       
 
@@ -339,7 +350,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
     arr.net_amount=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
-    arr.rfq_id=id
     arr.po_number=id
     arr.party_id=party_id
     arr.validity=validity
@@ -348,9 +358,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.inco_terms=inco_terms
     arr.payment_terms=payment_terms
     arr.contact_id=contactid
+    arr.ps_date=Quote_date
+    arr.rfq_id=null
+    arr.transaction_type="sale"
     const json = Object.assign({}, arr);
     console.log(json)
-    Axios.post(url+'quotation', json)
+    Axios.post(url+'sale-quotation', json)
       .then(function (response) {
         
          
@@ -374,28 +387,70 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setShouldOpenEditorDialog(false);
    
   };
+  const setcontact= (event) => {
+    
+   
+    Axios.get(url+"parties/" + event.target.value).then(({ data }) => {
+      setcustomercontact(data[0].contacts);
+      
+      setparty_id(event.target.value)
+
+      setrfqstatus(true);
+      
+      
+    });
+  }
 
   useEffect(() => {
-   
+    getVendorList().then(({ data }) => {
+      setCustomerList(data);
+    
+
+    });
     axios.get(url+"products").then(({ data }) => {
       setproList(data)
+
+      
     // setState({
     //     ...state,
     //     item: data,
     //   }); 
     });
-    axios.get(url+"rfq/"+ id).then(({ data }) => {
+    
+    
+//     axios.get(url+"rfq/"+ id).then(({ data }) => {
      
-      setcname(data[0].party[0].firm_name)
-      setcontactid(data[0].contact.id)
-      setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
-      setddate(moment(data[0].require_date).format('DD MMM YYYY'))
-      setparty_id(data[0].party_id)
-     setState({
-      ...state,
-      item: data[0].rfq_details,
+//       setcname(data[0].party[0].firm_name)
+//       setcontactid(data[0].contact.id)
+//       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
+//       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
+//       setparty_id(data[0].party_id)
+//      setState({
+//       ...state,
+//       item: data[0].rfq_details,
+//     });
+//    });
+    let tempItemList = [...state.item];
+   
+    tempItemList.push({
+      product_id: "",
+      description:"",
+      descriptions:"",
+      quantity:0,
+      purchase_price:0.00,
+      margin:0,
+      sell_price:0.00,
+      remark:"",
+      total_amount:0.00
+      
+
     });
-   });
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+
+
   }, [id, isNewInvoice, isAlive, generateRandomId]);
 
   
@@ -406,6 +461,40 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setindex(index)
     setShouldOpenEditorDialog(true);
 
+  }
+  const setProductdescription = (event,index,id)=>{
+    Axios.get(url + "products/" + event.target.value).then(({ data }) => {
+        let tempItemList = [...state.item];
+        console.log(data.prices);
+        data.prices.map((element, i) => {
+            console.log(element)
+        })
+        setProductList1(data)
+        // setProductList1(data.prices)
+    
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+        
+        element['product_id']= event.target.value;
+        element['descriptionss']= data.product[0].description;
+        setproductid(id)
+        
+      
+
+      }
+      return element;
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    }); 
+    })
   }
   let subTotalCost = 0;
   let GTotal = 0;
@@ -423,7 +512,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     currency,
     loading,
     margin,
-    remark
+    remark,
+    quantity
     
   } = state;
   
@@ -434,7 +524,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Create Quotation</h3>
+          <h3 align="left"> Create Sales Quotation</h3>
           </div>
           <div className="mb-6">
          
@@ -463,37 +553,98 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           <div>
           <h5 className="font-normal capitalize">
-              <strong>RFQ ID: </strong>{" "}
+              <strong>Customer: </strong>{" "}
               <span>
                 {id}
               </span>
             </h5>
             
-           <h5 className="font-normal capitalize">
-              <strong>Firm Name: </strong>{" "}
-              <span>
-                {cname}
-              </span>
-            </h5>
+            <TextField
+                    
+                    label="Customer Name"
+                    style={{minWidth:200,maxWidth:'250px'}}
+                    name="party_id"
+                    size="small"
+                    variant="outlined"
+                    
+                    // value={values.CustomerList}
+                    // onChange={handleChange}
+                    onClick={(event)=>setcontact(event)}
+                    required
+                    select
+                  >
+                    <MenuItem onClick={() => {
+                          history.push("/party/addparty");
+                        }}>
+                      
+                        <Icon>add</Icon>new
+                {/* </Button> */}
+                    </MenuItem>
+                    {CustomerList.map((item) => (
+                      <MenuItem value={item.id} key={item.id}>
+                        {item.firm_name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  
             
             
-          </div>
+          
+         
+                {rfqstatus &&
+                  <TextField
+                    
+                    label="Contact Person"
+                    className="ml-2"
+                    style={{minWidth:200,maxWidth:'250px'}}
+                    name="contact_id"
+                    size="small"
+                    variant="outlined"
+                    select
+                    // value={values.contact_id}
+                    onChange={(e)=>setcontactid(e.target.value)}
+                    required
+                   
+                  >
+                    
+                    {customercontact.map((item) => (
+                      <MenuItem value={item.id} key={item.id}>
+                        {item.fname}
+                      </MenuItem>
+                    ))}
+
+                  </TextField>
+                  }
+                  </div>
+                  
           <div>
            
             
             <div className="text-right">
             <h5 className="font-normal">
-                <strong>RFQ Date: </strong>
+                <strong>Quote Date: </strong>
                 <span>
                   {rdate}
                   </span>
               </h5>
-              <h5 className="font-normal">
-                <strong>Bid Closing Date: </strong>
-                <span>
-                  {ddate}
-                  </span>
-              </h5>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      className="m-2"
+                      margin="none"
+                      label="Quote Date"
+                      inputVariant="outlined"
+                      type="text"
+                      size="small"
+                      selected={Quote_date}
+                      value={Quote_date}
+                      onChange={(date) => {
+                        setQuote_date(moment(date).format('DD MMM YYYY'))
+                        // return date
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+
+
             </div>
             
           </div>
@@ -504,22 +655,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:50}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'180px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'180px'}}>Our Description</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
+              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Sprice</TableCell>
-              <TableCell className="px-0"style={{width:'80px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
-               <TableCell className="px-0">Action</TableCell> 
+              <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>Sprice</TableCell>
+              <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
+              <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
+               <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item)
+              
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -546,13 +698,35 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     {index + 1}
                     
                   </TableCell>
-                 
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
+                    <TextValidator
+                      label="Item"
+                      onChange={(event) => setProductdescription(event, index)}
+                      type="text"
+                      name="product_id"
+                      fullWidth
+                      variant="outlined"
+                      
+                      size="small"
+                      value={item.product_id?item.product_id:""}
+                    //   validators={["required"]}
+                      
+                    //   errorMessages={["this field is required"]}
+                    select
+                    >
+                         {proList.map((item) => (
+                          <MenuItem value={item.id} key={item.id}>
+                           {item.name}
+                          </MenuItem>
+                        ))} 
+                    </TextValidator>
+                  </TableCell>
                   
 
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
                       label="description"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
+                      onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       name="description"
                       fullWidth
@@ -564,7 +738,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
                       label="Our description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -574,55 +748,56 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       name="quotedescription"
                       fullWidth
-                      value={item ?item.product[0].description :null }
+                      value={item.descriptionss?item.descriptionss :"" }
               
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize"  align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize"  align="left" style={{width:'70px'}}>
                     <TextValidator
-                      label="Quantity"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
+                      label="Qty"
+                      onChange={(event) => calcualtep(event, index)}
                       type="text"
                       variant="outlined"
                       size="small"
                       fullWidth
             
-                      name="quantity_requried"
-                      value={item ? item.quantity_required:null}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
+                      name="quantity"
+                      value={item.quantity}
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                  <TextValidator
+                  <TextField
                       label="Unit Price"
                       variant="outlined"
-                      onChange={(event) => calcualtep(event,index)}
+                      // onChange={(event) => calcualtep(event,index)}
+                      onChange={(event) => calcualtep(event, index)}
                       type="text"
-                      name="name"
+                      name="purchase_price"
                       size="small"
                       
                       fullWidth
-                      value={item.purchase_price? item.purchase_price:""}
+                      // value={item.purchase_price}
+                     
                       select
                       
-                      
                     >
-                       {item.product[0].product_price.map((item) => (
+                       {/* {setProductList1.map((item,i) => (
                           <MenuItem value={item.price} key={item.id}>
-                           {item.price}-{item.party.firm_name}
+                            {item.price}
+                            {item.price}-{item.party.firm_name} 
                           </MenuItem>
-                        ))} 
-                    </TextValidator>
+                        ))}  */}
+                       
+                    </TextField>
                     
                   </TableCell> 
 
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
                     <TextValidator
                       label="Margin"
-                      onChange={(event) => handleIvoiceListChange(event, index)}
+                      onChange={(event) => calcualtep(event, index)}
                       // onBlur={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
@@ -630,21 +805,21 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="margin"
                       style={{width:'75%',float:'left'}}
                       fullWidth
-                      value={item.margin ?item.margin:"" }
+                      value={item.margin}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
               
                     />
                     <Tooltip title="Reference">
                   <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
-                        setMargin(item.product_id,index,item.product[0].name);
+                        setMargin(productid,index,item.name);
                       }}>
                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </Icon>
                 </Tooltip>
   
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
                     <TextValidator
                       label="price"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -655,11 +830,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       name="sell_price"
                       
-                      value={item.sell_price? item.sell_price :""}
+                      value={item.sell_price}
       
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
                     <TextValidator
                       label="QTotal"
                       
@@ -670,11 +845,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                      
                       name="total_amount"
                      
-                      value={item.total_amount ? item.total_amount: ""}
+                      value={item.total_amount}
                       
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'140px'}}>
                     <TextValidator
                       label="Remark"
                       onChange={(event) => setremark(event, index)}
@@ -683,11 +858,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       name="remark"
-                      style={{width:'75%',float:'left'}}
+          
                       fullWidth
                       value={item.remark ?item.remark:"" }
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
+                      
               
                     />
   
@@ -702,8 +876,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 </TableRow>
               );
             })}
+            
           </TableBody>
+          
         </Table>
+        <div className="flex justify-end px-4 mb-4">
+            <Button className="mt-4"
+              color="primary"
+              variant="contained"
+              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+          </div>
         
         <h6><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">

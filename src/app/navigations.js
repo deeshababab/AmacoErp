@@ -16,61 +16,34 @@ export const navigations = [
     path: "/product/viewsubcategory",
     icon: "queue",
   },
-  {
-    name: "Sales",
-    icon: "work",
-    children: [
-      {
-        name: "RFQ",
-        path: "/sales/rfq-form/rfqview",
-        icon:"folder",
-      },
-      {
-        name: "Quotation",
-        path: "/quoateview",
-        icon:"folder",
-      },
-      {
-        name: "Purchase Order",
-        path: "/Newinvoiceview",
-        icon:"folder",
-      },
-      {
-        name: "Invoice",
-        path: "/inv",
-        icon:"folder",
-      },
-    ],
-  },
+  // {
+  //   name: "Sales",
+  //   icon: "work",
+  //   children: [
+  //     {
+  //       name: "RFQ",
+  //       path: "/sales/rfq-form/rfqview",
+  //       icon:"folder",
+  //     },
+  //     {
+  //       name: "Quotation",
+  //       path: "/quoateview",
+  //       icon:"folder",
+  //     },
+  //     {
+  //       name: "Purchase Order",
+  //       path: "/Newinvoiceview",
+  //       icon:"folder",
+  //     },
+  //     {
+  //       name: "Invoice",
+  //       path: "/inv",
+  //       icon:"folder",
+  //     },
+  //   ],
+  // },
   
-  {
-    name: "Account",
-    icon: "developer_board",
-    children: [
-      {
-    name: "Expense",
-    icon: "attach_money",
-    path: "/expenseview",
-      },
-      {
-        name: "Receipt",
-        icon: "receipt",
-        path: "/",
-          }
-    ]
-    
-  },
-  {
-    name: "Report",
-    icon: "assignment",
-    children: [
-      {
-        name: "Product",
-        path: "/product/producthistory",
-        icon:"folder",
-      },
-    ]
-  }
+  
   // {
   //   name: "Purchase",
   //   icon: "shopping_cart",
@@ -86,5 +59,76 @@ export const navigations = [
   //   icon: "insert_chart",
   //   path: "/demo",
   // },
+  {
+    name: "Sales",
+    icon: "work",
+    children: [
+      {
+        name: "Vendor",
+        icon:"folder",
+        children: [
+          {
+            name: "RFQ",
+            path: "/sales/rfq-form/rfqview",
+            icon:"folder",
+          },
+          {
+            name: "Purchase Order",
+            path: "/Newinvoiceview",
+            icon:"folder",
+          },
+          {
+            name: "Invoice",
+            path: "/poinv",
+            icon:"folder",
+          },
+      ],
+    },
+    {
+        name: "Customer",
+        icon:"folder",
+        children: [
+          {
+            name: "Quotation",
+            path: "/quoateview",
+            // path: "/Newquoteanalysis",
+            icon:"folder",
+          },
+          {
+            name: "Invoice",
+            path: "/inv",
+            icon:"folder",
+          },
+        ]
+  }
+  ]
+},
+{
+  name: "Account",
+  icon: "developer_board",
+  children: [
+    {
+  name: "Expense",
+  icon: "attach_money",
+  path: "/expenseview",
+    },
+    {
+      name: "Receipt",
+      icon: "receipt",
+      path: "/",
+        }
+  ]
   
-  ];
+},
+{
+  name: "Report",
+  icon: "assignment",
+  children: [
+    {
+      name: "Product",
+      path: "/product/producthistory",
+      icon:"folder",
+    },
+  ]
+}
+];

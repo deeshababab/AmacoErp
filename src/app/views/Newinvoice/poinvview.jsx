@@ -155,23 +155,23 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     
     updateSidebarMode({ mode: "close" })
     document.title = "VAT Invoice - Amaco"
-    axios.get(url + "invoice/" + id).then(({ data }) => {
+    axios.get(url + "purchase-invoice/" + id).then(({ data }) => {
       console.log(data[0].discount_in_percentage)
       if (data) {
         setdis_per(data[0].discount_in_percentage)
-        setpodetails(data[0].invoice_detail)
-        setcompany(data[0].quotation.party.firm_name)
-        setcity(data[0].quotation.party.city)
-        setstreet(data[0].quotation.party.street)
-        setzipcode(data[0].quotation.party.zip_code)
-        setpo(data[0].quotation.quotation_no)
-        setvatno(data[0].quotation.party.vat_no)
+        setpodetails(data[0].quotation_details)
+        setcompany(data[0].party.firm_name)
+        setcity(data[0].party.city)
+        setstreet(data[0].party.street)
+        setzipcode(data[0].party.zip_code)
+        setpo(data[0].quotation_no)
+        setvatno(data[0].party.vat_no)
         setinvoiceno(data[0].invoice_no)
         setissue_date(data[0].issue_date)
         setvat_in_value(data[0].vat_in_value)
         setnet_amount(data[0].grand_total)
         settotal_value(data[0].total_value)
-        setfirm_name_in_ar(data[0].quotation.party.firm_name_in_ar)
+        // setfirm_name_in_ar(data[0].quotation.party.firm_name_in_ar)
       }
 
     })
@@ -696,7 +696,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       <div className="flex">
                         <div className="pr-12">
 
-                          <strong>Total In Words:</strong>  {converter.toWords(parseInt(net_amount))}
+                          <strong>Total In Words:</strong>  {converter.toWords((123))}
                         </div>
                       </div>
                     </div>

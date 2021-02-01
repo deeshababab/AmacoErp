@@ -400,14 +400,13 @@ const SimpleMuiTable = () => {
 
     <div className="m-sm-30">
       <div className="mb-sm-30">
+      <div className="flex flex-wrap justify-between mb-6">
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "./Addproduct" },
             { name: "Product Category" }
           ]}
         />
-
-      </div>
       <div className="flex justify-end p-4" >
         <TextField
           onChange={handleInputChange}
@@ -419,6 +418,8 @@ const SimpleMuiTable = () => {
             ),
           }}
         ></TextField>
+      </div>
+      </div>
       </div>
       <div className="viewer_actions px-4 flex justify-end">
 
@@ -446,7 +447,7 @@ const SimpleMuiTable = () => {
             {catList.map((item, ind) => (
               <Grid item xs>
                 <Card elevation={20} style={{ minWidth: 300, whiteSpace: 'pre-line' }} className="p-2" >
-                <div className="px-4 flex justify-between">
+                <div className="p-5 flex justify-between">
 
 
 
@@ -454,7 +455,7 @@ const SimpleMuiTable = () => {
 
                     <div style={{ display: 'flex', marginLeft: '0.5rem' }}>
 
-                      <strong>{item.name}</strong>
+                      <strong><h6 align="center" style={{ display: 'inline-block'}} >{item.name}</h6></strong>
                       </div>
                       <div className="px-4 flex ">
                       <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}

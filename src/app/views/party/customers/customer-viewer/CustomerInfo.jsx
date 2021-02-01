@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Divider,
+  Grid,
   Icon,
   Table,
   TableBody,
@@ -101,44 +102,11 @@ const CustomerInfo = () => {
               <TableCell className="pl-4">Fax</TableCell>
               <TableCell>{userList.fax}</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell className="pl-4">Party Type</TableCell>
-              <TableCell>{userList.party_type}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="pl-4">Vendor Id</TableCell>
-              <TableCell>{userList.vendor_id}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="pl-4">Party Code</TableCell>
-              <TableCell>{userList.party_code}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="pl-4">Opening Balance</TableCell>
-              <TableCell>{userList.opening_balance}</TableCell>
-            </TableRow>
-
-          {/* ))} */}
+            
+       
         </TableBody>
       </Table>
-
-      {/* <div className="flex-column items-start px-4">
-        <Button className="mb-1" variant="text">
-          <Icon className="mr-2" fontSize="small">
-            lock_open
-          </Icon>{" "}
-          Reset & Send Password
-        </Button>
-        
-
-        <Button className="mb-4" variant="text">
-          <Icon className="mr-2" fontSize="small">
-            person
-          </Icon>{" "}
-          Login as Customer
-        </Button>
-      </div> */}
-      
+            
     </Card>
   );
 };

@@ -33,6 +33,8 @@ import Swal from "sweetalert2";
 import Axios from "axios";
 import history from "history.js";
 import moment from "moment";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 const locale = navigator.language;
 
 // import Image from 'react-image-resizer';
@@ -131,7 +133,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [warranty,setwarranty] =useState('')
   const [delivery_time,setdelivery_time] =useState()
   const [qid,setqid] =useState()
-  const [qno,setqno] =useState()
+  const [rno,setrno] =useState()
   const [inco_terms,setinco_terms] =useState()
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
   const [contactpersonemail, setcontactpersonemail] = useState('');
@@ -143,19 +145,26 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   var fval =10;
   const { settings, updateSettings } = useSettings();
   const history = useHistory()
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  function handleClose() {
+    setAnchorEl(null);
+  }
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
   
 
   useEffect(() => {
    
     updateSidebarMode({ mode: "close" })
     document.title="Purchase Order - Amaco"
-    axios.get(url+"quotation/"+id).then(({ data }) => {
+    axios.get(url+"purchase-quotation/"+id).then(({ data }) => {
      console.log(moment(data[0].updated_at).format('DD MMM YYYY'))
     // setcname(data[0].party.fname)
       setpo_number(data[0].po_number)
 
       setqid(data[0].id)
-      setqno(data[0].quotation_no)
+      setrno(data[0].rfq_id)
       setrdate(moment(data[0].updated_at).format('DD MMM YYYY'))
       setcompany(data[0].party.firm_name)
       setcity(data[0].party.city)
@@ -205,7 +214,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
   else
   {
-    window.location.href="../Newinvoiceview"
+    window.location.href=`../Newinvoiceview`
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
     updateSettings({
@@ -222,62 +231,97 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
 
   }
+  const editpurchase =() =>{
+    updateSidebarMode({ mode: "on" })
+    window.location.href=`../purchaseedit/${id}`
+    
+  }
   const invoicegenrate= (sidebarSettings) => {
     // alert(id)
-    const postatus={
-      status:"po"
-    }
-    // let url = `https://jsonplaceholder.typicode.com/users/${id}`
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to create Invoice !',
-      icon: 'danger',
-      showCancelButton: true,
-      confirmButtonText: 'Yes,!',
-      icon: 'warning',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
+    // const postatus={
+    //   status:"po"
+    // }
+   
+    // Swal.fire({
+    //   title: 'Are you sure?',
+    //   text: 'You want to create Invoice !',
+    //   icon: 'danger',
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Yes,!',
+    //   icon: 'warning',
+    //   cancelButtonText: 'No, keep it'
+    // }).then((result) => {
+    //   if (result.value) {
        
-    //     Axios.put(url+'/'+qid,postatus)
-    // .then(res => {
+    
         
-        let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    let activeLayoutSettings = settings[activeLayoutSettingsName];
-    updateSettings({
-      ...settings,
-      [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
-        leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
-          ...sidebarSettings,
-        },
-      },
-    });
+    //     let activeLayoutSettingsName = settings.activeLayout + "Settings";
+    // let activeLayoutSettings = settings[activeLayoutSettingsName];
+    // updateSettings({
+    //   ...settings,
+    //   [activeLayoutSettingsName]: {
+    //     ...activeLayoutSettings,
+    //     leftSidebar: {
+    //       ...activeLayoutSettings.leftSidebar,
+    //       ...sidebarSettings,
+    //     },
+    //   },
+    // });
      
-    //    window.location.href=`../poupdateinvoice/${id}`
-        Swal.fire(
-          'Invoice!',
-          ' has been generated.',
-          'success'
-        )
+    
       
-         window.location.href=`../poupdateinvoice/${id}`
+     window.location.href=`../poinvoicegenerate/${id}`
         
         
-    // })
+  
     
         
 
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          '........:)',
-          'error'
-        )
-      }
-    })
+    //   } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //     Swal.fire(
+    //       'Cancelled',
+    //       '........:)',
+    //       'error'
+    //     )
+    //   }
+    // })
     
+}
+const deletepo = ()=>{
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'You will not be able to recover this Quotation!',
+    icon: 'danger',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    icon: 'warning',
+    cancelButtonText: 'No, keep it'
+  }).then((result) => {
+    if (result.value) {
+      axios.delete(url+`quotation/${id}`)
+  .then(res => {
+      
+     
+      Swal.fire(
+        'Deleted!',
+        ' Quotation has been deleted.',
+        'success'
+      )
+      updateSidebarMode({ mode: "on" })
+      window.location.href = "../quoateview"
+      
+  })
+  
+      
+
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Your Quotation is safe :)',
+        'error'
+      )
+    }
+  })
 }
 
 
@@ -315,6 +359,39 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             Edit Quote
           </Button> */}
           <Button
+        variant="outlined"
+        color="primary"
+        className="mr-4 py-2"
+        aria-owns={anchorEl ? "simple-menu" : undefined}
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        Action<Icon>expand_more</Icon>
+      </Button>
+          <Menu
+        
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+                    {/* <MenuItem  onClick={() => invoicegenrate({ mode: "on" })}>
+                    Genrate Purchase Order
+                      </MenuItem> */}
+                      
+                      <MenuItem  onClick={() => deletepo()}>
+                      Delete PurchaseOrder
+                      </MenuItem>
+                      <MenuItem  onClick={() => handlePrint()}>
+                      Print PurchaseOrder
+                      </MenuItem>
+                      <MenuItem  onClick={() => editpurchase()}>
+                      Edit PurchaseOrder
+                      </MenuItem>
+                    
+          </Menu>
+     
+          <Button
             className="mr-4 py-2"
             color="primary"
             variant="outlined"
@@ -322,14 +399,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           >
             Genrate Invoice
           </Button>
-          <Button
+          {/* <Button
             onClick={handlePrint}
             className="py-2"
             color="secondary"
             variant="outlined"
           >
             Print Purchase Order
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -384,7 +461,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           <div>
             <h5 className="font-normal t-4 capitalize">
-              <strong>P.O Number: </strong>{" "}
+              <strong>P.O No: </strong>{" "}
              
                 {po_number}
               
@@ -396,9 +473,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </div>
           <div className="text-right">
             <h5 className="font-normal capitalize">
-              <strong>Quotation Number: </strong>{" "}
+              <strong>RFQ ID: </strong>{" "}
               <span>
-              {qno}
+              {rno}
               </span>
             </h5>
             {/* <h5 className="font-normal capitalize">
@@ -622,7 +699,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     {item.product.unit_of_measure}
                     </TableCell>
                     <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >
-                    {item.sell_price}
+                    {item.purchase_price}
                     </TableCell>
                     <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}>
                    {item.total_amount}

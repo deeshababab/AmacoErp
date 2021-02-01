@@ -47,6 +47,15 @@ const SimpleMuiTable = () => {
     width: "500px",
     wordBreak: "break-all",
  }
+ const columnStyleWithWidth1 = {
+  top: "0px",
+  left: "0px",
+  zIndex: "100",
+  position: "sticky",
+  backgroundColor: "#fff",
+  width: "300px",
+  wordBreak: "break-all",
+}
   const classes = useStyles();
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
@@ -235,7 +244,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} style={columnStyleWithWidth}>  
-                <TableHead>Description</TableHead> 
+                <p style={{paddingLeft:15}}>Description</p>
               </TableCell>
             )
          },
@@ -266,7 +275,13 @@ const columns = [
     label: "Category",
     options: {
       
-        filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={columnStyleWithWidth1}>  
+            <p style={{paddingLeft:15}}>Category</p>
+          </TableCell>
+        )
+     },
     },
 },
 

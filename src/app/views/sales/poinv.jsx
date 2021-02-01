@@ -27,32 +27,16 @@ const SimpleMuiTable = () => {
   const [podetails, setpodetails] = useState([]);
   const [poid, setpoid] = useState("");
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
-  const columnStyleWithWidth = {
-    top: "0px",
-    left: "0px",
-    zIndex: "100",
-    position: "sticky",
-    backgroundColor: "#fff",
-    width: "80px",
-    wordBreak: "break-all",
-  }
-  const columnStyleWithWidth1 = {
-    top: "0px",
-    left: "0px",
-    zIndex: "100",
-    position: "sticky",
-    backgroundColor: "#fff",
-    width: "500px",
-    wordBreak: "break-all",
-  }
 
   useEffect(() => {
-    Axios.get(url+"purchase-invoice-list").then(({ data }) => {
+    Axios.get(url+"purchase-invoice").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
-      // console.log(myJSON)
-      if (data.length){
-      // console.log(data[0])
+     
+      if (isAlive) setUserList(data);
+     
+      if(data.length)
+      {
      
       setpoid(data[0].id)
       setpodetails(data);
@@ -63,7 +47,7 @@ const SimpleMuiTable = () => {
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-    // console.log(invoiceId)
+   
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
@@ -145,45 +129,34 @@ const SimpleMuiTable = () => {
       name: "index", // field name in the row object
       label: "S.No.", // column title that will be shown in table
       options: {
-        customHeadRender: ({index, ...column}) =>{
-          return (
-            <TableCell key={index} style={columnStyleWithWidth}>  
-              <p style={{marginLeft:18}}>S.No.</p> 
-            </TableCell>
-          )
-       }
+        filter: true,
       },
     },
     {
       name: "id", // field name in the row object
-      label: "Quotation Number", // column title that will be shown in table
+      label: "Invoice Number", // column title that will be shown in table
+      options: {
+        filter: true,
+      },
+    },
+    
+    {
+      name: "issue_date",
+      label: "Issue Date",
       options: {
         filter: true,
       },
     },
     {
-      name: "fname", // field name in the row object
-      label: "Firm Name", // column title that will be shown in table
-      options: {
-        customHeadRender: ({index, ...column}) =>{
-          return (
-            <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>Firm Name</p> 
-            </TableCell>
-          )
-       }
-      },
-    },
-    {
-      name: "name",
-      label: "Created Date",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "net_amount",
+      name: "grand_total",
       label: "Amount",
+      options: {
+        filter: true,
+      },
+    },
+    {
+      name: "status",
+      label: "status",
       options: {
         filter: true,
       },
@@ -215,11 +188,10 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta.rowData)
+      
           return (
             <span>
-               {/* <Link to={"/newinvoice/"+tableMeta.rowData[5]}></Link> */}
-            <Link to={"/poinvoice/"+tableMeta.rowData[5]}>
+            <Link to={"/poinvview/"+tableMeta.rowData[5]}>
               <IconButton>
                 <Icon color="primary">remove_red_eye</Icon>
               </IconButton>
@@ -262,16 +234,15 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-      <div className="flex flex-wrap justify-between mb-6">
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Purchase Order" },
+            { name: "Invoice" },
           ]}
         />
 
-        <div className="text-right">
-          {/* <Link to={"/sales/rfq-form/Rfqform"}>
+        {/* <div className="text-right">
+          <Link to={"/sales/rfq-form/Rfqform"}>
             <Button
               className="py-2"
               variant="outlined"
@@ -279,21 +250,23 @@ const SimpleMuiTable = () => {
             >
               <Icon>add</Icon> Add New 
           </Button>
-          </Link> */}
-        </div>
-        </div>
+          </Link>
+        </div> */}
       </div>
       <MUIDataTable
-        title={"Purchase Order"}
+        title={"Invoice"}
         data={podetails.map((item, index) => {
           
             return [
               ++index,
-              item.quotation_no,
-              item.party.firm_name,
-              moment(item.created_at).format('DD MMM YYYY'),
-              (parseFloat(item.net_amount)).toFixed(2),
+              item.invoice_no,
+              moment(item.issue_date).format('DD MMM YYYY'),
+              item.grand_total,
+              item.status,
               item.id
+              // moment(item.created_at).format('DD-MM-YYYY'),
+              // (parseFloat(item.net_amount)).toFixed(2),
+              // item.id
             ]
           
         })}
@@ -314,7 +287,6 @@ const SimpleMuiTable = () => {
           filterType: "dropdown",
           responsive: "scrollMaxHeight",
           rowsPerPage: 10,
-          
           
         }}
       />

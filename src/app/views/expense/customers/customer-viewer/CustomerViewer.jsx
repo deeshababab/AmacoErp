@@ -31,7 +31,7 @@ const CustomerViewer = () => {
             variant="outlined"
           >
           <Icon>add</Icon>
-          Add new
+          Add New
           </Button>
           </Link>
           </div>

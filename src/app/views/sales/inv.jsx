@@ -236,8 +236,8 @@ const SimpleMuiTable = () => {
       <div className="mb-sm-30">
         <Breadcrumb
           routeSegments={[
-            { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Invoice" },
+            // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
+            { name: "Sales Invoice" },
           ]}
         />
 
@@ -254,7 +254,7 @@ const SimpleMuiTable = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Invoice"}
+        title={"Sales Invoice"}
         data={podetails.map((item, index) => {
           
             return [

@@ -179,7 +179,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       product: [{
         name: ""
       }],
-      product_id: 1,
+      product_id: "",
       product_name: "",
       quantity_required: "",
       updated_at: "2021-01-22T09:51:20.000000Z",
@@ -602,7 +602,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
                     <TableCell className="pl-0 capitalize" align="left">
                       <TextValidator
-                        label="Item Unit"
+                        label="Quantity"
                         type="text"
                         variant="outlined"
                         size="small"

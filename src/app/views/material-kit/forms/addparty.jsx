@@ -113,7 +113,8 @@ const Addparty = ({open, handleClose}) => {
       bank_address:bank_address,
       account_no:account_no,
       vendor_id:vendor_id,
-      address:address
+      address:address,
+      party_code:partycode
     }
    console.log(frmdetails)
      

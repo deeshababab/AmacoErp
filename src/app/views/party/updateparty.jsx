@@ -175,7 +175,7 @@ const SimpleForm = () => {
       bank_address:bank_address,
       account_no:account_no,
       vendor_id:vendor_id,
-      partycode:partycode
+      party_code:partycode
       
     }
    
