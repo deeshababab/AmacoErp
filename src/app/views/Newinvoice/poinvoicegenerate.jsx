@@ -416,7 +416,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     <KeyboardDatePicker
                       className="m-2"
                       margin="none"
-                      label="PO Date"
+                      label="Invoice Date"
                       inputVariant="outlined"
                       type="text"
                       size="small"

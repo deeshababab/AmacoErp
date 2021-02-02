@@ -156,7 +156,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "id", // field name in the row object
-      label: "Quotation Number", // column title that will be shown in table
+      label: "PO Number", // column title that will be shown in table
       options: {
         filter: true,
       },
@@ -289,7 +289,7 @@ const SimpleMuiTable = () => {
           
             return [
               ++index,
-              item.quotation_no,
+              item.po_number,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
               (parseFloat(item.net_amount)).toFixed(2),

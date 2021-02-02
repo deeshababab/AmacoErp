@@ -81,6 +81,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [delivery_time,setdelivery_time] =useState('Within 2-3 Days from the Date of PO')
   const [inco_terms,setinco_terms] =useState('DDP-Delivery Duty Paid To CATCO Office')
   const [discount,setdiscount] =useState('0')
+  const [ponum,setponum] =useState('')
   const [dstatus, setdstatus] = useState(false);
   let calculateAmount=[];
   const history = useHistory();
@@ -218,7 +219,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
     arr.grand_total=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
+
     const json = Object.assign({}, arr);
+    console.log(json)
     
     const config = {
       headers: {
@@ -407,6 +410,22 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   {pono}
                   </span>
               </h5>
+              <TextField
+                    
+                    label="PO Number"
+                    style={{minWidth:200,maxWidth:'250px'}}
+                    name="party_id"
+                    size="small"
+                    variant="outlined"
+                    
+                    value={ponum}
+                    // onChange={handleChange}
+                    onChange={(event)=>setponum(event.target.value)}
+                    required
+                    
+                  >
+                    
+        </TextField>
             </div>
             {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker

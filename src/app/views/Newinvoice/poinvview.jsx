@@ -156,17 +156,17 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     updateSidebarMode({ mode: "close" })
     document.title = "VAT Invoice - Amaco"
     axios.get(url + "purchase-invoice/" + id).then(({ data }) => {
-      console.log(data[0].discount_in_percentage)
+      console.log(data[0].quotation.party.firm_name)
       if (data) {
         setdis_per(data[0].discount_in_percentage)
-        setpodetails(data[0].quotation_details)
-        setcompany(data[0].party.firm_name)
-        setcity(data[0].party.city)
-        setstreet(data[0].party.street)
-        setzipcode(data[0].party.zip_code)
-        setpo(data[0].quotation_no)
-        setvatno(data[0].party.vat_no)
-        setinvoiceno(data[0].invoice_no)
+        setpodetails(data[0].purchase_invoice_detail)
+        setcompany(data[0].quotation.party.firm_name)
+        setcity(data[0].quotation.party.city)
+        setstreet(data[0].quotation.party.street)
+        setzipcode(data[0].quotation.party.zip_code)
+        setpo(data[0].quotation.po_number)
+        setvatno(data[0].quotation.party.vat_no)
+        setinvoiceno(data[0].bill)
         setissue_date(data[0].issue_date)
         setvat_in_value(data[0].vat_in_value)
         setnet_amount(data[0].grand_total)
@@ -348,14 +348,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </IconButton>
         </Link>
         <div>
-          <Button
+          {/* <Button
             className="mr-4 py-2"
             color="primary"
             variant="outlined"
             onClick={() => invoicegenrate({ mode: "on" })}
           >
             Delivery Note
-          </Button>
+          </Button> */}
           <Button
             className="mr-4 py-2"
             style={{ color: 'red' }}
@@ -422,7 +422,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         <div className="px-4 flex justify-between">
           <div className="flex">
             <div className="pr-12 px-4 mb-4">
-              <h4>VAT INVOICE</h4>
+              <h4>PURCHASE INVOICE</h4>
               {vat}
             </div>
           </div>
@@ -588,7 +588,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <TableBody >
                 {podetails.map((item, index) => {
 
-                   
+                   console.log(item.quotation_detail)
 
                   return (
 
@@ -608,14 +608,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                         {item.product.unit_of_measure}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.quantity}
+                        {item.quotation_detail.quantity}
 
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.sell_price}
+                        {item.quotation_detail.purchase_price}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.total_amount}
+                        {item.quotation_detail.total_amount}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
                         {/* {item.total_amount} */}
@@ -696,7 +696,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       <div className="flex">
                         <div className="pr-12">
 
-                          <strong>Total In Words:</strong>  {converter.toWords((123))}
+                          <strong>Total In Words:</strong>  {converter.toWords(parseFloat(net_amount))}
                         </div>
                       </div>
                     </div>

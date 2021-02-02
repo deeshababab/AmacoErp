@@ -579,7 +579,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)", width: "70px" }} align="center">UOM</TableCell>
                   <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">QTY</TableCell>
                   <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">UNIT PRICE</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">TAXABLE AMOUNT</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">TAXABL AMOUNT</TableCell>
                   <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">TAX VALUE (15%)</TableCell>
                   <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">TOTAL</TableCell>
   
@@ -588,7 +588,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <TableBody >
                 {podetails.map((item, index) => {
 
-                   
+                   console.log(item)
 
                   return (
 
@@ -608,21 +608,21 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                         {item.product.unit_of_measure}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.quantity}
+                        {item.quotation_detail.quantity}
 
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.sell_price}
+                        {item.quotation_detail.sell_price}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.total_amount}
+                        {item.quotation_detail.total_amount}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
                         {/* {item.total_amount} */}
-                        {((item.total_amount * 15) / 100).toFixed(2)}
+                        {((item.quotation_detail.total_amount * 15) / 100).toFixed(2)}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                     {(parseFloat(item.total_amount)+(item.total_amount * 15) / 100).toFixed(2)}
+                     {(parseFloat(item.quotation_detail.total_amount)+(item.quotation_detail.total_amount * 15) / 100).toFixed(2)}
                       </TableCell>
 
 
@@ -638,20 +638,20 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                           <tr>
                             <td>
                               <h5 className="font-normal capitalize">
-                                <strong>BANK DETAILS: </strong>{" "}
+                                <strong>BANK DETAILS</strong>{" "}
                               </h5>
                             </td>
                           </tr>
                           <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
-                            <td style={{ height: 'auto !important' }}><strong>Bank Name:</strong></td>
+                            <td style={{ height: 'auto !important' }}><strong>Bank Name</strong></td>
                             <td style={{ height: 'auto !important' }}>National Commerical Bank</td>
                           </tr>
                           <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
-                            <td style={{ height: 'auto !important' }}><strong>Account No:</strong></td>
+                            <td style={{ height: 'auto !important' }}><strong>Account No</strong></td>
                             <td style={{ height: 'auto !important' }}>6000000242200</td>
                           </tr>
                           <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
-                            <td style={{ height: 'auto !important' }}><strong>IBAN No:</strong></td>
+                            <td style={{ height: 'auto !important' }}><strong>IBAN No</strong></td>
                             <td style={{ height: 'auto !important' }}>SA3610000006000000242200</td>
                           </tr>
                         </div>
@@ -662,7 +662,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
                     المبلغ الخاضع للضريبة
                   <br></br>
-                  Taxable Amount:
+                 TAXABLE AMOUNT
 
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
@@ -684,7 +684,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
                     القيمة الضريبية
                   <br></br>
-                  Tax Value (15%)
+                  TAX VALUE (15%)
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
                     {vat_in_value}
@@ -696,13 +696,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       <div className="flex">
                         <div className="pr-12">
 
-                          <strong>Total In Words:</strong>  {converter.toWords(parseInt(net_amount))}
+                          <strong>TOTAL IN WORDS</strong>  {converter.toWords(parseInt(net_amount))}
                         </div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                    Total Inc.VAT
+                    TOTAL INC.VAT
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
                     {net_amount}

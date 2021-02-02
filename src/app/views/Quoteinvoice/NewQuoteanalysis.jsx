@@ -778,7 +778,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
                       // value={item.purchase_price}
                      
-                      select
+                   
                       
                     >
                        {/* {setProductList1.map((item,i) => (
