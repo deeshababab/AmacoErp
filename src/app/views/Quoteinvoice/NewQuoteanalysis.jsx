@@ -278,7 +278,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         // element['name'] = pprice;
         
         element['purchase_price']=pprice;
-        console.log(element.purchase_price)
+
         
       
 
@@ -367,7 +367,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.rfq_id=null
     arr.transaction_type="sale"
     const json = Object.assign({}, arr);
-    console.log(json)
+ 
     Axios.post(url+'sale-quotation', json)
       .then(function (response) {
         
@@ -497,12 +497,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         element['product_id']= event.target.value;
         element['descriptionss']= data.product[0].description;
         
-        if(element.product_price_list.length>1)
+        if(element.product_price_list.length>=1)
         {
           
           
           
             element.product_price_list.splice(id, element.product_price_list.length);
+            console.log(element.product_price_list)
             data.prices.map((v, i) => {
          
               element.product_price_list.push({
@@ -510,7 +511,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 firm_name:v.firm_name,
                 id:v.product_id
               })
-           
+              console.log(element.product_price_list)
             })
          
           
@@ -716,7 +717,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item)
+
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)

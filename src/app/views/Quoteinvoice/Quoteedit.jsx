@@ -472,7 +472,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         // )
         element['product_id']= event.target.value;
         element['descriptionss']= data.product[0].description;
-        if(element.product_price_list.length>1)
+        if(element.product_price_list.length>=1)
         {
           
           
