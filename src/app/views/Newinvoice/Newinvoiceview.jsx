@@ -83,6 +83,8 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         size: "auto",
         marginBottom: "0mm",
         content: 'none !important',
+        "-webkit-print-color-adjust": "exact !important",
+        fontFamily: "Calibri",
        
       },
       
@@ -498,17 +500,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   </div>
   <div className="flex">
   <div>
-    <h4 style={{color:'#00008B',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
+    <h4 style={{color:'#1d2257',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
         <FormattedMessage
           id="app.channel.plug"
           defaultMessage="Amaco Arabia Contracting Company"
           values="Amaco Arabia Contracting Company"
         />
       </IntlProvider></h4>
-      <h5 style={{color:'#00008B'}} className="font-normal b-4 capitalize">
-        <strong>AMACO ARABIA CONTRACTING COMPANY
-      
-      </strong>
+      <h5 style={{color:'#1d2257',textAlign:'right'}}>
+        AMACO ARABIA CONTRACTING COMPANY
+    
       </h5>
       <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
        C.R No 205500334 | VAT 810398615200003
@@ -864,17 +865,17 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
 
         <footer id="footer" style={{ visibility: "hidden" }}>
-        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
+        <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
           
-          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+          <span style={{color:'#fff'}}> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
                 
         </div>
          <div class="main" style={{width:'100%'}}> 
-       <div class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
-        <p style={{textAlign: 'center',backgroundColor: 'blue'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+       <div  class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+        <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
         
-        <span class="page-number" style={{counterIncrement:'page'}}>Page </span>
+        
         </footer>
         
           
