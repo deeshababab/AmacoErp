@@ -186,6 +186,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         element[event.target.name] = event.target.value;
         element.margin="";
         element.sell_price="";
+        element['remark']="";
         
       
 
@@ -367,6 +368,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         // history.push("/product/viewproduct")
@@ -639,13 +641,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       fullWidth
                       value={item.purchase_price? item.purchase_price:""}
-                     
+                      select
                       
                       
                     >
                        {item.product[0].product_price.map((item) => (
                           <MenuItem value={item.price} key={item.id}>
-                           {item.price}-{item.party.firm_name}
+                            {item.price}-{item.party.firm_name} 
                           </MenuItem>
                         ))} 
                     </TextValidator>
@@ -682,7 +684,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="remark"
                       style={{width:'75%',float:'left'}}
                       fullWidth
-                      value={item.remark ?item.remark:"" }
+                      value={item.remark?item.remark:null }
                       
               
                     />

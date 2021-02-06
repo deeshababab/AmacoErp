@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Breadcrumb } from "matx";
 import Axios from "axios";
 import MUIDataTable from "mui-datatables";
-import { Icon } from "@material-ui/core";
+import { Icon, Tooltip } from "@material-ui/core";
 import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../invoice/InvoiceService";
@@ -192,9 +192,9 @@ const SimpleMuiTable = () => {
           return (
             <span>
             <Link to={"/newinvoice/"+tableMeta.rowData[5]}>
-              <IconButton>
+              <Tooltip title="view more">
                 <Icon color="primary">remove_red_eye</Icon>
-              </IconButton>
+              </Tooltip>
             </Link>
             {/* <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
             <IconButton>

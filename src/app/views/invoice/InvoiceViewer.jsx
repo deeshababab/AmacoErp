@@ -60,7 +60,8 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         left: 0,
         width: "100%",
        },
-      "#footer": {
+      
+       "#footer": {
         //     display:"-webkit-box",
         // display: "-ms-flexbox",
         // display: "center",
@@ -76,7 +77,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         position: "fixed",
         left: "0",
         bottom: "0",
-        height: "60px",
+        height: "auto",
         width: "100%",
       },
       //  "#grid":{
@@ -253,7 +254,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           'success'
         )
         updateSidebarMode({ mode: "on" })
-        window.location.href = "../sales/rfq-form/rfqview"
+        history.push('/sales/rfq-form/rfqview')
         
     })
     
@@ -269,8 +270,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     })
     
     // axios.delete(url + "rfq/" + id).then(({ data }) => {
-      //   updateSidebarMode({ mode: "on" })
-      //   window.location.href = "../sales/rfq-form/rfqview"
+     
     // })
   }
   const handlePrint = () => window.print();
@@ -365,13 +365,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     <div id="print-area">
       <header id="header">
 
-          <div className="px-4 flex justify-between">
+          <div className="px-2 flex justify-between">
             <div className="flex">
               <div className="pr-12">
                 <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
 
               </div>
-              <div className="pr-12">
+              {/* <div className="pr-12">
               <h4><IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
                     id="app.channel.plug"
@@ -390,15 +390,31 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
    
                 </h6>
                 
-              </div>
+              </div> */}
               <div className="viewer__order-info px-4 mb-4 flex justify-between">
               </div>
             </div>
             <div className="flex">
-              <div className="pr-12">
+            <div>
+    <h4 style={{color:'#00008B',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
+        <FormattedMessage
+          id="app.channel.plug"
+          defaultMessage="Amaco Arabia Contracting Company"
+          values="Amaco Arabia Contracting Company"
+        />
+      </IntlProvider></h4>
+      <h5 style={{color:'#00008B'}} className="font-normal b-4 capitalize">
+        <strong>AMACO ARABIA CONTRACTING COMPANY
+      
+      </strong>
+      </h5>
+      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
+       C.R No 205500334 | VAT 810398615200003
 
-                <img src={logos} alt="this is car image" style={{ width: 150 }} />
-              </div>
+
+      </h6>
+      
+    </div>
             </div>
           </div>
 
@@ -417,42 +433,42 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           <div>
         <tr style={{ height: 5, fontSize: 12, textAlign: 'right'}}>
             <h5 className="font-normal t-4 capitalize">
-              <strong>Buyer Details: </strong>{" "}
+              <strong>Buyer Details</strong>{" "}
             </h5>
             </tr>
         </div>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Attn.:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Attn.</strong></td>
               <td style={{ height: 'auto !important' }}>{contactperson}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Designation:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Designation</strong></td>
               <td style={{ height: 'auto !important' }}>{designation}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Company:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Company</strong></td>
               <td style={{ height: 'auto !important' }}>{company}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Address:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Address</strong></td>
               <td style={{ height: 'auto !important' }}>{street}-{city},{pono} {zipcode}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Email-Id:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Email-Id</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersonemail}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Contact:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>Contact</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersoncontact}</td>
             </tr>
             
             
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>C.R No:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>C.R No</strong></td>
               <td style={{ height: 'auto !important' }}>{regno}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>VAT No:</strong></td>
+              <td style={{ height: 'auto !important' }}><strong>VAT No</strong></td>
               <td style={{ height: 'auto !important' }}>{vatno}</td>
             </tr>
             
@@ -475,33 +491,33 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <tr>
               <td>
                 <h5 className="font-normal capitalize">
-                  <strong>Supplier Details: </strong>{" "}
+                  <strong>Supplier Details </strong>{" "}
                 </h5>
               </td>
             </tr>
             </div>
             <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Submitted By:</strong></td>
-              <td style={{ height: 'auto !important' }}>Mr.Abbas Ahamed Shazli</td>
+              <td><strong>Submitted By</strong>&nbsp;</td>
+              <td >Mr.Abbas Ahamed Shazli</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
-              <td ><strong>Designation:</strong></td>
+              <td ><strong>Designation</strong></td>
               <td >Business Development Manager - ISD Division</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
-              <td><strong>Company:</strong></td>
+              <td><strong>Company</strong></td>
               <td>AMACO ARABIA CONTRACTING COMPANY</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
-              <td><strong>Address:</strong></td>
+              <td><strong>Address</strong></td>
               <td>PO BOX 7452, AI Jubail 31951, KSA</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left'}}>
-              <td><strong>E-mail ID:</strong></td>
+              <td><strong>E-mail ID</strong></td>
               <td>ABBAS@AMACO.COM.SA</td>
             </tr>
             <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
-              <td><strong>Mob/Tel:</strong></td>
+              <td><strong>Mob/Tel</strong></td>
               <td>535515212</td>
             </tr>
             <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
@@ -516,14 +532,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         
         <div className="viewer_actions px-4  flex items-center justify-between">
           <div>
-            <h5>RFQ No.:{id}</h5>
+            <h5>RFQ No. : {id}</h5>
          </div>
          <div>
             <h5>RFQ DATE: {rdate}</h5>
             </div>
          <div>
          
-            <h5>BID CLOSING DATE:{ddate}</h5>
+            <h5>BID CLOSING DATE: {ddate}</h5>
         </div>
       </div>
       <div className="mb-4 px-4"  style={{border:"1px solid #000"}}></div>
@@ -531,7 +547,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
           <Table>
             <TableHead  >
-              <TableRow className="bg-gray">
+              <TableRow style={{backgroundColor:'#00000026'}}>
                 <TableCell className="pl-0" colspan={1} align="center">S.No.</TableCell>
                 <TableCell className="px-0" colspan={3}>DESCRIPTION</TableCell>
                 <TableCell className="px-0">Qty</TableCell>
@@ -559,7 +575,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </TableCell>
 
                     <TableCell className="pl-0 capitalize" align="left">
-                      {item.quantity_required}
+                     {item.quantity} 
+                     
 
                     </TableCell>
                     <TableCell className="pl-0 capitalize">
@@ -581,6 +598,33 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </Table>
           </div>
         </Card>
+        {/* <footer id="footer" style={{ visibility: "hidden" }}>
+        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'10%'}}>
+          
+          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+                
+        </div>
+        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #00008B','height': 0,'width': '100%',alignItems:'center'}}>
+          
+          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+                
+        </div>
+        
+      </footer> */}
+      <footer id="footer" style={{ visibility: "hidden" }}>
+        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
+          
+          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+                
+        </div>
+         <div class="main" style={{width:'100%'}}> 
+       <div class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+        <p style={{textAlign: 'center',backgroundColor: 'blue'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        </div>
+        
+        
+        </footer>
+    
         </div>
 
         <div className="mb-8">
@@ -606,16 +650,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             ))}
             
           </div>
-        </div>
+              </div>
        
 
        
-        <footer id="footer">
-          <div className="text-center" style={{ fontSize: '15px', visibility: "hidden" }}>
-            <span>Tel:+9661336323871 | P.O.Box 7452 |Jubail 31951 |Kingdom of Saudi Arabia</span>
-            <p><span>E-mail:sales@amaco.com.sa | website:www.amaco.com.sa</span></p>
-          </div>
-        </footer>
+        
   
     </div>
 

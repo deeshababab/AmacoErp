@@ -41,6 +41,9 @@ export const getProductList = () => {
 export const getVendorList = () => {
     return axios.get(url+"parties-vendor");
   };
+export const getCustomerList = () => {
+    return axios.get(url+"customer-list");
+  };
   
 export const getmanufacturer = () => {
     return axios.get(url+"manufacturer");

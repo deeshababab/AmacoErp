@@ -95,6 +95,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
 
   const [
     shouldOpenConfirmationDialog,
@@ -179,7 +180,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         // console.log(element.product[0].product_price.price)
         // element['purchase_price']=price;
         // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((event.target.value)*element.quantity_required).toFixed(2);
+        element['total_amount']=((event.target.value)*element.quantity).toFixed(2);
         element[event.target.name] = event.target.value;
         element.margin="";
         element.sell_price="";
@@ -308,7 +309,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       {
         console.log(event.target.value)
         
-        element['quantity_required']= event.target.value;
+        element['quantity']= event.target.value;
         
       
 
@@ -352,15 +353,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.payment_terms=payment_terms
     arr.contact_id=contactid
     arr.transaction_type="purchase"
+    arr.ps_date=Quote_date
     const json = Object.assign({}, arr);
     console.log(json)
-    Axios.post(url+'quotation', json)
+    Axios.put(url+`purchase-quotation/${id}`, json)
       .then(function (response) {
         
          
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         // history.push("/product/viewproduct")
@@ -388,16 +391,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     //     item: data,
     //   }); 
     });
-    axios.get(url+"rfq/"+ id).then(({ data }) => {
-     
-      setcname(data[0].party[0].firm_name)
+    axios.get(url+"purchase-quotation/"+ id).then(({ data }) => {
+     console.log(data)
+      // setcname(data[0].party[0].firm_name)
       setcontactid(data[0].contact.id)
       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
       setparty_id(data[0].party_id)
      setState({
       ...state,
-      item: data[0].rfq_details,
+      item: data[0].quotation_details,
     });
    });
   }, [id, isNewInvoice, isAlive, generateRandomId]);
@@ -499,6 +502,31 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   </span>
               </h5>
             </div>
+            <div className="flex">       
+          <h5 className="font-normal">
+                <strong>Purchase Order Date: </strong>
+                
+          
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          
+                    <KeyboardDatePicker
+                      className="ml-2"
+                      margin="none"
+                      label="Purchase Order Date"
+                      inputVariant="outlined"
+                      type="text"
+                      size="small"
+                      selected={Quote_date}
+                      value={Quote_date}
+                      onChange={(date) => {
+                        setQuote_date(moment(date).format('DD MMM YYYY'))
+                        // return date
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  </h5>
+                </div>
+            
             
           </div>
         </div>
@@ -576,7 +604,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       name="quotedescription"
                       fullWidth
-                      value={item ?item.product[0].description :null }
+                      value={item ?item.descriptionss :null }
               
                     />
                   </TableCell>
@@ -589,8 +617,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       fullWidth
             
-                      name="quantity_required"
-                      value={item.quantity_required? item.quantity_required:""}
+                      name="quantity"
+                      value={item.quantity? item.quantity:""}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
@@ -610,11 +638,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       
                     >
-                       {item.product[0].product_price.map((item) => (
+                       {/* {item.product[0].product_price.map((item) => (
                           <MenuItem value={item.price} key={item.id}>
                            {item.price}-{item.party.firm_name}
                           </MenuItem>
-                        ))} 
+                        ))}  */}
                     </TextValidator>
                     
                   </TableCell> 

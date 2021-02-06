@@ -181,7 +181,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       }],
       product_id: "",
       product_name: "",
-      quantity_required: "",
+      quantity: "",
       updated_at: "2021-01-22T09:51:20.000000Z",
 
     });
@@ -284,8 +284,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     tempItemList.map((element, i) => {
       if (index === i) {
-        element['name'] = v;
-        element['product_id'] = v;
+        // element['name'] = v.value;
+        element['product_id'] = v.target.value;
       }
 
       return element;
@@ -326,6 +326,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       Swal.fire({
         title: 'Success',
         type: 'success',
+        icon:'success',
         text: 'Data saved successfully.',
       })
       .then((result) => {
@@ -368,7 +369,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         ...state,
         item: data[0].rfq_details,
       });
-      console.log(invoiceItemList.length)
+      console.log(data[0].rfq_details)
     });
 
     axios.get(url + "products").then(({ data }) => {
@@ -403,7 +404,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         ...state,
         item: data[0].rfq_details,
       });
-      console.log(invoiceItemList.length)
+      console.log(data[0].rfq_details)
     });
 
     axios.get(url + "products").then(({ data }) => {
@@ -585,7 +586,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       >
 
                       </TextValidator> */}
-                      <Select
+                      {/* <Select
                         menuPortalTarget={document.body}
                         menuPosition={'fixed'}
                         label="name"
@@ -593,9 +594,28 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                         placeholder="Select Option"
                         value={data.find(obj => obj.value === id)} // set selected value
                         options={data}
-                        onChange={e => setproduct(e.value, index)
+                        onChange={e => setproduct(e, index)
                         }
-                      />
+                      /> */}
+                      <TextValidator
+                        label="Name"
+                        type="text"
+                        variant="outlined"
+                        size="small"
+                        name="product_id"
+                        value={item.product_id}
+                        onChange={(event) => setproduct(event, index)}
+                        fullWidth
+                        select
+
+                      >
+                      {ProductList.map((item) => (
+                      <MenuItem value={item.id} key={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                    </TextValidator>
+                    
                     </TableCell>
 
 
@@ -606,8 +626,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                         type="text"
                         variant="outlined"
                         size="small"
-                        name="quantity_required"
-                        value={item.quantity_required}
+                        name="quantity"
+                        value={item.quantity}
                         onChange={(event) => handleIvoiceListChange(event, index)}
                         fullWidth
 

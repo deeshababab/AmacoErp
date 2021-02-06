@@ -334,7 +334,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
               color="secondary"
               onClick={() => setcatid()}
             >
-              Cancel
+              <Icon>cancel</Icon>Cancel
             </Button>
             
             <Button
@@ -343,7 +343,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
               color="primary"
               onClick={() => getrow()}
             >
-              view
+              <Icon color="primary">remove_red_eye</Icon>view
             </Button>
             </div>
           </div>

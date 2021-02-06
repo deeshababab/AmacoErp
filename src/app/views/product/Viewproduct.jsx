@@ -3,7 +3,7 @@ import { Breadcrumb, ConfirmationDialog } from "matx";
 import Axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import MUIDataTable from "mui-datatables";
-import { Icon,Fab } from "@material-ui/core";
+import { Icon,Fab, Tooltip } from "@material-ui/core";
 import { Link,useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import FormDialog from "./Addcategory"
@@ -45,7 +45,7 @@ const SimpleMuiTable = () => {
     position: "sticky",
     backgroundColor: "#fff",
     width: "500px",
-    wordBreak: "break-all",
+    wordBreak: "break-word",
  }
  const columnStyleWithWidth1 = {
   top: "0px",
@@ -54,7 +54,7 @@ const SimpleMuiTable = () => {
   position: "sticky",
   backgroundColor: "#fff",
   width: "300px",
-  wordBreak: "break-all",
+  wordBreak: "break-word",
 }
   const classes = useStyles();
     const [isAlive, setIsAlive] = useState(true);
@@ -229,7 +229,8 @@ const columns = [
   },
   {
     name: "name", // field name in the row object
-    label: "Name", // column title that will be shown in table
+    label: "Name",
+    wordBreak:"break-word", // column title that will be shown in table
     options: {
        
         filter: true,
@@ -262,7 +263,7 @@ const columns = [
             position: "sticky",
             backgroundColor: "#fff",
             width: "60px"}} >  
-              <TableHead >UOM</TableHead> 
+              <p style={{paddingLeft:15}}>UOM</p> 
             </TableCell>
           )
        },
@@ -304,9 +305,9 @@ const columns = [
               </IconButton>
             </Link> */}
             <Link to={"/singleproduct?id=" +tableMeta.rowData[5] }>
-              <IconButton>
+              <Tooltip title="View Product">
                 <Icon color="primary">arrow_forward</Icon>
-              </IconButton>
+              </Tooltip>
             </Link>
             </span>
             

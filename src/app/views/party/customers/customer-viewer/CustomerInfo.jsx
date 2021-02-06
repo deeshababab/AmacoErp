@@ -79,7 +79,7 @@ const CustomerInfo = () => {
               <TableCell>{userList.city}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className="pl-4">proviance</TableCell>
+              <TableCell className="pl-4">province</TableCell>
               <TableCell>{userList.proviance}</TableCell>
             </TableRow>
             <TableRow>

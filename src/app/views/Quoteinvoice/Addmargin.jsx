@@ -141,7 +141,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
   }
 
   useEffect(() => {
-     
+    
     Axios.get(url+`product-quotation-detail/${productid}`).then(({ data }) => {
     if (isAlive) setmarginList(data);
       console.log(data)

@@ -46,7 +46,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
       },
       "#header": {
         // padding: "10px",
-        background: "#000",
+        // background: "#000",
         /* These do the magic */
         position: "fixed",
         top: 0,
@@ -69,9 +69,10 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         position: "fixed",
         left: "0",
         bottom: "0",
-        height: "60px",
+        height: "auto",
         width: "100%",
       },
+
       "#table": {
         display: "-webkit-box",
         display: "-ms-flexbox",
@@ -283,13 +284,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       <div id="print-area">
       <header id="header">
 
-<div className="px-4 flex justify-between">
+<div className="px-2 flex justify-between">
   <div className="flex">
     <div className="pr-12">
       <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
 
     </div>
-    <div className="pr-12">
+    {/* <div className="pr-12">
     <h4><IntlProvider locale={locale} messages={Arabic}>
         <FormattedMessage
           id="app.channel.plug"
@@ -308,14 +309,30 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
       </h6>
       
-    </div>
+    </div> */}
     <div className="viewer__order-info px-4 mb-4 flex justify-between">
     </div>
   </div>
   <div className="flex">
-    <div className="pr-12">
+  <div >
+    <h4 style={{color:'#00008B',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
+        <FormattedMessage
+          id="app.channel.plug"
+          defaultMessage="Amaco Arabia Contracting Company"
+          values="Amaco Arabia Contracting Company"
+        />
+      </IntlProvider></h4>
+      <h5 style={{color:'#00008B'}} className="font-normal b-4 capitalize">
+        <strong>AMACO ARABIA CONTRACTING COMPANY
+      
+      </strong>
+      </h5>
+      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
+       C.R No 205500334 | VAT 810398615200003
 
-      <img src={logos} alt="this is car image" style={{ width: 150 }} />
+
+      </h6>
+      
     </div>
   </div>
 </div>
@@ -461,12 +478,12 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
           <br></br>
           <div className="viewer__order-info px-4 mb-4 flex justify-between">
-            <div>
+            <div className="ml-4">
               
                  DELIVERED BY,
               </div>
            
-            <div>
+            <div className="mr-4">
               <h5 className="font-normal t-4 capitalize">
               RECEIVED BY,
               </h5>
@@ -479,11 +496,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         </div>
 
-        <footer id="footer">
-          <div className="text-center" style={{ fontSize: '15px', visibility: "hidden" }}>
-            <span>Tel:+9661336323871 | P.O.Box 7452 |Jubail 31951 |Kingdom of Saudi Arabia</span>
-            <p><span>E-mail:sales@amaco.com.sa | website:www.amaco.com.sa</span></p>
-          </div>
+        <footer id="footer" style={{ visibility: "hidden" }}>
+        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
+          
+          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+                
+        </div>
+         <div class="main" style={{width:'100%'}}> 
+       <div class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+        <p style={{textAlign: 'center',backgroundColor: 'blue'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        </div>
         </footer>
       </div>
 

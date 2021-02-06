@@ -236,6 +236,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         history.push("/inv")

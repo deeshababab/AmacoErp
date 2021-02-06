@@ -260,8 +260,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 }
                 type="text"
                 name="fname"
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
@@ -274,8 +274,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 type="text"
                 name="lname"
                 value={lname}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
@@ -288,8 +288,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 type="text"
                 name="email"
                 value={email}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"

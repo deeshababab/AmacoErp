@@ -18,6 +18,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.5.3",
     "clsx": "^1.1.1",
+    "counter": "^0.1.1",
     "cross-fetch": "^3.0.5",
     "css-vars-ponyfill": "^2.3.2",
     "date-fns": "^2.15.0",
@@ -27,6 +28,9 @@
     "firebase": "^4.8.0",
     "formik": "^2.1.5",
     "globalize": "^0.1.1",
+    "google-translate-api": "^2.3.0",
+    "google-translate-api-browser": "^1.1.71",
+    "google-translate-open-api": "^1.3.7",
     "history": "^4.10.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
@@ -41,6 +45,7 @@
     "qwest": "^4.5.0",
     "react": "^16.14.0",
     "react-apexcharts": "^1.3.7",
+    "react-auto-translate": "0.0.6",
     "react-beautiful-dnd": "^11.0.4",
     "react-big-calendar": "^0.24.6",
     "react-bootstrap": "^1.4.0",
@@ -55,6 +60,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-intl": "^5.10.11",
     "react-material-ui-form-validator": "^2.0.9",
+    "react-node-google-translate": "^1.0.2",
     "react-perfect-scrollbar": "^1.5.2",
     "react-quill": "^1.3.3",
     "react-redux": "^7.0.3",
@@ -76,7 +82,9 @@
     "sweetalert2": "^10.11.1",
     "sweetalert2-react": "^0.8.3",
     "swiper": "^4.5.0",
+    "to-words": "^2.3.1",
     "translate-google-api": "^1.0.4",
+    "translate-json-object": "^2.3.7",
     "uuid": "^8.3.0",
     "victory": "^32.3.3",
     "yup": "^0.29.3"
@@ -88,6 +96,7 @@
     "eject": "react-scripts eject",
     "ghp": "react-scripts build && gh-pages -d build"
   },
+  "proxy": "http://www.amacoerp.com",
   "eslintConfig": {
     "extends": "react-app"
   },

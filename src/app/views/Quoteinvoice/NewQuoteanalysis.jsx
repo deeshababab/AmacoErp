@@ -24,7 +24,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
+import { getInvoiceById, addInvoice, updateInvoice,getCustomerList} from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -88,7 +88,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [price, setprice] = useState(0);
   const [pprice, setpprice] = useState(0);
   const [marginprice, setmarginprice] = useState(0);
-  const [productid, setproductid] = useState('1');
+  const [productid, setproductid] = useState('');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
   const [CustomerList, setCustomerList] = useState([]);
@@ -113,17 +113,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let id = tempId.substr(2, tempId.length - 1);
     setState((state) => ({ ...state, id }));
   }, []);
+ 
+
 
   const handleChange = (event,fieldName) => {
     // setState({ ...state, ['discount']:event.target.value });
     event.persist();
    
-    // discount=subTotalCost-parseFloat(event.target.value * subTotalCost/100);
-    // vat= ((discount * 15) / 100).toFixed(2);
-    // GTotal=discount + vat;
-   
     
-    // setState({ ...state, ['fieldname']:event.target.value });
     let tempItemList = [...state.item];
     setdstatus(true)
     setdiscount(event.target.value)
@@ -136,6 +133,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
 
   };
+  
   
 
   const handleSellerBuyerChange = (event, fieldName) => {
@@ -213,6 +211,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       description:"",
       descriptions:"",
       quantity:0,
+      product_price_list:[
+        {
+          price:""
+        }
+      ],
       purchase_price:0.00,
       margin:0,
       sell_price:0.00,
@@ -262,18 +265,20 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   };
   const calcualteprice = (pprice,marginprice) => {
     let tempItemList = [...state.item];
-    
     tempItemList.map((element, i) => {
       let sum=0;
     
       if (indexset === i) 
       {
         // console.log(element.product[0].product_price.price)
-        element['purchase_price']=pprice;
+        
         element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['total_amount']=((element['sell_price'])*element.quantity).toFixed(2);
         element['margin'] = marginprice;
-        element['name'] = pprice;
+        // element['name'] = pprice;
+        
+        element['purchase_price']=pprice;
+        console.log(element.purchase_price)
         
       
 
@@ -295,7 +300,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setproList(data[0].contacts);
       
     });
-    alert(c)
+  
   };
   const expandData= (id) => {
    
@@ -370,6 +375,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         // history.push("/product/viewproduct")
@@ -402,11 +408,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
 
   useEffect(() => {
-    getVendorList().then(({ data }) => {
+    getCustomerList().then(({ data }) => {
       setCustomerList(data);
     
 
     });
+    
+   
     axios.get(url+"products").then(({ data }) => {
       setproList(data)
 
@@ -416,6 +424,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     //     item: data,
     //   }); 
     });
+    
     
     
 //     axios.get(url+"rfq/"+ id).then(({ data }) => {
@@ -437,6 +446,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       description:"",
       descriptions:"",
       quantity:0,
+      product_price_list:[
+        {
+          price:"",
+          firm_name:"",
+          id:""
+        }
+      ],
       purchase_price:0.00,
       margin:0,
       sell_price:0.00,
@@ -465,11 +481,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const setProductdescription = (event,index,id)=>{
     Axios.get(url + "products/" + event.target.value).then(({ data }) => {
         let tempItemList = [...state.item];
-        console.log(data.prices);
         data.prices.map((element, i) => {
-            console.log(element)
+            // console.log(element)
         })
-        setProductList1(data)
+        setProductList1(data.prices)
         // setProductList1(data.prices)
     
     
@@ -481,6 +496,36 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         
         element['product_id']= event.target.value;
         element['descriptionss']= data.product[0].description;
+        
+        if(element.product_price_list.length>1)
+        {
+          
+          
+          
+            element.product_price_list.splice(id, element.product_price_list.length);
+            data.prices.map((v, i) => {
+         
+              element.product_price_list.push({
+                price:v.price,
+                firm_name:v.firm_name,
+                id:v.product_id
+              })
+           
+            })
+         
+          
+        }
+        else{
+        data.prices.map((v, i) => {
+         
+          element.product_price_list.push({
+            price:v.price,
+            firm_name:v.firm_name,
+            id:v.product_id
+          })
+       
+        })
+      }
         setproductid(id)
         
       
@@ -671,7 +716,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              
+              console.log(item)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -776,17 +821,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       
                       fullWidth
-                      // value={item.purchase_price}
-                     
+                      value={item.purchase_price?item.purchase_price:""}
+                      select
                    
                       
                     >
-                       {/* {setProductList1.map((item,i) => (
-                          <MenuItem value={item.price} key={item.id}>
-                            {item.price}
-                            {item.price}-{item.party.firm_name} 
+                       {item.product_price_list.map((item,i) => (
+                        
+                          <MenuItem value={item.price} key={item.price}>
+                           
+                            {item.price}-{item.firm_name}  
                           </MenuItem>
-                        ))}  */}
+                        ))} 
                        
                     </TextField>
                     
@@ -812,7 +858,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     />
                     <Tooltip title="Reference">
                   <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
-                        setMargin(productid,index,item.name);
+                        setMargin(item.product_id,index,item.name);
                       }}>
                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </Icon>

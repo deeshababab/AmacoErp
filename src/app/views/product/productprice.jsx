@@ -292,7 +292,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
           
           <div className="flex justify-between items-center">
             <Button variant="outlined" color="primary" type="submit">
-              Save
+              <Icon>save</Icon>Save
             </Button>
             <div className="flex justify-between items-center">
             <Button
@@ -300,7 +300,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
               color="secondary"
               onClick={() => handleClose()}
             >
-              Cancel
+              <Icon>cancel</Icon>Cancel
             </Button>
             
             {/* <Button

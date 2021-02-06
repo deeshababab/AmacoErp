@@ -195,11 +195,11 @@ const columns = [
             return (
               <span>
               <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }>
-              <IconButton>
+            
                 <Tooltip title="Party contact details">
                 <Icon color="primary">arrow_forward</Icon>
                 </Tooltip>
-              </IconButton>
+            
             </Link>
             </span>
             

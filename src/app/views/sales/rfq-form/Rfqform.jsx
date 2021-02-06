@@ -270,6 +270,7 @@ const InvoiceForm = ({ }) => {
           Swal.fire({
             title: 'Success',
             type: 'success',
+            icon: 'success',
             text: 'Data saved successfully.',
           });
           getrfq()

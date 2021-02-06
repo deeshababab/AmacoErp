@@ -60,44 +60,44 @@ export const navigations = [
   //   path: "/demo",
   // },
   {
-    name: "Sales",
+    name: "Transaction",
     icon: "work",
     children: [
       {
-        name: "Vendor",
-        icon:"folder",
+        name: "Purchase",
+        iconText: "D",
         children: [
           {
             name: "RFQ",
             path: "/sales/rfq-form/rfqview",
-            icon:"folder",
+           
           },
           {
             name: "Purchase Order",
             path: "/Newinvoiceview",
-            icon:"folder",
+            
           },
-          {
-            name: "Invoice",
-            path: "/poinv",
-            icon:"folder",
-          },
+          // {
+          //   name: "Invoice",
+          //   path: "/poinv",
+          //   icon:"folder",
+          // },
       ],
     },
     {
-        name: "Customer",
-        icon:"folder",
+        name: "Sales",
+        iconText: "E",
         children: [
           {
             name: "Quotation",
             path: "/quoateview",
             // path: "/Newquoteanalysis",
-            icon:"folder",
+            // icon:"folder",
           },
           {
             name: "Invoice",
             path: "/inv",
-            icon:"folder",
+            // icon:"folder",
           },
         ]
   }

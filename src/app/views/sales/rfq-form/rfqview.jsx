@@ -18,7 +18,8 @@ import {
   IconButton,
   TableRow,
   Button,
-  Typography
+  Typography,
+  Tooltip
 } from "@material-ui/core";
 const columnStyleWithWidth = {
   top: "0px",
@@ -184,9 +185,9 @@ const SimpleMuiTable = () => {
           return (
             <span>
             <Link to={"/invoice/" + tableMeta.rowData[4]}>
-              <IconButton>
+              <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
-              </IconButton>
+             </Tooltip>
             </Link>
             {/* <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
             <IconButton>

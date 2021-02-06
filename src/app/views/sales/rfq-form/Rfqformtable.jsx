@@ -59,12 +59,13 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                     <div className="flex rfq_details-center">
                      
                       <Autocomplete
+                        
                         className="w-full"
                         size="small"
                         options={productList}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => (
-                          <TextField {...params} variant="outlined" fullWidth />
+                          <TextField {...params} variant="outlined" required fullWidth />
                         )}
                         onChange={(event, newValue) => {
                           
@@ -76,7 +77,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                           });
                           // console.log(`rfq_details[${ind}]`)
                         }}
-                        required
+                        
                       />
                     </div>
                   </TableCell>
