@@ -23,7 +23,7 @@ const SimpleMuiTable = () => {
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
     useEffect(() => {
-        Axios.get(url+"products").then(({ data }) => {
+        url.get("products").then(({ data }) => {
             if (data) setUserList(data);
         });
         return () => setIsAlive(false);
@@ -31,7 +31,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"products").then(({ data }) => {
+      url.get("products").then(({ data }) => {
         if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -66,7 +66,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
     .then(res => {
         // console.log(res);
         // console.log(res.data);
@@ -90,14 +90,14 @@ const SimpleMuiTable = () => {
         )
       }
     })
-    // Axios.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
+    // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
     //     console.log(res);
     //     console.log(res.data);
         
     // })
     // getrow()
-    // Axios.delete(url).then(res => {
+    // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
     //     console.log('res', res)

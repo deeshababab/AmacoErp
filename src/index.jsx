@@ -8,7 +8,33 @@ import App from "./app/App";
 
 
 // cssVars();
+// if(localStorage.getItem('rememberMe')){
+//     window.onbeforeunload = () => {
+//       // localStorage.removeItem('rememberMe');
+//       localStorage.clear();
+//     }
+   
+// }
+// window.onbeforeunload = function (e) {
+//   window.onunload = function () {
+//           window.localStorage.isMySessionActive = "false";
+        
+//   }
+//   return undefined;
+// };
+// window.onload = function () {
+//   window.localStorage.isMySessionActive = "true";
 
+  
+// };
+// if(window.localStorage.isMySessionActive==='true')
+// {
+//   localStorage.clear();
+// }
+
+// window.onload = function () {
+//           window.localStorage.isMySessionActive = "true";
+// };
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // for IE-11 support un-comment cssVars() and it's import in this file

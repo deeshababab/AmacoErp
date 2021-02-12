@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { Icon, Tooltip } from "@material-ui/core";
 import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import url from "../invoice/InvoiceService";
+import url from "../../invoice/InvoiceService";
 import moment from "moment";
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,39 +21,57 @@ import {
 } from "@material-ui/core";
 
 
-const SimpleMuiTable = () => {
+const RejectQuote = () => {
   const [isAlive, setIsAlive] = useState(true);
   const [userList, setUserList] = useState([]);
-  const [podetails, setpodetails] = useState([]);
-  const [poid, setpoid] = useState("");
+  const [qdetails, setqdetails] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
+  const columnStyleWithWidth1 = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "600px",
+    wordBreak: "break-all",
+    
+  }
+  const columnStyleWithWidth = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "120px",
+    wordBreak: "break-word",
+    
+  }
   useEffect(() => {
-    url.get("invoice").then(({ data }) => {
+    url.get("quotations-rejected-list ").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
+      // console.log(myJSON)
+      // console.log(data.length)
+      // if(data.length)
+      // {
+        setUserList(data);
      
-      if (isAlive) setUserList(data);
-     
-      if(data.length)
-      {
-     
-      setpoid(data[0].id)
-      setpodetails(data);
-      }
+       setqdetails(data);
+      // }
     });
     return () => setIsAlive(false);
-  }, [isAlive]);
+  }, []);
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-   
+    // console.log(invoiceId)
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
   function getrow(id) {
     url.get("rfq/" + id).then(({ data }) => {
-      if (isAlive) setpodetails(data[0].podetails);
+      if (isAlive) setqdetails(data[0].qdetails);
     });
     return () => setIsAlive(false);
   }
@@ -89,7 +107,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        url.delete(`quotation/${id}`)
+        url.delete(`products/${id}`)
           .then(res => {
             getrow()
             Swal.fire(
@@ -126,37 +144,59 @@ const SimpleMuiTable = () => {
   }
   const columns = [
     {
-      name: "index", // field name in the row object
-      label: "S.No.", // column title that will be shown in table
-      options: {
-        filter: true,
-      },
-    },
-    {
       name: "id", // field name in the row object
-      label: "Invoice Number", // column title that will be shown in table
+      label: "S.No.", 
+     // column title that will be shown in table
+      options: {
+        filter: true,
+       
+        // cellStyle: {
+        //   width: 20,
+        //   maxWidth: 20
+        // },
+        
+      },
+     
+    },
+    {
+      name: "quotation_no", // field name in the row object
+      label: "Quotation No", // column title that will be shown in table
+      options: {
+        filter: true,
+        wordBreak:'break-word',
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth} >  
+              <p style={{marginLeft:18}}>Quotation No</p> 
+            </TableCell>
+          )
+       }
+        
+      },
+    },
+    {
+      name: "fname", // field name in the row object
+      label: "Firm_Name", // column title that will be shown in table
+      options: {
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth1} >  
+              <p style={{marginLeft:18}}>Firm Name</p> 
+            </TableCell>
+          )
+       }
+      },
+    },
+    {
+      name: "name",
+      label: "Quote Date",
       options: {
         filter: true,
       },
     },
-    
     {
-      name: "issue_date",
-      label: "Issue Date",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "grand_total",
+      name: "require_date",
       label: "Amount",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "status",
-      label: "status",
       options: {
         filter: true,
       },
@@ -188,13 +228,13 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-      
+         
           return (
             <span>
-            <Link to={"/newinvoice/"+tableMeta.rowData[5]}>
-              <Tooltip title="view more">
+            <Link to={`/quote/${tableMeta.rowData[5]}/reject`}>
+              <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
-              </Tooltip>
+           </Tooltip>
             </Link>
             {/* <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
             <IconButton>
@@ -234,15 +274,15 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        <Breadcrumb
+        {/* <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Sales Invoice" },
+            { name: "Sales Quotation" },
           ]}
         />
 
-        {/* <div className="text-right">
-          <Link to={"/sales/rfq-form/Rfqform"}>
+        <div className="text-right">
+          <Link to={"/Newquoteanalysis"}>
             <Button
               className="py-2"
               variant="outlined"
@@ -254,40 +294,87 @@ const SimpleMuiTable = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Sales Invoice"}
-        data={podetails.map((item, index) => {
-          
+        title={"Sales Quotation"}
+        
+        data={qdetails.map((item, index) => {
+       
             return [
               ++index,
-              item.invoice_no,
-              moment(item.issue_date).format('DD MMM YYYY'),
-              item.grand_total,
-              item.status,
+              item.quotation_no,
+              item.party.firm_name,
+              moment(item.created_at).format('DD MMM YYYY'),
+              parseFloat(item.net_amount).toFixed(2),
               item.id
-              // moment(item.created_at).format('DD-MM-YYYY'),
-              // (parseFloat(item.net_amount)).toFixed(2),
-              // item.id
+              // item.party[index].firm_name,
+              // item.requested_date,
+              // item.require_date,
             ]
           
         })}
+        
         columns={columns}
         options={{
-          // filterType: "textField",
-          // responsive: "simple",
-          // selectableRows: "none", // set checkbox for each row
-          // search: false, // set search option
-          // filter: false, // set data filter option
-          // download: false, // set download option
-          // print: false, // set print option
-          // pagination: true, //set pagination option
-          // viewColumns: false, // set column option
-          // elevation: 0,
+         
           rowsPerPageOptions: [10, 20, 40, 80, 100],
           selectableRows: "none",
           filterType: "dropdown",
           responsive: "scrollMaxHeight",
           rowsPerPage: 10,
           
+          // expandableRows: true,
+          // expandableRowsOnClick: true,
+          renderExpandableRow: (rowData, rowMeta) => {
+            
+            return (
+              <tr>
+                <td colSpan={6}>
+                  <Table style={{ minWidth: "650",border:"1px solid black" }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>product Name</TableCell>
+                        <TableCell>description</TableCell>
+                        <TableCell>Quantity</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {/* {userList.map((item, index) => {
+                        if(rowData[0]===item.id)
+                      {
+                      {item.qdetails.map((row,index) => {
+                      
+                       return(<TableRow key={row.product[0].id}>
+
+                          <TableCell>{row.description}</TableCell>
+                          <TableCell>{row.product[0].name}</TableCell>
+                          <TableCell>{row.product[0].id}</TableCell>
+                        </TableRow>
+                       )
+                      })}
+                      } */}
+                      {userList.map((item, index) => {
+                        
+                        {item.qdetails.map(row => (
+                          <TableRow key={row.name}>
+                            <TableCell component="th" scope="row">
+                              {row.id}
+                            </TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                          </TableRow>
+                        ))}
+                      
+                      })}
+                      
+                    {/* })} */}
+                   
+                    </TableBody>
+                  </Table>
+                </td>
+              </tr>
+            )
+          }
         }}
       />
     </div>
@@ -296,4 +383,4 @@ const SimpleMuiTable = () => {
 }
 
 
-export default SimpleMuiTable;
+export default RejectQuote;

@@ -56,7 +56,7 @@ const SimpleMuiTable = () => {
 
   function handleClick(event,id) {
     console.log(id)
-    Axios.get(url+"sub-category/"+id).then(({ data }) => {
+    url.get("sub-category/"+id).then(({ data }) => {
       console.log(data)
       setsubcatList(data);
     })
@@ -76,19 +76,19 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
       
-      Axios.get(url+"products")
+      url.get("products")
       .then(function (response) {
        console.log(response)
         setUserList(response.data)
         
       })
-      //   Axios.get(url+"products").then(({ data }) => {
+      //   url.get(url+"products").then(({ data }) => {
       //      setUserList(data);
         
           
 
       //   });
-      //   Axios.get(url+"categories").then(({ data }) => {
+      //   url.get(url+"categories").then(({ data }) => {
       //     setcatList(data);
       //     console.log(data)
          
@@ -102,7 +102,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"products").then(({ data }) => {
+      url.get("products").then(({ data }) => {
         if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -136,7 +136,7 @@ const SimpleMuiTable = () => {
   };
   const selectcategory = (user) => {
   
-    Axios.get(url+"categorized-products/"+user)
+    url.get("categorized-products/"+user)
       .then(function (response) {
        
         setUserList(response.data)
@@ -159,7 +159,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
     .then(res => {
         
         getrow()

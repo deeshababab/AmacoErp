@@ -251,13 +251,13 @@ const SimpleForm = ({ open, handleClose }) => {
 
         });
 
-        Axios.get(url + "products-in-category").then(({ data }) => {
+        url.get("products-in-category").then(({ data }) => {
             setooptions(data);
 
 
 
         });
-        Axios.get(url + "categories/" + id).then(({ data }) => {
+        url.get("categories/" + id).then(({ data }) => {
             console.log(data.name)
             setsubcategory(data.name)
 
@@ -287,7 +287,7 @@ const SimpleForm = ({ open, handleClose }) => {
         }
 
 
-        Axios.post(url + 'products', frmdetails)
+        url.post('products', frmdetails)
             .then(function (response) {
 
                 console.log(response)
@@ -315,7 +315,7 @@ const SimpleForm = ({ open, handleClose }) => {
     }
 
     function getcategory(e) {
-        Axios.get(url + "products-in-category").then(({ data }) => {
+        url.get("products-in-category").then(({ data }) => {
             setooptions(data);
         });
     }

@@ -296,7 +296,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // setprice(parseInt(event.target.value))
   }
   const priceset = (a,b,c) => {
-    Axios.get(url+"parties/" + c).then(({ data }) => {
+    url.get("parties/" + c).then(({ data }) => {
       setproList(data[0].contacts);
       
     });
@@ -370,7 +370,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.transaction_type="sale"
     const json = Object.assign({}, arr);
 
-    Axios.put(url+`sale-quotation/${id}`, json)
+    url.put(`sale-quotation/${id}`, json)
       .then(function (response) {
         
          
@@ -398,7 +398,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const setcontact= (event) => {
     
    
-    Axios.get(url+"parties/" + event.target.value).then(({ data }) => {
+    url.get("parties/" + event.target.value).then(({ data }) => {
       setcustomercontact(data[0].contacts);
       
       setparty_id(event.target.value)
@@ -415,7 +415,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       // console.log(data)
 
     });
-    axios.get(url+"products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setproList(data)
       
    
@@ -423,7 +423,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
 
     
-    axios.get(url+`sale-quotation/${id}`).then(({ data }) => {
+    url.get(`sale-quotation/${id}`).then(({ data }) => {
       
       setQuote_date(data[0].ps_date)
       setProductList1(data[0].quotation_details[0].product_price_list)
@@ -452,7 +452,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   }
   const setProductdescription = (event,index,id)=>{
-    Axios.get(url + "products/" + event.target.value).then(({ data }) => {
+    url.get("products/" + event.target.value).then(({ data }) => {
       let tempItemList = [...state.item];
      
       // setProductList1(data.prices)
@@ -546,7 +546,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Create Sales Quotation</h3>
+          <h3 align="left"> Update Sales Quotation</h3>
           </div>
           <div className="mb-6">
          
@@ -693,6 +693,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
+              console.log(item.product)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)

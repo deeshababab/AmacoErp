@@ -47,7 +47,7 @@ const SimpleMuiTable = () => {
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
   useEffect(() => {
-    Axios.get(url+"rfq").then(({ data }) => {
+    url.get("rfq").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
       // console.log(myJSON)
@@ -68,7 +68,7 @@ const SimpleMuiTable = () => {
   };
 
   function getrow(id) {
-    Axios.get(url+"rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       if (isAlive) setrfq_details(data[0].rfq_details);
     });
     return () => setIsAlive(false);
@@ -105,7 +105,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
           .then(res => {
             getrow()
             Swal.fire(

@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { firebaseConfig } from "config.js";
 import { MatxLoading } from "matx";
+import history from "history.js";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -92,8 +93,12 @@ export const AuthProvider = ({ children }) => {
   }, [dispatch]);
 
   if (!state.isInitialised) {
+    // if(localStorage.getItem('rememberMe'))
+    // {
     return <MatxLoading />;
-  }
+    }
+    
+  // }
 
   return (
     <AuthContext.Provider

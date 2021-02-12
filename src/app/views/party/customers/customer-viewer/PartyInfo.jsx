@@ -22,7 +22,7 @@ const PartyInfo = () => {
   useEffect(() => {
 
    
-    Axios.get(url+"parties/"+foo).then(({ data }) => {
+    url.get("parties/"+foo).then(({ data }) => {
          setUserList(data[0]);
        
       });

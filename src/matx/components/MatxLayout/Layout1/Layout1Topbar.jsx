@@ -16,6 +16,7 @@ import clsx from "clsx";
 import useAuth from "app/hooks/useAuth";
 import useSettings from "app/hooks/useSettings";
 import { NotificationProvider } from "app/contexts/NotificationContext";
+import history from "history.js"
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   topbar: {
@@ -66,9 +67,10 @@ const Layout1Topbar = () => {
   const theme = useTheme();
   const classes = useStyles();
   const { settings, updateSettings } = useSettings();
-  const { logout, user } = useAuth();
+  // const { logout, user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const fixed = settings?.layout1Settings?.topbar?.fixed;
+  const userInfo = localStorage.getItem('user')
 
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({
@@ -92,6 +94,10 @@ const Layout1Topbar = () => {
 
     updateSidebarMode({ mode });
   };
+  const logout =() => {
+    localStorage.clear();
+    window.location.href = `../dashboard/default`;
+  }
 
   return (
     <div className={classes.topbar}>
@@ -118,33 +124,26 @@ const Layout1Topbar = () => {
           </div>
           <div className="flex items-center">
             <MatxSearchBox />
-            {/* <NotificationProvider>
-              <NotificationBar />
-            </NotificationProvider> */}
-            
-            {/* <NotificationBar2 /> */}
-
-            {/* <ShoppingCart /> */}
 
             <MatxMenu
-              // menuButton={
-              //   <div className={classes.userMenu}>
-              //     <Hidden xsDown>
-              //       <span>
-              //         Hi <strong>Admin</strong>
-              //       </span>
-              //     </Hidden>
-              //     <Avatar className="cursor-pointer" src={user.avatar} />
-              //   </div>
-              // }
+              menuButton={
+                <div className={classes.userMenu}>
+                  <Hidden xsDown>
+                    <span>
+                      Hi <strong>{userInfo}</strong>
+                    </span>
+                  </Hidden>
+                  <Avatar className="cursor-pointer"/>
+                </div>
+              }
             >
-              <MenuItem>
+              {/* <MenuItem>
                 <Link className={classes.menuItem} to="/">
                   <Icon> home </Icon>
                   <span className="pl-4"> Home </span>
                 </Link>
-              </MenuItem>
-              <MenuItem>
+              </MenuItem> */}
+              {/* <MenuItem>
                 <Link
                   className={classes.menuItem}
                   to="/page-layouts/user-profile"
@@ -152,15 +151,16 @@ const Layout1Topbar = () => {
                   <Icon> person </Icon>
                   <span className="pl-4"> Profile </span>
                 </Link>
-              </MenuItem>
-              {/* <MenuItem className={classes.menuItem}>
+              </MenuItem> */}
+              <MenuItem className={classes.menuItem}>
                 <Icon> settings </Icon>
                 <span className="pl-4"> Settings </span>
-              </MenuItem> */}
-              {/* <MenuItem onClick={logout} className={classes.menuItem}>
+              </MenuItem>
+
+              <MenuItem onClick={logout} className={classes.menuItem}>
                 <Icon> power_settings_new </Icon>
                 <span className="pl-4"> Logout </span>
-              </MenuItem> */}
+              </MenuItem>
             </MatxMenu>
           </div>
         </div>

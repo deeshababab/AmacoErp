@@ -64,7 +64,7 @@ const CustomerBillings = () => {
   useEffect(() => {
 
 
-    Axios.get(url+"products/" + foo).then(({ data }) => {
+    url.get("products/" + foo).then(({ data }) => {
       setproductprice(data.prices);
       console.log(data.prices)
      
@@ -83,7 +83,7 @@ const CustomerBillings = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`product-price/${id}`)
+        url.delete(`product-price/${id}`)
     .then(res => {
         
         Swal.fire(
@@ -111,7 +111,7 @@ const CustomerBillings = () => {
     
 }
 const getData = () => {
-  Axios.get(url+"products/" + foo).then(({ data }) => {
+  url.get("products/" + foo).then(({ data }) => {
     setproductprice(data.prices);
     
   });

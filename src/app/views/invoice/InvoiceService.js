@@ -2,54 +2,61 @@ import axios from 'axios';
 import useSettings from '../../hooks/useSettings';
 
 export const getAllInvoice = () => {
-    return axios.get("/api/invoices/all")
+    return url.get("/api/invoices/all")
 }
 export const getInvoiceById = (id) => {
-    return axios.get("/api/invoices", { data: id })
+    return url.get("/api/invoices", { data: id })
 }
 export const deleteInvoice = (invoice) => {
-    return axios.post("/api/invoices/delete", invoice)
+    return url.post("/api/invoices/delete", invoice)
 }
 export const addInvoice = (invoice) => {
-    return axios.post("/api/invoices/add", invoice)
+    return url.post("/api/invoices/add", invoice)
 }
 export const updateInvoice = (invoice) => {
-    return axios.post("/api/invoices/update", invoice)
+    return url.post("/api/invoices/update", invoice)
 }
 
 
 export const getInvoice = () => {
-    return axios.get("http://dataqueuesystems.com/amaco/amaco/public/api/parties/1")
+    return url.get("http://dataqueuesystems.com/amaco/amaco/public/api/parties/1")
 }
- const  url = "http://www.amacoerp.com/amaco/public/api/";
+// const  url = "http://www.amacoerp.com/amaco/public/api/";
+ const url = axios.create({
+    baseURL: 'http://www.amacoerp.com/amaco/public/api/',
+    timeout: 1000,
+    
+    // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
+  });
+
 
 // const  url = "http://dataqueuesystems.com/amaco/amaco/public/api/";
 const  phpurl = "http://www.amacoerp.com/amaco/public/api/";
 // const  phpurl = "http://dataqueuesystems.com/amaco/amaco/public/api/";
 export const getparties= () => {
-    return axios.get(url+"parties")
+    return url.get(url+"parties")
 }
 export const getcategories= () => {
-    return axios.get(url+"categories")
+    return url.get("categories")
 }
 export const getrfq= () => {
-    return axios.get(url+"rfq")
+    return url.get("rfq")
 }
 export const getProductList = () => {
-    return axios.get(url+"products");
+    return url.get("products");
 };
 export const getVendorList = () => {
-    return axios.get(url+"parties-vendor");
+    return url.get("parties-vendor");
   };
 export const getCustomerList = () => {
-    return axios.get(url+"customer-list");
+    return url.get("customer-list");
   };
   
 export const getmanufacturer = () => {
-    return axios.get(url+"manufacturer");
+    return url.get(url+"manufacturer");
 };
 export const getpaymentaccount = () => {
-    return axios.get(url+"payment-account");
+    return url.get(url+"payment-account");
 };
   
 

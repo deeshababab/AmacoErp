@@ -100,7 +100,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
     
         }
       
-        Axios.post(url+'categories', frmdetails)
+        url.post('categories', frmdetails)
           .then(function (response) {
             getcategories()
             Swal.fire({
@@ -147,7 +147,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
             getcategories().then(({ data }) => {
@@ -190,11 +190,11 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
 
   useEffect(() => {
     
-    // Axios.get(url+"categories").then(({ data }) => {
+    // url.get(url+"categories").then(({ data }) => {
     //   setUserList(data);
 
     // });
-    // Axios.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
+    // url.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
     //   if (isAlive) setUserList(data);
     
 
@@ -211,7 +211,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   function getrow() {
     if(!catid)
     {
-    Axios.get(url+"categories").then(({ data }) => {
+    url.get("categories").then(({ data }) => {
       setUserList(data);
       setIsAlive(false)
     });
@@ -219,7 +219,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   else
   {
    
-    Axios.get(url+`sub-category/${catid}`).then(({ data }) => {
+    url.get(`sub-category/${catid}`).then(({ data }) => {
       setUserList(data);
       setIsAlive(false)
       console.log(data)

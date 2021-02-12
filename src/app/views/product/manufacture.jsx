@@ -78,11 +78,11 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     // setcname('')
    
     console.log(frmdetails)
-    Axios.post(url+'manufacturer', frmdetails)
+    url.post('manufacturer', frmdetails)
       .then(function (response) {
         getmanufacturer()
         Swal.fire({
-          title: 'Success',
+          icon: 'success',
           type: 'success',
           text: 'Data saved successfully.',
         });
@@ -114,8 +114,9 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`manufacturer/${id}`)
+        url.delete(`manufacturer/${id}`)
           .then(res => {
+            
             Swal.fire({
               customClass:{
                 zIndex: 1000
@@ -146,22 +147,19 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   }
 
   useEffect(() => {
-    Axios.get(url+'manufacturer').then(({ data }) => {
+    url.get('manufacturer').then(({ data }) => {
       setUserList(data);
+      setIsAlive(false);
     
 
-    // Object.keys(data).forEach(function(key) {
-
-    //   arr.push(data[key]);
-    //   setUserList(arr)
-    // });
+   
 
 
     });
-    return () => setIsAlive(false);
-  })
+   
+  },[])
   function getrow(e) {
-    Axios.get(url+"manufacturer").then(({ data }) => {
+    url.get("manufacturer").then(({ data }) => {
       if (isAlive) setUserList(data);
 
     });

@@ -77,7 +77,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     // setcname('')
    
 
-    Axios.post(url+'categories', frmdetails)
+    url.post('categories', frmdetails)
       .then(function (response) {
         Swal.fire({
           title: 'Success',
@@ -108,7 +108,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
 
@@ -130,7 +130,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
   }
 
   useEffect(() => {
-    // Axios.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
+    // url.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
     //   if (isAlive) setUserList(data);
     
 
@@ -145,7 +145,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
     
   })
   function getrow(e) {
-    Axios.get(url+"products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       if (isAlive) setUserList(data);
 
     });

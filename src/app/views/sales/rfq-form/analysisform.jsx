@@ -54,7 +54,7 @@ const AnalysisForm = ({ uid, open, handleClose }) => {
   const handleFormSubmit = async (event) => {
   
     // console.log(analysisInfo);
-    Axios.post(url+'analyse', analysisInfo)
+    url.post('analyse', analysisInfo)
       .then(function (response) {
         // console.log(response);
         Swal.fire({

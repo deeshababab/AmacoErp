@@ -31,7 +31,7 @@ const salesRoutes = [
     },
     {
         path: "/quoateview",
-        component: React.lazy(() => import("./quoate-form/Quoateview")),
+        component: React.lazy(() => import("./quoate-form/Tab")),
     },
     {
         path: "/Newinvoiceview",
@@ -65,6 +65,12 @@ const salesRoutes = [
     {
         path: "/updatesidebar",
         component: React.lazy(() => import("./updatesidebar")),
+    
+    },
+    {
+        path: "/dnoteview",
+        component: React.lazy(() => import("./dnoteview")),
+    
     },
     
 

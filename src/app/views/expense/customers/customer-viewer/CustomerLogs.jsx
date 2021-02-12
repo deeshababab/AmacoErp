@@ -19,7 +19,7 @@ import moment from "moment";
 const CustomerLogs = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
-    Axios.get(url+"expense-paid").then(({ data }) => {
+    url.get("expense-paid").then(({ data }) => {
       console.log(data)
        setexpenseList(data);
        
@@ -28,7 +28,7 @@ const CustomerLogs = () => {
 }, []);
 const setstatus=(id)=>{
 
-  Axios.put(url+`expense/${id}`).then(({ data }) => {
+  url.put(`expense/${id}`).then(({ data }) => {
     console.log(data)
   
     

@@ -56,7 +56,7 @@ const Rfqview = ({ toggleInvoiceEditor }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    axios.get(url+"rfq/"+id).then(({ data }) => {
+    url.get("rfq/"+id).then(({ data }) => {
        setcname(data[0].id)
        setrdate(data[0].requested_date)
        setddate(data[0].require_date)

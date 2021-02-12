@@ -119,8 +119,12 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
   },
 }));
 
+;
 
 const InvoiceViewer = ({ toggleInvoiceEditor }) => {
+  // let search = window.location.search;
+  // let params = new URLSearchParams(search);
+  // const foo =parseInt(params.get('s'));
   const [state, setState] = useState({});
   const [rfq, setrfq] = useState();
   const [psdate, setpsdate] = useState([]);
@@ -148,7 +152,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
   const [designation, setdesignation] = useState('')
   const [vendor_id,setvendor_id]=useState('')
-  const { id } = useParams();
+  const { id,s } = useParams();
   const classes = useStyles();
   var fval =10;
   const { settings, updateSettings } = useSettings();
@@ -163,11 +167,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
 
   useEffect(() => {
-    
     updateSidebarMode({ mode: "close" })
     document.title="Request for quoatation - Amaco"
-    axios.get(url+"sale-quotation/"+id).then(({ data }) => {
-    console.log(data)
+    url.get("sale-quotation/"+id).then(({ data }) => {
+    console.log(s)
     // setcname(data[0].party.fname)
       setrfq(data[0].rfq_id)
       setqid(data[0].quotation_no)
@@ -222,7 +225,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
   else
   {
-    window.location.href="../quoateview"
+    window.location.href="/quoateview"
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
     updateSettings({
@@ -235,6 +238,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         },
       },
     });
+    // history.push("/quoateview")
      
   }
 
@@ -250,7 +254,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        axios.delete(url+`quotation/${id}`)
+        url.delete(`quotation/${id}`)
     .then(res => {
         
        
@@ -276,64 +280,65 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     })
   }
   const invoicegenrate= (sidebarSettings) => {
-    // alert(id)
-    // const postatus={
-    //   status:"po"
-    // }
-    // // let url = `https://jsonplaceholder.typicode.com/users/${id}`
-    // Swal.fire({
-    //   title: 'Are you sure?',
-    //   text: 'You want to convert this quotation into Purchase Order !',
-    //   icon: 'danger',
-    //   showCancelButton: true,
-    //   confirmButtonText: 'Yes,!',
-    //   icon: 'warning',
-    //   cancelButtonText: 'No, keep it'
-    // }).then((result) => {
-    //   if (result.value) {
-       
-    //     Axios.put(url+'quotation/'+id,postatus)
-    // .then(res => {
-      
-    //     let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    // let activeLayoutSettings = settings[activeLayoutSettingsName];
-    // updateSettings({
-    //   ...settings,
-    //   [activeLayoutSettingsName]: {
-    //     ...activeLayoutSettings,
-    //     leftSidebar: {
-    //       ...activeLayoutSettings.leftSidebar,
-    //       ...sidebarSettings,
-    //     },
-    //   },
-    // });
-     
-       window.location.href=`../Quoteinvoice/${id}`
-        
-        
-    // })
     
+       window.location.href=`/Quoteinvoice/${id}`
         
+        
+    
+    
+}
+const dnotegenrate= (sidebarSettings) => {
+  updateSidebarMode({ mode: "close" })  
+  window.location.href=`/dnote/${id}`
 
-    //   } else if (result.dismiss === Swal.DismissReason.cancel) {
-    //     Swal.fire(
-    //       'Cancelled',
-    //       '........:)',
-    //       'error'
-    //     )
-    //   }
-    // })
-    
 }
 const editqoute = () => {
   updateSidebarMode({ mode: "close" })
-  window.location.href = `../Quoteedit/${id}`
+  window.location.href = `/Quoteedit/${id}`
 }
 
 
   const handlePrint = () => window.print();
   window.onafterprint = function(){ window.close()
     window.location.href = ``
+  };
+  const statuschange = (status) => {
+    const json ={
+      status:status
+    }
+    Swal.fire({
+      // title: 'Are you sure?',
+      text: `Are you sure want to ${status} the Quotation!`,
+      icon: 'danger',
+      showCancelButton: true,
+      confirmButtonText: 'Yes,',
+      icon: 'warning',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        url.put(`update-quotation/${id}`,json)
+    .then(res => {
+        
+       console.log(res)
+       
+        Swal.fire({
+          title: 'Success',
+          type: 'success',
+          icon:'success',
+          text:`Quotation has been ${status}.`,
+        })
+        // updateSidebarMode({ mode: "on" })
+        // window.location.href = "/quoateview"
+        
+    })
+    
+        
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        
+      }
+    })
+    
   };
 
   let subTotalCost = 0;
@@ -382,7 +387,7 @@ const editqoute = () => {
         onClose={handleClose}
       >
                     {/* <MenuItem  onClick={() => invoicegenrate({ mode: "on" })}>
-                    Genrate Purchase Order
+                    Generate Purchase Order
                       </MenuItem> */}
                       
                       <MenuItem  onClick={() => deletequote()}>
@@ -396,24 +401,47 @@ const editqoute = () => {
                       </MenuItem>
                     
           </Menu>
-     
+          {s==="accept"&&
           <Button
             className="mr-4 py-2"
             color="primary"
             variant="outlined"
             onClick={() => invoicegenrate({ mode: "on" })}
           >
-            Genrate Invoice
+            Generate Invoice
           </Button>
-           {/*<Button
-            className="mr-4 py-2"
-            style={{color:'red'}}
-            variant="outlined"
-            onClick={() => deletequote()}
-          >
-            Delete Quotation
-          </Button>
+          }
+          {s==="accept"&&
           <Button
+            className="mr-4 py-2"
+            color="primary"
+            variant="outlined"
+            onClick={() => dnotegenrate({ mode: "on" })}
+          >
+            Generate Delivery Note
+          </Button>
+          }
+          {s==="new"&&
+           <Button
+            className="mr-4 py-2"
+            variant="outlined"
+            onClick={() => statuschange('accept')}
+            style={{border:'1px solid #119144',color:'#119144'}}
+          >
+            <Icon>check_circle</Icon> Accept
+          </Button>
+          }
+          {s==="new"&&
+          <Button
+            className="mr-4 py-2"
+            style={{border:'1px solid #ff3d57',color:'#ff3d57'}}
+            variant="outlined"
+            onClick={() => statuschange('reject')}
+          >
+            <Icon>cancel</Icon> Reject
+          </Button>
+          }
+          {/*<Button
             onClick={handlePrint}
             className="py-2"
             color="secondary"

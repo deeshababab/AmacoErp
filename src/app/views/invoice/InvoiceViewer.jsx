@@ -47,7 +47,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
   },
   "@global": {
     "@media print": {
-      "@page": { size: 'letter', marginTop: '4mm',marginBottom: '4mm' },
+      "@page": { size: 'letter', marginTop: '4mm',marginBottom: '1mm' },
       "body, *, html": {
 
         visibility: "hidden",
@@ -78,7 +78,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         backgroundColor: "#F8F8F8",
         borderTop: "1px solid #E7E7E7",
         textAlign: "center",
-        padding: "20px",
+        padding: "0",
         position: "fixed",
         left: "0",
         bottom: "0",
@@ -197,7 +197,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     updateSidebarMode({ mode: "close" })
 
     document.title = "Request for quoatation - Amaco"
-    axios.get(url + "rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       console.log(data[0])
 
       setrdate(moment(data[0].requested_date).format('DD MMM YYYY')
@@ -231,7 +231,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 
     });
-    axios.get(url + "rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
     });
 
     // if (id !== "add")
@@ -250,7 +250,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        axios.delete(url+`rfq/${id}`)
+        url.delete(`rfq/${id}`)
     .then(res => {
         
        
@@ -275,7 +275,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       }
     })
     
-    // axios.delete(url + "rfq/" + id).then(({ data }) => {
+    // url.delete(url + "rfq/" + id).then(({ data }) => {
      
     // })
   }
@@ -409,11 +409,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           values="Amaco Arabia Contracting Company"
         />
       </IntlProvider></h4>
-      <h5 style={{color:'#1d2257',textAlign:'right'}}>
+      <h4 style={{color:'#1d2257',textAlign:'right'}}>
         AMACO ARABIA CONTRACTING COMPANY
     
-      </h5>
-      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
+      </h4>
+      <h6 style={{color:'#555',textAlign:'right'}} className="font-normal b-4 capitalize">
        C.R No 205500334 | VAT 810398615200003
 
 
@@ -436,43 +436,43 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           
           <div>
           <div>
-        <tr style={{ height: 5, fontSize: 12, textAlign: 'right'}}>
+        <tr style={{ height: 5, fontSize: 13, textAlign: 'right'}}>
             <h5 className="font-normal t-4 capitalize">
               <strong>Buyer Details</strong>{" "}
             </h5>
             </tr>
         </div>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Attn.</strong></td>
               <td style={{ height: 'auto !important' }}>{contactperson}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Designation</strong></td>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>Designation</strong>&nbsp;</td>
               <td style={{ height: 'auto !important' }}>{designation}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Company</strong></td>
               <td style={{ height: 'auto !important' }}>{company}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Address</strong></td>
               <td style={{ height: 'auto !important' }}>{street}-{city},{pono} {zipcode}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Email-Id</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersonemail}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Contact</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersoncontact}</td>
             </tr>
             
             
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>C.R No</strong></td>
               <td style={{ height: 'auto !important' }}>{regno}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>VAT No</strong></td>
               <td style={{ height: 'auto !important' }}>{vatno}</td>
             </tr>
@@ -501,27 +501,27 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </td>
             </tr>
             </div>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
               <td><strong>Submitted By</strong>&nbsp;</td>
               <td >Mr.Abbas Ahamed Shazli</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
               <td ><strong>Designation</strong></td>
               <td >Business Development Manager - ISD Division</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
               <td><strong>Company</strong></td>
               <td>AMACO ARABIA CONTRACTING COMPANY</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
               <td><strong>Address</strong></td>
               <td>PO BOX 7452, AI Jubail 31951, KSA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12,textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left'}}>
               <td><strong>E-mail ID</strong></td>
               <td>ABBAS@AMACO.COM.SA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
               <td><strong>Mob/Tel</strong></td>
               <td>535515212</td>
             </tr>
@@ -617,13 +617,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         
       </footer> */}
       <footer id="footer" style={{ visibility: "hidden" }}>
-        <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
+        <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'100px'}}>
           
           <span style={{color:'#fff'}}> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
                 
         </div>
-         <div class="main" style={{width:'100%'}}> 
-       <div  class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+         <div class="main" style={{width:'100%',paddingRight:'50px'}}> 
+       <div  class="right" style={{width: '120px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
         <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
         

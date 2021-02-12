@@ -295,7 +295,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // setprice(parseInt(event.target.value))
   }
   const priceset = (a,b,c) => {
-    Axios.get(url+"parties/" + c).then(({ data }) => {
+    url.get("parties/" + c).then(({ data }) => {
 
       setproList(data[0].contacts);
       
@@ -368,7 +368,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.transaction_type="sale"
     const json = Object.assign({}, arr);
  
-    Axios.post(url+'sale-quotation', json)
+    url.post('sale-quotation', json)
       .then(function (response) {
         
          
@@ -396,7 +396,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const setcontact= (event) => {
     
    
-    Axios.get(url+"parties/" + event.target.value).then(({ data }) => {
+    url.get("parties/" + event.target.value).then(({ data }) => {
       setcustomercontact(data[0].contacts);
       
       setparty_id(event.target.value)
@@ -415,7 +415,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     });
     
    
-    axios.get(url+"products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setproList(data)
 
       
@@ -427,7 +427,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     
     
-//     axios.get(url+"rfq/"+ id).then(({ data }) => {
+//     url.get(url+"rfq/"+ id).then(({ data }) => {
      
 //       setcname(data[0].party[0].firm_name)
 //       setcontactid(data[0].contact.id)
@@ -479,7 +479,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   }
   const setProductdescription = (event,index,id)=>{
-    Axios.get(url + "products/" + event.target.value).then(({ data }) => {
+    url.get("products/" + event.target.value).then(({ data }) => {
         let tempItemList = [...state.item];
         data.prices.map((element, i) => {
             // console.log(element)

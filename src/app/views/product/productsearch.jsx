@@ -42,7 +42,7 @@ const MatxSearchBox = () => {
   };
   const searching = (name) => {
     
-  Axios.get(url+"category/"+name).then(({ data }) => {
+  url.get("category/"+name).then(({ data }) => {
 
     console.log(data)
     getcategories().then(({ data }) => {

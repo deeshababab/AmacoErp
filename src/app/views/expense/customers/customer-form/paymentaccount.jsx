@@ -75,7 +75,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
     // setname('')
    
 
-    Axios.post(url+'payment-account', frmdetails)
+    url.post('payment-account', frmdetails)
       .then(function (response) {
         Swal.fire({
           title: 'Success',
@@ -109,7 +109,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype }) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`payment-account/${id}`)
+        url.delete(`payment-account/${id}`)
           .then(res => {
             getrow()
             Swal.fire(

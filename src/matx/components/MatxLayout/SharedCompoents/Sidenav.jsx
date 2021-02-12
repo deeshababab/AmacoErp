@@ -33,7 +33,6 @@ const Sidenav = ({ children }) => {
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
-
     updateSettings({
       ...settings,
       [activeLayoutSettingsName]: {
@@ -53,7 +52,7 @@ const Sidenav = ({ children }) => {
         className={clsx("relative px-4", classes.scrollable)}
       >
         {children}
-        <MatxVerticalNav items={navigations} />
+        <MatxVerticalNav items={navigations} /> 
       </Scrollbar>
 
       <div

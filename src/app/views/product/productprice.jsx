@@ -82,7 +82,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
     
         }
       console.log(frmdetails)
-        Axios.post(url+'product-price', frmdetails)
+        url.post('product-price', frmdetails)
           .then(function (response) {
             getcategories()
             Swal.fire({
@@ -90,7 +90,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
               type: 'success',
               text: 'Data saved successfully.',
             });
-            Axios.get(url+"products/" + catid).then(({ data }) => {
+            url.get("products/" + catid).then(({ data }) => {
               productprice(data.prices);
               handleClose()
               
@@ -125,7 +125,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
             getcategories().then(({ data }) => {
@@ -163,7 +163,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
 
   useEffect(() => {
     console.log(catid)
-    Axios.get(url+"parties-except/"+catid).then(({ data }) => {
+    url.get("parties-except/"+catid).then(({ data }) => {
         console.log(data)
         setcustomerList(data)
     })
@@ -178,7 +178,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
   else
   {
    
-    Axios.get(url+`product-price/${catid}`).then(({ data }) => {
+    url.get(`product-price/${catid}`).then(({ data }) => {
     //   setcname(data.name)
       setcprice(data.price)
       console.log(data)

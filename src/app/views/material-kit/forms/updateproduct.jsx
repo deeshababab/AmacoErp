@@ -229,7 +229,7 @@ const SimpleForm = () => {
   useEffect(() => {
 
 
-    Axios.get(url + "products/" + foo).then(({ data }) => {
+    url.get("products/" + foo).then(({ data }) => {
       if (isAlive) setUserList(data);
 
       setdescription(data.product[0].description)
@@ -253,17 +253,17 @@ const SimpleForm = () => {
       setmodelno(data.product[0].model_no)
 
     });
-    Axios.get(url + "products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       setooptions(data);
 
     });
-    Axios.get(url + "parties-vendor").then(({ data }) => {
+    url.get(url + "parties-vendor").then(({ data }) => {
 
       setfirm(data)
 
 
     });
-    Axios.get(url + "manufacturer").then(({ data }) => {
+    url.get("manufacturer").then(({ data }) => {
 
       setmanuarr(data)
 
@@ -291,7 +291,7 @@ const SimpleForm = () => {
     }
 
 
-    Axios.put(url + "products/" + foo, frmdetails)
+    url.put("products/" + foo, frmdetails)
       .then(function (response) {
 
         Swal.fire({

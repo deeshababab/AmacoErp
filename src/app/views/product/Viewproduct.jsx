@@ -66,7 +66,7 @@ const SimpleMuiTable = () => {
 
   function handleClick(event,id) {
     console.log(id)
-    Axios.get(url+"sub-category/"+id).then(({ data }) => {
+    url.get("sub-category/"+id).then(({ data }) => {
       console.log(data)
       setsubcatList(data);
     })
@@ -86,19 +86,19 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
       
-      Axios.get(url+"categorized-products/"+id)
+      url.get("categorized-products/"+id)
       .then(function (response) {
        console.log(response.data)
         setUserList(response.data)
         
       })
-      //   Axios.get(url+"products").then(({ data }) => {
+      //   url.get(url+"products").then(({ data }) => {
       //      setUserList(data);
         
           
 
       //   });
-      //   Axios.get(url+"categories").then(({ data }) => {
+      //   url.get(url+"categories").then(({ data }) => {
       //     setcatList(data);
       //     console.log(data)
          
@@ -112,7 +112,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"products").then(({ data }) => {
+      url.get("products").then(({ data }) => {
         if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -146,7 +146,7 @@ const SimpleMuiTable = () => {
   };
   const selectcategory = (user) => {
   
-    Axios.get(url+"categorized-products/"+user)
+    url.get("categorized-products/"+user)
       .then(function (response) {
        
         setUserList(response.data)
@@ -169,7 +169,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
     .then(res => {
         
         getrow()
@@ -234,6 +234,7 @@ const columns = [
     options: {
        
         filter: true,
+        resizableColumns:true,
     },
 },
   {
@@ -245,7 +246,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} style={columnStyleWithWidth}>  
-                <p style={{paddingLeft:15}}>Description</p>
+                <p style={columnStyleWithWidth}>Description</p>
               </TableCell>
             )
          },
@@ -342,6 +343,7 @@ const columns = [
    
       <div className="m-sm-30">
       <div  className="mb-sm-30">
+      <div className="viewer_actions px-4 flex justify-between">
           <Breadcrumb
             routeSegments={[
               { name: "Product Category", path: "/product/viewsubcategory" },
@@ -349,52 +351,9 @@ const columns = [
             ]}
           />
           
-          </div>
-          <div className="viewer_actions px-4 flex justify-between">
-          <div className="mb-6">
-          <div>
-      
-        </div>
         
-        
-           
-          {/* <Button
-        variant="outlined"
-        color="primary"
-        className="mr-4 py-2"
-        aria-owns={anchorEl ? "simple-menu" : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        Select Category
-      </Button> */}
-      {/* <Menu
-        
-        id="simple-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-                    <MenuItem  onClick={() =>getrow()}>
-                       All category
-                      </MenuItem>
-                    {catList.map((item) => (
-                      <MenuItem value={item.id} key={item.id} onClick={() =>selectcategory(item.id)}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-          </Menu>
-      */}
-         {/* <Button className="mr-4 py-2"
-           color="primary"
-           variant="outlined"   onClick={() => {
-                        setShouldOpenEditorDialog(true);
-                      }}>
-                     Manage Category
-                     </Button> */}
-                     </div>
-                    {/* </Button> */}
-                    <Link to={`/product/addproduct/${id}`}>
+          <div className="text-right">
+          <Link to={`/product/addproduct/${id}`} >
            
                     <Button className="py-2"
            color="primary"
@@ -403,7 +362,9 @@ const columns = [
           Add New
         </Button>
         </Link>
-          </div>
+        </div>
+        </div>
+          
       
           
         
@@ -448,7 +409,9 @@ const columns = [
                 options={{
                     filterType: "textField",
                     responsive: "simple",
-                    selectableRows: "none", // set checkbox for each row
+                    selectableRows: "none",
+                   
+                     // set checkbox for each row
                     // search: false, // set search option
                     // filter: false, // set data filter option
                     // download: false, // set download option
@@ -459,6 +422,7 @@ const columns = [
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
+            </div>
             </div>
             </div>
   ); } 

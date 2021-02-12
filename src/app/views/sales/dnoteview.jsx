@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { Icon, Tooltip } from "@material-ui/core";
 import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
-import url from "../invoice/InvoiceService";
+import url from "../../views/invoice/InvoiceService";
 import moment from "moment";
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,36 +24,55 @@ import {
 const SimpleMuiTable = () => {
   const [isAlive, setIsAlive] = useState(true);
   const [userList, setUserList] = useState([]);
-  const [podetails, setpodetails] = useState([]);
-  const [poid, setpoid] = useState("");
+  const [qdetails, setqdetails] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
 
+  const columnStyleWithWidth1 = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "600px",
+    wordBreak: "break-all",
+    
+  }
+  const columnStyleWithWidth = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "120px",
+    wordBreak: "break-word",
+    
+  }
   useEffect(() => {
-    url.get("invoice").then(({ data }) => {
+    url.get("delivery-notes").then(({ data }) => {
+      console.log(data)
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
+      // console.log(myJSON)
+      // console.log(data.length)
+      // if(data.length)
+      // {
+      //   setUserList(data);
      
-      if (isAlive) setUserList(data);
-     
-      if(data.length)
-      {
-     
-      setpoid(data[0].id)
-      setpodetails(data);
-      }
+     setqdetails(data);
+      // }
     });
     return () => setIsAlive(false);
-  }, [isAlive]);
+  }, []);
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-   
+    // console.log(invoiceId)
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
   function getrow(id) {
     url.get("rfq/" + id).then(({ data }) => {
-      if (isAlive) setpodetails(data[0].podetails);
+      if (isAlive) setqdetails(data[0].qdetails);
     });
     return () => setIsAlive(false);
   }
@@ -89,7 +108,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        url.delete(`quotation/${id}`)
+        url.delete(`products/${id}`)
           .then(res => {
             getrow()
             Swal.fire(
@@ -126,37 +145,41 @@ const SimpleMuiTable = () => {
   }
   const columns = [
     {
-      name: "index", // field name in the row object
-      label: "S.No.", // column title that will be shown in table
+      name: "id", // field name in the row object
+      label: "S.No.", 
+     // column title that will be shown in table
       options: {
         filter: true,
+       
+        // cellStyle: {
+        //   width: 20,
+        //   maxWidth: 20
+        // },
+        
       },
+     
     },
     {
-      name: "id", // field name in the row object
-      label: "Invoice Number", // column title that will be shown in table
+      name: "delivery_number", // field name in the row object
+      label: "Delivery Number", // column title that will be shown in table
       options: {
         filter: true,
+        wordBreak:'break-word',
+        
+        
       },
     },
     
     {
-      name: "issue_date",
-      label: "Issue Date",
+      name: "po_number",
+      label: "PO Number",
       options: {
         filter: true,
       },
     },
     {
-      name: "grand_total",
-      label: "Amount",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "status",
-      label: "status",
+      name: "created_date",
+      label: "Date",
       options: {
         filter: true,
       },
@@ -188,13 +211,12 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-      
           return (
             <span>
-            <Link to={"/newinvoice/"+tableMeta.rowData[5]}>
-              <Tooltip title="view more">
+            <Link to={"/invview/" + tableMeta.rowData[4]}>
+              <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
-              </Tooltip>
+           </Tooltip>
             </Link>
             {/* <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
             <IconButton>
@@ -234,15 +256,15 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        <Breadcrumb
+      <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Sales Invoice" },
+            { name: "Delivery Notes" },
           ]}
         />
 
         {/* <div className="text-right">
-          <Link to={"/sales/rfq-form/Rfqform"}>
+          <Link to={"/Newquoteanalysis"}>
             <Button
               className="py-2"
               variant="outlined"
@@ -251,43 +273,89 @@ const SimpleMuiTable = () => {
               <Icon>add</Icon> Add New 
           </Button>
           </Link>
-        </div> */}
+        </div>  */}
       </div>
       <MUIDataTable
-        title={"Sales Invoice"}
-        data={podetails.map((item, index) => {
-          
+        title={"Delivery Notes"}
+        
+        data={qdetails.map((item, index) => {
+       
             return [
               ++index,
-              item.invoice_no,
-              moment(item.issue_date).format('DD MMM YYYY'),
-              item.grand_total,
-              item.status,
+              item.delivery_number,
+              item.po_number,
+              moment(item.created_at).format('DD MMM YYYY'),
               item.id
-              // moment(item.created_at).format('DD-MM-YYYY'),
-              // (parseFloat(item.net_amount)).toFixed(2),
-              // item.id
+              // item.party[index].firm_name,
+              // item.requested_date,
+              // item.require_date,
             ]
           
         })}
+        
         columns={columns}
         options={{
-          // filterType: "textField",
-          // responsive: "simple",
-          // selectableRows: "none", // set checkbox for each row
-          // search: false, // set search option
-          // filter: false, // set data filter option
-          // download: false, // set download option
-          // print: false, // set print option
-          // pagination: true, //set pagination option
-          // viewColumns: false, // set column option
-          // elevation: 0,
+         
           rowsPerPageOptions: [10, 20, 40, 80, 100],
           selectableRows: "none",
           filterType: "dropdown",
           responsive: "scrollMaxHeight",
           rowsPerPage: 10,
           
+          // expandableRows: true,
+          // expandableRowsOnClick: true,
+          renderExpandableRow: (rowData, rowMeta) => {
+            
+            return (
+              <tr>
+                <td colSpan={6}>
+                  <Table style={{ minWidth: "650",border:"1px solid black" }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>product Name</TableCell>
+                        <TableCell>description</TableCell>
+                        <TableCell>Quantity</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {/* {userList.map((item, index) => {
+                        if(rowData[0]===item.id)
+                      {
+                      {item.qdetails.map((row,index) => {
+                      
+                       return(<TableRow key={row.product[0].id}>
+
+                          <TableCell>{row.description}</TableCell>
+                          <TableCell>{row.product[0].name}</TableCell>
+                          <TableCell>{row.product[0].id}</TableCell>
+                        </TableRow>
+                       )
+                      })}
+                      } */}
+                      {userList.map((item, index) => {
+                        
+                        {item.qdetails.map(row => (
+                          <TableRow key={row.name}>
+                            <TableCell component="th" scope="row">
+                              {row.id}
+                            </TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                            <TableCell align="right">{row.product[0].name}</TableCell>
+                          </TableRow>
+                        ))}
+                      
+                      })}
+                      
+                    {/* })} */}
+                   
+                    </TableBody>
+                  </Table>
+                </td>
+              </tr>
+            )
+          }
         }}
       />
     </div>

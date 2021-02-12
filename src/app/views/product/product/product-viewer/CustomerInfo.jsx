@@ -28,7 +28,7 @@ const CustomerInfo = () => {
   useEffect(() => {
 
    
-    Axios.get(url+"products/"+foo).then(({ data }) => {
+    url.get("products/"+foo).then(({ data }) => {
           console.log(data.product[0])
         setproductList(data.product[0]);
        
@@ -74,7 +74,7 @@ const CustomerInfo = () => {
               
               <TableRow>
               <TableCell className="pl-4" >Description</TableCell>
-              <TableCell style={{whiteSpace:'unset'}}>{productList.description}</TableCell>
+              <TableCell style={{whiteSpace:'unset',wordBreak:'break-word'}}>{productList.description}</TableCell>
               </TableRow>
               <TableRow>
               <TableCell className="pl-4">UOM</TableCell>

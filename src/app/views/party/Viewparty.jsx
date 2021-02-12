@@ -47,17 +47,18 @@ const SimpleMuiTable = () => {
    
 
     useEffect(() => {
-        Axios.get(url+"parties").then(({ data }) => {
+        url.get("parties").then(({ data }) => {
             if (isAlive) setUserList(data);
            
         });
+        console.log(localStorage.getItem('rememberMe'))
         return () => setIsAlive(false);
     }, [isAlive]);
     
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"parties").then(({ data }) => {
+      url.get("parties").then(({ data }) => {
         if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -101,7 +102,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`parties/${id}`)
+        url.delete(`parties/${id}`)
     .then(res => {
         
         getrow()

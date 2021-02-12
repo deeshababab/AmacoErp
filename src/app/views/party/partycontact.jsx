@@ -79,9 +79,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       // setcname('')
       
       console.log(frmdetails)
-      Axios.put(url+"contact/"+contactid, frmdetails)
+      url.put("contact/"+contactid, frmdetails)
         .then(function (response) {
-          Axios.get(url+"parties/" + foo).then(({ data }) => {
+          url.get("parties/" + foo).then(({ data }) => {
             customercontact(data[0].contacts);
             
           });
@@ -121,9 +121,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       text: 'Data saved successfully.',
     });
     console.log(frmdetails)
-    Axios.post(url+'contact', frmdetails)
+    url.post('contact', frmdetails)
       .then(function (response) {
-        Axios.get(url+"parties/" + foo).then(({ data }) => {
+        url.get("parties/" + foo).then(({ data }) => {
           customercontact(data[0].contacts);
           
         });
@@ -152,7 +152,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
 
@@ -179,7 +179,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     if(contactid)
     {
       
-      Axios.get(url+"contact/"+contactid).then(({ data }) => {
+      url.get("contact/"+contactid).then(({ data }) => {
        
        setfname(data[0].fname)
        setlname(data[0].lname)
@@ -197,7 +197,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     // return () => setIsAlive(false);
   },[contactid])
   function getrow(e) {
-    Axios.get(url+"products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       if (isAlive) setUserList(data);
 
     });

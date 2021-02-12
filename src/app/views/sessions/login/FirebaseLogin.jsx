@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import {
   Card,
   Checkbox,
@@ -15,8 +15,9 @@ import clsx from "clsx";
 import useAuth from "app/hooks/useAuth";
 import Swal from "sweetalert2";
 import Axios from "axios";
-import logo from "../../invoice/logowhite.png"
-import url from "../../invoice/InvoiceService"
+import logo from "../../invoice/logowhite(1).png"
+import url from "../../invoice/InvoiceService";
+import axios from "axios";
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -95,6 +96,14 @@ const FirebaseLogin = () => {
   const { signInWithEmailAndPassword, signInWithGoogle } = useAuth();
 
   const classes = useStyles();
+  useEffect(() => {
+    if(localStorage.getItem('rememberMe')){
+
+      history.push(`/dashboard/default`);
+         
+     }
+
+  },[])
 
   const handleChange = ({ target: { name, value } }) => {
     let temp = { ...userInfo };
@@ -103,14 +112,21 @@ const FirebaseLogin = () => {
   };
 
   const handleFormSubmit = async (event) => {
+   
     setLoading(true);
-    Axios.post(url+'add-user', userInfo)
+    url.post('auth/login', userInfo)
       .then(function (response) {
-        if(response.data)
+        if(response)
         {
           setLoading(false)
-          history.push("/dashboard/default");
-      
+         
+          localStorage.setItem('rememberMe',response.data.accessToken);
+          localStorage.setItem('user', response.data.user.fname );
+          console.log(response)
+          
+          // history.push("/dashboard/default");
+          window.location.href = `../dashboard/default`
+          
         }
         else{
           setMessage("Email or password Incorrect. ")

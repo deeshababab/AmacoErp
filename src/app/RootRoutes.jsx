@@ -31,10 +31,12 @@ import pagesRoutes from "./views/pages/pagesRoutes";
 import dataTableRoutes from "./views/data-table/dataTableRoutes";
 import invRoutes from "./views/inv/invRoutes";
 import ExpenseRoutes from "./views/expense/ExpenseRoutes";
+
 const redirectRoute = [
   {
     path: "/",
     exact: true,
+    
     component: () => <Redirect to="/ " />,
   },
 ];

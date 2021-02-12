@@ -47,7 +47,7 @@ const SimpleMuiTable = () => {
   }
 
   useEffect(() => {
-    Axios.get(url+"purchase-invoice-list").then(({ data }) => {
+    url.get("purchase-invoice-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
       // console.log(myJSON)
@@ -68,7 +68,7 @@ const SimpleMuiTable = () => {
   };
 
   function getrow(id) {
-    Axios.get(url+"rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       if (isAlive) setpodetails(data[0].podetails);
     });
     return () => setIsAlive(false);
@@ -105,7 +105,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`quotation/${id}`)
+        url.delete(`quotation/${id}`)
           .then(res => {
             getrow()
             Swal.fire(
@@ -127,14 +127,14 @@ const SimpleMuiTable = () => {
         )
       }
     })
-    // Axios.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
+    // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
     //     console.log(res);
     //     console.log(res.data);
 
     // })
     // getrow()
-    // Axios.delete(url).then(res => {
+    // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
     //     console.log('res', res)

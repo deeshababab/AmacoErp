@@ -269,19 +269,19 @@ const SimpleForm = ({open, handleClose}) => {
       setCustomerList(data)
       getcategory()
     
-  });
+    });
    
-    Axios.get(url+"products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       setooptions(data);
     })
-      Axios.get(url+"manufacturer").then(({ data }) => {
+    url.get("manufacturer").then(({ data }) => {
         console.log(data)
         setmanufacture(data);
      
 
 
     });
-    Axios.get(url+"categories/"+id).then(({ data }) => {
+    url.get("categories/"+id).then(({ data }) => {
       console.log(data.name)
       setsubcategory(data.name)
      
@@ -290,7 +290,7 @@ const SimpleForm = ({open, handleClose}) => {
     });
     
     
-  }, [state.password]);
+  },[]);
 
   const submitValue = () => {
     const frmdetails = {
@@ -311,7 +311,7 @@ const SimpleForm = ({open, handleClose}) => {
     }
  
     console.log(frmdetails)
-    Axios.post(url+'products', frmdetails)
+    url.post('products', frmdetails)
       .then(function (response) {
         
         console.log(response)
@@ -339,7 +339,7 @@ const SimpleForm = ({open, handleClose}) => {
   }
 
   function getcategory(e) {
-    Axios.get(url+"products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       setooptions(data);
     });
   }

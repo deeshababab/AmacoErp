@@ -100,23 +100,15 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
        
       },
       "#footer": {
-        //     display:"-webkit-box",
-        // display: "-ms-flexbox",
-        // display: "center",
+        
+        // borderTop: "1px solid #E7E7E7",
+        // textAlign: "center",
+        // padding: "20px",
+        // position: "fixed",
+        // left: "0",
+        // bottom: "0",
+        // height: "auto",
         // width: "100%",
-        // position: "absolute",
-
-        // top: "38.9cm !important",
-        // paddingRight: "12cm !important"
-        // backgroundColor: "#F8F8F8",
-        borderTop: "1px solid #E7E7E7",
-        textAlign: "center",
-        padding: "20px",
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-        height: "auto",
-        width: "100%",
         
       },
       "#table": {
@@ -238,12 +230,12 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     //   });
    
     
-  // axios.get(`https://api.mymemory.translated.net/get?q=Hello%20World!&langpair=en|ar`).then(({ data }) => {
+  // url.get(`https://api.mymemory.translated.net/get?q=Hello%20World!&langpair=en|ar`).then(({ data }) => {
   //   console.log(data)
   // })
     
     document.title = "VAT Invoice - Amaco"
-    axios.get(url + "invoice/" + id).then(({ data }) => {
+    url.get("invoice/" + id).then(({ data }) => {
       if (data) {
         console.log(data)
         setdis_per(data[0].discount_in_percentage)
@@ -265,7 +257,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         let halala =  riyal.replace("Paise", "Halala")
          
         setress(halala);
-        // axios.get(`https://api.mymemory.translated.net/get?q=${data[0].quotation.party.firm_name}!&langpair=en|ar`).then(({ data }) => {
+        // url.get(`https://api.mymemory.translated.net/get?q=${data[0].quotation.party.firm_name}!&langpair=en|ar`).then(({ data }) => {
         // setarcompany(data)
         // })
         // let city1=data[0].quotation.party.city;
@@ -273,7 +265,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         // let zipcode1=data[0].quotation.party.zipcode;
         // let res1=city1.concat(street1,zipcode1);
         // console.log(res1)
-        // axios.get(`https://api.mymemory.translated.net/get?q=${res1}!&langpair=en|ar`).then(({ data }) => {
+        // url.get(`https://api.mymemory.translated.net/get?q=${res1}!&langpair=en|ar`).then(({ data }) => {
         // setaraddress(data.responseData.translatedText)
         // })
       
@@ -337,7 +329,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     // }).then((result) => {
     //   if (result.value) {
 
-    //     axios.put(url + '/' + id, postatus)
+    //     url.put(url + '/' + id, postatus)
     //       .then(res => {
 
     //  let activeLayoutSettingsName = settings.activeLayout + "Settings";
@@ -352,7 +344,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     //             },
     //           },
     //         });
-    axios.put(url + 'invoice/' + id)
+    url.put('invoice/' + id)
       .then(res => {
 
         window.location.href = `../invview/${id}`
@@ -389,7 +381,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        axios.delete(url + `invoice/${id}`)
+        url.delete(`invoice/${id}`)
           .then(res => {
 
 
@@ -439,14 +431,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </IconButton>
         </Link>
         <div>
-          <Button
+          {/* <Button
             className="mr-4 py-2"
             color="primary"
             variant="outlined"
             onClick={() => invoicegenrate({ mode: "on" })}
           >
             Delivery Note
-          </Button>
+          </Button> */}
           <Button
             className="mr-4 py-2"
             style={{ color: 'red' }}

@@ -105,7 +105,7 @@ const optionss = [
     }
  
     console.log(frmdetails)
-    Axios.post(url+'expense', frmdetails)
+    url.post('expense', frmdetails)
       .then(function (response) {
         
         console.log(response)

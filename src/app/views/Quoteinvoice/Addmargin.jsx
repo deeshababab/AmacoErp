@@ -81,7 +81,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
     // setcname('')
    
 
-    Axios.post(url+'categories', frmdetails)
+    url.post('categories', frmdetails)
       .then(function (response) {
         Swal.fire({
           title: 'Success',
@@ -119,7 +119,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
 
@@ -142,7 +142,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
 
   useEffect(() => {
     
-    Axios.get(url+`product-quotation-detail/${productid}`).then(({ data }) => {
+    url.get(`product-quotation-detail/${productid}`).then(({ data }) => {
     if (isAlive) setmarginList(data);
       console.log(data)
 
@@ -150,7 +150,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
     
   },[])
   function getrow(e) {
-    Axios.get(url+"products-in-category").then(({ data }) => {
+    url.get("products-in-category").then(({ data }) => {
       if (isAlive) setmarginList(data);
 
     });

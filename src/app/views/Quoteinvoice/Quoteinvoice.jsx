@@ -229,7 +229,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         "Access-Control-Allow-Origin": "*",
       },
     };
-    Axios.post(url+'invoice',json)
+    url.post('invoice',json)
       .then(function (response) {
         
          
@@ -247,19 +247,19 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       })
   };
   function cancelform() {
-    history.push("/Newinvoiceview")
+    history.push(`/quote/${id}/accept`)
   }
 
   useEffect(() => {
    
-    axios.get(url+"products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setproList(data)
     // setState({
     //     ...state,
     //     item: data,
     //   }); 
     });
-    axios.get(url+"sale-quotation/"+ id).then(({ data }) => {
+    url.get("sale-quotation/"+ id).then(({ data }) => {
      
       setcname(data[0].party.firm_name)
       setqno(data[0].quotation_no)

@@ -100,7 +100,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
     
         }
       
-        Axios.post(url+'categories', frmdetails)
+        url.post('categories', frmdetails)
           .then(function (response) {
             getcategories()
             Swal.fire({
@@ -147,7 +147,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
             
             getcategories().then(({ data }) => {
@@ -185,7 +185,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
 
   useEffect(() => {
     alert(catid)
-    Axios.get(url+"categories").then(({ data }) => {
+    url.get("categories").then(({ data }) => {
       setUserList(data);
 
     });
@@ -204,7 +204,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
     return () => setIsAlive(false);
   },[])
   function getrow(e) {
-    Axios.get(url+"categories").then(({ data }) => {
+    url.get("categories").then(({ data }) => {
       setUserList(data);
 
     });

@@ -125,11 +125,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   };
 
   useEffect(() => {
-    axios.get(url+"products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setCustomerList(data)
     });
   
-    axios.get(url+"rfq/"+id).then(({ data }) => {
+    url.get("rfq/"+id).then(({ data }) => {
       setcname(data[0].party[0].fname)
       setrdate(data[0].requested_date)
       setddate(data[0].require_date)

@@ -29,6 +29,16 @@ const optionss = [
     { value: 'Vendor', label: 'Vendor' },
     { value: 'Customer', label: 'Customer' },
   ];
+  const telcode = [
+    { value: +973, label: "+973" },
+    { value: +965, label: "+965" },
+    { value: +961, label:"+961"},
+    { value: +968, label:"+968"},
+    { value: +974, label:"+974"},
+    { value: +966, label:"+966"},
+    { value: +971, label:"+971"},
+    { value: +967, label:"+967"},
+  ];
   const data = [
     { value: 'Vendor', label: 'Vendor' },
     { value: 'Customer', label: 'Customer' },
@@ -119,7 +129,7 @@ const Addparty = ({open, handleClose}) => {
    console.log(frmdetails)
      
     
-    Axios.post(url+'parties',frmdetails)
+    url.post('parties',frmdetails)
       .then(function (response) {
         Swal.fire({  
           title: 'Success',  
@@ -252,11 +262,18 @@ const resetform = () => {
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'180px'}}
+                                style={{width:'250px'}}
                                 variant="outlined"
                                 value={mobnocode||""}
-                                fullWidth
-                              />
+                                // fullWidth
+                                select
+                              >
+                                 {telcode.map((item, ind) => (
+                      <MenuItem value={item.value} key={item}>
+                        {item.label}
+                      </MenuItem>
+                    ))}
+                              </TextField>
                             <TextField
                                 className="mr-2"
                                 label="Mobile Number"
@@ -276,11 +293,18 @@ const resetform = () => {
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'180px'}}
+                                style={{width:'250px'}}
                                 variant="outlined"
                                 value={landlinecode||""}
                                 fullWidth
-                              />
+                                select
+                              >
+                                {telcode.map((item, ind) => (
+                      <MenuItem value={item.value} key={item}>
+                        {item.label}
+                      </MenuItem>
+                    ))}
+                              </TextField>
                             
                             <TextField
                                 className="ml-2"
@@ -483,11 +507,18 @@ const resetform = () => {
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'180px'}}
+                                style={{width:'200px'}}
                                 variant="outlined"
                                 value={contactcode||""}
                                 fullWidth
-                              />
+                                select
+                              >
+                                {telcode.map((item, ind) => (
+                      <MenuItem value={item.value} key={item}>
+                        {item.label}
+                      </MenuItem>
+                    ))}
+                                </TextField>
                             <TextField
                                 className="ml-2"
                                 label="Contact"

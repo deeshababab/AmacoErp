@@ -74,7 +74,7 @@ const BankDetails = () => {
   useEffect(() => {
 
 
-    Axios.get(url+"parties/" + foo).then(({ data }) => {
+    url.get("parties/" + foo).then(({ data }) => {
       setcustomercontact(data[0].contacts);
       setbankdetails(data)
      
@@ -93,7 +93,7 @@ const BankDetails = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`contact/${id}`)
+        url.delete(`contact/${id}`)
     .then(res => {
         
         Swal.fire(
@@ -121,7 +121,7 @@ const BankDetails = () => {
     
 }
 const getData = () => {
-  Axios.get(url+"parties/" + foo).then(({ data }) => {
+  url.get("parties/" + foo).then(({ data }) => {
     setcustomercontact(data[0].contacts);
     
   });

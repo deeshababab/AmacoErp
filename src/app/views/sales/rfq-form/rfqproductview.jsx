@@ -45,13 +45,13 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
       // console.log(id)
-        Axios.get(url+"products/"+id).then(({ data }) => {
+        url.get("products/"+id).then(({ data }) => {
             if (isAlive) setproductList(data[0]);
             
           
             
         }); 
-        Axios.get(url+"analyse/"+id).then(({ data }) => {
+        url.get("analyse/"+id).then(({ data }) => {
           if (isAlive) setanalysisList(data[0].analyses_details);
           // console.log(data[0].analyses_details)
           
@@ -63,7 +63,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"parties").then(({ data }) => {
+      url.get("parties").then(({ data }) => {
         if (isAlive) setproductList(data);
         // console.log(data[0].name)
     });
@@ -97,7 +97,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`parties/${id}`)
+        url.delete(`parties/${id}`)
     .then(res => {
         // console.log(res);
         // console.log(res.data);

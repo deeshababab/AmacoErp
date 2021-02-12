@@ -112,7 +112,7 @@ const SimpleForm = () => {
   useEffect(() => {
 
    
-      Axios.get(url+"parties/"+foo).then(({ data }) => {
+      url.get("parties/"+foo).then(({ data }) => {
        
       getparties()  
       if (isAlive) setUserList(data);
@@ -181,7 +181,7 @@ const SimpleForm = () => {
    
     console.log(frmdetails)
     
-    Axios.put(url+"parties/"+foo, frmdetails)
+    url.put("parties/"+foo, frmdetails)
       .then(function (response) {
         
           Swal.fire({  

@@ -167,7 +167,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     
     updateSidebarMode({ mode: "close" })
     document.title = "VAT Invoice - Amaco"
-    axios.get(url + "purchase-invoice/" + id).then(({ data }) => {
+    url.get("purchase-invoice/" + id).then(({ data }) => {
       console.log(data[0].quotation.party.firm_name)
       if (data) {
         setdis_per(data[0].discount_in_percentage)
@@ -192,7 +192,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       }
 
     })
-    axios.get(url + "quotation/" + id).then(({ data }) => {
+    url.get("quotation/" + id).then(({ data }) => {
       // setcname(data[0].party.fname)
       // setcompany(data[0].party.firm_name)
       // setcity(data[0].party.city)
@@ -263,7 +263,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     // }).then((result) => {
     //   if (result.value) {
 
-    //     axios.put(url + '/' + id, postatus)
+    //     url.put(url + '/' + id, postatus)
     //       .then(res => {
 
     //  let activeLayoutSettingsName = settings.activeLayout + "Settings";
@@ -278,7 +278,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     //             },
     //           },
     //         });
-    axios.put(url + 'invoice/' + id)
+    url.put('invoice/' + id)
       .then(res => {
 
         window.location.href = `../invview/${id}`
@@ -315,7 +315,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        axios.delete(url + `invoice/${id}`)
+        url.delete(`invoice/${id}`)
           .then(res => {
 
 

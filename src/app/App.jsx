@@ -1,7 +1,7 @@
 import "../fake-db";
 import React from "react";
 import { Provider } from "react-redux";
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import AppContext from "./contexts/AppContext";
 import history from "history.js";
 import routes from "./RootRoutes";
@@ -21,22 +21,40 @@ const App = () => {
             <GlobalCss />
             <Router history={history}>
                {/* <AuthProvider> */}
+               {/* {!localStorage.getItem('rememberMe')&&( */}
                 <MatxSuspense>
                   <Switch> 
                     {/* AUTHENTICATION PAGES (SIGNIN, SIGNUP ETC.) */}
-                    {sessionRoutes.map((item, i) => (
+                    {sessionRoutes.map((item, i) => 
+                    
+                    
                       <Route
                         key={indexedDB}
                         path={item.path}
                         component={item.component}
                       />
-                    ))}
+                    
+                    )}
                     {/* AUTH PROTECTED DASHBOARD PAGES */}
                     {/* <AuthGuard> */}
+                   {localStorage.getItem('rememberMe')&&
+                    
+                   ( 
+
                       <MatxLayout />
+                      )}  
+                    {!localStorage.getItem('rememberMe')&&
+                      
+                      history.push("/ ")
+                      // window.location.href = `../dashboard/default`;
+                    
+                      
+                    }
+
                     {/* </AuthGuard> */}
                   </Switch> 
                 </MatxSuspense>
+               {/* )} */}
               {/* </AuthProvider>  */}
             </Router>
           </MatxTheme>

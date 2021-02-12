@@ -199,11 +199,11 @@ const InvoiceForm = ({ }) => {
     return subTotal;
   };
   const setrfq= (event) => {
-    
+
    
-    axios.get(url+"parties/" + event.target.value).then(({ data }) => {
+    url.get("parties/" + event.target.value).then(({ data }) => {
       setcustomercontact(data[0].contacts);
-      
+     
    
 
       setrfqstatus(true);
@@ -261,7 +261,7 @@ const InvoiceForm = ({ }) => {
     };
     if (values.rfq_details) {
 
-    // axios.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php',formData)
+    // url.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php',formData)
 
     axios.post('http://www.amacoerp.com/amaco/php_file/controller/post.php', formData)
         .then(function (response) {
@@ -562,7 +562,7 @@ const InvoiceForm = ({ }) => {
                   </div>
                   <Divider></Divider>
  
-                  <p className="px-4">{sum} File Selected</p>} 
+                  <p className="px-4">{sum} File Selected</p>
 
                   {rfqfiles.map((item, index) => {
                    

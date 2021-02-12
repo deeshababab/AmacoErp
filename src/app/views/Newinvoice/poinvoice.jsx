@@ -160,7 +160,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
    
     updateSidebarMode({ mode: "close" })
     document.title="Purchase Order - Amaco"
-    axios.get(url+"purchase-quotation/"+id).then(({ data }) => {
+    url.get("purchase-quotation/"+id).then(({ data }) => {
      console.log(moment(data[0].updated_at).format('DD MMM YYYY'))
     // setcname(data[0].party.fname)
       setpo_number(data[0].po_number)
@@ -300,7 +300,7 @@ const deletepo = ()=>{
     cancelButtonText: 'No, keep it'
   }).then((result) => {
     if (result.value) {
-      axios.delete(url+`purchase-quotation/${id}`)
+      url.delete(`purchase-quotation/${id}`)
   .then(res => {
       
       Swal.fire(
@@ -671,7 +671,7 @@ const deletepo = ()=>{
         
                 <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">AMACO DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">QUOTATION DESCRIPTION</TableCell>
                 <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">REMARK</TableCell>
                 <TableCell className="px-0" style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">QTY</TableCell>
                 <TableCell className="px-0"style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">UOM</TableCell>
@@ -683,7 +683,7 @@ const deletepo = ()=>{
             <TableBody >
               {qdetails.map((item, index) => {
 
-                  
+                 
                 
                 return (
                   <TableRow key={index} style={{border: "1px solid rgb(0, 0, 0)"}}>

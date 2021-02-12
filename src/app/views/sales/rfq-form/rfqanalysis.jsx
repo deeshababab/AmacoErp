@@ -43,7 +43,7 @@ const SimpleMuiTable = () => {
 
     useEffect(() => {
       // console.log(id)
-        Axios.get(url+"rfq/"+id).then(({ data }) => {
+        url.get("rfq/"+id).then(({ data }) => {
             if (isAlive) setRfqList(data[0].rfq_details);
             // console.log(data[0].rfq_details)
         });
@@ -52,7 +52,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      Axios.get(url+"parties").then(({ data }) => {
+      url.get("parties").then(({ data }) => {
         if (isAlive) setRfqList(data);
     });
     return () => setIsAlive(false);
@@ -87,7 +87,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`parties/${id}`)
+        url.delete(`parties/${id}`)
     .then(res => {
         // console.log(res);
         // console.log(res.data);
@@ -111,14 +111,14 @@ const SimpleMuiTable = () => {
         )
       }
     })
-    // Axios.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
+    // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
     //     console.log(res);
     //     console.log(res.data);
         
     // })
     // getrow()
-    // Axios.delete(url).then(res => {
+    // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
     //     console.log('res', res)

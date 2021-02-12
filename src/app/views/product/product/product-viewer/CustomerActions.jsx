@@ -28,7 +28,7 @@ const CustomerActions = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
     .then(res => {
         
      
@@ -71,13 +71,13 @@ const CustomerActions = () => {
         </div>
         
         <span>
-        <Button className="mr-4 py-2 bg-secondary text-white" variant="contained" onClick={() => pushdata(foo)}>
+        <Button className="mr-4 py-2" variant="outlined" style={{border:'1px solid #379c60',color:'#379c60'}} onClick={() => pushdata(foo)}>
           <Icon className="mr-2" fontSize="small">
             edit
           </Icon>{" "}
           Edit Product
         </Button>
-        <Button className="py-2 bg-error text-white" variant="contained" onClick={() => removeData(foo)}>
+        <Button className="py-2" variant="outlined" onClick={() => removeData(foo)} style={{border:'1px solid #ff3d57',color:'#ff3d57'}}>
           <Icon className="mr-2" fontSize="small">
             delete
           </Icon>{" "}

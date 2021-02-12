@@ -64,7 +64,7 @@ const SimpleMuiTable = () => {
   const [list, setList] = useState([]);
   function handleClick(event, id) {
     console.log(id)
-    Axios.get(url + "sub-category/" + id).then(({ data }) => {
+    url.get("sub-category/" + id).then(({ data }) => {
       console.log(data)
       setsubcatList(data);
       setcatid(id)
@@ -86,7 +86,7 @@ const SimpleMuiTable = () => {
 
   useEffect(() => {
     console.log(getcategories())
-    Axios.get(url + "products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setUserList(data);
 
 
@@ -94,7 +94,7 @@ const SimpleMuiTable = () => {
 
     });
     if (catid) {
-      Axios.get(url + "categories").then(({ data }) => {
+      url.get("categories").then(({ data }) => {
         setcatList(data);
         console.log(data)
         setOriginalList(data);
@@ -104,7 +104,7 @@ const SimpleMuiTable = () => {
       });
     }
     else {
-      Axios.get(url + "categories").then(({ data }) => {
+      url.get("categories").then(({ data }) => {
         setcatList(data);
         setOriginalList(data);
         setList(data);
@@ -118,7 +118,7 @@ const SimpleMuiTable = () => {
   const [count, setCount] = useState(0);
 
   function getrow(e) {
-    Axios.get(url + "products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -172,7 +172,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it',
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url + `categories/${id}`)
+        url.delete(`categories/${id}`)
           .then(res => {
 
 
@@ -196,7 +196,7 @@ const SimpleMuiTable = () => {
   }
   const selectcategory = (user) => {
 
-    // Axios.get(url+"categorized-products/"+user)
+    // url.get(url+"categorized-products/"+user)
     //   .then(function (response) {
 
     //     setUserList(response.data)
@@ -220,7 +220,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url + `products/${id}`)
+        url.delete(`products/${id}`)
           .then(res => {
 
             getrow()

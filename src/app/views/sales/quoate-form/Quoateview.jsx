@@ -35,9 +35,20 @@ const SimpleMuiTable = () => {
     backgroundColor: "#fff",
     width: "600px",
     wordBreak: "break-all",
+    
+  }
+  const columnStyleWithWidth = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "120px",
+    wordBreak: "break-word",
+    
   }
   useEffect(() => {
-    Axios.get(url+"sales-list").then(({ data }) => {
+    url.get("sales-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
       // console.log(myJSON)
@@ -59,7 +70,7 @@ const SimpleMuiTable = () => {
   };
 
   function getrow(id) {
-    Axios.get(url+"rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       if (isAlive) setqdetails(data[0].qdetails);
     });
     return () => setIsAlive(false);
@@ -96,7 +107,7 @@ const SimpleMuiTable = () => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        Axios.delete(url+`products/${id}`)
+        url.delete(`products/${id}`)
           .then(res => {
             getrow()
             Swal.fire(
@@ -118,14 +129,14 @@ const SimpleMuiTable = () => {
         )
       }
     })
-    // Axios.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
+    // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
     //     console.log(res);
     //     console.log(res.data);
 
     // })
     // getrow()
-    // Axios.delete(url).then(res => {
+    // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
     //     console.log('res', res)
@@ -134,16 +145,33 @@ const SimpleMuiTable = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", // column title that will be shown in table
+      label: "S.No.", 
+     // column title that will be shown in table
       options: {
         filter: true,
+       
+        // cellStyle: {
+        //   width: 20,
+        //   maxWidth: 20
+        // },
+        
       },
+     
     },
     {
       name: "quotation_no", // field name in the row object
       label: "Quotation No", // column title that will be shown in table
       options: {
         filter: true,
+        wordBreak:'break-word',
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth} >  
+              <p style={{marginLeft:18}}>Quotation No</p> 
+            </TableCell>
+          )
+       }
+        
       },
     },
     {
@@ -152,7 +180,7 @@ const SimpleMuiTable = () => {
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
-            <TableCell key={index} style={columnStyleWithWidth1}>  
+            <TableCell key={index} style={columnStyleWithWidth1} >  
               <p style={{marginLeft:18}}>Firm Name</p> 
             </TableCell>
           )
@@ -203,7 +231,7 @@ const SimpleMuiTable = () => {
          
           return (
             <span>
-            <Link to={"/quote/" + tableMeta.rowData[5]}>
+            <Link to={"/quote/" + tableMeta.rowData[5]+"/new"}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
            </Tooltip>
@@ -246,7 +274,7 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        <Breadcrumb
+        {/* <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
             { name: "Sales Quotation" },
@@ -263,10 +291,11 @@ const SimpleMuiTable = () => {
               <Icon>add</Icon> Add New 
           </Button>
           </Link>
-        </div>
+        </div> */}
       </div>
       <MUIDataTable
         title={"Sales Quotation"}
+        
         data={qdetails.map((item, index) => {
        
             return [
@@ -282,14 +311,16 @@ const SimpleMuiTable = () => {
             ]
           
         })}
+        
         columns={columns}
         options={{
-          
+         
           rowsPerPageOptions: [10, 20, 40, 80, 100],
           selectableRows: "none",
           filterType: "dropdown",
           responsive: "scrollMaxHeight",
           rowsPerPage: 10,
+          
           // expandableRows: true,
           // expandableRowsOnClick: true,
           renderExpandableRow: (rowData, rowMeta) => {

@@ -135,17 +135,28 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   useEffect(() => {
     updateSidebarMode({ mode: "close" })
     document.title = "Delivery Note - Amaco"
-    axios.get(url + "invoice/" + id).then(({ data }) => {
+    url.get("delivery-notes-details/" + id).then(({ data }) => {
      
-    
-      setcreatedate(data[0].issue_date)
-      setpodetails(data[0].invoice_detail)
-      setcompany(data[0].quotation.party.firm_name)
-      setpodetails(data[0].invoice_detail)
-      setdeliveryno(data[0].delivery_no)
-      setpo(data[0].quotation.quotation_no)
+    console.log(data)
+      // setcreatedate(data[0].issue_date)
+      // setpodetails(data[0].invoice_detail)
+      // setcompany(data[0].quotation.party.firm_name)
+      // setpodetails(data[0].invoice_detail)
+      // setdeliveryno(data[0].delivery_no)
+      // setpo(data[0].quotation.quotation_no)
 
     });
+    url.get("invoice/" + id).then(({ data }) => {
+     
+      console.log(data)
+         setcreatedate(data[0].issue_date)
+         setpodetails(data[0].invoice_detail)
+         setcompany(data[0].quotation.party.firm_name)
+        setpodetails(data[0].invoice_detail)
+        setdeliveryno(data[0].delivery_no)
+        setpo(data[0].quotation.quotation_no)
+  
+      });
 
   }, [id]);
   const invoicegenrate = (sidebarSettings) => {
@@ -165,7 +176,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     }).then((result) => {
       if (result.value) {
        
-        axios.put(url + '/' + id, postatus)
+        url.put(+ '/' + id, postatus)
           .then(res => {
            
             let activeLayoutSettingsName = settings.activeLayout + "Settings";
@@ -225,7 +236,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       });
     }
     else {
-      window.location.href = "../inv"
+      window.location.href = "../dnoteview"
       let activeLayoutSettingsName = settings.activeLayout + "Settings";
       let activeLayoutSettings = settings[activeLayoutSettingsName];
       updateSettings({

@@ -355,7 +355,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   };
   const getrfq =() =>{
-    axios.get(url + "rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       setcname(data[0].party[0].firm_name)
       setrdate(moment(data[0].requested_date).format("MMMM DD, YYYY"))
       setfiles(data[0].files)
@@ -372,7 +372,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       console.log(data[0].rfq_details)
     });
 
-    axios.get(url + "products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
 
       setProductList(data)
     })
@@ -390,7 +390,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
 
-    axios.get(url + "rfq/" + id).then(({ data }) => {
+    url.get("rfq/" + id).then(({ data }) => {
       setcname(data[0].party[0].firm_name)
       setrdate(moment(data[0].requested_date).format("MMMM DD, YYYY"))
       setfiles(data[0].files)
@@ -407,7 +407,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       console.log(data[0].rfq_details)
     });
 
-    axios.get(url + "products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
 
       setProductList(data)
     })
@@ -559,6 +559,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               {invoiceItemList.map((item, index) => {
 
                 const id = item.product[0].id
+                console.log(item)
                 return (
                   <TableRow key={index}>
                     <TableCell className="pl-sm-24 capitalize" align="left">

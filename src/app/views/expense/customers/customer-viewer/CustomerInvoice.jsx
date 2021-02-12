@@ -22,7 +22,7 @@ import Swal from "sweetalert2";
 const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
-    Axios.get(url+"expense").then(({ data }) => {
+    url.get("expense").then(({ data }) => {
       console.log(data)
        setexpenseList(data);
        
@@ -42,13 +42,13 @@ const setstatus=(id)=>{
     cancelButtonText: 'No, keep it',
   }).then((result) => {
     if (result.value) {
-      Axios.put(url+`expense/${id}`).then(({ data }) => {
+      url.put(`expense/${id}`).then(({ data }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
           text: 'Updated successfully.',
         });
-        Axios.get(url+"expense").then(({ data }) => {
+        url.get("expense").then(({ data }) => {
           console.log(data)
            setexpenseList(data);
            
@@ -85,9 +85,9 @@ const removeData = (id) => {
     cancelButtonText: 'No, keep it',
   }).then((result) => {
     if (result.value) {
-      Axios.delete(url+`expense/${id}`)
+      url.delete(`expense/${id}`)
         .then(res => {
-          Axios.get(url+"expense").then(({ data }) => {
+          url.get("expense").then(({ data }) => {
             console.log(data)
              setexpenseList(data);
              

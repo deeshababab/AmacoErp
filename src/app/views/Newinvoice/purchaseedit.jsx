@@ -286,7 +286,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // setprice(parseInt(event.target.value))
   }
   const priceset = (a,b,c) => {
-    Axios.get(url+"parties/" + c).then(({ data }) => {
+    url.get("parties/" + c).then(({ data }) => {
       setproList(data[0].contacts);
       
     });
@@ -356,7 +356,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.ps_date=Quote_date
     const json = Object.assign({}, arr);
     console.log(json)
-    Axios.put(url+`purchase-quotation/${id}`, json)
+    url.put(`purchase-quotation/${id}`, json)
       .then(function (response) {
         
          
@@ -384,14 +384,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   useEffect(() => {
    
-    axios.get(url+"products").then(({ data }) => {
+    url.get("products").then(({ data }) => {
       setproList(data)
     // setState({
     //     ...state,
     //     item: data,
     //   }); 
     });
-    axios.get(url+"purchase-quotation/"+ id).then(({ data }) => {
+    url.get("purchase-quotation/"+ id).then(({ data }) => {
      console.log(data)
       // setcname(data[0].party[0].firm_name)
       setcontactid(data[0].contact.id)
