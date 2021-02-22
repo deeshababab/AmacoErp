@@ -112,6 +112,7 @@ const optionss = [
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
        history.push(`/expenseview`)

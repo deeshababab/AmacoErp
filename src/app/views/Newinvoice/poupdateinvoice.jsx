@@ -233,6 +233,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         history.push("/inv")
@@ -355,7 +356,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               errorMessages={["this field is required"]}
             /> */}
            <h5 className="font-normal capitalize">
-              <strong>Firm Name: </strong>{" "}
+              <strong>Company Name: </strong>{" "}
               <span>
                 {cname}
               </span>

@@ -18,7 +18,14 @@ import Axios from "axios";
 import logo from "../../invoice/logowhite(1).png"
 import url from "../../invoice/InvoiceService";
 import axios from "axios";
-
+const data = [
+  {"email":"admin@amacoerp.com","password":"admin123","token":"ad123"},
+  {"email":"danish@amacoerp.com","password":"danish123","token":"da123"},
+{"email":"asif@amacoerp.com","password":"asif123","token":"as123"},
+{"email":"shazli@amacoerp.com","password":"shazli123","token":"sh123"},
+{"email":"jamsheed@amacoerp.com","password":"jamsheed123","token":"ja123"},
+{"email":"anshif@amacoerp.com","password":"anshif123","token":"an123"},
+];
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   cardHolder: {
@@ -114,30 +121,33 @@ const FirebaseLogin = () => {
   const handleFormSubmit = async (event) => {
    
     setLoading(true);
-    url.post('auth/login', userInfo)
-      .then(function (response) {
-        if(response)
+    // url.post('auth/login', userInfo)
+    //   .then(function (response) {
+      let response = data.find(check => check.email === userInfo.email && check.password === userInfo.password);
+      console.log(response)
+      if(response)
         {
           setLoading(false)
          
-          localStorage.setItem('rememberMe',response.data.accessToken);
-          localStorage.setItem('user', response.data.user.fname );
-          console.log(response)
-          
+          // localStorage.setItem('rememberMe',response.data.accessToken);
+          // localStorage.setItem('user', response.data.user.fname );
+          localStorage.setItem('rememberMe',response.token)
+          localStorage.setItem('user',response.email)
           // history.push("/dashboard/default");
           window.location.href = `../dashboard/default`
           
         }
         else{
+          console.log(response)
           setMessage("Email or password Incorrect. ")
           setLoading(false)
 
         }
         
-      })
-      .catch(function (error) {
+      // })
+      // .catch(function (error) {
         
-      })
+      // })
     // try {
     //   await signInWithEmailAndPassword(userInfo.email, userInfo.password);
      

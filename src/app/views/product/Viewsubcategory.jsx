@@ -408,7 +408,9 @@ const SimpleMuiTable = () => {
           ]}
         />
       <div className="flex justify-end p-4" >
+      
         <TextField
+          className="mt-4"
           onChange={handleInputChange}
           InputProps={{
             startAdornment: (
@@ -418,6 +420,16 @@ const SimpleMuiTable = () => {
             ),
           }}
         ></TextField>
+        <Button className="py-2 ml-4"
+           color="primary"
+           size="small"
+           variant="outlined"
+           onClick={() => {
+            setShouldOpenEditorDialog(true);
+          }} >
+          <Icon>add</Icon>
+          Add New
+        </Button>
       </div>
       </div>
       </div>
@@ -433,7 +445,7 @@ const SimpleMuiTable = () => {
 
           <Grid container spacing={3}>
           
-            <Card elevation={20} className="p-2" style={{ maxWidth: 50,maxHeight: 50,marginTop:10, whiteSpace: 'pre-line' }} onClick={() => {
+            {/* <Card elevation={20} className="p-2" style={{ maxWidth: 50,maxHeight: 50,marginTop:10, whiteSpace: 'pre-line' }} onClick={() => {
               setShouldOpenEditorDialog(true);
             }} >
               <Tooltip title="Add New Category">
@@ -442,26 +454,50 @@ const SimpleMuiTable = () => {
 
 
               </Tooltip>
-            </Card>
+            </Card> */}
            
             {catList.map((item, ind) => (
               <Grid item xs>
                 <Card elevation={20} style={{ minWidth: 300, whiteSpace: 'pre-line' }} className="p-2" >
-                <div className="p-5 flex justify-between">
+                <div className="text-right">
+                <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
+                        aria-haspopup="true"
+                        onClick={(event) => handleClick(event, item.id)}
+                        >
+                        <Tooltip title="Subcategory list">
+                          <Icon color="primary" style={{paddingRight:12}}>expand_more</Icon>
+                        </Tooltip>
+                      </IconButton>
+                      </div>
+                      <Menu
 
-
-
-
-
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={() => {
+                          setShouldOpenEditorDialog(true);
+                          setAnchorEl(null)
+                        }}>
+                      <Icon align="left">add</Icon> Add Sub Category
+                      </MenuItem>
+                        {subcatList.map((item) => (
+                          <MenuItem value={item.id} key={item.id} onClick={() => selectcategory(item.id)}>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.name}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                <div className="pb-5 flex justify-between">
                     <div style={{ display: 'flex', marginLeft: '0.5rem' }}>
 
                       <strong><h6 align="center" style={{ display: 'inline-block'}} >{item.name}</h6></strong>
                       </div>
-                      <div className="px-4 flex ">
-                      <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
+                      <div className="px-4">
+                      {/* <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
                         aria-haspopup="true"
                         onClick={(event) => handleClick(event, item.id)}
-                        style={{marginRight:'0.5rem'}}
+                        style={{marginRight:'0.5rem',paddingTop:0}}
                         >
                         <Tooltip title="Subcategory list">
                           <Icon color="primary" style={{paddingRight:12}}>expand_more</Icon>
@@ -478,14 +514,14 @@ const SimpleMuiTable = () => {
                           setShouldOpenEditorDialog(true);
                           setAnchorEl(null)
                         }}>
-                          Add Sub Category
+                      <Icon align="left">add</Icon> Add Sub Category
                       </MenuItem>
                         {subcatList.map((item) => (
                           <MenuItem value={item.id} key={item.id} onClick={() => selectcategory(item.id)}>
-                            {item.name}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.name}
                           </MenuItem>
                         ))}
-                      </Menu>
+                      </Menu> */}
                       </div>
                     </div>
                     {/* <p className="m-0 " style={{color:'blue'}}>{item.name}</p> */}

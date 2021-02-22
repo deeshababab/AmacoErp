@@ -132,7 +132,7 @@ const columns = [
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidthSno}>  
-          <p align="center">S.No.</p> 
+          <span align="center">S.No.</span> 
         </TableCell>
       )
    },
@@ -146,7 +146,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <p style={{paddingLeft:15}}>Company Name</p>
+            <span style={{paddingLeft:15}}>Company Name</span>
           </TableCell>
         )
      },
@@ -159,7 +159,7 @@ const columns = [
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidth}>  
-          <p style={{paddingLeft:15}}>Address</p>
+          <span style={{paddingLeft:15}}>Address</span>
         </TableCell>
       )
    },
@@ -251,6 +251,7 @@ const columns = [
           Add New
           </Button>
           </Link>
+          
           </div>
           </div>
           </div>
@@ -264,7 +265,7 @@ const columns = [
           
                         ++index,
                         item.firm_name,
-                        (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+",":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
+                        (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+", \n":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
                         item.vat_no,
                         item.contact,
                         item.id,

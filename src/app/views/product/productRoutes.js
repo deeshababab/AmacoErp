@@ -10,6 +10,10 @@ const productRoutes = [
     component: React.lazy(() => import("./producthistory")),
   },
   {
+    path: "/demo",
+    component: React.lazy(() => import("./demo")),
+  },
+  {
     path: "/product/updateproduct",
     component: React.lazy(() => import("./Updateproduct")),
   },
@@ -29,10 +33,7 @@ const productRoutes = [
     path: "/product/Addcategory",
     component: React.lazy(() => import("./Addcategory")),
   },
-  {
-    path: "/demo",
-    component: React.lazy(() => import("./demo")),
-  },
+ 
   {
     path: "/manufacture",
     component: React.lazy(() => import("./manufacture")),

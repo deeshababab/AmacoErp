@@ -19,7 +19,7 @@ import { Link,useParams } from "react-router-dom";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import url, {getcategories,getProductList,getVendorList}from "../invoice/InvoiceService"
-
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice }) => {
   const [state, setState] = useState({
     name: "abc",
@@ -76,7 +76,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
 
           product_id:catid, 
           party_id: cname,
-          price: cprice,
+          price: parseFloat(cprice).toFixed(2),
           
     
     
@@ -88,6 +88,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
             Swal.fire({
               title: 'Success',
               type: 'success',
+              icon:'success',
               text: 'Data saved successfully.',
             });
             url.get("products/" + catid).then(({ data }) => {
@@ -276,15 +277,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
             
 
             <Grid item sm={6} xs={12}>
-              <TextValidator
+            <CurrencyTextField
                 className="w-full mb-4"
-                label="price"
-                onChange={e => setcprice(e.target.value)
-                }
-                variant="outlined"
-                type="textarea"
-                name="cprice"
-                value={cprice}
+                label="Price"
+			          variant="outlined"
+			          value={cprice}
+                fullWidth
+			          currencySymbol="SAR"
+			          onChange={(event, value)=> setcprice(value)}
               />
               
             </Grid>

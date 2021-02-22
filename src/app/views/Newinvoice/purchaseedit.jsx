@@ -88,6 +88,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
+  const [pricelist, setpricelist] = useState([]);
   
   let calculateAmount=[];
   const history = useHistory();
@@ -374,7 +375,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       })
   };
   function cancelform() {
-    history.push("/Newinvoiceview")
+    history.push(`/poinvoice/${id}`)
   }
   
   const handleDialogClose = () => {
@@ -392,8 +393,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     //   }); 
     });
     url.get("purchase-quotation/"+ id).then(({ data }) => {
-     console.log(data)
+    
       // setcname(data[0].party[0].firm_name)
+      console.log(data[0].quotation_details)
+      // setpricelist(data[0].product_price_list)
       setcontactid(data[0].contact.id)
       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
@@ -540,8 +543,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" >Rfq description</TableCell>
               <TableCell className="px-0" >Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0"style={{width:'80px'}}>Total</TableCell>
+              <TableCell className="px-0" style={{width:'200px'}}>Pprice</TableCell>
+              <TableCell className="px-0"style={{width:'200px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
                <TableCell className="px-0">Action</TableCell> 
             </TableRow>
@@ -549,7 +552,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item)
+
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -623,7 +626,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
                   <TextValidator
                       label="Unit Price"
                       variant="outlined"
@@ -634,15 +637,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       fullWidth
                       value={item.purchase_price? item.purchase_price:""}
-                     
+                      select
                       
                       
                     >
-                       {/* {item.product[0].product_price.map((item) => (
-                          <MenuItem value={item.price} key={item.id}>
-                           {item.price}-{item.party.firm_name}
+                       {item.product_price_list.map((item) => (
+                          <MenuItem value={item.price} key={item.price}>
+                           {item.price}-{item.firm_name}
                           </MenuItem>
-                        ))}  */}
+                        ))} 
                     </TextValidator>
                     
                   </TableCell> 
@@ -651,7 +654,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
                     <TextValidator
                       label="QTotal"
                       

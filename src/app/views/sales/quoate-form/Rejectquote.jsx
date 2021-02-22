@@ -33,7 +33,7 @@ const RejectQuote = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "600px",
+    width: "580px",
     wordBreak: "break-all",
     
   }
@@ -43,7 +43,7 @@ const RejectQuote = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "120px",
+    width: "140px",
     wordBreak: "break-word",
     
   }
@@ -176,12 +176,12 @@ const RejectQuote = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Firm_Name", // column title that will be shown in table
+      label: "Company Name", // column title that will be shown in table
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1} >  
-              <p style={{marginLeft:18}}>Firm Name</p> 
+              <p style={{marginLeft:18}}>Company Name</p> 
             </TableCell>
           )
        }
@@ -303,7 +303,7 @@ const RejectQuote = () => {
               item.quotation_no,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
-              parseFloat(item.net_amount).toFixed(2),
+              parseFloat(item.net_amount).toLocaleString(undefined, {maximumFractionDigits:2}),
               item.id
               // item.party[index].firm_name,
               // item.requested_date,

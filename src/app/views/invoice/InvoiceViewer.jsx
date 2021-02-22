@@ -194,7 +194,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
 
   useEffect(() => {
-    updateSidebarMode({ mode: "close" })
+    // updateSidebarMode({ mode: "close" })
 
     document.title = "Request for quoatation - Amaco"
     url.get("rfq/" + id).then(({ data }) => {
@@ -238,7 +238,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     //   getInvoiceById(id).then((res) => {
     //     setState({ ...res.data });
     //   });
-  }, [id]);
+  }, []);
   const deleteRfq = ()=>{
     Swal.fire({
       title: 'Are you sure?',
@@ -259,7 +259,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           ' RFQ has been deleted.',
           'success'
         )
-        updateSidebarMode({ mode: "on" })
+        
         history.push('/sales/rfq-form/rfqview')
         
     })
@@ -284,25 +284,26 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     window.location.href = ``
   };
   const updateRfq = () => {
-    updateSidebarMode({ mode: "close" })
-    window.location.href = `../edit/${id}`
+    // updateSidebarMode({ mode: "close" })
+    // window.location.href = `../edit/${id}`
+    history.push(`../edit/${id}`)
   }
   const quoteView = (sidebarSettings) => {
-    let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    let activeLayoutSettings = settings[activeLayoutSettingsName];
-    updateSettings({
-      ...settings,
-      [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
-        leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
-          ...sidebarSettings,
-        },
-      },
-    });
+    // let activeLayoutSettingsName = settings.activeLayout + "Settings";
+    // let activeLayoutSettings = settings[activeLayoutSettingsName];
+    // updateSettings({
+    //   ...settings,
+    //   [activeLayoutSettingsName]: {
+    //     ...activeLayoutSettings,
+    //     leftSidebar: {
+    //       ...activeLayoutSettings.leftSidebar,
+    //       ...sidebarSettings,
+    //     },
+    //   },
+    // });
 
-    // history.push('/quoteedit/'+id)
-    window.location.href = `/purchaseanalysis/${id}`
+    history.push(`/purchaseanalysis/${id}`)
+    // window.location.href = `/purchaseanalysis/${id}`
   }
 
   let subTotalCost = 0;
@@ -319,10 +320,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   return (
     <div className={clsx("invoice-viewer py-4", classes.invoiceViewer)}>
       <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
-
-        <IconButton onClick={() => updateSidebarMode({ mode: "on" })}>
+        <Link to={"/sales/rfq-form/rfqview"}>
+        <IconButton >
           <Icon>arrow_back</Icon>
         </IconButton>
+        </Link>
 
         <div>
         <Button
@@ -362,69 +364,73 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             variant="outlined"
             onClick={() => quoteView({ mode: "on" })}
           >
-            Genrate Purchase Order
+            Generate Purchase Order
           </Button>
           
         </div>
       </div>
 
     <div id="print-area">
-      <header id="header">
+    <header id="header">
 
-          <div className="px-2 flex justify-between">
-            <div className="flex">
-              <div className="pr-12">
-                <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
+<div className="px-2 flex justify-between">
+  <div className="flex">
+    <div className="pr-12">
+      <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
 
-              </div>
-              {/* <div className="pr-12">
-              <h4><IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="app.channel.plug"
-                    defaultMessage="Amaco Arabia Contracting Company"
-                    values="Amaco Arabia Contracting Company"
-                  />
-                </IntlProvider></h4>
-                <h5 className="font-normal b-4 capitalize">
-                  <strong>AMACO ARABIA CONTRACTING COMPANY
-                
-                </strong>
-                </h5>
-                <h6 className="font-normal b-4 capitalize">
-                 C.R No 205500334 | VAT 810398615200003
-
-   
-                </h6>
-                
-              </div> */}
-              <div className="viewer__order-info px-4 mb-4 flex justify-between">
-              </div>
-            </div>
-            <div className="flex">
-            <div>
-    <h4 style={{color:'#1d2257',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
+    </div>
+    {/* <div className="pr-12">
+    <h4><IntlProvider locale={locale} messages={Arabic}>
         <FormattedMessage
           id="app.channel.plug"
           defaultMessage="Amaco Arabia Contracting Company"
           values="Amaco Arabia Contracting Company"
         />
       </IntlProvider></h4>
-      <h4 style={{color:'#1d2257',textAlign:'right'}}>
-        AMACO ARABIA CONTRACTING COMPANY
-    
-      </h4>
-      <h6 style={{color:'#555',textAlign:'right'}} className="font-normal b-4 capitalize">
+      <h5 className="font-normal b-4 capitalize">
+        <strong>AMACO ARABIA CONTRACTING COMPANY
+      
+      </strong>
+      </h5>
+      <h6 className="font-normal b-4 capitalize">
        C.R No 205500334 | VAT 810398615200003
 
 
       </h6>
       
+    </div> */}
+    <div className="viewer__order-info px-4 mb-4 flex justify-between">
     </div>
-            </div>
-          </div>
+  </div>
+  <div className="flex">
+  <div>
+    <h2 style={{color:'#1d2257',textAlign:'right'}}>
+      {/* <IntlProvider locale={locale} messages={Arabic}> */}
+       {/* <strong><FormattedMessage
+          id="app.channel.plug"
+          defaultMessage="Amaco Arabia Contracting Company"
+          values="Amaco Arabia Contracting Company"
+        />
+        </strong> */}
+      {/* </IntlProvider></h2> */}
+    شركة أماكو العربية للمقاولات</h2>
+
+      <h3 style={{color:'#1d2257',textAlign:'right',fontSize:20}}>
+        AMACO ARABIA CONTRACTING COMPANY
+        
+      </h3>
+      <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
+       C.R No. 205500334 | VAT No. 310398615200003
 
 
-        </header>
+      </h5>
+      
+    </div>
+  </div>
+</div>
+
+
+</header>
 
         <hr></hr>
         {/* <Divider  style={{marginBottom: '15px'}}/> */}
@@ -626,7 +632,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
        <div  class="right" style={{width: '120px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
         <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
-        
+      
         
         </footer>
     

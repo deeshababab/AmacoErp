@@ -44,10 +44,10 @@ const CustomerInfo = () => {
     <Card className="pt-6" elevation={3}>
       <div className="flex-column items-center mb-6">
         {/* <Avatar className="w-84 h-84" src="/assets/images/faces/10.jpg" /> */}
-        <h5 className="mt-4 mb-2">{userList.firm_name}</h5>
+        <h3 className="mt-4 mb-2">{userList.firm_name}</h3>
         
-        <small className="text-muted"><strong>Registration Number:</strong>{userList.registration_no}</small>
-        <small className="text-muted"><strong>Vat Number:</strong>{userList.vat_no}</small>
+        <small className="text-muted"><h5><strong>Registration Number:</strong>{userList.registration_no}</h5></small>
+        <small className="text-muted"><h5><strong>Vat Number:</strong>{userList.vat_no}</h5></small>
         <div className="flex-row">
         <small className="text-white bg-green border-radius-4 px-2 py-2px">
                 Credit Limit: <strong>{userList.credit_limit}</strong>

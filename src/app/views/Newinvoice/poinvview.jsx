@@ -683,7 +683,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                           </tr>
                           <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Bank Name</strong></td>
-                            <td style={{ height: 'auto !important' }}>National Commerical Bank</td>
+                            <td style={{ height: 'auto !important' }}>National Commercial Bank</td>
                           </tr>
                           <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Account No</strong></td>

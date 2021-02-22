@@ -229,7 +229,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   };
   const Rfqpush = () => {
 
-    updateSidebarMode({ mode: "close" })
+    // updateSidebarMode({ mode: "close" })
     history.push(`/invoice/${id}`)
 
   };
@@ -330,7 +330,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         text: 'Data saved successfully.',
       })
       .then((result) => {
-        updateSidebarMode({ mode: "close" })
+      
           history.push(`/invoice/${id}`)
        
       })
@@ -391,20 +391,21 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
     url.get("rfq/" + id).then(({ data }) => {
+      console.log(data)
       setcname(data[0].party[0].firm_name)
       setrdate(moment(data[0].requested_date).format("MMMM DD, YYYY"))
       setfiles(data[0].files)
 
       setddate(moment(data[0].require_date).format("MMMM DD, YYYY"))
       // console.log(dateFormat(data[0].requested_date, "mmmm dS, yyyy"))
-      console.log(moment(data[0].requested_date).format("MMMM DD, YYYY"))
+    
       // console.log(moment(data[0].requested_date).format("MMMM dd, yyyy").toLocaleString())
       //  setrfqdetails(data[0].rfq_details)
       setState({
         ...state,
         item: data[0].rfq_details,
       });
-      console.log(data[0].rfq_details)
+     
     });
 
     url.get("products").then(({ data }) => {
@@ -447,6 +448,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           ]}
         />
       </div>
+      <Card elevation={6} className="m-sm-30">
       <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
         <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
           <div className="viewer_actions px-4 flex justify-end">
@@ -454,10 +456,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <Button
                 type="button"
                 className="mr-4 py-2"
-                variant="text"
+                variant="outlined"
+                color="secondary"
                 onClick={() => Rfqpush()}
               >
-                Cancel
+               <Icon>cancel</Icon> Cancel
             </Button>
               <Button
                 type="submit"
@@ -486,7 +489,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 onChange={handleChange}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
-              />
+              >
+              </TextValidator>
 
             </div>
             <div className="flex justify-between px-4 mb-4">
@@ -559,7 +563,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               {invoiceItemList.map((item, index) => {
 
                 const id = item.product[0].id
-                console.log(item)
                 return (
                   <TableRow key={index}>
                     <TableCell className="pl-sm-24 capitalize" align="left">
@@ -725,6 +728,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         </div>
 
       </div>
+      </Card>
     </div>
   );
 };

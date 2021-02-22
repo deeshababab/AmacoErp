@@ -117,10 +117,11 @@ const MatxVerticalNav = ({items}) => {
             to={item.path}
             activeClassName={classes.navItemActive}
             className={clsx({
-              "flex justify-between h-44 border-radius-4 mb-2 compactNavItem whitespace-pre overflow-hidden": true,
+              "flex justify-between h-44 border-radius-4 mb-2 text-white compactNavItem whitespace-pre overflow-hidden": true,
               [classes.navItem]: true,
               [classes.compactNavItem]: mode === "compact",
             })}
+            // style={{color:"#fff"}}
           >
             <TouchRipple key={item.name} name="child" className="w-full">
               {item?.icon ? (

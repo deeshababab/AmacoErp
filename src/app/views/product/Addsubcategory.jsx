@@ -106,6 +106,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
             Swal.fire({
               title: 'Success',
               type: 'success',
+              icon:'success',
               text: 'Data saved successfully.',
             });
             

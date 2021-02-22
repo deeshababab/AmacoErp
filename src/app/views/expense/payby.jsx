@@ -3,20 +3,20 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
+  // FormControlLabel,
   Divider,
-  Switch,
+  // Switch,
   IconButton,
 } from "@material-ui/core";
-import history from "history.js";
+// import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
+// import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
+// import { generateRandomId } from "utils";
+// import { withStyles } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+// import { Link } from "react-router-dom";
+// import Axios from "axios";
 import Swal from "sweetalert2";
 import url, {getcategories}from "../invoice/InvoiceService"
 
@@ -34,33 +34,33 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   });
   const [cname, setcname] = useState('');
   const [cdescription, setcdescription] = useState('');
-  const [arr, setarr] = useState([]);
+  // const [arr, setarr] = useState([]);
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  // var found=null;
+  // const styles = {
+  //   customMaxWidth: {
+  //     maxWidth: "900px" // arbitrary value
+  //   }
+  // };
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
+  // const handleChange = (event, source) => {
+  //   event.persist();
+  //   if (source === "switch") {
+  //     setState({
+  //       ...state,
+  //       isActive: event.target.checked,
+  //     });
       
-    }
+  //   }
    
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  //   setState({
+  //     ...state,
+  //     [event.target.name]: event.target.value,
+  //   });
+  //   return () => setIsAlive(true);
+  // };
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
 
@@ -106,6 +106,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
             Swal.fire({
               title: 'Success',
               type: 'success',
+              icon:'success',
               text: 'Data saved successfully.',
             });
             

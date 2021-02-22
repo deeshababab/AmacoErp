@@ -33,7 +33,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "80px",
+    width: "100px",
     wordBreak: "break-all",
   }
   const columnStyleWithWidth1 = {
@@ -42,7 +42,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "500px",
+    width: "480px",
     wordBreak: "break-all",
   }
 
@@ -148,7 +148,7 @@ const SimpleMuiTable = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth}>  
-              <p style={{marginLeft:18}}>S.No.</p> 
+              <span style={{marginLeft:18}}>S.No.</span> 
             </TableCell>
           )
        }
@@ -163,12 +163,12 @@ const SimpleMuiTable = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Firm Name", // column title that will be shown in table
+      label: "Company Name", // column title that will be shown in table
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>Firm Name</p> 
+              <span style={{marginLeft:18}}>Company Name</span> 
             </TableCell>
           )
        }
@@ -292,7 +292,7 @@ const SimpleMuiTable = () => {
               item.po_number,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
-              (parseFloat(item.net_amount)).toFixed(2),
+              (parseFloat(item.net_amount).toLocaleString()),
               item.id
             ]
           

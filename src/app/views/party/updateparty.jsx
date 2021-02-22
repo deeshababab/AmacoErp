@@ -5,33 +5,34 @@ import {
   Button,
   Icon,
   Grid,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Checkbox,
+  // Radio,
+  // RadioGroup,
+  // FormControlLabel,
+  // Checkbox,
   TextField,
   MenuItem,
 } from "@material-ui/core";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+// import {
+//   MuiPickersUtilsProvider,
+//   KeyboardDatePicker,
+// } from "@material-ui/pickers";
 import { Breadcrumb } from "matx";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import ReactSelectMaterialUi from "react-select-material-ui";
-import Select from 'react-select';
-import Axios from "axios";
+// import DateFnsUtils from "@date-io/date-fns";
+// import ReactSelectMaterialUi from "react-select-material-ui";
+// import Select from 'react-select';
+// import Axios from "axios";
 import Swal from "sweetalert2";
-import url,{getparties} from "../invoice/InvoiceService"
-const optionss = [
-    { value: 'Vendor', label: 'vendor' },
-    { value: 'customer', label: 'customer' },
-  ];
-  const data = [
-    { value: 'vendor', label: 'vendor' },
-    { value: 'customer', label: 'customer' },
-  ];
+import url,{getparties} from "../invoice/InvoiceService";
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
+// const optionss = [
+//     { value: 'Vendor', label: 'vendor' },
+//     { value: 'customer', label: 'customer' },
+//   ];
+  // const data = [
+  //   { value: 'vendor', label: 'vendor' },
+  //   { value: 'customer', label: 'customer' },
+  // ];
   const customerList = [
      'Vendor', 
      'Customer', 
@@ -41,38 +42,38 @@ const SimpleForm = () => {
   const [state, setState] = useState({
     date: new Date(),
   });
-  const data = [
-    {
-      value: 1,
-      label: "cerulean"
-    },
-    {
-      value: 2,
-      label: "fuchsia rose"
-    },
-    {
-      value: 3,
-      label: "true red"
-    },
-    {
-      value: 4,
-      label: "aqua sky"
-    },
-    {
-      value: 5,
-      label: "tigerlily"
-    },
-    {
-      value: 6,
-      label: "blue turquoise"
-    }
-  ];
+  // const data = [
+  //   {
+  //     value: 1,
+  //     label: "cerulean"
+  //   },
+  //   {
+  //     value: 2,
+  //     label: "fuchsia rose"
+  //   },
+  //   {
+  //     value: 3,
+  //     label: "true red"
+  //   },
+  //   {
+  //     value: 4,
+  //     label: "aqua sky"
+  //   },
+  //   {
+  //     value: 5,
+  //     label: "tigerlily"
+  //   },
+  //   {
+  //     value: 6,
+  //     label: "blue turquoise"
+  //   }
+  // ];
 
-  const [selectedValue, setSelectedValue] = useState('');
+  // const [selectedValue, setSelectedValue] = useState('');
   const [Firm_Name, setFirm_name] = useState('');
-  const [email, setemail] = useState('');
-  const [contact1, setcontact1] = useState('');
-  const [contact2, setcontact2] = useState('');
+  // const [email, setemail] = useState('');
+  // const [contact1, setcontact1] = useState('');
+  // const [contact2, setcontact2] = useState('');
   const [vat_no, setvat_no] = useState('');
   const [post_box_no, setpost_box_no] = useState('');
   const [country, setcountry] = useState('');
@@ -80,9 +81,9 @@ const SimpleForm = () => {
   const [zip_code, setzip_code] = useState('');
   const [proviance, setproviance] = useState('');
   const [website, setwebsite] = useState('');
-  const [fname, setfname] = useState('');
-  const [lname, setlname] = useState('');
-  const [suffix, setsuffix] = useState('');
+  // const [fname, setfname] = useState('');
+  // const [lname, setlname] = useState('');
+  // const [suffix, setsuffix] = useState('');
   const [regno, setregno] = useState('');
   const [ob, setob] = useState('');
   const [fax, setfax] = useState('');
@@ -97,7 +98,7 @@ const SimpleForm = () => {
   const [bank_address, setbank_address] = useState('');
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
-  const [address, setaddress] = useState('');
+  // const [address, setaddress] = useState('');
   
   // get the id value
   let search = window.location.search;
@@ -105,9 +106,9 @@ const SimpleForm = () => {
   const foo =parseInt(params.get('id'));
   const [isAlive, setIsAlive] = useState(true);
   const [userList, setUserList] = useState([]);
-  const handleChangee = e => {
-    setpartytype(e.value);
-  }
+  // /const handleChangee = e => {
+  //   setpartytype(e.value);
+  // }
  
   useEffect(() => {
 
@@ -166,10 +167,10 @@ const SimpleForm = () => {
       website:website,
       city:city,
       fax:fax,
-      opening_balance:ob,
+      opening_balance:parseFloat(ob).toFixed(2),
       party_type:partytype,
       credit_days:creditdays,
-      credit_limit:creditlimit,
+      credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
       bank_address:bank_address,
@@ -186,7 +187,8 @@ const SimpleForm = () => {
         
           Swal.fire({  
             title: 'Success',  
-            type: 'success',  
+            type: 'success', 
+            icon:'success', 
             text: 'Data saved successfully.',  
           });
         history.push(`/pages/view-customer?id=${foo}`)
@@ -199,34 +201,34 @@ const SimpleForm = () => {
 }
 
 
-  const handleChange = (event) => {
-    event.persist();
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const handleChange1 = selectedOption => {
-    this.setState({ selectedOption });
-  };
+  // const handleChange = (event) => {
+  //   event.persist();
+  //   setState({
+  //     ...state,
+  //     [event.target.name]: event.target.value,
+  //   });
+  // };
+  // const handleChange1 = selectedOption => {
+  //   this.setState({ selectedOption });
+  // };
 
-  const handleDateChange = (date) => {
-    setState({ ...state, date });
-  };
-  function cancelform() {
-    window.location.href="./Viewproduct"
-  }
+  // const handleDateChange = (date) => {
+  //   setState({ ...state, date });
+  // };
+  // function cancelform() {
+  //   window.location.href="./Viewproduct"
+  // }
 
   const {
-    username,
-    firstName,
-    creditCard,
-    mobile,
-    password,
-    confirmPassword,
-    gender,
-    date,
-    selectedOption,
+    // username,
+    // firstName,
+    // creditCard,
+    // mobile,
+    // password,
+    // confirmPassword,
+    // gender,
+    // date,
+    // selectedOption,
   } = state;
 
   return (
@@ -480,41 +482,38 @@ const SimpleForm = () => {
                             />
                             </div>
                             <div className="flex mb-4">
-                            <TextField
-                                className="mr-2"
-                                label="Opening Balance"
-                                onChange={e => setob(e.target.value)}
-                                name="ob"
-                                type="text"
+                            <CurrencyTextField
+			                          label="Opening Balance"
+			                          variant="outlined"
+			                          value={ob}
                                 size="small"
-                                variant="outlined"
-                                value={ob}
                                 fullWidth
-                                
-                            />
-                            <TextField
+			                          currencySymbol="SAR"
+			                          onChange={(event, value)=> setob(value)}
+	                            />
+                            <CurrencyTextField
                                 className="ml-2"
-                                label="Credit Limit"
-                                onChange={e => setcreditlimit(e.target.value)}
-                                name="regno"
+                                label=" Credit Limits"
+			                          variant="outlined"
+			                          value={creditlimit}
+                                maximumValue="9999999"
                                 size="small"
-                                type="number"
-                                variant="outlined"
-                                value={creditlimit}
                                 fullWidth
+			                          currencySymbol="SAR"
+			                          onChange={(event, value)=> setcreditlimit(value)}
                               
                             />
                         
-                            <TextField
+                        <TextField
                                 className="ml-2"
                                 label="Credit Days"
-                                onChange={e => setcreditdays(e.target.value)}
-                                name="vat_no"
+			                          variant="outlined"
+			                          value={creditdays}
+                                maximumValue="9999999"
                                 size="small"
-                                type="text"
                                 fullWidth
-                                variant="outlined"
-                                value={creditdays}
+			                          onChange={(event)=> setcreditdays(event.target.value)}
+                              
                             />
                             </div>
                             <div className="flex mb-4">
@@ -536,10 +535,10 @@ const SimpleForm = () => {
                 variant="outlined"
                 label="Party Type"
                 size="small"
-                style={{ width: "270px" }}
                 value={partytype}
                 onChange={e => setpartytype(e.target.value)
                 } 
+                fullWidth
                 select
               >
                 {customerList.map((item) => (
@@ -548,7 +547,7 @@ const SimpleForm = () => {
                   </MenuItem>
                 ))}
               </TextField>
-                  <TextField
+                  {/* <TextField
                                 className="ml-5"
                                 label="Party Code"
                                 onChange={e => setpartycode(e.target.value)}
@@ -558,7 +557,7 @@ const SimpleForm = () => {
                                 variant="outlined"
                                 value={partycode}
                                 fullWidth
-                            />
+                            /> */}
                               </div>
                       <div className="flex mb-4">
                       <TextField

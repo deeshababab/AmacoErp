@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { borders } from '@material-ui/system';
 import converter from 'number-to-words';
 import Arabic from '../../../lang/ar.json';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider,FormattedNumber } from 'react-intl';
+// import { IntlProvider } from "react-intl-number-format"
 import { FormattedMessage } from 'react-intl';
 import moment from "moment";
+import history from "history.js";
 // import translate from 'google-translate-api';
 import {Translator, Translate} from 'react-auto-translate';
 import {
@@ -64,27 +66,23 @@ const config = {
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   
   "@global": {
-    // "@page": {
-    //   "marginTop": 0, 
-    //     "marginBottom": 0, 
-    // },
     
     
     
     "@media print": {
-      "@page": { size: 'auto', margin: 0 ,
-      "@top-left": {
-        content: "Hamlet"
-      },
-    },
-     
+      
+      
       "body, *, html": {
         visibility: "hidden",
         size: "auto",
         marginBottom: "0mm",
         content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
-        fontFamily: "Calibri",
+    
+        margin:"minimum"
+      
+
+      
        
       },
       
@@ -101,14 +99,19 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
       },
       "#footer": {
         
-        // borderTop: "1px solid #E7E7E7",
-        // textAlign: "center",
-        // padding: "20px",
-        // position: "fixed",
-        // left: "0",
-        // bottom: "0",
-        // height: "auto",
-        // width: "100%",
+        borderTop: "1px solid #E7E7E7",
+        textAlign: "center",
+        padding: "20px",
+        position: "fixed",
+        left: "0",
+        bottom: -65,
+        height: "auto",
+        width: "100%",
+        fontSize:18,
+        paddingBottom:25,
+        pageBreakAfter:"always",
+        fontFamily: "Calibri",
+        pageBreakAfter:"always"
         
       },
       "#table": {
@@ -142,6 +145,8 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         height: "100%",
         marginTop: "45px",
         marginBottom:0,
+        
+        
 
         "& *": {
           visibility: "visible",
@@ -150,9 +155,8 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
     },
   },
   invoiceViewer: {
-    "& h5": {
-      fontSize: 15,
-    },
+   
+    
   },
 }));
 
@@ -186,6 +190,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const { settings, updateSettings } = useSettings();
   const [arcompany, setarcompany] = useState("");
   const [araddress, setaraddress] = useState("");
+  const ans=new Intl.NumberFormat('en-IN', { 
+    notation: "compact",
+    compactDisplay: "short",
+    style: 'currency',
+    currency: 'INR'
+}).format(1000).replace("T", "K")
+
   const toWords = new ToWords({
     localeCode: 'en-IN',
     converterOptions: {
@@ -215,10 +226,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
   useEffect(() => {
 
-
+    console.log(ans)
    
 
-    updateSidebarMode({ mode: "close" })
+    
     myFunction()
     // translate('Ik spreek Engels', {to: 'en'}).then(res => {
     //   console.log(res);
@@ -235,6 +246,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   // })
     
     document.title = "VAT Invoice - Amaco"
+   
     url.get("invoice/" + id).then(({ data }) => {
       if (data) {
         console.log(data)
@@ -293,25 +305,28 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       });
     }
     else {
-      window.location.href = "../inv"
-      let activeLayoutSettingsName = settings.activeLayout + "Settings";
-      let activeLayoutSettings = settings[activeLayoutSettingsName];
-      updateSettings({
-        ...settings,
-        [activeLayoutSettingsName]: {
-          ...activeLayoutSettings,
-          leftSidebar: {
-            ...activeLayoutSettings.leftSidebar,
-            ...sidebarSettings,
-          },
-        },
-      });
+      
+      history.push("/inv")
+      // let activeLayoutSettingsName = settings.activeLayout + "Settings";
+      // let activeLayoutSettings = settings[activeLayoutSettingsName];
+      // updateSettings({
+      //   ...settings,
+      //   [activeLayoutSettingsName]: {
+      //     ...activeLayoutSettings,
+      //     leftSidebar: {
+      //       ...activeLayoutSettings.leftSidebar,
+      //       ...sidebarSettings,
+      //     },
+      //   },
+      // });
 
     }
 
   }
-
-
+ 
+  const counter= (i) => {
+    ++i;
+  }
   const invoicegenrate = (sidebarSettings) => {
     // alert(id)
     const postatus = {
@@ -390,8 +405,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               'Invoice has been deleted.',
               'success'
             )
-            updateSidebarMode({ mode: "on" })
-            window.location.href = "../inv"
+         
+           
+            history.push("/inv")
 
           })
 
@@ -423,6 +439,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   } = state;
 
   return (
+    <Card elevation={6} className="m-sm-30">
     <div className={clsx("invoice-viewer py-4", classes.invoiceViewer)}>
       <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
         <Link onClick={() => updateSidebarMode({ mode: "on" })}>
@@ -458,7 +475,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </div>
       </div>
 
-      <div id="print-area">
+      <div id="print-area" style={{fontFamily: "Calibri",}}>
       <header id="header">
 
 <div className="px-2 flex justify-between">
@@ -492,22 +509,26 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   </div>
   <div className="flex">
   <div>
-    <h4 style={{color:'#1d2257',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
-        <FormattedMessage
+    <h2 style={{color:'#1d2257',textAlign:'right'}}>
+      {/* <IntlProvider locale={locale} messages={Arabic}> */}
+       {/* <strong><FormattedMessage
           id="app.channel.plug"
           defaultMessage="Amaco Arabia Contracting Company"
           values="Amaco Arabia Contracting Company"
         />
-      </IntlProvider></h4>
-      <h5 style={{color:'#1d2257',textAlign:'right'}}>
+        </strong> */}
+      {/* </IntlProvider></h2> */}
+    شركة أماكو العربية للمقاولات</h2>
+
+      <h3 style={{color:'#1d2257',textAlign:'right',fontSize:20}}>
         AMACO ARABIA CONTRACTING COMPANY
-    
+        
+      </h3>
+      <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
+       C.R No. 205500334 | VAT No. 310398615200003
+
+
       </h5>
-      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
-       C.R No 205500334 | VAT 810398615200003
-
-
-      </h6>
       
     </div>
   </div>
@@ -517,22 +538,23 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 </header>
 
         <hr></hr>
-        <div className="px-4 flex justify-between">
+        <div className="px-4 pt-5 flex justify-between">
           <div className="flex">
             <div className="pr-12 px-4 mb-4">
-              <h4>VAT INVOICE</h4>
+              <h3 style={{fontSize:20}}><strong>VAT INVOICE</strong></h3>
               {vat}
             </div>
           </div>
           <div className="flex">
-            <div className="pr-12 px-4 mb-4">
+            <div className="pr-4 px-4 mb-4">
               <h4>
-                <IntlProvider locale={locale} messages={Arabic}>
+                {/* <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
                     id="vatinvoice"
 
                   />
-                </IntlProvider>
+                </IntlProvider> */}
+                <strong>فاتورة ضريبة القيمة المضافة</strong>
               </h4>
             </div>
           </div>
@@ -545,43 +567,39 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         <div className="px-4 flex justify-between">
           <div className="flex">
-            <div className="pr-12 px-4 mb-4">
+          <div className="pr-12 px-4 mb-4">
               <h5>ISSUE DATE</h5>
-              {moment(issue_date).format('DD MMM YYYY')}
+              {moment(issue_date).format('DD MMM YYYY')}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div className="pl-24 px-26 mb-4">
+            <div className="pl-20 px-26 mb-4">
               <h5>INVOICE NUMBER</h5>
               {invoiceno}
+              {/* AMC-INV-21-0205 */}
             </div>
           </div>
           <div className="flex">
-          <div className="pr-25">
+          <div className="pr-22" width="50px">
 
 
-              <h5 align="right">
-                <IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="pono"
-
-                  />
-                </IntlProvider>
-              </h5>
+              <h4 align="right">
+              ظريبه الشراء
+              </h4>
               {invoiceno}
-
+              {/* AMC-INV-21-0205 */}
             </div>
-            <div className="pr-12">
+            <div className="pr-4" width="200">
 
-              <h5 align="right">
-                <IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="podate"
-                    
-                  />
-                </IntlProvider></h5>
-              {moment(issue_date).format('DD MMM YYYY')}
+              <h4 align="right" >
+                تاريخ الاصدار
+                </h4>
+                
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{moment(issue_date).format('DD MMM YYYY')}
             </div>
           </div>
         </div>
+
+
+        
         <div className="px-4 flex justify-between">
           <div className="flex">
             <div className="pr-12 px-4 mb-4">
@@ -591,15 +609,17 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             </div>
           </div>
           <div className="flex">
-            <div className="pr-12 px-4 mb-4">
-              <h5>
-                <IntlProvider locale={locale} messages={Arabic}>
+            <div className="pr-4 px-4 mb-4">
+              <h4>
+                {/* <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
                     id="companyname"
 
                   />
-                </IntlProvider>
-              </h5>
+                </IntlProvider> */}
+                اسم الشركة وعنوانها
+
+              </h4>
               {arcompany}<br></br>
               {araddress}
 
@@ -611,38 +631,32 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <div className="pr-12 px-4 mb-4">
               <h5>P.O. NUMBER</h5>
               {/* {pono} */}
-              SVBC-PO-2010007
+              AMC-PO-21-0205
             </div>
-            <div className="pl-24 px-26 mb-4">
+            <div className="pl-22 px-26 mb-4">
               <h5>VAT NUMBER</h5>
               {vatno}
             </div>
           </div>
           <div className="flex">
-          <div className="pr-25">
+          <div className="pr-20" width="50px">
 
-
-              <h5 align="right">
-                <IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="po_no"
-
-                  />
-                </IntlProvider>
-              </h5>
-              {/* {pono} */}
-              SVBC-PO-2010007
+          <h4 align="right">
+                رقم امرالشراء
+                
+            </h4>
+            {vatno}
+              
             </div>
-            <div className="pr-12">
+            <div className="pr-4" width="200">
 
-              <h5 align="right">
-                <IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="vatno"
-
-                  />
-                </IntlProvider></h5>
-              {vatno}
+            <h4 align="right">
+                ظريبه الشراء
+              </h4>
+              {/* {pono} */}
+              {/* SVBC-PO-2010007 */}
+              AMC-PO-21-0205
+              {/* {vatno} */}
             </div>
           </div>
         </div>
@@ -672,18 +686,18 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         <Card className="mb-4" elevation={0} title="Rfq Details" borderRadius="borderRadius">
           <div className="viewer__order-info px-4 mb-4 flex justify-between">
-            <Table style={{ border: "1px solid rgb(0, 0, 0)" }}>
+            <Table style={{ border: "1px solid #ccc" }}>
               <TableHead>
-                <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid rgb(0, 0, 0)", width: "50px" }} align="center">رقم<br></br> S.No.</TableCell>
-                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">وصف<br></br> DESCRIPTION</TableCell>
+                <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid #ccc", width: "50px",fontFamily: "Calibri" }} align="center"><span style={{fontSize:15}}>رقم</span><br></br> S.No.</TableCell>
+                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid #ccc",width: "px",fontFamily: "Calibri"  }} align="center"><span style={{fontSize:15}}>وصف</span><br></br> DESCRIPTION</TableCell>
 
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)", width: "70px" }} align="center">وحدة<br></br> UOM</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">كمية<br></br>QTY</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">سعر الوحدة<br></br> UNIT PRICE</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word' }} align="center">المبلغ الخاضع للضريبة<br></br> TAXABLE AMOUNT</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word' }} align="center">القيمة الضريبية<br></br> TAX VALUE (15%)</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word'}} align="center">مجموع<br></br> TOTAL</TableCell>
+                  <TableCell className="px-0"  style={{ border: "1px solid #ccc", width: "90px",fontFamily: "Calibri" }} align="center"><span style={{fontSize:15}}>وحدة</span><br></br> UOM</TableCell>
+                  <TableCell className="px-0"  colspan={2} style={{ border: "1px solid #ccc",width: "90px",fontFamily: "Calibri"}} align="center"><span style={{fontSize:15}}>كمية</span><br></br>QTY</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri",width: "90px"}} align="center"><span style={{fontSize:15}}>سعر الوحدة</span><br></br> UNIT PRICE</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri" }} align="center"><span style={{fontSize:15}}>المبلغ الخاضع للضريبة</span><br></br> SUB TOTAL</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri" }} align="center"><span style={{fontSize:15}}>القيمة الضريبية</span><br></br>VAT AMOUNT (15%)</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri"}} align="center"><span style={{fontSize:15}}>مجموع</span><br></br> GRAND TOTAL</TableCell>
   
                 </TableRow>
               </TableHead>
@@ -693,37 +707,40 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                   return (
 
-                    <TableRow key={index} style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                      <TableCell className="pl-0" align="center" colspan={1} style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                    <TableRow key={index} style={{ border: "1px solid #ccc",fontSize:18 }}>
+                      <TableCell className="pl-0" align="center" colspan={1} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                         {index + 1}
                       </TableCell>
 
 
-                      <TableCell className="pl-0 capitalize" align="center" colspan={3} style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                      <TableCell className="pl-2 capitalize" align="left" colspan={3} style={{ border: "1px solid #ccc",wordBreak:"break-word", fontFamily: "Calibri"}}>
                         {item.product.description}
 
                       </TableCell>
 
 
-                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                         {item.product.unit_of_measure}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.quotation_detail.quantity}
+                      <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2} >
+                        {parseInt(item.quotation_detail.quantity).toLocaleString()}
 
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.quotation_detail.sell_price}
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
+
+                        {parseFloat(item.quotation_detail.sell_price).toLocaleString(undefined, {maximumFractionDigits:2})}
+      
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                        {item.quotation_detail.total_amount}
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
+                       
+                        {parseFloat(item.quotation_detail.total_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
                         {/* {item.total_amount} */}
-                        {((item.quotation_detail.total_amount * 15) / 100).toFixed(2)}
+                        {parseFloat((item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {maximumFractionDigits:2})}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
-                     {(parseFloat(item.quotation_detail.total_amount)+(item.quotation_detail.total_amount * 15) / 100).toFixed(2)}
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
+                     {(parseFloat(item.quotation_detail.total_amount)+(item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {maximumFractionDigits:2})}
                       </TableCell>
 
 
@@ -731,9 +748,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                   );
                 })}
-                <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }} rowspan={2} colspan={8}>
-                    <div className="px-4 flex justify-between">
+                <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={8}>
+                    <div className="px-4 flex justify-between" style={{ fontFamily: "Calibri" }}>
                       <div className="flex">
                         <div className="pr-12">
                           <tr>
@@ -743,15 +760,15 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                               </h5>
                             </td>
                           </tr>
-                          <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 14, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Bank Name</strong></td>
-                            <td style={{ height: 'auto !important' }}>National Commerical Bank</td>
+                            <td style={{ height: 'auto !important' }}>National Commercial Bank</td>
                           </tr>
-                          <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 14, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Account No</strong></td>
                             <td style={{ height: 'auto !important' }}>6000000242200</td>
                           </tr>
-                          <tr style={{ height: 5, fontSize: 13, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 14, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>IBAN No</strong></td>
                             <td style={{ height: 'auto !important' }}>SA3610000006000000242200</td>
                           </tr>
@@ -760,54 +777,73 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word' }}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }}>
                     المبلغ الخاضع للضريبة
                   <br></br>
-                 TAXABLE AMOUNT
+                 SUB TOTAL
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word' }}>
-                    {total_value}
-                  </TableCell>
+                  
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
+                {parseFloat(total_value).toLocaleString(undefined, {maximumFractionDigits:2})}
+          
+    
+                </TableCell>
 
                 </TableRow>
-                {/* <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                {/* <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc" }}>
                    
                   <br></br>
                    Discount
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc" }}>
                     {vat_in_value}
                   </TableCell>
                 </TableRow> */}
-                <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word' }}>
+                <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} >
                     القيمة الضريبية
                   <br></br>
-                  TAX VALUE (15%)
+                  TOTAL VAT AMOUNT (15%)
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                    {vat_in_value}
-                  </TableCell>
+                  
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
+                {parseFloat(vat_in_value).toLocaleString(undefined, {maximumFractionDigits:2})}
+          
+    
+                </TableCell>
                 </TableRow>
-                <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0 capitalize" colspan={8} style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0 capitalize" colspan={8} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
-                        <div className="pr-12">
+                        <div className="pr-12" style={{wordBreak:'break-word'}}>
 
-                          <strong>TOTAL IN WORDS</strong>  {ress}
+                          <strong>TOTAL IN WORDS</strong><br></br>{ress}
                         </div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                    TOTAL INC.VAT
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word" }} >
+                  المجموع الكلي <br></br>
+                  GRAND TOTAL
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                    {net_amount}
-                  </TableCell>
+                 
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
+                {parseFloat(net_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
+          
+    
+                </TableCell>
                 </TableRow>
 
               </TableBody>
@@ -850,6 +886,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                  Received By
               </div>
           </div>
+          
+          
 
         </Card>
         <div >
@@ -857,6 +895,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
 
         <footer id="footer" style={{ visibility: "hidden" }}>
+        
         <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
           
           <span style={{color:'#fff'}}> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
@@ -864,22 +903,23 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
          <div class="main" style={{width:'100%'}}> 
        <div  class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
-        <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
+        <div id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</div>
         </div>
+        <h6 className="align-center mt-0">Page 1 of 1</h6>
         
         
-        </footer>
+        
+      </footer>
         
           
-        {/* <p>
-          <span style={{'borderTop': '25px solid #00008B','borderRight': '50px solid transparent','width': '10%',marginRight:'10%',alignItems:'center',paddingLeft:'auto'}}>E-mail: bsales@amaco.com.sa | website: www.amaco.com.sa</span>
-          
-        </p> */}
+       
+        
       </div>
 
 
 
     </div>
+    </Card>
 
 
   );

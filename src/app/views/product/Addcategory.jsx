@@ -82,6 +82,7 @@ const MemberEditorDialog = ({ uid, open, handleClose }) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         getcategories()

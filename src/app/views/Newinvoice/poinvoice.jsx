@@ -27,7 +27,7 @@ import useSettings from '../../hooks/useSettings';
 import apiurl from '../../../config';
 import url from "../invoice/InvoiceService";
 import Arabic from '../../../lang/ar.json';
-import { IntlProvider } from 'react-intl';
+import { IntlProvider,FormattedNumber } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import Swal from "sweetalert2";
 import Axios from "axios";
@@ -35,7 +35,9 @@ import history from "history.js";
 import moment from "moment";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { ToWords } from 'to-words';
 const locale = navigator.language;
+
 
 // import Image from 'react-image-resizer';
 
@@ -102,6 +104,9 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         "& *": {
           visibility: "visible",
         },
+         "& *": {
+          visibility: "visible",
+        },
       },
     },
   },
@@ -148,6 +153,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const { settings, updateSettings } = useSettings();
   const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [res, setres] = useState("");
+  const [ress, setress] = useState("");
+  const toWords = new ToWords({
+    localeCode: 'en-IN',
+    converterOptions: {
+      currency: true,
+      ignoreDecimal: false,
+      ignoreZeroCurrency: false,
+    }
+  });
   function handleClose() {
     setAnchorEl(null);
   }
@@ -158,7 +173,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
   useEffect(() => {
    
-    updateSidebarMode({ mode: "close" })
+    // updateSidebarMode({ mode: "close" })
     document.title="Purchase Order - Amaco"
     url.get("purchase-quotation/"+id).then(({ data }) => {
      console.log(moment(data[0].updated_at).format('DD MMM YYYY'))
@@ -186,9 +201,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       setdelivery_time(data[0].delivery_time)
       setcontactperson(data[0].contact.fname)
       setcontactpersonemail(data[0].contact.email)
-      setcontactpersoncontact(data[0].contact.mobno)
+      setcontactpersoncontact(data[0].party.contact)
       setdesignation(data[0].contact.designation)
       setvendor_id(data[0].party.vendor_id)
+      let words = toWords.convert(parseFloat(data[0].net_amount));
+        let riyal = words.replace("Rupees", "Riyals");
+        let halala =  riyal.replace("Paise", "Halala")
+         
+        setress(halala);
 
 
     });
@@ -217,25 +237,27 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   else
   {
     window.location.href=`../Newinvoiceview`
-    let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    let activeLayoutSettings = settings[activeLayoutSettingsName];
-    updateSettings({
-      ...settings,
-      [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
-        leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
-          ...sidebarSettings,
-        },
-      },
-    });
+    history.push("/Newinvoiceview")
+    // let activeLayoutSettingsName = settings.activeLayout + "Settings";
+    // let activeLayoutSettings = settings[activeLayoutSettingsName];
+    // updateSettings({
+    //   ...settings,
+    //   [activeLayoutSettingsName]: {
+    //     ...activeLayoutSettings,
+    //     leftSidebar: {
+    //       ...activeLayoutSettings.leftSidebar,
+    //       ...sidebarSettings,
+    //     },
+    //   },
+    // });
      
   }
 
   }
   const editpurchase =() =>{
-    updateSidebarMode({ mode: "on" })
-    window.location.href=`../purchaseedit/${id}`
+    
+    // window.location.href=`../purchaseedit/${id}`
+    history.push(`/purchaseedit/${id}`)
     
   }
   const invoicegenrate= (sidebarSettings) => {
@@ -308,7 +330,8 @@ const deletepo = ()=>{
         'Purchase Order has been deleted.',
         'success'
       )
-      updateSidebarMode({ mode: "on" })
+      
+      history.push("/Newinvoiceview")
       // history.push('/quoateview')
       
   })
@@ -343,13 +366,14 @@ const deletepo = ()=>{
   } = state;
 
   return (
+    <Card elevation={6} className="m-sm-30">
     <div className={clsx("invoice-viewer py-4", classes.invoiceViewer)}>
       <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
-        {/* <Link to="/sales/rfq-form/rfqview"> */}
-          <IconButton onClick={() =>  updateSidebarMode({ mode: "on" })}>
+        <Link to="/Newinvoiceview"> 
+          <IconButton >
             <Icon>arrow_back</Icon>
           </IconButton>
-        {/* </Link> */}
+        </Link>
         <div>
           {/* <Button
             className="mr-4 py-2"
@@ -411,87 +435,95 @@ const deletepo = ()=>{
         </div>
       </div>
 
-       <div id="print-area"> 
+       <div id="print-area" style={{fontFamily: "Calibri"}}> 
       
        <header id="header">
 
-          <div className="px-2 flex justify-between">
-            <div className="flex">
-              <div className="pr-12">
-                <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
+<div className="px-2 flex justify-between">
+  <div className="flex">
+    <div className="pr-12">
+      <img src={logo} alt="this is car image" style={{ marginLeft: '15px', width: 237 }} />
 
-              </div>
-              {/* <div className="pr-12">
-              <h4><IntlProvider locale={locale} messages={Arabic}>
-                  <FormattedMessage
-                    id="app.channel.plug"
-                    defaultMessage="Amaco Arabia Contracting Company"
-                    values="Amaco Arabia Contracting Company"
-                  />
-                </IntlProvider></h4>
-                <h5 className="font-normal b-4 capitalize">
-                  <strong>AMACO ARABIA CONTRACTING COMPANY
-                
-                </strong>
-                </h5>
-                <h6 className="font-normal b-4 capitalize">
-                 C.R No 205500334 | VAT 810398615200003
-
-   
-                </h6>
-                
-              </div> */}
-              
-            </div>
-            <div className="flex">
-            <div>
-    <h4 style={{color:'#1d2257',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
+    </div>
+    {/* <div className="pr-12">
+    <h4><IntlProvider locale={locale} messages={Arabic}>
         <FormattedMessage
           id="app.channel.plug"
           defaultMessage="Amaco Arabia Contracting Company"
           values="Amaco Arabia Contracting Company"
         />
       </IntlProvider></h4>
-      <h5 style={{color:'#1d2257',textAlign:'right'}}>
-        AMACO ARABIA CONTRACTING COMPANY
-    
+      <h5 className="font-normal b-4 capitalize">
+        <strong>AMACO ARABIA CONTRACTING COMPANY
+      
+      </strong>
       </h5>
-      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
+      <h6 className="font-normal b-4 capitalize">
        C.R No 205500334 | VAT 810398615200003
 
 
       </h6>
       
+    </div> */}
+    <div className="viewer__order-info px-4 mb-4 flex justify-between">
     </div>
-            </div>
-          </div>
+  </div>
+  <div className="flex">
+  <div>
+    <h2 style={{color:'#1d2257',textAlign:'right'}}>
+      {/* <IntlProvider locale={locale} messages={Arabic}> */}
+       {/* <strong><FormattedMessage
+          id="app.channel.plug"
+          defaultMessage="Amaco Arabia Contracting Company"
+          values="Amaco Arabia Contracting Company"
+        />
+        </strong> */}
+      {/* </IntlProvider></h2> */}
+    شركة أماكو العربية للمقاولات</h2>
+
+      <h3 style={{color:'#1d2257',textAlign:'right',fontSize:20}}>
+      
+        AMACO ARABIA CONTRACTING COMPANY
+        
+      </h3>
+      <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
+       C.R No. 205500334 | VAT No. 310398615200003
 
 
-        </header>
+      </h5>
+      
+    </div>
+  </div>
+</div>
+
+
+</header>
+
 
 
         <hr></hr>
         {/* <Divider  style={{marginBottom: '15px'}}/> */}
-        <div className="viewer__order-info px-4 mb-4 flex justify-between">
-          <div>
-            <h5 className="font-normal t-4 capitalize">
+        <div className="viewer__order-info px-4 mb-4 pt-5 flex justify-between">
+          <div className="ml-2">
+          <h3 style={{fontSize:20}}><strong>PURCHASE ORDER</strong></h3>
+            {/* <h5 className="font-normal t-4 capitalize">
               <strong>P.O No: </strong>{" "}
              
                 {po_number}
               
-            </h5>
+            </h5> */}
           </div>
           <div className="text-center">
-            <h4><u>PURCHASE ORDER</u></h4>
+            {/* <h4><u>PURCHASE ORDER</u></h4> */}
            
           </div>
           <div className="text-right">
-            <h5 className="font-normal capitalize">
+            {/* <h5 className="font-normal capitalize">
               <strong>RFQ ID: </strong>{" "}
               <span>
               {rno}
               </span>
-            </h5>
+            </h5> */}
             {/* <h5 className="font-normal capitalize">
               <strong>Date: </strong>{" "}
               <span>
@@ -516,48 +548,56 @@ const deletepo = ()=>{
     
   </Grid> */}
        
-        <div className="viewer__order-info px-4 mb-4 flex justify-between">
-          <div>
-          <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+        <div className="viewer__order-info px-4 mb-4  flex justify-between">
+          <div className="ml-2">
+          <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <h5 className="font-normal t-4 capitalize">
               <strong>Buyer Details </strong>{" "}
             </h5>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Attn.</strong></td>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>Attention.</strong></td>
               <td style={{ height: 'auto !important' }}>{contactperson}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Designation</strong></td>
               <td style={{ height: 'auto !important' }}>{designation}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Company</strong></td>
               <td style={{ height: 'auto !important' }}>{company}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Address</strong></td>
               <td style={{ height: 'auto !important' }}>{street}-{city},{pono} {zipcode}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Email-Id</strong></td>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>Email Id</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersonemail}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Contact</strong></td>
               <td style={{ height: 'auto !important' }}>{contactpersoncontact}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>PO Date</strong></td>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>P.O. Date</strong></td>
               <td style={{ height: 'auto !important' }}>{rdate}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>C.R No</strong></td>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>C.R. No.</strong></td>
               <td style={{ height: 'auto !important' }}>{regno}</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>VAT No</strong></td>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>VAT No.</strong></td>
               <td style={{ height: 'auto !important' }}>{vatno}</td>
+            </tr> 
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>P.O. No.</strong></td>
+              <td style={{ height: 'auto !important' }}>{po_number}</td>
+            </tr> 
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+              <td style={{ height: 'auto !important' }}><strong>RFQ ID</strong></td>
+              <td style={{ height: 'auto !important' }}>{rno}</td>
             </tr>    
             
             
@@ -572,7 +612,7 @@ const deletepo = ()=>{
             {/* <h4><u>REQUEST FOR QUOTATION</u></h4> */}
 
           </div>
-          <div className="text-right">
+          <div className="text-right mr-2">
 
             <tr>
               <td>
@@ -581,31 +621,31 @@ const deletepo = ()=>{
                 </h5>
               </td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Submitted By</strong></td>
               <td style={{ height: 'auto !important' }}>Mr.Abbas Ahamed Shazli</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><strong>Designation</strong></td>
               <td >Business Development Manager - ISD Division</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td><strong>Company</strong></td>
-              <td>AMACO ARABIA CONTRACTING COMPANY</td>
+              <td>Amaco Arabia Contracting Company</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td><strong>Address</strong></td>
               <td>PO BOX 7452, AI Jubail 31951, KSA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
               <td><strong>E-mail ID</strong></td>
               <td>ABBAS@AMACO.COM.SA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td><strong>Mob/Tel.</strong></td>
               <td>535515212</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 13,textAlign: 'left' }}>
+            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td><strong>Vendor Id.</strong></td>
               <td>{vendor_id}</td>
             </tr>
@@ -643,7 +683,7 @@ const deletepo = ()=>{
         </div> */}
           {/* <div className="viewer__order-info px-4 mb-4 flex justify-between">
         <Table>  
-        <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
+        <TableRow style={{border: "1px solid #ccc"}}>
         <h6 align="center" style={{marginTop:"5px"}}>SUBJECT : Quotation for General Items</h6>
       </TableRow>
       </Table>
@@ -666,18 +706,18 @@ const deletepo = ()=>{
           <Table>  
           <TableHead>
               <TableRow>
-                <TableCell className="pl-0" colspan={1} style={{border: "1px solid rgb(0, 0, 0)",width:"50px"}} align="center">S.No.</TableCell>
+                <TableCell className="pl-0" colspan={2} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri"}} align="center">S.No.</TableCell>
                 
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">RFQ DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",}} width="0px" align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">QUOTATION DESCRIPTION</TableCell>
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">REMARK</TableCell>
-                <TableCell className="px-0" style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">QTY</TableCell>
-                <TableCell className="px-0"style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">UOM</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri"}}  width="300px" align="center">QUOTATION DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",width:200}}  align="center">REMARK</TableCell>
+                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:90}}  align="center">QTY</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri"}}  align="center">UOM</TableCell>
                 
-                <TableCell className="px-0"style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">UNIT PRICE</TableCell> 
-                <TableCell className="px-0"style={{border: "1px solid rgb(0, 0, 0)"}}  align="center">TOTAL</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri"}}  align="center">UNIT PRICE</TableCell> 
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri"}}  align="center">TOTAL</TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -686,37 +726,42 @@ const deletepo = ()=>{
                  
                 
                 return (
-                  <TableRow key={index} style={{border: "1px solid rgb(0, 0, 0)"}}>
-                    <TableCell className="pl-0" align="center" colspan={1} style={{border: "1px solid rgb(0, 0, 0)"}} >
+                  <TableRow key={index} style={{border: "1px solid #ccc"}}>
+                    <TableCell className="pl-0" align="center" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",}} >
                       {index + 1}
                     </TableCell>
                     
 
-                    <TableCell className="pl-0 capitalize" align="center" colspan={3}  style={{border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word'}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}}>
                      {item.description}
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" colspan={3}  style={{border: "1px solid rgb(0, 0, 0)",wordBreak:'break-word'}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}}>
                      {item.product.description}
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid rgb(0, 0, 0)"}}>
+                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
                      {item.remark}
 
                     </TableCell>
                     
-                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid rgb(0, 0, 0)"}}>
-                    {item.quantity}
+                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                    {parseInt(item.quantity).toLocaleString()}
+
+                    
                       
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid rgb(0, 0, 0)"}}>
+                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
                     {item.product.unit_of_measure}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >
-                    {item.purchase_price}
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} >
+                   
+                    {parseFloat(item.purchase_price).toLocaleString(undefined, {maximumFractionDigits:2})}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}>
-                   {item.total_amount}
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                   
+                   {parseFloat(item.total_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
+          
                     </TableCell>
                     
                     {/* <TableCell className="pl-0 capitalize" align="left">
@@ -730,70 +775,142 @@ const deletepo = ()=>{
                   </TableRow>
                 );
               })}
-              <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
-            <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={12}>TOTAL VALUE</TableCell>
-            <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >SAR</TableCell>
-            <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
+              <TableRow style={{border: "1px solid #ccc"}}>
+              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
+              </TableCell>
+            <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} colspan={2}>SUB TOTAL</TableCell>
+            <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+              <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}
                 >
-                   {total_value}
+                   
+                   {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word',fontFamily: "Calibri"}}>
+                    <FormattedNumber value={total_value} currency={"SAR"} style="currency" />
+                    </IntlProvider> */}
+                    {parseFloat(total_value).toLocaleString(undefined, {maximumFractionDigits:2})}
                     
                 </TableCell>
                   
                  
               </TableRow>
-              <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
-             
-                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} colspan={12}>VAT(15%)</TableCell>
-                  <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >SAR</TableCell>
-                 <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
+              <TableRow style={{border: "1px solid #ccc"}}>
+
+              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
+                </TableCell>
+      
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px" colspan={2}>TOTAL VAT AMOUNT (15%)</TableCell>
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px"
+                
                  >
-                  {vat_in_value}
+
+                  {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word'}}>
+                    <FormattedNumber value={vat_in_value} currency={"SAR"} style="currency" />
+                    </IntlProvider> */}
+                    {parseFloat(vat_in_value).toLocaleString(undefined, {maximumFractionDigits:2})}
                 </TableCell> 
               </TableRow>
-              <TableRow style={{border: "1px solid rgb(0, 0, 0)"}}>
-                 <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}
-                 colspan={12}
+              <TableRow style={{border: "1px solid #ccc"}}>
+              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
+                    <div className="px-4 flex justify-between">
+                      <div className="flex">
+                        <div className="pr-12" style={{wordBreak:'break-word'}}>
+
+                          <strong>TOTAL IN WORDS</strong><br></br>{ress}
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}
+                 colspan={2}
                  >
-                     <span>TOTAL MATERIAL VALUE INC.VAT</span> 
+                     <span>GRAND TOTAL</span> 
                 </TableCell> 
-                <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}} >SAR</TableCell>
-                <TableCell style={{textAlign: "right",border: "1px solid rgb(0, 0, 0)"}}>{net_amount}</TableCell>
+                
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                SAR
+                </TableCell>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
+                {parseFloat(net_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
+          
+    
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
           </div>
           <br></br>
+          <div className="viewer__order-info px-4 mb-4 flex justify-between">
+          <div className="ml-24">
+              <h5 className="font-normal t-4 capitalize">
+                <IntlProvider locale={locale} messages={Arabic}>
+                  <FormattedMessage
+                    id="preparedby"
+
+                  />
+                </IntlProvider>
+              </h5>
+                 Prepared By
+              </div>
+            <div>
+              <h5 className="font-normal t-4 capitalize">
+                <IntlProvider locale={locale} messages={Arabic}>
+                  <FormattedMessage
+                    id="approvedby"
+
+                  />
+                </IntlProvider>
+              </h5>
+                 Approved By
+              </div>
+              <div className="mr-24">
+              <h5 className="font-normal t-4 capitalize">
+                <IntlProvider locale={locale} messages={Arabic}>
+                  <FormattedMessage
+                    id="receivedby"
+
+                  />
+                </IntlProvider>
+              </h5>
+                 Received By
+              </div>
+          </div>
+
           
         </Card>
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           {/* <div>
           <td style={{color:"red"}} colspan={2}>Notes </td>
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left'}}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
               
               <td colspan={2}><li>Quoted Prices are for Complete lot, any paritial order is subject to reconfirmation</li></td>
             </tr>
-      <tr style={{ height: 5, fontSize: 12,textAlign: 'left'}}>
+      <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
               <td colspan={2}><li>This is a system Generated Quote and hence does not Required any Signature</li></td>
         </tr>
         <td style={{color:"red"}} colspan={2}>Terms</td>
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><Icon style={{fontSize:13,color:'blue'}}>timelapse</Icon> Quoatation Validity  </td>
               <td>{validity}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><Icon style={{fontSize:13,color:'blue'}}>monetization_on</Icon> Payment Terms  </td>
               <td>{payment_terms}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><Icon style={{fontSize:13,color:'blue'}}>verified_user</Icon> Warranty </td>
               <td>{warranty}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><Icon style={{fontSize:13,color:'blue'}}>local_shipping</Icon> Delivery Time </td>
               <td>{delivery_time}</td>
         </tr>
           
-        <tr style={{ height: 5, fontSize: 12,textAlign: 'left' }}>
+        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
               <td ><Icon style={{fontSize:13,color:'blue'}}>info</Icon> Inco-Term </td>
               <td>{inco_terms}</td>
         </tr>
@@ -807,15 +924,15 @@ const deletepo = ()=>{
                 </h5>
               </td>
             </tr>
-        <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+        <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Bank Name:</strong></td>
               <td style={{ height: 'auto !important' }}>National Commerical Bank</td>
             </tr>
-        <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+        <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>Account No:</strong></td>
               <td style={{ height: 'auto !important' }}>6000000242200</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 13, textAlign: 'left'}}>
+        <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
               <td style={{ height: 'auto !important' }}><strong>IBAN No:</strong></td>
               <td style={{ height: 'auto !important' }}>SA3610000006000000242200</td>
         </tr>
@@ -827,23 +944,23 @@ const deletepo = ()=>{
       <div>
             <h6>We trust our offer falls inline with your requirements. For any clarification please contact under signed</h6>
             <h5>Best Regards,</h5>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td style={{ height: 'auto !important' }}>Mr.Abbas Ahamed Shazli</td>
 
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td >Business Development Manager - ISD Division</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td>AMACO ARABIA CONTRACTING COMPANY</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td>PO BOX 7452, AI Jubail 31951, KSA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td>ABBAS@AMACO.COM.SA</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 12, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <td>535515212</td>
             </tr>
       </div>
@@ -877,6 +994,7 @@ const deletepo = ()=>{
       
   
     </div>
+    </Card>
    
     
   );

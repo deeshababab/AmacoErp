@@ -44,8 +44,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "500px",
-    wordBreak: "break-word",
+    width: "350px",
  }
  const columnStyleWithWidth1 = {
   top: "0px",
@@ -233,8 +232,13 @@ const columns = [
     wordBreak:"break-word", // column title that will be shown in table
     options: {
        
-        filter: true,
-        resizableColumns:true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={columnStyleWithWidth}>  
+            <span style={{paddingLeft:15}}>Name</span>
+          </TableCell>
+        )
+     },
     },
 },
   {
@@ -246,7 +250,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} style={columnStyleWithWidth}>  
-                <p style={columnStyleWithWidth}>Description</p>
+                <span style={{paddingLeft:15}}>Description</span>
               </TableCell>
             )
          },
@@ -264,7 +268,7 @@ const columns = [
             position: "sticky",
             backgroundColor: "#fff",
             width: "60px"}} >  
-              <p style={{paddingLeft:15}}>UOM</p> 
+              <span style={{paddingLeft:15}}>UOM</span> 
             </TableCell>
           )
        },
@@ -280,7 +284,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth1}>  
-            <p style={{paddingLeft:15}}>Category</p>
+            <span style={{paddingLeft:15}}>Category</span>
           </TableCell>
         )
      },

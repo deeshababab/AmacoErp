@@ -172,11 +172,11 @@ const getData = () => {
               <TableRow key={index}>
                 <TableCell className="pl-0" align="center">{i++}</TableCell>
 
-                <TableCell className="pl-0">{item.fname}</TableCell>
-                <TableCell className="pl-0" style={{whiteSpace:'nowrap'}}>{item.designation}</TableCell>
-                <TableCell className="pl-0" colspan={2}>{item.address}</TableCell>
-                <TableCell className="pl-0">{item.mobno}</TableCell>
-                <TableCell className="pl-0" colspan={2}>{item.email}</TableCell>
+                <TableCell className="pl-0" style={{wordBreak:'break-word'}}>{item.fname}</TableCell>
+                <TableCell className="pl-0" style={{wordBreak:'break-word'}}>{item.designation}</TableCell>
+                <TableCell className="pl-0" style={{wordBreak:'break-word'}}colspan={2}>{item.address}</TableCell>
+                <TableCell className="pl-0" style={{wordBreak:'break-word'}}>{item.mobno}</TableCell>
+                <TableCell className="pl-0" style={{wordBreak:'break-word'}}colspan={2}>{item.email}</TableCell>
 
                 
               

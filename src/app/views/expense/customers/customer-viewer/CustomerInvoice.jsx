@@ -46,6 +46,7 @@ const setstatus=(id)=>{
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Updated successfully.',
         });
         url.get("expense").then(({ data }) => {

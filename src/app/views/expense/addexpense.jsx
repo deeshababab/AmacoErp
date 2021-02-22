@@ -293,6 +293,7 @@ const SimpleForm = ({ open, handleClose }) => {
                 console.log(response)
                 Swal.fire({
                     title: 'Success',
+                    icon:'success',
                     type: 'success',
                     text: 'Data saved successfully.',
                 });

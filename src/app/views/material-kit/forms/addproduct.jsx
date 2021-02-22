@@ -318,6 +318,7 @@ const SimpleForm = ({open, handleClose}) => {
         Swal.fire({
           title: 'Success',
           type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',
         });
         history.push(`/product/viewproduct/${id}`)

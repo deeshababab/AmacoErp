@@ -77,25 +77,26 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     // setcdescription('')
     // setcname('')
    
-    console.log(frmdetails)
+   
     url.post('manufacturer', frmdetails)
       .then(function (response) {
-        getmanufacturer()
+
+        getmanufacturer().then(({ data }) => {
+          manufacture(data)
+          
+  
+        });
+      })
         Swal.fire({
           icon: 'success',
           type: 'success',
           text: 'Data saved successfully.',
         });
        
-        getmanufacturer().then(({ data }) => {
-          manufacture(data)
-  
-        });
-        handleClose()
-      })
-      .catch(function (error) {
        
-      })
+        // handleClose()
+
+      
     setcdescription('')
     setcname('')
     
@@ -105,7 +106,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     Swal.fire({
       title: 'Are you sure you want to delete this manufacturer?',
       text: '.',
-      icon: 'danger',
+      icon: 'warning',
       showCancelButton: true,
       customClass: {
         zIndex: 1000
@@ -116,7 +117,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
       if (result.value) {
         url.delete(`manufacturer/${id}`)
           .then(res => {
-            
+            getrow(res)
+          })
             Swal.fire({
               customClass:{
                 zIndex: 1000
@@ -129,7 +131,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               
             })
 
-          })
+        
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire({
           customClass:{
@@ -216,13 +218,14 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               <TextValidator
                 className="w-full mb-4"
                 label="Name"
-                
+                autoComplete="none"
                 variant="outlined"
                 onChange={e => setcname(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 name="cname"
+                autoComplete="none"
                 value={cname}
                 validators={["required"]}
                 errorMessages={["this field is required"]}

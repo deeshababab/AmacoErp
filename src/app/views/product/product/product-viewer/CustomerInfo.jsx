@@ -44,9 +44,9 @@ const CustomerInfo = () => {
     <Card className="pt-6" elevation={3}>
       <div className="flex-column items-center mb-6">
         {/* <Avatar className="w-84 h-84" src="/assets/images/faces/10.jpg" /> */}
-        <h5 className="mt-4 mb-2">{productList.name}</h5>
+        <h3 className="mt-4 mb-2">{productList.name}</h3>
         
-        <small className="text-muted"><strong>Model Number:</strong>{productList.model_no}</small>
+        <h5><small className="text-muted"><strong>Model Number:</strong>{productList.model_no}</small></h5>
         {/* <small className="text-muted"><strong>Vat Number:</strong>{productList.vat_no}</small> */}
         {/* <div className="flex-row">
         <small className="text-white bg-green border-radius-4 px-2 py-2px">

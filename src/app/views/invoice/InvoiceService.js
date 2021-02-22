@@ -24,7 +24,7 @@ export const getInvoice = () => {
 // const  url = "http://www.amacoerp.com/amaco/public/api/";
  const url = axios.create({
     baseURL: 'http://www.amacoerp.com/amaco/public/api/',
-    timeout: 1000,
+    // timeout: 1000,
     
     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
   });

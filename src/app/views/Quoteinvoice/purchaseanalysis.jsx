@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Radio,
-  FormControl,
-  FormControlLabel,
+  // Radio,
+  // FormControl,
+  // FormControlLabel,
   Divider,
-  RadioGroup,
-  Grid,
+  // RadioGroup,
+  // Grid,
   MenuItem,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Link,
+  // Link,
   Icon,
-  TextField,
-  Tooltip
+  // TextField,
+  // Tooltip
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -24,30 +24,30 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
+// import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import axios from "axios";
+// import axios from "axios";
 import url from "../invoice/InvoiceService";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+// import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+// import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+// import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+// import Typography from "@material-ui/core/Typography";
+// import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // expandable table
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
-import Axios from "axios";
+// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+// import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+// import IconButton from '@material-ui/core/IconButton';
+// import Select from 'react-select';
+// import Axios from "axios";
 import Swal from "sweetalert2";
-import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./Addmargin";
+import { ConfirmationDialog } from "matx";
+// import FormDialog from "./Addmargin";
 import MemberEditorDialog from "./Addmargin";
 import moment from "moment";
-import { sortedLastIndex } from "lodash";
+// import { sortedLastIndex } from "lodash";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -67,12 +67,12 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [isAlive, setIsAlive] = useState(true);
   const [state, setState] = useState(initialValues);
-  const [rfq, setrfq] = useState([]);
+  // const [rfq, setrfq] = useState([]);
   const [rdate, setrdate] = useState([]);
   const [ddate, setddate] = useState([]);
   const [cname, setcname] = useState('abcd');
   const [party_id, setparty_id] = useState('');
-  const [rfq_details, setrfqdetails] = useState([]);
+  // const [rfq_details, setrfqdetails] = useState([]);
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
@@ -371,8 +371,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           icon:'success',
           text: 'Data saved successfully.',
         });
-        // history.push("/product/viewproduct")
-        window.location.href="../Newinvoiceview"
+        history.push("../Newinvoiceview")
+      
       })
       .catch(function (error) {
         
@@ -547,8 +547,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" >Rfq description</TableCell>
               <TableCell className="px-0" >Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0"style={{width:'80px'}}>Total</TableCell>
+              <TableCell className="px-0" style={{width:'200px'}}>Pprice</TableCell>
+              <TableCell className="px-0"style={{width:'200px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
                <TableCell className="px-0">Action</TableCell> 
             </TableRow>
@@ -630,7 +630,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
                   <TextValidator
                       label="Unit Price"
                       variant="outlined"
@@ -658,7 +658,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="QTotal"
                       

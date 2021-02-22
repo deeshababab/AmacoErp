@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Fade } from "@material-ui/core";
 import CustomerBillings from "./CustomerBillings";
-import CustomerEmailSender from "./CustomerEmailSender";
+// import CustomerEmailSender from "./CustomerEmailSender";
 import CustomerInfo from "./CustomerInfo";
 import CustomerActions from "./CustomerActions";
 

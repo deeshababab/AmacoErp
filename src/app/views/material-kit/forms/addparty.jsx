@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
 import url, {getparties} from "../../invoice/InvoiceService"
+import InputMask from 'react-input-mask';
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -25,6 +26,8 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
+// import CurrencyInput from 'react-currency-input-field';
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 const optionss = [
     { value: 'Vendor', label: 'Vendor' },
     { value: 'Customer', label: 'Customer' },
@@ -63,9 +66,9 @@ const Addparty = ({open, handleClose}) => {
   const [Firm_Name, setFirm_name] = useState('');
   const [email, setemail] = useState('');
   const [mobno, setmobno] = useState('');
-  const [mobnocode, setmobnocode] = useState('+966');
+  const [mobnocode, setmobnocode] = useState(+966);
   const [landline, setlandline] = useState('');
-  const [landlinecode, setlandlinecode] = useState('+966');
+  const [landlinecode, setlandlinecode] = useState(+966);
   const [vat_no, setvat_no] = useState('');
   const [post_box_no, setpost_box_no] = useState('');
   const [country, setcountry] = useState('');
@@ -77,13 +80,14 @@ const Addparty = ({open, handleClose}) => {
   const [lname, setlname] = useState('');
   const [suffix, setsuffix] = useState('');
   const [regno, setregno] = useState('');
-  const [ob, setob] = useState('');
+  const [ob, setob] = useState(0);
   const [fax, setfax] = useState('');
+  const [faxext, setfaxext] = useState('');
   const [city, setcity] = useState('');
   const [contact, setcontact] = useState('');
-  const [contactcode, setcontactcode] = useState('+966');
-  const [creditlimit, setcreditlimit] = useState('');
-  const [creditdays, setcreditdays] = useState('');
+  const [contactcode, setcontactcode] = useState(+966);
+  const [creditlimit, setcreditlimit] = useState(0);
+  const [creditdays, setcreditdays] = useState(0);
   const [partycode, setpartycode] = useState('');
   const [account_no, setaccount_no] = useState('');
   const [vendor_id, setvendor_id] = useState('');
@@ -105,19 +109,19 @@ const Addparty = ({open, handleClose}) => {
       country:country,
       contact:contactcode+contact,
       zip_code:zip_code,
-      phone1:mobnocode+mobno,
-      phone2:landlinecode+landline,
+      mobno:mobnocode+mobno,
+      landline:landlinecode+landline,
       email:email,
       website:website,
       city:city,
-      fax:fax,
+      fax:fax+"/"+faxext,
       fname:fname,
       lname:lname,
       designation:suffix,
-      opening_balance:ob,
+      opening_balance:parseFloat(ob).toFixed(2),
       party_type:selectedValue, 
       credit_days:creditdays,
-      credit_limit:creditlimit,
+      credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
       bank_address:bank_address,
@@ -130,10 +134,12 @@ const Addparty = ({open, handleClose}) => {
      
     
     url.post('parties',frmdetails)
+   
       .then(function (response) {
         Swal.fire({  
           title: 'Success',  
-          type: 'success',  
+          type: 'success',
+          icon:'success',
           text: 'Data saved successfully.',  
         });
       getparties()
@@ -154,6 +160,7 @@ const resetform = () => {
     setlandline('');
     setemail('');
     setfax('');
+    setfaxext('');
     setproviance('');
     setcity('');
     setzip_code('');
@@ -166,6 +173,8 @@ const resetform = () => {
     setSelectedValue('');
     setsuffix('');
     setwebsite('');
+    setcreditlimit(0);
+    setcreditdays(0);
 
 
 };
@@ -201,29 +210,26 @@ const resetform = () => {
   return (
     <div>
      
-      <ValidatorForm  onError={() => null} onSubmit={handleSubmit}>
+      <ValidatorForm  onError={() => null} onSubmit={handleSubmit} autoComplete="none">
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
           
             <h6>Contact Person Details</h6>
-                <TextValidator
+                <TextField
                     className="mb-4 w-full"
                     label="First Name"
+                    autoComplete="new-password"
                     onChange={e => setfname(e.target.value)}
                                 type="text"
                                 name="fname"
                                 variant="outlined"
                                 size="small"
                                 value={fname}
-                                validators={[
-                                    "required",
-                                
-                                ]}
-                                errorMessages={["this field is required"]}
                             />
               <div className="flex mb-4">
             <TextField
             className="mr-2"
+            autoComplete="none"
             label="Last Name"
             variant="outlined"
             onChange={e => setlname(e.target.value)}
@@ -234,6 +240,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Designation"
+            autoComplete="none"
             variant="outlined"
             value={suffix}
             size="small"
@@ -245,6 +252,7 @@ const resetform = () => {
                <TextValidator
                                 className="mb-4 w-full"
                                 label="Email Address"
+                                autoComplete="none"
                                 onChange={e => setemail(e.target.value)}
                                 type="text"
                                 name="email"
@@ -257,6 +265,7 @@ const resetform = () => {
                              <div className="flex mb-4">
                              <TextField
                                 className="mr-2"
+                                autoComplete="none"
                                 label="Code"
                                 onChange={e => setmobnocode(e.target.value)}
                                 name="mobno"
@@ -264,7 +273,7 @@ const resetform = () => {
                                 size="small"
                                 style={{width:'250px'}}
                                 variant="outlined"
-                                value={mobnocode||""}
+                                value={mobnocode}
                                 // fullWidth
                                 select
                               >
@@ -277,6 +286,7 @@ const resetform = () => {
                             <TextField
                                 className="mr-2"
                                 label="Mobile Number"
+                                autoComplete="none"
                                 onChange={e => setmobno(e.target.value)}
                                 name="mobno"
                                 type="text"
@@ -288,6 +298,7 @@ const resetform = () => {
                             />
                             <TextField
                                 className="ml-2"
+                                autoComplete="none"
                                 label="Code"
                                 onChange={e => setlandlinecode(e.target.value)}
                                 name="mobno"
@@ -309,6 +320,7 @@ const resetform = () => {
                             <TextField
                                 className="ml-2"
                                 label="Landline Number"
+                                autoComplete="none"
                                 onChange={e => setlandline(e.target.value)}
                                 name="landline"
                                 size="small"
@@ -322,6 +334,7 @@ const resetform = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="Address"
+                                autoComplete="none"
                                 onChange={e => setaddress(e.target.value)}
                                 name="address"
                                 size="small"
@@ -337,6 +350,7 @@ const resetform = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="Bank Account Number"
+                                autoComplete="none"
                                 onChange={e => setaccount_no(e.target.value)}
                                 name="website"
                                 type="text"
@@ -348,6 +362,7 @@ const resetform = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="Bank Name"
+                                autoComplete="none"
                                 onChange={e => setbank_name(e.target.value)}
                                 name="website"
                                 type="text"
@@ -362,6 +377,7 @@ const resetform = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="IBAN Number"
+                                autoComplete="none"
                                 onChange={e => setiban_no(e.target.value)}
                                 name="website"
                                 type="text"
@@ -371,6 +387,7 @@ const resetform = () => {
                                />
                                <TextField
                                 className="mb-4 w-full"
+                                autoComplete="none"
                                 label="Bank Address"
                                 onChange={e => setbank_address(e.target.value)}
                                 name="website"
@@ -386,6 +403,7 @@ const resetform = () => {
           <TextValidator
                     className="mb-4 w-full"
                     label="Company Name"
+                    autoComplete="none"
                     onChange={e => setFirm_name(e.target.value)}
                                 type="text"
                                 name="Firm_Name"
@@ -398,6 +416,7 @@ const resetform = () => {
                             <TextField
                                 className="mr-2"
                                 label="Registration Number"
+                                autoComplete="none"
                                 onChange={e => setregno(e.target.value)}
                                 name="regno"
                                 size="small"
@@ -411,6 +430,7 @@ const resetform = () => {
                             <TextField
                                 className="ml-2"
                                 label="Vat Number"
+                                autoComplete="none"
                                 onChange={e => setvat_no(e.target.value)}
                                 name="vat_no"
                                 size="small"
@@ -421,9 +441,10 @@ const resetform = () => {
                             />
                             </div>
 
-          <TextValidator
+                      <TextValidator
                                 className="mb-4 w-full"
                                 label="P.O Box"
+                                autoComplete="none"
                                 onChange={e => setpost_box_no(e.target.value)}
                                 type="text"
                                 name="post_box_no"
@@ -434,6 +455,7 @@ const resetform = () => {
                             />
                              <TextValidator
                                 className="mb-4 w-full"
+                                autoComplete="none"
                                 label="Street"
                                 onChange={e => setstreet(e.target.value)}
                                 type="text"
@@ -447,6 +469,7 @@ const resetform = () => {
         <div className="flex mb-4">
           <TextField
             className="mr-2"
+            autoComplete="none"
             label="City"
             variant="outlined"
             onChange={e => setcity(e.target.value)}
@@ -457,6 +480,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Province"
+            autoComplete="none"
             variant="outlined"
             value={proviance}
             size="small"
@@ -467,6 +491,7 @@ const resetform = () => {
         <div className="flex mb-4">
           <TextField
             className="mr-2"
+            autoComplete="none"
             label="Zip_code"
             variant="outlined"
             onChange={e => setzip_code(e.target.value)}
@@ -477,6 +502,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Country"
+            autoComplete="none"
             variant="outlined"
             value={country}
             size="small"
@@ -490,6 +516,7 @@ const resetform = () => {
         <div className="flex mb-4"> 
         <TextField
                                 className="mr-2"
+                                autoComplete="none"
                                 label="Fax"
                                 onChange={e => setfax(e.target.value)}
                                 name="fax"
@@ -502,12 +529,28 @@ const resetform = () => {
                             />
                             <TextField
                                 className="ml-2"
+                                autoComplete="none"
+                                label="Ext"
+                                style={{width:'180px'}}
+                                onChange={e => setfaxext(e.target.value)}
+                                name="fax"
+                                type="text"
+                                size="small"
+                                variant="outlined"
+                                value={faxext}
+                                fullWidth
+                                
+                            />
+                         
+                            <TextField
+                                className="ml-2"
                                 label="Code"
+                                autoComplete="none"
                                 onChange={e => setcontactcode(e.target.value)}
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'200px'}}
+                                style={{width:'250px'}}
                                 variant="outlined"
                                 value={contactcode||""}
                                 fullWidth
@@ -522,6 +565,7 @@ const resetform = () => {
                             <TextField
                                 className="ml-2"
                                 label="Contact"
+                                autoComplete="none"
                                 onChange={e => setcontact(e.target.value)}
                                 name="contact"
                                 type="text"
@@ -540,7 +584,7 @@ const resetform = () => {
                             
                             </div>
                             <div className="flex mb-4">
-                            <TextField
+                            {/* <TextField
                                 className="mr-2"
                                 label="Opening Balance"
                                 onChange={e => setob(e.target.value)}
@@ -549,38 +593,51 @@ const resetform = () => {
                                 size="small"
                                 variant="outlined"
                                 value={ob}
+                                
                                 fullWidth
                                 
-                            />
-                            <TextField
-                                className="ml-2"
-                                label="Credit Limit"
-                                onChange={e => setcreditlimit(e.target.value)}
-                                name="regno"
+                            > */}
+                              
+                              {/* </TextField> */}
+                              <CurrencyTextField
+			                          label="Opening Balance"
+			                          variant="outlined"
+			                          value={ob}
                                 size="small"
-                                type="number"
-                                variant="outlined"
-                                value={creditlimit}
                                 fullWidth
+			                          currencySymbol="SAR"
+			                          onChange={(event, value)=> setob(value)}
+	                            />
+                             <CurrencyTextField
+                                className="ml-2"
+                                label=" Credit Limits"
+			                          variant="outlined"
+			                          value={creditlimit}
+                                maximumValue="9999999"
+                                size="small"
+                                fullWidth
+			                          currencySymbol="SAR"
+			                          onChange={(event, value)=> setcreditlimit(value)}
                               
                             />
                         
-                            <TextField
+                              <TextField
                                 className="ml-2"
                                 label="Credit Days"
-                                onChange={e => setcreditdays(e.target.value)}
-                                name="vat_no"
+			                          variant="outlined"
+			                          value={creditdays}
+                                maximumValue="9999999"
                                 size="small"
-                                type="text"
                                 fullWidth
-                                variant="outlined"
-                                value={creditdays}
+			                          onChange={(event)=> setcreditdays(event.target.value)}
+                              
                             />
                             </div>
                             <div className="flex mb-4">
                             <TextField
                     className="mr-2"
                     label="Party type"
+                    autoComplete="none"
                     name="selectedvalue"
                     size="small"
                     variant="outlined"
@@ -600,7 +657,7 @@ const resetform = () => {
                       </MenuItem>
                     ))}
                   </TextField>
-                  <TextField
+                  {/* <TextField
                                 className="ml-2"
                                 label="Party Code"
                                 onChange={e => setpartycode(e.target.value)}
@@ -610,12 +667,13 @@ const resetform = () => {
                                 fullWidth
                                 variant="outlined"
                                 value={partycode}
-                            />
+                            /> */}
                               </div>
                       <div className="flex mb-4">
                       <TextField
                                 className="mr-2"
                                 label="Vendor Id"
+                                autoComplete="none"
                                 onChange={e => setvendor_id(e.target.value)}
                                 name="website"
                                 type="text"
@@ -627,6 +685,7 @@ const resetform = () => {
                       <TextField
                                 className="ml-2"
                                 label="Website URL"
+                                autoComplete="none"
                                 onChange={e => setwebsite(e.target.value)}
                                 name="website"
                                 type="text"
@@ -636,6 +695,7 @@ const resetform = () => {
                                 fullWidth
                                 
                             />
+                            
                             
                     
                     </div>

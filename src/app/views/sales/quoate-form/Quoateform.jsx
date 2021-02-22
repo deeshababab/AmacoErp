@@ -5,15 +5,15 @@ import {
     Card,
     Divider,
     TextField,
-    MenuItem,
+    // MenuItem,
     Button,
-    Icon,
+    // Icon,
 } from "@material-ui/core";
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+// import {
+//     MuiPickersUtilsProvider,
+//     KeyboardDatePicker,
+// } from "@material-ui/pickers";
+// import DateFnsUtils from "@date-io/date-fns";
 import InvoiceItemTable from "./Quoatetable";
 import { calculateAmount } from "./Quoateservice";
 import { Breadcrumb } from "matx";
@@ -341,25 +341,25 @@ const InvoiceForm = () => {
     );
 };
 
-const paymentTermList = [
-    "NET 15",
-    "NET 30",
-    "NET 45",
-    "NET 60",
-    "Due end of the month",
-    "Due on receive",
-];
+// const paymentTermList = [
+//     "NET 15",
+//     "NET 30",
+//     "NET 45",
+//     "NET 60",
+//     "Due end of the month",
+//     "Due on receive",
+// ];
 
-const customerList = [
-    "customer 1",
-    "customer 2",
-    "customer 3",
-    "customer 4",
-    "customer 5",
-    "customer 6",
-    "customer 7",
-    "customer 8",
-];
+// const customerList = [
+//     "customer 1",
+//     "customer 2",
+//     "customer 3",
+//     "customer 4",
+//     "customer 5",
+//     "customer 6",
+//     "customer 7",
+//     "customer 8",
+// ];
 
 const initialValues = {
     customerType: "",

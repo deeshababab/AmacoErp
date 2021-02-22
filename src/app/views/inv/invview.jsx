@@ -4,6 +4,7 @@ import converter from 'number-to-words';
 import Arabic from '../../../lang/ar.json';
 import { IntlProvider } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
+import history from "history.js";
 import moment from "moment";
 import {
   Icon,
@@ -133,7 +134,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   let fval;
 
   useEffect(() => {
-    updateSidebarMode({ mode: "close" })
+   
     document.title = "Delivery Note - Amaco"
     url.get("delivery-notes-details/" + id).then(({ data }) => {
      
@@ -236,19 +237,20 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       });
     }
     else {
-      window.location.href = "../dnoteview"
-      let activeLayoutSettingsName = settings.activeLayout + "Settings";
-      let activeLayoutSettings = settings[activeLayoutSettingsName];
-      updateSettings({
-        ...settings,
-        [activeLayoutSettingsName]: {
-          ...activeLayoutSettings,
-          leftSidebar: {
-            ...activeLayoutSettings.leftSidebar,
-            ...sidebarSettings,
-          },
-        },
-      });
+    
+      history.push("/dnoteview")
+      // let activeLayoutSettingsName = settings.activeLayout + "Settings";
+      // let activeLayoutSettings = settings[activeLayoutSettingsName];
+      // updateSettings({
+      //   ...settings,
+      //   [activeLayoutSettingsName]: {
+      //     ...activeLayoutSettings,
+      //     leftSidebar: {
+      //       ...activeLayoutSettings.leftSidebar,
+      //       ...sidebarSettings,
+      //     },
+      //   },
+      // });
 
     }
 
@@ -267,6 +269,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   } = state;
 
   return (
+    <Card elevation={6} className="m-sm-30">
     <div className={clsx("invoice-viewer py-4", classes.invoiceViewer)}>
       <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
         <Link onClick={() =>  updateSidebarMode({ mode: "on" })}>
@@ -294,7 +297,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
       </div>
 
-      <div id="print-area">
+      <div id="print-area" style={{fontFamily: "Calibri"}}>
       <header id="header">
 
 <div className="px-2 flex justify-between">
@@ -328,22 +331,26 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   </div>
   <div className="flex">
   <div>
-    <h4 style={{color:'#1d2257',textAlign:'right'}}><IntlProvider locale={locale} messages={Arabic}>
-        <FormattedMessage
+    <h2 style={{color:'#1d2257',textAlign:'right'}}>
+      {/* <IntlProvider locale={locale} messages={Arabic}> */}
+       {/* <strong><FormattedMessage
           id="app.channel.plug"
           defaultMessage="Amaco Arabia Contracting Company"
           values="Amaco Arabia Contracting Company"
         />
-      </IntlProvider></h4>
-      <h5 style={{color:'#1d2257',textAlign:'right'}}>
+        </strong> */}
+      {/* </IntlProvider></h2> */}
+    شركة أماكو العربية للمقاولات</h2>
+
+      <h3 style={{color:'#1d2257',textAlign:'right',fontSize:20}}>
         AMACO ARABIA CONTRACTING COMPANY
-    
+        
+      </h3>
+      <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
+       C.R No. 205500334 | VAT No. 310398615200003
+
+
       </h5>
-      <h6 style={{color:'#555'}} className="font-normal b-4 capitalize">
-       C.R No 205500334 | VAT 810398615200003
-
-
-      </h6>
       
     </div>
   </div>
@@ -352,11 +359,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 </header>
 
+
         <hr></hr>
         <div className="px-4 flex justify-between">
           <div className="flex">
             <div className="pr-12 px-4 mb-4">
-              <h4>DELIVERY NOTE</h4>
+            <h3 style={{fontSize:20}}><strong>DELIVERY NOTE</strong></h3>
+              {/* <h4>DELIVERY NOTE</h4> */}
               {vat}
             </div>
           </div>
@@ -375,8 +384,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             </div>
           </div>
           <div className="flex">
-            <div className="pr-12">
-              <h5 align="right">
+            <div className="mr-4" align="right">
+              <h5>
 
                Date
               </h5>
@@ -393,7 +402,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             </div>
             
           </div>
-          <div className="flex">
+          {/* <div className="flex">
             <div className="pr-12">
 
 
@@ -402,8 +411,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </h5>
               {deliveryno}
 
-</div>
+          </div>
            
+          </div> */}
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5>
+              Delivery Number
+              </h5>
+              {deliveryno}
+            </div>
           </div>
         </div>
 
@@ -432,16 +449,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         <Card className="mb-4" elevation={0} title="Rfq Details" borderRadius="borderRadius">
           <div className="viewer__order-info px-4 mb-4 flex justify-between">
-            <Table style={{ border: "1px solid rgb(0, 0, 0)" }}>
+            <Table style={{ border: "1px solid #ccc" }}>
               <TableHead>
-                <TableRow style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid rgb(0, 0, 0)", width: "50px" }} align="center">S.No.</TableCell>
-                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">DESCRIPTION</TableCell>
+                <TableRow style={{ border: "1px solid #ccc" }}>
+                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid #ccc", width: "50px",fontFamily: "Calibri" }} align="center">S.No.</TableCell>
+                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} align="center">DESCRIPTION</TableCell>
 
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)", width: "70px" }} align="center">UOM</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">Qty</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">DELIVERY QTY</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid rgb(0, 0, 0)" }} align="center">BALANCE QTY</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc", width: "70px",fontFamily: "Calibri" }} align="center">UOM</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} align="center">Qty</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} align="center">DELIVERED QTY</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri"}} align="center">BALANCE QTY</TableCell>
 
                 </TableRow>
               </TableHead>
@@ -453,29 +470,29 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                   return (
 
-                    <TableRow key={index} style={{ border: "1px solid rgb(0, 0, 0)" }}>
-                      <TableCell className="pl-0" align="center" colspan={1} style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                    <TableRow key={index} style={{ border: "1px solid #ccc" }}>
+                      <TableCell className="pl-0" align="center" colspan={1} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                         {index + 1}
                       </TableCell>
 
 
-                      <TableCell className="pl-0 capitalize" align="center" colspan={3} style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                      <TableCell className="pl-2 capitalize" align="left" colspan={3} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                          
                       {item.product.description} 
                       </TableCell>
 
 
-                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }}>
+                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                       {item.product.unit_of_measure}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid rgb(0, 0, 0)" }} >
+                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} >
                       {item.quotation_detail.quantity}  
 
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
                       {item.quantity} 
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid rgb(0, 0, 0)" }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri" }} >
                         {parseInt(item.quotation_detail.quantity)-parseInt(item.quantity)} 
                       </TableCell>
 
@@ -526,6 +543,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 
     </div>
+    </Card>
 
 
   );

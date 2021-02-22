@@ -45,7 +45,7 @@ const CustomerActions = () => {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Your Contact Details is safe :)',
+          'Your Contact Detail is safe :)',
           'error'
         )
       }

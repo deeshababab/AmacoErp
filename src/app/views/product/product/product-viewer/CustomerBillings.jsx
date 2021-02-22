@@ -77,7 +77,7 @@ const CustomerBillings = () => {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this Product Price!',
-      icon: 'danger',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it'
@@ -155,7 +155,7 @@ const getData = () => {
 
                 <TableCell className="pl-0">{item.firm_name}</TableCell>
 
-                <TableCell className="pl-0">{item.price}</TableCell>
+                <TableCell className="pl-0">{parseFloat(item.price).toLocaleString()}</TableCell>
 
                 <TableCell className="pl-0">
                   

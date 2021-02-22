@@ -8,19 +8,22 @@ import PartyInfo from "./PartyInfo";
 const CustomerDetails = () => {
   return (
     <Fade in timeout={300}>
-      <Grid container spacing={3}>
-        <Grid item lg={4} md={6} xs={12}>
+      <Grid container spacing={2}>
+        <Grid item lg={6} md={6} xs={12}>
           <CustomerInfo />
         </Grid>
-        <Grid item lg={4} md={6} xs={12}>
+        <Grid item lg={6} md={6} xs={12}>
           <PartyInfo />
+          <br></br>
+          <CustomerActions  />
+           
+         
+        
         </Grid>
-        {/* <Grid item lg={4} md={6} xs={12}>
-          <CustomerEmailSender />
-        </Grid> */}
-        <Grid item lg={4} md={6} xs={12}>
-          <CustomerActions />
-        </Grid>
+      
+       
+     
+         
       </Grid>
     </Fade>
   );

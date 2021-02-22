@@ -31,6 +31,10 @@ const QuoteRoutes = [
     path: "/Quoteinvoice/:id",
     component: React.lazy(() => import("./Quoteinvoice"))
   },
+  {
+    path: "/printdemo",
+    component: React.lazy(() => import("./printdemo"))
+  },
   
 ];
 

@@ -89,6 +89,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
           Swal.fire({
             title: 'Success',
             type: 'success',
+            icon:'sucess',
             text: 'Data saved successfully.',
           });
           
@@ -117,6 +118,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     // setcname('')
     Swal.fire({
       title: 'Success',
+      icon:'success',
       type: 'success',
       text: 'Data saved successfully.',
     });

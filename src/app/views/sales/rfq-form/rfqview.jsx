@@ -59,7 +59,7 @@ const SimpleMuiTable = () => {
       }
     });
     return () => setIsAlive(false);
-  }, [isAlive]);
+  }, []);
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
@@ -145,12 +145,12 @@ const SimpleMuiTable = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Firm Name", // column title that will be shown in table
+      label: "Company Name", // column title that will be shown in table
       options : {
 				customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>Firm Name</p> 
+              <p style={{marginLeft:18}}>Company Name</p> 
             </TableCell>
           )
        }

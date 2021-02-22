@@ -24,6 +24,7 @@ const InvoiceDetails = () => {
 
   return (
     <Card elevation={6} className="m-sm-30">
+ 
       {showInvoiceEditor ? (
         <InvoiceEditor
           toggleInvoiceEditor={toggleInvoiceEditor}
@@ -32,6 +33,7 @@ const InvoiceDetails = () => {
       ) : (
         <InvoiceViewer toggleInvoiceEditor={toggleInvoiceEditor} />
       )}
+   
     </Card>
   );
 };
