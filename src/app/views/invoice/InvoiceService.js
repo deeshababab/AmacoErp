@@ -53,11 +53,15 @@ export const getCustomerList = () => {
   };
   
 export const getmanufacturer = () => {
-    return url.get(url+"manufacturer");
+    return url.get("manufacturer");
 };
 export const getpaymentaccount = () => {
-    return url.get(url+"payment-account");
+    return url.get("payment-account");
 };
+export const getpaymentaccountcategory = () => {
+    return url.get("account-categories");
+};
+    
   
 
 export default url;

@@ -80,18 +80,21 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
    
     url.post('manufacturer', frmdetails)
       .then(function (response) {
-
-        getmanufacturer().then(({ data }) => {
-          manufacture(data)
-          
-  
-        });
-      })
+        getmanufacturer()
         Swal.fire({
           icon: 'success',
           type: 'success',
           text: 'Data saved successfully.',
         });
+
+        getmanufacturer().then(({ data }) => {
+          manufacture(data)
+          setUserList(data)
+          
+  
+        });
+      })
+        
        
        
         // handleClose()
@@ -118,7 +121,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
         url.delete(`manufacturer/${id}`)
           .then(res => {
             getrow(res)
-          })
+          
             Swal.fire({
               customClass:{
                 zIndex: 1000
@@ -130,6 +133,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               // 'error',
               
             })
+          })
+           
 
         
       } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -151,7 +156,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   useEffect(() => {
     url.get('manufacturer').then(({ data }) => {
       setUserList(data);
-      setIsAlive(false);
+     
     
 
    
@@ -161,8 +166,10 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
    
   },[])
   function getrow(e) {
-    url.get("manufacturer").then(({ data }) => {
-      if (isAlive) setUserList(data);
+    setIsAlive(false)
+    getmanufacturer().then(({ data }) => {
+      setUserList(data);
+      manufacture(data);
 
     });
     // return () => setIsAlive(true);

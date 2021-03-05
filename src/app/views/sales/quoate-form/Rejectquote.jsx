@@ -303,7 +303,7 @@ const RejectQuote = () => {
               item.quotation_no,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
-              parseFloat(item.net_amount).toLocaleString(undefined, {maximumFractionDigits:2}),
+              parseFloat(item.net_amount).toLocaleString(undefined, {minimumFractionDigits:2}),
               item.id
               // item.party[index].firm_name,
               // item.requested_date,

@@ -648,7 +648,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     select
                     // value={values.contact_id}
                     onChange={(e)=>setcontactid(e.target.value)}
-                    required
                    
                   >
                     
@@ -661,6 +660,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   </TextField>
                   }
                   </div>
+                  
                   
           <div>
            
@@ -856,13 +856,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
               
                     />
-                    <Tooltip title="Reference">
+                    {/* <Tooltip title="Reference">
                   <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
                         setMargin(item.product_id,index,item.name);
                       }}>
                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </Icon>
-                </Tooltip>
+                </Tooltip> */}
   
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>

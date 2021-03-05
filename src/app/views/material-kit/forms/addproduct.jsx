@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import MemberEditorDialog from "../../product/Addcategory";
 import history from "history.js";
-import {getVendorList,getcategories} from "../../invoice/InvoiceService"
+import {getVendorList,getcategories,getmanufacturer} from "../../invoice/InvoiceService"
 import FormDialog1 from "../../../views/product/manufacture";
 import MemberEditorDialog1 from "../../../views/product/manufacture";
 
@@ -274,7 +274,7 @@ const SimpleForm = ({open, handleClose}) => {
     url.get("products-in-category").then(({ data }) => {
       setooptions(data);
     })
-    url.get("manufacturer").then(({ data }) => {
+    getmanufacturer().then(({ data }) => {
         console.log(data)
         setmanufacture(data);
      
@@ -538,14 +538,9 @@ const SimpleForm = ({open, handleClose}) => {
               <MenuItem  onClick={() => {
                     setShouldOpenEditorDialog1(true);
                   }}>
-               {/* <Button
-                  onClick={() => {
-                    setShouldOpenEditorDialog1(true);
-                  }}
-                
-                > */}
+               
                   <Icon >add</Icon>New
-                {/* </Button> */}
+              
                </MenuItem>
                {manufacture.map((item, ind) => (
                 <MenuItem value={item.id} key={item}>

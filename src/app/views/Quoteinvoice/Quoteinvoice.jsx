@@ -411,7 +411,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   {pono}
                   </span>
               </h5>
-              <TextField
+              {/* <TextField
                     
                     label="PO Number"
                     style={{minWidth:200,maxWidth:'250px'}}
@@ -426,7 +426,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     
                   >
                     
-        </TextField>
+        </TextField> */}
             </div>
             {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker

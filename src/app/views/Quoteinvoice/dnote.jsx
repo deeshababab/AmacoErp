@@ -140,11 +140,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
       if (index === i) 
       {
-        
-        if(parseInt(event.target.value)>=parseInt(element['quantity']))
+        const res=parseInt(element.quantity)-parseInt(element.delivered_quantity);
+        console.log(res)
+        if(parseInt(event.target.value)>=parseInt(res))
         {
          
-              element[event.target.name] = parseInt(element['quantity']);
+              element[event.target.name] = parseInt(element.quantity)-parseInt(element.delivered_quantity);
               element['balance'] =0;
         }
         
@@ -153,7 +154,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
          else if(event.target.value<=0)
           {
          
-            element[event.target.name] = element.quantity;
+            element[event.target.name] = res;
             element['balance'] =0;
            
           }
@@ -161,7 +162,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           {
            
             element[event.target.name] = event.target.value;
-            element['balance'] =parseInt(element.quantity)-event.target.value;
+            element['balance'] =parseInt(element.quantity)-parseInt(element.delivered_quantity)-event.target.value;
            
           }
         
@@ -259,7 +260,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           icon:'success',
           text: 'Data saved successfully.',
         });
-        history.push("/inv")
+        history.push("/dnoteview")
       //  window.location.href="../quoateview"
       })
       .catch(function (error) {
@@ -476,10 +477,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'300px'}}>Rfq description</TableCell> 
+              <TableCell className="px-0" style={{width:'500px'}}>Rfq description</TableCell> 
               <TableCell className="px-0" style={{width:70}}>UOM</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Delivered Qty</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Delivering Qty</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Balance Qty</TableCell>
               {/* <TableCell className="px-0">Action</TableCell> */}
             </TableRow>
@@ -555,12 +557,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     <TextValidator
                       label="description"
                      
-                      style={{width:'400px'}}
+                    
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       name="description"
                       variant="outlined"
                       size="small"
+                      fullWidth
                       value={item? item.description: null}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
@@ -597,14 +600,31 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
-                      label="delivery quantity"
-                      onChange={(event) => handleIvoiceListChange(event, index)}
+                      label="delivered quantity"
+                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
                       name="delivered_quantity"
                       fullWidth
                       variant="outlined"
                       size="small"
                       value={item? item.delivered_quantity: item.delivered_quantity}
+                      validators={[
+                        "required",
+                        
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                  </TableCell>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
+                    <TextValidator
+                      label="delivery quantity"
+                      onChange={(event) => handleIvoiceListChange(event, index)}
+                      type="number"
+                      name="delivering_quantity"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={item? item.delivering_quantity: item.delivering_quantity}
                       validators={[
                         "required",
                         

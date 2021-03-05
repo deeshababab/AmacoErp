@@ -33,7 +33,7 @@ const AcceptQuote = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "600px",
+    width: "500px",
     wordBreak: "break-all",
     
   }
@@ -43,13 +43,14 @@ const AcceptQuote = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "120px",
+    width: "140px",
     wordBreak: "break-word",
     
   }
   useEffect(() => {
     url.get("quotations-accepted-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
+      console.log(data)
       // var myJSON = JSON.stringify(data.id);
       // console.log(myJSON)
       // console.log(data.length)
@@ -303,7 +304,7 @@ const AcceptQuote = () => {
               item.quotation_no,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
-              parseFloat(item.net_amount).toLocaleString(undefined, {maximumFractionDigits:2}),
+              parseFloat(item.net_amount).toLocaleString(undefined, {minimumFractionDigits:2}),
               item.id
               // item.party[index].firm_name,
               // item.requested_date,

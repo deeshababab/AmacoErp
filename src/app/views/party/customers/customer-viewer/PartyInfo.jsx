@@ -51,7 +51,11 @@ const PartyInfo = () => {
           </TableRow>
           <TableRow>
             <TableCell className="pl-4">Opening Balance</TableCell>
-            <TableCell>{userList.opening_balance}</TableCell>
+            <TableCell>
+            {parseFloat(userList.opening_balance).toLocaleString(undefined, {minimumFractionDigits:2})}
+                   
+
+            </TableCell>
           </TableRow>
         
         </TableBody>

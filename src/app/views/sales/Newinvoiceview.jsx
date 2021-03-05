@@ -292,7 +292,7 @@ const SimpleMuiTable = () => {
               item.po_number,
               item.party.firm_name,
               moment(item.created_at).format('DD MMM YYYY'),
-              (parseFloat(item.net_amount).toLocaleString()),
+              parseFloat(item.net_amount).toLocaleString(undefined, {minimumFractionDigits:2}),
               item.id
             ]
           

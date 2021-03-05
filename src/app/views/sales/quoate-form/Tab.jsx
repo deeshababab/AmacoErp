@@ -36,6 +36,7 @@ const CustomerViewer = () => {
   return (
     <div className="m-sm-30">
       <div className="mb-sm-30">
+      <div className="viewer_actions px-4 flex justify-between">
       <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
@@ -54,6 +55,7 @@ const CustomerViewer = () => {
           </Button>
           </Link>
         </div>
+      </div>
       </div>
       {/* <div>
       {shouldOpenEditorDialog && (

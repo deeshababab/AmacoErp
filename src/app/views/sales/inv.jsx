@@ -261,7 +261,8 @@ const SimpleMuiTable = () => {
               ++index,
               item.invoice_no,
               moment(item.issue_date).format('DD MMM YYYY'),
-              item.grand_total,
+              parseFloat(item.grand_total).toLocaleString(undefined, {minimumFractionDigits:2}),
+         
               item.status,
               item.id
               // moment(item.created_at).format('DD-MM-YYYY'),

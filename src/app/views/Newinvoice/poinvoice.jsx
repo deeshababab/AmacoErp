@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { borders } from '@material-ui/system';
 import {
   Icon,
@@ -36,6 +36,7 @@ import moment from "moment";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { ToWords } from 'to-words';
+import { useReactToPrint } from 'react-to-print';
 const locale = navigator.language;
 
 
@@ -43,80 +44,127 @@ const locale = navigator.language;
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
+ 
   "@global": {
+    
+   
+    
     "@media print": {
-      "body, *, html": {
+      
+      
+      "body, html": {
         visibility: "hidden",
         size: "auto",
+      
+        content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
-        fontFamily: "Calibri",
+    
+       
+        
+      
+
+      
        
       },
-      "#table": {
-        display:"-webkit-box",
-    display: "-ms-flexbox",
-    display: "right",
-    width: "320px",
-    margin:"1px",
-    position: "absolute",
-   
-    // top: "38.9cm !important",
-    // paddingRight: "24cm !important"
-       },
-       "#header": {
+      
+     
+      "#header": {
         // padding: "10px",
-       
+
         /* These do the magic */
         position: "fixed",
-        top: 0,
+        //top: '1em',
         left: 0,
-        width: "100%",
-      },
+        // paddingBottom:130
+        justifySelf:"end"
        
-      "#footer": {
-        //     display:"-webkit-box",
-        // display: "-ms-flexbox",
-        // display: "center",
-        // width: "100%",
-        // position: "absolute",
+      },
+      ".empty-header": {
+        height:"100px",
+        marginTop:'10px',
+        
+        
+        },
+        ".empty-footer": {
+          height:"100px",
+          marginTop:'10px',
+         
+          
+          },
+        ".header": {
+        position: "fixed",
+        height:"100px",
+        top:0,
+        
+        },
+        ".footer": {
+          position: "fixed",
+          height:"100px",
+          bottom:0,
+          width: "100%",
+
+        },
+
+        
+        "#footer": {
+          
+          backgroundColor: "#F8F8F8",
+          borderTop: "1px solid #E7E7E7",
+          textAlign: "center",
+          
+          bottom: "0",
+          position:'fixed',
+          width: "100%",
+          justifySelf:"end"
+        },
+    
+      "#table": {
+        display: "-webkit-box",
+        display: "-ms-flexbox",
+        // display: "right",
+        width: "650px",
+        margin: "15px",
+        position: "absolute",
+
+
 
         // top: "38.9cm !important",
-        // paddingRight: "12cm !important"
-        backgroundColor: "#F8F8F8",
-        borderTop: "1px solid #E7E7E7",
-        textAlign: "center",
-        padding: "20px",
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-        height: "auto",
-        width: "100%",
+        // paddingRight: "24cm !important"
       },
+      //   "#footer": {
+      //     display:"-webkit-box",
+      // display: "-ms-flexbox",
+      // display: "center",
+      // width: "100%",
+      // position: "absolute",
+
+      // top: "38.9cm !important",
+      // paddingRight: "12cm !important"
+      //    },
       "#print-area": {
-        position: "fixed",
-        top: 45,
-        marginTop: "45px",
+        // top: 10,
         left: 0,
         right: 0,
-        height: "100%",
-        border: "5px solid black",
+       
+        // height: "100%",
+        // marginTop: "10px",
+        // marginBottom:'30px',
+        boxDecorationBreak:'clone',
+        position:'relative',
+        
+        
 
         "& *": {
-          visibility: "visible",
-        },
-         "& *": {
           visibility: "visible",
         },
       },
     },
   },
   invoiceViewer: {
-    "& h5": {
-      fontSize: 15,
-    },
+   
+    
   },
 }));
-
 
 const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [state, setState] = useState({});
@@ -141,6 +189,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [delivery_time,setdelivery_time] =useState()
   const [qid,setqid] =useState()
   const [rno,setrno] =useState()
+  const componentRef = useRef();
   const [inco_terms,setinco_terms] =useState()
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
   const [contactpersonemail, setcontactpersonemail] = useState('');
@@ -169,6 +218,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
+  const handlePrinting = useReactToPrint({
+    content: () => componentRef.current,
+    header:()=> componentRef.current
+    
+   
+    
+  });
   
 
   useEffect(() => {
@@ -407,7 +463,7 @@ const deletepo = ()=>{
                       <MenuItem  onClick={() => deletepo()}>
                       Delete PurchaseOrder
                       </MenuItem>
-                      <MenuItem  onClick={() => handlePrint()}>
+                      <MenuItem  onClick={() => handlePrinting()}>
                       Print PurchaseOrder
                       </MenuItem>
                       <MenuItem  onClick={() => editpurchase()}>
@@ -435,9 +491,15 @@ const deletepo = ()=>{
         </div>
       </div>
 
-       <div id="print-area" style={{fontFamily: "Calibri"}}> 
+       <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}}> 
       
-       <header id="header">
+       {/* <header id="header"> */}
+       <table >
+        <thead style={{display:"table-header-group"}} >
+            <tr>
+              
+              <td>
+              <div class="empty-header">
 
 <div className="px-2 flex justify-between">
   <div className="flex">
@@ -487,7 +549,7 @@ const deletepo = ()=>{
         
       </h3>
       <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
-       C.R No. 205500334 | VAT No. 310398615200003
+       C.R No. 2055003404 | VAT No. 310398615200003
 
 
       </h5>
@@ -497,58 +559,83 @@ const deletepo = ()=>{
 </div>
 
 
-</header>
+{/* </header> */}
+</div>
+</td>
+</tr>
+</thead>
 
 
 
         <hr></hr>
-        {/* <Divider  style={{marginBottom: '15px'}}/> */}
+        <tbody style={{marginBottom:'50px'}}>
+            <tr>
+              <td>
         <div className="viewer__order-info px-4 mb-4 pt-5 flex justify-between">
           <div className="ml-2">
           <h3 style={{fontSize:20}}><strong>PURCHASE ORDER</strong></h3>
-            {/* <h5 className="font-normal t-4 capitalize">
-              <strong>P.O No: </strong>{" "}
-             
-                {po_number}
-              
-            </h5> */}
+            
           </div>
           <div className="text-center">
-            {/* <h4><u>PURCHASE ORDER</u></h4> */}
+         
            
           </div>
           <div className="text-right">
-            {/* <h5 className="font-normal capitalize">
-              <strong>RFQ ID: </strong>{" "}
-              <span>
+           
+          </div>
+        </div>
+        <div className="px-2 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h5 style={{fontWeight:1000}}>Supplier Name</h5>
+              {company}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5 style={{fontWeight:1000}}>
+               P.O. Date
+              </h5>
+              {moment(rdate).format('DD MMM YYYY')}
+            </div>
+          </div>
+        </div>
+        <div className="px-2 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h5 style={{fontWeight:1000}}>Attention</h5>
+              {contactperson}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5 style={{fontWeight:1000}}>
+               P.O. Number
+              </h5>
+              {po_number}
+            </div>
+          </div>
+        </div>
+        <div className="px-2 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h5 style={{fontWeight:1000}}>Email Id</h5>
+              {contactpersonemail}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5 style={{fontWeight:1000}}>
+               RFQ Id
+              </h5>
               {rno}
-              </span>
-            </h5> */}
-            {/* <h5 className="font-normal capitalize">
-              <strong>Date: </strong>{" "}
-              <span>
-                2020-12-19
-              </span>
-            </h5> */}
-            {/* <h5 className="font-normal capitalize">
-              <strong>Customer Details:</strong>{" "}
-            </h5> */}
+            </div>
           </div>
         </div>
 
-        {/* <Grid container spacing={3} >
-  <Grid item md={4}>
-    </Grid>
-    
-    <Grid item md={6}>
-      <h6>SUBJECT : Quotation for General Items</h6>
-    </Grid>
-    <Grid item md={2}>
-    </Grid>
-    
-  </Grid> */}
        
-        <div className="viewer__order-info px-4 mb-4  flex justify-between">
+       
+        {/* <div className="viewer__order-info px-4 mb-4  flex justify-between">
           <div className="ml-2">
           <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
             <h5 className="font-normal t-4 capitalize">
@@ -602,14 +689,10 @@ const deletepo = ()=>{
             
             
             
-                      {/* </Grid>
-        </Grid> */}
-
-
 
           </div>
           <div className="text-center">
-            {/* <h4><u>REQUEST FOR QUOTATION</u></h4> */}
+         
 
           </div>
           <div className="text-right mr-2">
@@ -650,53 +733,10 @@ const deletepo = ()=>{
               <td>{vendor_id}</td>
             </tr>
 
-            {/* <h5 className="font-normal capitalize">
-              <strong>Due date: </strong>{" "}
-              <span>
-                {ddate}
-              </span>
-            </h5>
-            <h5 className="font-normal capitalize">
-              <strong> Customer VATNo: </strong>{" "}
-              <span>
-                {vatno}
-              </span>
-            </h5> */}
+            
           </div>
-        </div>
-        {/* <div className="viewer__billing-info px-4 py-5 flex justify-between">
-          <div>
-            <h5 className="mb-2">Bill From</h5>
-            <p className="mb-4">{seller ? seller.name : null}</p>
-            <p className="mb-0 whitespace-pre-wrap">
-              {seller ? seller.address : null}
-            </p>
-          </div>
-          <div className="text-right w-full">
-            <h5 className="mb-2">Bill To</h5>
-            <p className="mb-4">{buyer ? buyer.name : null}</p>
-            <p className="mb-0 whitespace-pre-wrap">
-              {buyer ? buyer.address : null}
-            </p>
-          </div>
-          <div />
         </div> */}
-          {/* <div className="viewer__order-info px-4 mb-4 flex justify-between">
-        <Table>  
-        <TableRow style={{border: "1px solid #ccc"}}>
-        <h6 align="center" style={{marginTop:"5px"}}>SUBJECT : Quotation for General Items</h6>
-      </TableRow>
-      </Table>
-      </div> */}
-      {/* <div className="viewer__order-info px-4 mb-4 flex justify-between">
-      <Table> 
-      <TableRow> 
-        Dear Sir,
-        <br></br>
-        Thank you for requesting us for the quotation of below mentioned items, Please find our best price for the supply of requested items. We look forward for our valued P.O
-      </TableRow>
-      </Table>
-      </div> */}
+        
       <br></br>
         <Card className="mb-4" elevation={0} title="Rfq Details" borderRadius="borderRadius" >
         
@@ -704,20 +744,20 @@ const deletepo = ()=>{
         
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           <Table>  
-          <TableHead>
+          <TableHead style={{backgroundColor:'#1d2257',display:'table-row-group'}}>
               <TableRow>
-                <TableCell className="pl-0" colspan={2} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri"}} align="center">S.No.</TableCell>
+                <TableCell className="pl-0" colspan={2} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}} align="center">S.No.</TableCell>
                 
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",}} width="0px" align="center">RFQ DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15 }}width="0px" align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri"}}  width="300px" align="center">QUOTATION DESCRIPTION</TableCell>
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",width:200}}  align="center">REMARK</TableCell>
-                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:90}}  align="center">QTY</TableCell>
-                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri"}}  align="center">UOM</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}} width="300px" align="center">QUOTATION DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",width:200,color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">REMARK</TableCell>
+                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:90,color:"#fff",fontWeight:'1000',fontSize:15}} align="center">QTY</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">UOM</TableCell>
                 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri"}}  align="center">UNIT PRICE</TableCell> 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri"}}  align="center">TOTAL</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">UNIT PRICE</TableCell> 
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">TOTAL</TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -727,40 +767,40 @@ const deletepo = ()=>{
                 
                 return (
                   <TableRow key={index} style={{border: "1px solid #ccc"}}>
-                    <TableCell className="pl-0" align="center" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",}} >
+                    <TableCell className="pl-0" align="center" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}} >
                       {index + 1}
                     </TableCell>
                     
 
-                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize:15}}>
                      {item.description}
 
                     </TableCell>
-                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize:15}}>
                      {item.product.description}
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
                      {item.remark}
 
                     </TableCell>
                     
-                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
                     {parseInt(item.quantity).toLocaleString()}
 
                     
                       
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
                     {item.product.unit_of_measure}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} >
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}} >
                    
-                    {parseFloat(item.purchase_price).toLocaleString(undefined, {maximumFractionDigits:2})}
+                    {parseFloat(item.purchase_price).toLocaleString(undefined, {minimumFractionDigits:2})}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}>
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
                    
-                   {parseFloat(item.total_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
+                   {parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
           
                     </TableCell>
                     
@@ -788,7 +828,7 @@ const deletepo = ()=>{
                    {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word',fontFamily: "Calibri"}}>
                     <FormattedNumber value={total_value} currency={"SAR"} style="currency" />
                     </IntlProvider> */}
-                    {parseFloat(total_value).toLocaleString(undefined, {maximumFractionDigits:2})}
+                    {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}
                     
                 </TableCell>
                   
@@ -810,11 +850,11 @@ const deletepo = ()=>{
                   {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word'}}>
                     <FormattedNumber value={vat_in_value} currency={"SAR"} style="currency" />
                     </IntlProvider> */}
-                    {parseFloat(vat_in_value).toLocaleString(undefined, {maximumFractionDigits:2})}
+                    {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})}
                 </TableCell> 
               </TableRow>
               <TableRow style={{border: "1px solid #ccc"}}>
-              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
+              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200,fontSize:15}}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
                         <div className="pr-12" style={{wordBreak:'break-word'}}>
@@ -835,7 +875,7 @@ const deletepo = ()=>{
                 SAR
                 </TableCell>
                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
-                {parseFloat(net_amount).toLocaleString(undefined, {maximumFractionDigits:2})}
+                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
           
     
                 </TableCell>
@@ -854,7 +894,7 @@ const deletepo = ()=>{
                   />
                 </IntlProvider>
               </h5>
-                 Prepared By
+                 Prepared by
               </div>
             <div>
               <h5 className="font-normal t-4 capitalize">
@@ -865,7 +905,7 @@ const deletepo = ()=>{
                   />
                 </IntlProvider>
               </h5>
-                 Approved By
+                 Approved by
               </div>
               <div className="mr-24">
               <h5 className="font-normal t-4 capitalize">
@@ -876,7 +916,7 @@ const deletepo = ()=>{
                   />
                 </IntlProvider>
               </h5>
-                 Received By
+                 Received by
               </div>
           </div>
 
@@ -966,28 +1006,30 @@ const deletepo = ()=>{
       </div>
       */}
       </div>
- 
+      </td>
+      </tr>
+      </tbody>
+      <tfoot><div class="empty-footer"></div></tfoot>
+      </table>
 
         
-        {/* <footer id="footer">
-        <div className="text-center" style={{fontSize:'15px',visibility:"hidden"}}>
-      <span>we trust our offer falls inline with your Requirement.For any clarifications please contact under signed best regard Shazli</span>
-      <p><span>E-mail:sales@amaco.com.sa | website:www.amaco.com.sa</span></p>
-      </div>
-        </footer> */}
-             <footer id="footer" style={{ visibility: "hidden" }}>
-        <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'3%'}}>
+      <div class="footer">
+             <footer   style={{visibility: "hidden" }}>
+             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
           
-          <span style={{color:'#fff'}}> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+          <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
                 
         </div>
-         <div class="main" style={{width:'100%'}}> 
-       <div  class="right" style={{width: '150px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
-        <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
+         <div class="main" style={{width:'100%'}} > 
+       <div  class="right" style={{width: '90px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+        <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
+        
+        {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
         
         
         </footer>
+        </div>
     
       </div>
       

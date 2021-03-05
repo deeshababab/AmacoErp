@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import {
   Icon,
   Divider,
@@ -32,6 +32,7 @@ import { FormattedMessage } from 'react-intl';
 import Swal from "sweetalert2";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { useReactToPrint } from 'react-to-print';
 import moment from "moment"
 const locale = navigator.language;
 
@@ -42,89 +43,131 @@ const locale = navigator.language;
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
-  coloredBorder: {
-    border: "1px solid rgba(var(--primary), 1)",
-  },
+ 
   "@global": {
+    
+   
+    
     "@media print": {
-      "@page": { size: 'letter', marginTop: '4mm',marginBottom: '1mm' },
-      "body, *, html": {
-
+      
+      
+      "body, html": {
         visibility: "hidden",
+        size: "auto",
+      
+        content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
-        marginTop:'0 auto !imporant',
-        fontFamily: "Calibri",
+    
+       
+        
+      
+
+      
        
       },
+      
+     
       "#header": {
         // padding: "10px",
-        
+
         /* These do the magic */
         position: "fixed",
-        top: 0,
+        //top: '1em',
         left: 0,
-        width: "100%",
-       },
-      
-       "#footer": {
-        //     display:"-webkit-box",
-        // display: "-ms-flexbox",
-        // display: "center",
-        // width: "100%",
-        // position: "absolute",
+        // paddingBottom:130
+        justifySelf:"end"
+       
+      },
+      ".empty-header": {
+        height:"100px",
+        marginTop:'10px',
+        
+        
+        },
+        ".empty-footer": {
+          height:"100px",
+          marginTop:'10px',
+         
+          
+          },
+        ".header": {
+        position: "fixed",
+        height:"100px",
+        top:0,
+        
+        },
+        ".footer": {
+          position: "fixed",
+          height:"100px",
+          bottom:0,
+          width: "100%",
+
+        },
+
+        
+        "#footer": {
+          
+          backgroundColor: "#F8F8F8",
+          borderTop: "1px solid #E7E7E7",
+          textAlign: "center",
+          
+          bottom: "0",
+          position:'fixed',
+          width: "100%",
+          justifySelf:"end"
+        },
+    
+      "#table": {
+        display: "-webkit-box",
+        display: "-ms-flexbox",
+        // display: "right",
+        width: "650px",
+        margin: "15px",
+        position: "absolute",
+
+
 
         // top: "38.9cm !important",
-        // paddingRight: "12cm !important"
-        backgroundColor: "#F8F8F8",
-        borderTop: "1px solid #E7E7E7",
-        textAlign: "center",
-        padding: "0",
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-        height: "auto",
-        width: "100%",
+        // paddingRight: "24cm !important"
       },
-      //  "#grid":{
-      //   position: "absolute",
-      //  },
-      
+      //   "#footer": {
+      //     display:"-webkit-box",
+      // display: "-ms-flexbox",
+      // display: "center",
+      // width: "100%",
+      // position: "absolute",
+
+      // top: "38.9cm !important",
+      // paddingRight: "12cm !important"
+      //    },
       "#print-area": {
-        // size: "auto",
-        // margin: "20mm",
-        // position: "absolute",
-        
-        position: "fixed",
-        top: 45,
+        // top: 10,
         left: 0,
         right: 0,
-        height: "100%",
-        marginTop: "45px",
-
-        // width:"100%",
-        // margin: "50px",
-        // // background:"#333",
-        // padding:"8px",
+       
+        // height: "100%",
+        // marginTop: "10px",
+        // marginBottom:'30px',
+        boxDecorationBreak:'clone',
+        position:'relative',
         
+        
+
         "& *": {
           visibility: "visible",
-        },
-        "filearea":{
-          visibility: "hidden",
         },
       },
     },
   },
   invoiceViewer: {
-    "& h5": {
-      fontSize: 15,
-    },
+   
+    
   },
 }));
 
-
 const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [state, setState] = useState({});
+  const componentRef = useRef();
   const [rfq, setrfq] = useState([]);
   const [rdate, setrdate] = useState([]);
   const [ddate, setddate] = useState([]);
@@ -159,6 +202,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   function handleClose() {
     setAnchorEl(null);
   }
+  const handlePrinting = useReactToPrint({
+    content: () => componentRef.current,
+    header:()=> componentRef.current
+    
+  });
   const updateSidebarMode = (sidebarSettings) => {
     if (sidebarSettings.mode == "close") {
       let activeLayoutSettingsName = settings.activeLayout + "Settings";
@@ -349,7 +397,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       <MenuItem  onClick={() => deleteRfq()}>
                       Delete RFQ
                       </MenuItem>
-                      <MenuItem  onClick={handlePrint}>
+                      <MenuItem  onClick={handlePrinting}>
                       Print RFQ
                       </MenuItem>
                       <MenuItem  onClick={() => updateRfq()}>
@@ -370,8 +418,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
       </div>
 
-    <div id="print-area">
-    <header id="header">
+    <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}}>
+    <table >
+        <thead style={{display:"table-header-group"}} >
+            <tr>
+              
+              <td>
+              <div class="empty-header">
 
 <div className="px-2 flex justify-between">
   <div className="flex">
@@ -420,7 +473,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         
       </h3>
       <h5 style={{color:'#555',textAlign:'right',fontSize:17}} className="font-normal b-4 capitalize">
-       C.R No. 205500334 | VAT No. 310398615200003
+       C.R No. 2055003404 | VAT No. 310398615200003
 
 
       </h5>
@@ -430,15 +483,60 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 </div>
 
 
-</header>
+{/* </header> */}
+</div>
+</td>
+</tr>
+</thead>
 
         <hr></hr>
-        {/* <Divider  style={{marginBottom: '15px'}}/> */}
-        <div className="text-center">
-            <h4><u>REQUEST FOR QUOTATION</u></h4>
-
+        <tbody style={{marginBottom:'50px'}}>
+            <tr>
+              <td>
+        
+          <div className="px-2 pt-5 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h3 style={{fontSize:20}}><strong>REQUEST FOR QUOTATION</strong></h3>
+              {vat}
+            </div>
           </div>
-        <div className="viewer__order-info px-4 mb-4 flex justify-between">
+          </div>
+          <div className="px-2 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h5 style={{fontWeight:1000}}>Supplier Name</h5>
+              {company}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5 style={{fontWeight:1000}}>
+               RFQ Date
+              </h5>
+              {moment(rdate).format('DD MMM YYYY')}
+            </div>
+          </div>
+        </div>
+        <div className="px-2 flex justify-between">
+          <div className="flex">
+            <div className="pl-2 px-4 mb-4">
+              <h5 style={{fontWeight:1000}}>Email Id</h5>
+              {contactpersonemail}
+            </div>
+          </div>
+          <div className="flex">
+            <div className="mr-4" align="right">
+              <h5 style={{fontWeight:1000}}>
+               Bid closing date
+              </h5>
+              {moment(ddate).format('DD MMM YYYY')}
+            </div>
+          </div>
+        </div>
+        
+      
+        {/* <div className="viewer__order-info px-4 mb-4 flex justify-between">
           
           <div>
           <div>
@@ -492,10 +590,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 
           </div>
-          {/* <div className="text-center">
-            <h4><u>REQUEST FOR QUOTATION</u></h4>
-
-          </div> */}
+        
 
           <div className="text-right">
           <div>
@@ -552,17 +647,17 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
          
             <h5>BID CLOSING DATE: {ddate}</h5>
         </div>
-      </div>
-      <div className="mb-4 px-4"  style={{border:"1px solid #000"}}></div>
+      </div> */}
+      
         <Card className="mb-4" elevation={0} title="Rfq Details">
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
           <Table>
-            <TableHead  >
-              <TableRow style={{backgroundColor:'#00000026'}}>
-                <TableCell className="pl-0" colspan={1} align="center">S.No.</TableCell>
-                <TableCell className="px-0" colspan={3}>DESCRIPTION</TableCell>
-                <TableCell className="px-0">Qty</TableCell>
-                <TableCell className="px-0">UOM</TableCell>
+            <TableHead  style={{border: "1px solid #ccc",fontFamily: "Calibri",backgroundColor:'#1d2257',fontWeight:1000,fontSize:15}}>
+              <TableRow style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>
+                <TableCell className="pl-0" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>S.No.</TableCell>
+                <TableCell className="px-0" colspan={3}  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>DESCRIPTION</TableCell>
+                <TableCell className="px-0"  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>Qty</TableCell>
+                <TableCell className="px-0" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>UOM</TableCell>
 
               </TableRow>
             </TableHead>
@@ -575,22 +670,22 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                 return (
                   <TableRow key={index}>
-                    <TableCell className="pl-0 capitalize" align="left" colspan={1} align="center">
+                    <TableCell className="pl-0 capitalize" align="left" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
                       {index + 1}
                     </TableCell>
 
 
-                    <TableCell className="pl-0 capitalize" align="left" colspan={3}>
+                    <TableCell className="pl-0 capitalize" align="left" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
                       <strong>{item.product[0].name}</strong>({item.product[0].description})
 
                     </TableCell>
 
-                    <TableCell className="pl-0 capitalize" align="left">
+                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
                      {item.quantity} 
                      
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize">
+                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
                       {item.product[0].unit_of_measure}
                     </TableCell>
 
@@ -609,32 +704,29 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </Table>
           </div>
         </Card>
-        {/* <footer id="footer" style={{ visibility: "hidden" }}>
-        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'10%'}}>
+        </td>
+        </tr>
+        </tbody>
+        <tfoot><div class="empty-footer"></div></tfoot>
+        </table>
+        <div class="footer">
+      <footer style={{visibility: "hidden" }}>
+             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
           
-          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
+          <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
                 
         </div>
-        <div style={{ fontSize: '8px', visibility: "hidden" }} style={{'borderBottom': '25px solid #00008B','height': 0,'width': '100%',alignItems:'center'}}>
-          
-          <span style={{color:'#fff'}}>Tel: +966 1336323871 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
-                
+         <div class="main" style={{width:'100%'}} > 
+       <div  class="right" style={{width: '90px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
+        <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
         
-      </footer> */}
-      <footer id="footer" style={{ visibility: "hidden" }}>
-        <div style={{visibility: "hidden" }} style={{'borderBottom': '25px solid #555','borderLeft': '50px solid transparent','height': 0,'width': '100%',marginLeft:'100px'}}>
-          
-          <span style={{color:'#fff'}}> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 7452 | Jubail 31951 | Kingdom of Saudi Arabia</span>
-                
-        </div>
-         <div class="main" style={{width:'100%',paddingRight:'50px'}}> 
-       <div  class="right" style={{width: '120px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
-        <p  id="foot" style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white'}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
-        </div>
-      
+        {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
+        
         
         </footer>
+        </div>
+    
     
         </div>
 
