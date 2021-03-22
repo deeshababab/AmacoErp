@@ -8,6 +8,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import logo from "../../invoice/logowhite(1).png"
 
 import { makeStyles } from "@material-ui/core/styles";
 import history from "history.js";
@@ -23,6 +24,48 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
     borderRadius: 12,
     margin: "1rem",
   },
+  cardLeft: {
+    background: "#161c37 url(/assets/images/bg-3.png) no-repeat",
+    backgroundSize: 'cover',
+    color: '#fff',
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      minWidth: 200
+    },
+  },
+  logo: {
+    display: 'flex',
+    alignItems: 'center',
+
+    "& span": {
+      fontSize: 26,
+      lineHeight: 1.3,
+      fontWeight: 800
+    }
+  },
+  mainTitle: {
+    fontSize: 18,
+    lineHeight: 1.3,
+    marginBottom: 24
+  },
+  features: {
+    "& .item": {
+      position: 'relative',
+      marginBottom: 12,
+      paddingLeft: 20,
+      "&::after": {
+        position: 'absolute',
+        content: '""',
+        width: 4,
+        height: 4,
+        borderRadius: 4,
+        left: 4,
+        top: 7,
+        backgroundColor: palette.error.main
+      }
+    }
+  },
   buttonProgress: {
     position: "absolute",
     top: "50%",
@@ -34,7 +77,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 
 const JwtLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState({email: "jason@ui-lib.com", password: 'dummyPass'});
+  const [userInfo, setUserInfo] = useState({email: "", password: ''});
   const [message, setMessage] = useState('');
   const { login } = useAuth();
 
@@ -47,9 +90,11 @@ const JwtLogin = () => {
   };
 
   const handleFormSubmit = async (event) => {
+    console.log(userInfo.email)
     setLoading(true);
     try {
       await login(userInfo.email, userInfo.password);
+     
       history.push("/");
     } catch(e) {
       // console.log(e);
@@ -67,16 +112,22 @@ const JwtLogin = () => {
     >
       <Card className={classes.card}>
         <Grid container>
-          <Grid item lg={5} md={5} sm={5} xs={12}>
-            <div className="p-8 flex justify-center items-center h-full">
-              <img
+          <Grid item lg={6} md={6} sm={5} xs={12}>
+            <div className={clsx({
+                "py-8 px-14 h-full": true,
+                [classes.cardLeft]: true,
+              })}>
+              {/* <img
                 className="w-200"
-                src="/assets/images/illustrations/dreamer.svg"
+                src={logo}
                 alt=""
-              />
+              /> */}
+               <img src={logo} style={{marginTop:"60px",}}></img>
             </div>
           </Grid>
-          <Grid item lg={7} md={7} sm={7} xs={12}>
+          
+          <Grid item lg={6} md={6} sm={6} xs={12}>
+          <h4 style={{marginTop:"20px",textAlign: "center"}}>Amaco - ERP</h4>
             <div className="p-8 h-full bg-light-gray relative">
               <ValidatorForm onSubmit={handleFormSubmit}>
                 <TextValidator
@@ -88,11 +139,11 @@ const JwtLogin = () => {
                   type="email"
                   name="email"
                   value={userInfo.email}
-                  validators={["required", "isEmail"]}
-                  errorMessages={[
-                    "this field is required",
-                    "email is not valid",
-                  ]}
+                  // validators={["required", "isEmail"]}
+                  // errorMessages={[
+                  //   "this field is required",
+                  //   "email is not valid",
+                  // ]}
                 />
                 <TextValidator
                   className="mb-3 w-full"
@@ -103,10 +154,10 @@ const JwtLogin = () => {
                   name="password"
                   type="password"
                   value={userInfo.password}
-                  validators={["required"]}
-                  errorMessages={["this field is required"]}
+                  // validators={["required"]}
+                  // errorMessages={["this field is required"]}
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                   className="mb-3 min-w-288"
                   name="agreement"
                   onChange={handleChange}
@@ -121,8 +172,8 @@ const JwtLogin = () => {
                       checked={userInfo.agreement || true}
                     />
                   }
-                  label="Remeber me"
-                />
+                  // label="Remeber me"
+                /> */}
 
                 {message && <p className="text-error">{message}</p>}
 
@@ -143,20 +194,20 @@ const JwtLogin = () => {
                       />
                     )}
                   </div>
-                  <span className="mr-2 ml-5">or</span>
-                  <Button
+                  {/* <span className="mr-2 ml-5">or</span> */}
+                  {/* <Button
                     className="capitalize"
                     onClick={() => history.push("/session/signup")}
                   >
                     Sign up
-                  </Button>
+                  </Button> */}
                 </div>
-                <Button
+                {/* <Button
                   className="text-primary"
                   onClick={() => history.push("/session/forgot-password")}
                 >
                   Forgot password?
-                </Button>
+                </Button> */}
               </ValidatorForm>
             </div>
           </Grid>

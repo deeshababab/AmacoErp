@@ -257,6 +257,7 @@ const SimpleMuiTable = () => {
 
               ++index,
               item.party[0].firm_name,
+              // ++index,
               moment(item.requested_date).format('DD MMM YYYY'),
               moment(item.require_date).format('DD MMM YYYY'),
               item.id,

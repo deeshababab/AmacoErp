@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   Icon,
   IconButton,
@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   Hidden,
 } from "@material-ui/core";
-import { MatxMenu, MatxSearchBox } from "matx";
+import { MatxMenu, MatxSearchBox,ConfirmationDialog } from "matx";
 import NotificationBar from "../SharedCompoents/NotificationBar";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../SharedCompoents/ShoppingCart";
@@ -16,7 +16,9 @@ import clsx from "clsx";
 import useAuth from "app/hooks/useAuth";
 import useSettings from "app/hooks/useSettings";
 import { NotificationProvider } from "app/contexts/NotificationContext";
-import history from "history.js"
+import history from "history.js";
+import FormDialog from "../../../../app/views/sessions/login/changepassword"
+import MemberEditorDialog from "../../../../app/views/sessions/login/changepassword"
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   topbar: {
@@ -67,10 +69,25 @@ const Layout1Topbar = () => {
   const theme = useTheme();
   const classes = useStyles();
   const { settings, updateSettings } = useSettings();
-  // const { logout, user } = useAuth();
+  const {  user } = useAuth();
   const isMdScreen = useMediaQuery(theme.breakpoints.down("md"));
   const fixed = settings?.layout1Settings?.topbar?.fixed;
   const userInfo = localStorage.getItem('user')
+  const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  const [
+    shouldOpenConfirmationDialog,
+    setShouldOpenConfirmationDialog,
+  ] = useState(false);
+  const handleDialogClose = () => {
+    setShouldOpenEditorDialog(false);
+   
+  };
+
+  const handleDeleteUser = (user) => {
+    
+    setShouldOpenConfirmationDialog(true);
+  };
+
 
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({
@@ -98,8 +115,10 @@ const Layout1Topbar = () => {
     localStorage.clear();
     window.location.href = `../dashboard/default`;
   }
+  
 
   return (
+    
     <div className={classes.topbar}>
       <div className={clsx({ "topbar-hold": true, fixed: fixed })}>
         <div className="flex justify-between items-center h-full">
@@ -130,7 +149,7 @@ const Layout1Topbar = () => {
                 <div className={classes.userMenu}>
                   <Hidden xsDown>
                     <span>
-                      Hi <strong>{userInfo}</strong>
+                      Hi <strong>{user?.name}</strong>
                     </span>
                   </Hidden>
                   <Avatar className="cursor-pointer"/>
@@ -152,9 +171,24 @@ const Layout1Topbar = () => {
                   <span className="pl-4"> Profile </span>
                 </Link>
               </MenuItem> */}
-              <MenuItem className={classes.menuItem}>
-                <Icon> settings </Icon>
-                <span className="pl-4"> Settings </span>
+              <MenuItem className={classes.menuItem} onClick={e=>history.push('/changepass')}>
+                <Icon > settings </Icon>
+                <span className="pl-4" >Change Password</span>
+                {shouldOpenEditorDialog && (
+    <MemberEditorDialog
+      handleClose={handleDialogClose}
+      open={shouldOpenEditorDialog}
+      
+    />
+  )}
+  {shouldOpenConfirmationDialog && (
+    <ConfirmationDialog
+      open={shouldOpenConfirmationDialog}
+      onConfirmDialogClose={handleDialogClose}
+      text="Are you sure to delete?"
+    />
+  )}
+
               </MenuItem>
 
               <MenuItem onClick={logout} className={classes.menuItem}>

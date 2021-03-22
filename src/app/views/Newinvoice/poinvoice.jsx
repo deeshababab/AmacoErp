@@ -42,7 +42,11 @@ const locale = navigator.language;
 
 // import Image from 'react-image-resizer';
 
-
+const i=0;
+  function counter() {
+    
+    return i+1;
+  }
 const useStyles = makeStyles(({ palette, ...theme }) => ({
  
   "@global": {
@@ -55,9 +59,10 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
       "body, html": {
         visibility: "hidden",
         size: "auto",
-      
-        content: 'none !important',
+        counterReset:i,
+        // content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
+        marginTop:'10px'
     
        
         
@@ -65,6 +70,10 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 
       
        
+      },
+      "h3":{
+        counterIncrement:i,
+        content: "Section " 
       },
       
      
@@ -89,6 +98,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
           height:"100px",
           marginTop:'10px',
          
+         
           
           },
         ".header": {
@@ -102,7 +112,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
           height:"100px",
           bottom:0,
           width: "100%",
-
+          
         },
 
         
@@ -215,6 +225,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   function handleClose() {
     setAnchorEl(null);
   }
+  
   function handleClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -491,7 +502,7 @@ const deletepo = ()=>{
         </div>
       </div>
 
-       <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}}> 
+       <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize: 16}}> 
       
        {/* <header id="header"> */}
        <table >
@@ -585,179 +596,122 @@ const deletepo = ()=>{
           </div>
         </div>
         <div className="px-2 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h5 style={{fontWeight:1000}}>Supplier Name</h5>
-              {company}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="mr-4" align="right">
-              <h5 style={{fontWeight:1000}}>
-               P.O. Date
-              </h5>
-              {moment(rdate).format('DD MMM YYYY')}
-            </div>
-          </div>
+          
+          
         </div>
         <div className="px-2 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h5 style={{fontWeight:1000}}>Attention</h5>
-              {contactperson}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="mr-4" align="right">
-              <h5 style={{fontWeight:1000}}>
-               P.O. Number
-              </h5>
-              {po_number}
-            </div>
-          </div>
+          
+          
         </div>
         <div className="px-2 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h5 style={{fontWeight:1000}}>Email Id</h5>
-              {contactpersonemail}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="mr-4" align="right">
-              <h5 style={{fontWeight:1000}}>
-               RFQ Id
-              </h5>
-              {rno}
-            </div>
-          </div>
-        </div>
-
-       
-       
-        {/* <div className="viewer__order-info px-4 mb-4  flex justify-between">
-          <div className="ml-2">
-          <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-            <h5 className="font-normal t-4 capitalize">
-              <strong>Buyer Details </strong>{" "}
-            </h5>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Attention.</strong></td>
-              <td style={{ height: 'auto !important' }}>{contactperson}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Designation</strong></td>
-              <td style={{ height: 'auto !important' }}>{designation}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Company</strong></td>
-              <td style={{ height: 'auto !important' }}>{company}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Address</strong></td>
-              <td style={{ height: 'auto !important' }}>{street}-{city},{pono} {zipcode}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Email Id</strong></td>
-              <td style={{ height: 'auto !important' }}>{contactpersonemail}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Contact</strong></td>
-              <td style={{ height: 'auto !important' }}>{contactpersoncontact}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>P.O. Date</strong></td>
-              <td style={{ height: 'auto !important' }}>{rdate}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>C.R. No.</strong></td>
-              <td style={{ height: 'auto !important' }}>{regno}</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>VAT No.</strong></td>
-              <td style={{ height: 'auto !important' }}>{vatno}</td>
-            </tr> 
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>P.O. No.</strong></td>
-              <td style={{ height: 'auto !important' }}>{po_number}</td>
-            </tr> 
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>RFQ ID</strong></td>
-              <td style={{ height: 'auto !important' }}>{rno}</td>
-            </tr>    
-            
-            
-            
-
-          </div>
-          <div className="text-center">
+          
          
+          
+        </div>
 
-          </div>
-          <div className="text-right mr-2">
+       
 
-            <tr>
-              <td>
-                <h5 className="font-normal capitalize">
-                  <strong>Supplier Details </strong>{" "}
-                </h5>
-              </td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-              <td style={{ height: 'auto !important' }}><strong>Submitted By</strong></td>
-              <td style={{ height: 'auto !important' }}>Mr.Abbas Ahamed Shazli</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td ><strong>Designation</strong></td>
-              <td >Business Development Manager - ISD Division</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td><strong>Company</strong></td>
-              <td>Amaco Arabia Contracting Company</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td><strong>Address</strong></td>
-              <td>PO BOX 7452, AI Jubail 31951, KSA</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
-              <td><strong>E-mail ID</strong></td>
-              <td>ABBAS@AMACO.COM.SA</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td><strong>Mob/Tel.</strong></td>
-              <td>535515212</td>
-            </tr>
-            <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td><strong>Vendor Id.</strong></td>
-              <td>{vendor_id}</td>
-            </tr>
 
+
+        <div className="px-2 flex justify-between">
+            <div className="px-2 flex justify-end">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>Supplier Name</span><br></br>
+            {company}
+        
+            </div>
+            <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>Attention</span><br></br>
+              {contactperson}
+             
+             
+            </div>
+            <div className="pl-2 ">
+            <span style={{fontWeight:1000}}>Email ID</span><br></br>
+              {contactpersonemail}
+              
             
+            </div>
+            </div>
+            <div>
+              </div>
+              </div>
+            </div>
+            <div className="px-2 flex justify-end">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>P.O. Date</span><br></br>
+              {moment(rdate).format('DD MMM YYYY')}
+        
+            </div>
+            <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>P.O. Number</span><br></br>
+              {po_number}
+             
+             
+            </div>
+            <div className="pl-2 ">
+          
+            <span style={{fontWeight:1000}}>RFQ ID</span><br></br>
+              {rno}
+            
+            </div>
+            </div>
+            <div>
+              </div>
+              </div>
+            </div>
+            <div className="px-2 flex justify-end">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2">
+              <h5 style={{fontWeight:1000}}></h5>
+           
+        
+            </div>
+            <div className="pl-2 ">
+              <h5 style={{fontWeight:1000}}></h5>
+             
+             
+             
+            </div>
+            <div className="pl-2 ">
+          
+              <h5 style={{fontWeight:1000}}></h5>
+             
+            
+            </div>
+            </div>
+            <div>
+              </div>
+              </div>
+            </div>
           </div>
-        </div> */}
         
       <br></br>
         <Card className="mb-4" elevation={0} title="Rfq Details" borderRadius="borderRadius" >
         
 
         
-        <div className="viewer__order-info px-4 mb-4 flex justify-between">
+        <div className="viewer__order-info px-2 mb-4 flex justify-between">
           <Table>  
           <TableHead style={{backgroundColor:'#1d2257',display:'table-row-group'}}>
               <TableRow>
-                <TableCell className="pl-0" colspan={2} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}} align="center">S.No.</TableCell>
+                <TableCell className="pl-0" colspan={2} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16}} align="center">S.No.</TableCell>
                 
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15 }}width="0px" align="center">RFQ DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16 }}width="0px" align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}} width="300px" align="center">QUOTATION DESCRIPTION</TableCell>
-                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",width:200,color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">REMARK</TableCell>
-                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:90,color:"#fff",fontWeight:'1000',fontSize:15}} align="center">QTY</TableCell>
-                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">UOM</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16}} width="300px" align="center">QUOTATION DESCRIPTION</TableCell>
+                <TableCell className="px-0" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",width:200,color:"#fff",fontWeight:'1000',fontSize: 16}}  align="center">REMARK</TableCell>
+                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:90,color:"#fff",fontWeight:'1000',fontSize: 16}} align="center">QTY</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16}}  align="center">UOM</TableCell>
                 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">UNIT PRICE</TableCell> 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize:15}}  align="center">TOTAL</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16}}  align="center">UNIT PRICE</TableCell> 
+                <TableCell className="px-0"style={{border: "1px solid #ccc",width:100,fontFamily: "Calibri",color:"#fff",fontWeight:'1000',fontSize: 16}}  align="center">TOTAL</TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
@@ -767,38 +721,38 @@ const deletepo = ()=>{
                 
                 return (
                   <TableRow key={index} style={{border: "1px solid #ccc"}}>
-                    <TableCell className="pl-0" align="center" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}} >
+                    <TableCell className="pr-0" align="center" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} >
                       {index + 1}
                     </TableCell>
                     
 
-                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16}}>
                      {item.description}
 
                     </TableCell>
-                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={3}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16}}>
                      {item.product.description}
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pl-0 capitalize" colspan={3} align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                      {item.remark}
 
                     </TableCell>
                     
-                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pr-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                     {parseInt(item.quantity).toLocaleString()}
 
                     
                       
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pr-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                     {item.product.unit_of_measure}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}} >
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} >
                    
                     {parseFloat(item.purchase_price).toLocaleString(undefined, {minimumFractionDigits:2})}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15}}>
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                    
                    {parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
           
@@ -819,16 +773,16 @@ const deletepo = ()=>{
               <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
               </TableCell>
             <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} colspan={2}>SUB TOTAL</TableCell>
-            <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
+            {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-              <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}
+                </TableCell> */}
+              <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} colspan={2}
                 >
                    
                    {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word',fontFamily: "Calibri"}}>
                     <FormattedNumber value={total_value} currency={"SAR"} style="currency" />
                     </IntlProvider> */}
-                    {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                    {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}  SAR
                     
                 </TableCell>
                   
@@ -836,25 +790,25 @@ const deletepo = ()=>{
               </TableRow>
               <TableRow style={{border: "1px solid #ccc"}}>
 
-              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
+              <TableCell className="pr-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
                 </TableCell>
       
                   <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px" colspan={2}>TOTAL VAT AMOUNT (15%)</TableCell>
-                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                  {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px"
+                </TableCell> */}
+                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px" colspan={2}
                 
                  >
 
                   {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word'}}>
                     <FormattedNumber value={vat_in_value} currency={"SAR"} style="currency" />
                     </IntlProvider> */}
-                    {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                    {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
                 </TableCell> 
               </TableRow>
               <TableRow style={{border: "1px solid #ccc"}}>
-              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200,fontSize:15}}>
+              <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200,fontSize: 16}}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
                         <div className="pr-12" style={{wordBreak:'break-word'}}>
@@ -871,11 +825,11 @@ const deletepo = ()=>{
                      <span>GRAND TOTAL</span> 
                 </TableCell> 
                 
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
-                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
+                </TableCell> */}
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
           
     
                 </TableCell>
@@ -885,7 +839,7 @@ const deletepo = ()=>{
           </div>
           <br></br>
           <div className="viewer__order-info px-4 mb-4 flex justify-between">
-          <div className="ml-24">
+          <div className="ml-24" style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -893,10 +847,10 @@ const deletepo = ()=>{
 
                   />
                 </IntlProvider>
-              </h5>
+              </h5 >
                  Prepared by
               </div>
-            <div>
+            <div style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -907,7 +861,7 @@ const deletepo = ()=>{
               </h5>
                  Approved by
               </div>
-              <div className="mr-24">
+              <div className="mr-24" style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -1015,7 +969,7 @@ const deletepo = ()=>{
         
       <div class="footer">
              <footer   style={{visibility: "hidden" }}>
-             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
+             {/* <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
           
           <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
                 
@@ -1025,7 +979,14 @@ const deletepo = ()=>{
         <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
         
-        {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
+        <h3 style={{textAlign:"center"}} ></h3> */}
+         <div >
+        <div id="outer" style={{"position": "relative", width:'1050px', backgroundColor:'#c1c1c1',"transform": "skew(-20deg)",marginLeft:'40px',marginRight:'50px'}}>
+        <p style={{color:'#fff',paddingTop:5,paddingBottom:5,"transform": "skew(20deg)"}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        <div id="spacer" style={{width: "200px", height: "10px", marginRight:0,}}></div>
+        <div style={{"position": "fixed", bottom: 0, width: "100%", height: 30, backgroundColor:"#1d2257",}}> <p   style={{textAlign: 'center',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:10,"transform": "skew(20deg)"}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p></div>
+    </div> 
+           </div>
         
         
         </footer>

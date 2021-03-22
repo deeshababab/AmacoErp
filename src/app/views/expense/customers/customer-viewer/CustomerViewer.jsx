@@ -19,7 +19,7 @@ const CustomerViewer = () => {
       <div className="mb-sm-30">
         <Breadcrumb
           routeSegments={[
-            { name: "Add Expense", path: "/addexpense" },
+            // { name: "Add Expense", path: "/addexpense" },
             { name: "Expenses" },
           ]}
         />

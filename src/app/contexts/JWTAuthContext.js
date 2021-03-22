@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "axios.js";
 import { MatxLoading } from "matx";
+import url from "../views/invoice/InvoiceService"
 
 const initialState = {
   isAuthenticated: false,
@@ -16,17 +17,18 @@ const isValidToken = (accessToken) => {
 
   const decodedToken = jwtDecode(accessToken);
   const currentTime = Date.now() / 1000;
- 
+
   return decodedToken.exp > currentTime;
 };
 
 const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    url.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
   } else {
     localStorage.removeItem("accessToken");
-    delete axios.defaults.headers.common.Authorization;
+    delete url.defaults.headers.common['Authorization'];
   }
 };
 
@@ -77,7 +79,7 @@ const AuthContext = createContext({
   ...initialState,
   method: "JWT",
   login: () => Promise.resolve(),
-  logout: () => {},
+  logout: () => { },
   register: () => Promise.resolve(),
 });
 
@@ -86,11 +88,16 @@ export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = async (email, password) => {
+
+    const response = await url.post("/auth/login", { email, password });
     
-    const response = await axios.post("/api/auth/login", { email, password });
-    const { accessToken, user } = response.data;
-    
+    const { accessToken, user, role } = response.data;
+    console.log(response.data)
+    localStorage.setItem("role", role)
+    localStorage.setItem("auth_user", user)
+    console.log(JSON.stringify(localStorage.getItem("auth_user")))
     setSession(accessToken);
+
 
     dispatch({
       type: "LOGIN",
@@ -106,11 +113,11 @@ export const AuthProvider = ({ children }) => {
       username,
       password,
     });
-    
+
     const { accessToken, user } = response.data;
 
     setSession(accessToken);
-    
+
     dispatch({
       type: "REGISTER",
       payload: {
@@ -131,17 +138,29 @@ export const AuthProvider = ({ children }) => {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-          const response = await axios.get("/api/auth/profile");
-          const { user } = response.data;
-
-          dispatch({
-            type: "INIT",
-            payload: {
-              isAuthenticated: true,
-              user,
-            },
-          });
-        } else {
+         
+              console.log(url.defaults.headers.common['Authorization'])
+              const response = await url.post("/auth/me");
+              const { user } = response.data;
+              console.log('authme' + user)
+              dispatch({
+                type: "INIT",
+                payload: {
+                  isAuthenticated: true,
+                  user,
+                },
+              });
+            } else {
+              dispatch({
+                type: "INIT",
+                payload: {
+                  isAuthenticated: false,
+                  user: null,
+                },
+              });
+            }
+      } catch (err) {
+          console.error(err);
           dispatch({
             type: "INIT",
             payload: {
@@ -150,17 +169,7 @@ export const AuthProvider = ({ children }) => {
             },
           });
         }
-      } catch (err) {
-        console.error(err);
-        dispatch({
-          type: "INIT",
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
-      }
-    })();
+      })();
   }, []);
 
   if (!state.isInitialised) {

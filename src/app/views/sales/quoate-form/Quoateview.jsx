@@ -47,6 +47,16 @@ const SimpleMuiTable = () => {
     wordBreak: "break-word",
     
   }
+  const columnStyleWithWidth2 = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "150px",
+    wordBreak: "break-word",
+    
+  }
   useEffect(() => {
     url.get("sales-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
@@ -191,7 +201,13 @@ const SimpleMuiTable = () => {
       name: "name",
       label: "Quote Date",
       options: {
-        filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth2} >  
+              <span style={{marginLeft:18}}>Quote Date</span> 
+            </TableCell>
+          )
+       }
       },
     },
     {

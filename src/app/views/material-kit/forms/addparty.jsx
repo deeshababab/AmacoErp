@@ -46,6 +46,11 @@ const optionss = [
     { value: 'Vendor', label: 'Vendor' },
     { value: 'Customer', label: 'Customer' },
   ];
+  const prefixs = [
+    { value: 'Mr', label: 'Mr' },
+    { value: 'Mrs', label: 'Mrs' },
+    { value: 'Ms', label: 'Ms' }
+  ];
   const customerList = [
     {
       name: "Customer",
@@ -95,7 +100,7 @@ const Addparty = ({open, handleClose}) => {
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
   const [address, setaddress] = useState('');
- 
+  const [prefix, setprefix] = useState('');
 
   const handleSubmit = () => {
    
@@ -128,7 +133,8 @@ const Addparty = ({open, handleClose}) => {
       account_no:account_no,
       vendor_id:vendor_id,
       address:address,
-      party_code:partycode
+      party_code:partycode,
+      prefix:prefix
     }
    console.log(frmdetails)
      
@@ -215,6 +221,25 @@ const resetform = () => {
           <Grid item lg={6} md={6} sm={12} xs={12}>
           
             <h6>Contact Person Details</h6>
+            <div className="flex">
+          <TextField
+            className="mr-2"
+            autoComplete="none"
+            label="Prefix"
+            variant="outlined"
+            onChange={e => setprefix(e.target.value)}
+            value={prefix}
+            size="small"
+            style={{width:'180px'}}
+            select
+
+          >
+             {prefixs.map((item, ind) => (
+                      <MenuItem value={item.value} key={item}>
+                        {item.label}
+                      </MenuItem>
+                    ))}
+            </TextField>
                 <TextField
                     className="mb-4 w-full"
                     label="First Name"
@@ -226,6 +251,7 @@ const resetform = () => {
                                 size="small"
                                 value={fname}
                             />
+                </div>
               <div className="flex mb-4">
             <TextField
             className="mr-2"

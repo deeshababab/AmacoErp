@@ -82,7 +82,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
     
-       
+        marginTop:'10px'
         
       
 
@@ -570,7 +570,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
           </div>
       </div>
 
-      <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}}>
+      <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize: 16}}>
       {/* <header id="header"> */}
       <table >
         <thead style={{display:"table-header-group"}} >
@@ -654,7 +654,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             </div>
           </div>
           <div className="flex">
-            <div className="pr-4 px-4 mb-4">
+            <div className="pr-2 px-4 mb-4">
               <h4>
                
                 <strong>فاتورة ضريبة القيمة المضافة</strong>
@@ -675,25 +675,25 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <div className="pr-12">
             
            
-              <div className="pl-2">
-              <h5 style={{fontWeight:1000}}>ISSUE DATE</h5>
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>ISSUE DATE</span><br></br>
               {moment(issue_date).format('DD MMM YYYY')}        
 
             </div>
            
             
-            <div className="pl-2 pt-2">
-            <h5 style={{fontWeight:1000}}>COMPANY NAME & ADDRESS</h5>
-              <div>{company}</div>
-              <div>{street}-{city}, {zipcode}</div>
+            <div className="pl-2 pb-4">
+            <span style={{fontWeight:1000}}>COMPANY NAME & ADDRESS</span><br></br>
+              <span>{company}</span><br></br>
+              <span>{street}-{city}, {zipcode}</span>
              
              
             </div>
            
             
-            <div className="pl-2 pt-2">
+            <div className="pl-2 ">
           
-            <h5 style={{fontWeight:1000}}>P.O. NUMBER</h5>
+            <span style={{fontWeight:1000}}>P.O. NUMBER</span><br></br>
               {pono}
             
             </div>
@@ -711,8 +711,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <div className="pr-12">
             
               
-              <div>
-              <h5 style={{fontWeight:1000}}>INVOICE NUMBER</h5>
+              <div className="pb-4" >
+              <span style={{fontWeight:1000}}>INVOICE NUMBER</span>
+              <br></br>
               {invoiceno}
              
              
@@ -722,15 +723,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
            
             {/* <div className="justify-center" style={{visibility:'hidden'}}>
            
-            <h5 style={{fontWeight:1000}}></h5>
+            <span style={{fontWeight:1000}}></span>
               <div></div>
               <div></div>
           
             </div> */}
            
             
-            <div className="pt-2">
-            <h5 style={{fontWeight:1000}}>VAT NUMBER</h5>
+            <div className="">
+            <span style={{fontWeight:1000}}>VAT NUMBER</span>
+            <br></br>
               {vatno}
            
             </div>
@@ -744,10 +746,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <div className="px-2 flex justify-center">
           <div className="flex " >
               <div className="pr-12">
-              <div>
-              <h4  style={{fontWeight:1000}}>
-              ظريبه الشراء
-              </h4>
+              <div className="pb-3" align="right">
+              <span  style={{fontWeight:1000,fontSize:18}}>
+              رقم الفاتورة
+              </span><br></br>
               {invoiceno}
              
              
@@ -755,7 +757,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
            
             <div className="justify-center" style={{visibility:'hidden'}}>
            
-            {/* <h5 style={{fontWeight:1000}}></h5>
+            {/* <span style={{fontWeight:1000}}></span>
               <div></div>
               <div></div> */}
           
@@ -766,11 +768,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             </div> */}
           
             </div>
-            <div className="">
-            <h4  style={{fontWeight:1000}}>
-                رقم امرالشراء
-                
-            </h4>
+            <div className="" align="right">
+            <span  style={{fontWeight:1000,fontSize:18}} >
+            رقم ضريبة القيمة المضافة                
+            </span><br></br>
             {vatno}
            
             </div>
@@ -779,19 +780,19 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </div>
               </div>
             </div>
-            <div className="px-2 mr-1 flex justify-end">
+            <div className="px-0 mr-2 flex justify-end">
           <div className="flex " >
               <div className="pr-2">
-              <div className="mr-1" align="right">
-              <h4 align="right" style={{fontWeight:1000}} >
+              <div className="mr-0 pr-0 pb-3" align="right">
+              <span align="right" style={{fontWeight:1000,fontSize:18}} >
                 تاريخ الاصدار
-                </h4>
+                </span><br></br>
                 
               {moment(issue_date).format('DD MMM YYYY')}
              
             </div>
-            <div className="mr-1" align="right">
-            <h4 style={{fontWeight:1000}}>
+            <div className="mr-0 pr-0 pb-3" align="right">
+            <span style={{fontWeight:1000,fontSize:18}}>
                 {/* <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
                     id="companyname"
@@ -800,19 +801,18 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 </IntlProvider> */}
                 اسم الشركة وعنوانها
 
-              </h4>
-              <div className="justify-center" style={{visibility:'hidden'}} id="noprint">
-              <div>{company}</div>
-              <div>{street}-{city}, {zipcode}</div>
+              </span><br></br>
+              <span>{company}</span><br></br>
+              <span>{street}-{city}, {zipcode}</span>
           
-            </div>
+
 
             
             </div>
-            <div className="mr-1" align="right">
-            <h4 align="right" style={{fontWeight:1000}}>
-                ظريبه الشراء
-              </h4>
+            <div className="mr-0 pr-0" align="right">
+            <span align="right" style={{fontWeight:1000,fontSize:18}}>
+            رقم أمر الشراء  
+              </span><br></br>
               {pono}
                
              
@@ -832,14 +832,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         {/* <div className="viewer__billing-info px-4 py-5 flex justify-between">
           <div>
-            <h5 className="mb-2">Bill From</h5>
+            <span className="mb-2">Bill From</span>
             <p className="mb-4">{seller ? seller.name : null}</p>
             <p className="mb-0 whitespace-pre-wrap">
               {seller ? seller.address : null}
             </p>
           </div>
           <div className="text-right w-full">
-            <h5 className="mb-2">Bill To</h5>
+            <span className="mb-2">Bill To</span>
             <p className="mb-4">{buyer ? buyer.name : null}</p>
             <p className="mb-0 whitespace-pre-wrap">
               {buyer ? buyer.address : null}
@@ -849,19 +849,19 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div> */}
 
         <Card className="mb-4" elevation={0} title="Rfq Details" borderRadius="borderRadius">
-          <div className="viewer__order-info px-4 mb-4 flex justify-between">
+          <div className="viewer__order-info px-4 pt-4 mb-4 flex justify-between">
             <Table style={{ border: "1px solid #ccc" }}>
               <TableHead style={{backgroundColor:'#1d2257',display:'table-row-group'}}>
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid #ccc", width: "50px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15 }} align="center"><span style={{fontSize:15}}>رقم</span><br></br> S.No.</TableCell>
-                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid #ccc",width: "px",fontFamily: "Calibri",color:'#fff', fontWeight:1000,fontSize:15 }} align="center"><span style={{fontSize:15}}>وصف</span><br></br> DESCRIPTION</TableCell>
+                  <TableCell className="pl-0" colspan={1} style={{ border: "1px solid #ccc", width: "50px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16 }} align="center"><span style={{fontSize: 16}}>رقم</span><br></br> S.No.</TableCell>
+                  <TableCell className="px-0" colspan={3} style={{ border: "1px solid #ccc",width: "px",fontFamily: "Calibri",color:'#fff', fontWeight:1000,fontSize: 16 }} align="center"><span style={{fontSize: 16}}>وصف</span><br></br> DESCRIPTION</TableCell>
 
-                  <TableCell className="px-0"  style={{ border: "1px solid #ccc", width: "90px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}} align="center"><span style={{fontSize:15}}>وحدة</span><br></br> UOM</TableCell>
-                  <TableCell className="px-0"  colspan={2} style={{ border: "1px solid #ccc",width: "90px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}} align="center"><span style={{fontSize:15}}>كمية</span><br></br>QTY</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri",width: "130px",color:'#fff',fontWeight:1000,fontSize:15}} align="center"><span style={{fontSize:15}}>سعر الوحدة</span><br></br> UNIT PRICE</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15 }} align="center"><span style={{fontSize:15}}>المبلغ الخاضع للضريبة</span><br></br> SUB TOTAL</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}} align="center"><span style={{fontSize:15}}>القيمة الضريبية</span><br></br>VAT AMOUNT (15%)</TableCell>
-                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}} align="center"><span style={{fontSize:15}}>مجموع</span><br></br> GRAND TOTAL</TableCell>
+                  <TableCell className="px-0"  style={{ border: "1px solid #ccc", width: "90px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16,wordBreak:'break-word'}} align="center"><span style={{fontSize: 16}}>وحدة</span><br></br>UOM</TableCell>
+                  <TableCell className="px-0"  colspan={2} style={{ border: "1px solid #ccc",width: "90px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}} align="center"><span style={{fontSize: 16}}>كمية</span><br></br>QTY</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",fontFamily: "Calibri",width: "130px",color:'#fff',fontWeight:1000,fontSize: 16}} align="center"><span style={{fontSize: 16}}>سعر الوحدة</span><br></br> UNIT PRICE</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16 }} align="center"><span style={{fontSize: 16}}>المجموع الفرعي</span><br></br> SUB TOTAL</TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}} align="center"><span style={{fontSize: 16}}>القيمة الضريبية</span><br></br>VAT AMOUNT </TableCell>
+                  <TableCell className="px-0" style={{ border: "1px solid #ccc",wordBreak:'break-word',width: "130px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}} align="center"><span style={{fontSize: 16}}>مجموع</span><br></br> GRAND TOTAL</TableCell>
   
                 </TableRow>
               </TableHead>
@@ -872,38 +872,38 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   return (
 
                     <TableRow key={index} style={{ border: "1px solid #ccc",fontSize:18 }}>
-                      <TableCell className="pl-0" align="center" colspan={1} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }}>
+                      <TableCell className="pr-0" align="center" colspan={1} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}>
                         {index + 1}
                       </TableCell>
 
 
-                      <TableCell className="pl-2 capitalize" align="left" colspan={3} style={{ border: "1px solid #ccc",wordBreak:"break-word", fontFamily: "Calibri",fontSize:15}}>
+                      <TableCell className="pl-2 capitalize" align="left" colspan={3} style={{ border: "1px solid #ccc",wordBreak:"break-word", fontFamily: "Calibri",fontSize: 16}}>
                         {item.product.description}
 
                       </TableCell>
 
 
-                      <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }}>
+                      <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}>
                         {item.product.unit_of_measure}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }} colspan={2} >
+                      <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} colspan={2} >
                         {parseInt(item.quotation_detail.quantity).toLocaleString()}
 
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
 
                         {parseFloat(item.quotation_detail.sell_price).toLocaleString(undefined, {minimumFractionDigits:2})}
       
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
                        
                         {parseFloat(item.quotation_detail.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
                         {/* {item.total_amount} */}
                         {parseFloat((item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
-                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }} >
+                      <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
                      {(parseFloat(item.quotation_detail.total_amount)+(item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
 
@@ -912,6 +912,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                   );
                 })}
+                
                 <TableRow style={{ border: "1px solid #ccc" }}>
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={8}>
                     <div className="px-4 flex justify-between" style={{ fontFamily: "Calibri" }}>
@@ -924,15 +925,15 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                               </h5>
                             </td>
                           </tr>
-                          <tr style={{ height: 5, fontSize:15, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 16, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Bank Name</strong></td>
                             <td style={{ height: 'auto !important' }}>National Commercial Bank</td>
                           </tr>
-                          <tr style={{ height: 5, fontSize:15, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 16, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>Account No</strong></td>
                             <td style={{ height: 'auto !important' }}>6000000242200</td>
                           </tr>
-                          <tr style={{ height: 5, fontSize:15, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 16, textAlign: 'left' }}>
                             <td style={{ height: 'auto !important' }}><strong>IBAN No</strong></td>
                             <td style={{ height: 'auto !important' }}>SA3610000006000000242200</td>
                           </tr>
@@ -941,18 +942,18 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }}>
-                    المبلغ الخاضع للضريبة
-                  <br></br>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}} >
+                    االمجموع الفرعي        
+                    <br></br>
                  SUB TOTAL
 
                   </TableCell>
                   
-                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                  {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
-                {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                </TableCell> */}
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}  SAR
           
     
                 </TableCell>
@@ -975,17 +976,17 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   TOTAL VAT AMOUNT (15%)
                   </TableCell>
                   
-                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                  {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
-                {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                </TableCell> */}
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
           
     
                 </TableCell>
                 </TableRow>
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pl-0 capitalize" colspan={8} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize:15 }}>
+                  <TableCell className="pl-0 capitalize" colspan={8} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
                         <div className="pr-12" style={{wordBreak:'break-word'}}>
@@ -1000,11 +1001,11 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   GRAND TOTAL
                   </TableCell>
                  
-                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
+                  {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
-                </TableCell>
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}}>
-                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
+                </TableCell> */}
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
           
     
                 </TableCell>
@@ -1016,7 +1017,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
           <br></br>
           <div className="viewer__order-info px-4 mb-4 flex justify-between">
-          <div className="ml-24">
+          <div className="ml-24" style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -1027,7 +1028,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </h5>
                  Prepared by
               </div>
-            <div>
+            <div style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -1038,7 +1039,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               </h5>
                  Approved by
               </div>
-              <div className="mr-24">
+              <div className="mr-24" style={{fontWeight:1000}}>
               <h5 className="font-normal t-4 capitalize">
                 <IntlProvider locale={locale} messages={Arabic}>
                   <FormattedMessage
@@ -1065,8 +1066,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
         </table>
         <div class="footer">
-        <footer id="footer"  style={{visibility: "hidden" }}>
-             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
+        <footer  style={{visibility: "hidden" }}>
+             {/* <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
           
           <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
                 
@@ -1074,7 +1075,14 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
          <div class="main" style={{width:'100%'}} > 
        <div  class="right" style={{width: '90px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
         <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
-        </div>
+        </div> */}
+         <div >
+        <div id="outer" style={{"position": "relative", width:'1050px', backgroundColor:'#c1c1c1',"transform": "skew(-20deg)",marginLeft:'40px',marginRight:'50px'}}>
+        <p style={{color:'#fff',paddingTop:5,paddingBottom:5,"transform": "skew(20deg)"}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        <div id="spacer" style={{width: "200px", height: "10px", marginRight:0,}}></div>
+        <div style={{"position": "fixed", bottom: 0, width: "100%", height: 30, backgroundColor:"#1d2257",}}> <p   style={{textAlign: 'center',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:10,"transform": "skew(20deg)"}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p></div>
+    </div> 
+           </div>
         
         {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
         

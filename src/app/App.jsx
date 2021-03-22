@@ -1,7 +1,7 @@
-import "../fake-db";
+// import "../fake-db";
 import React from "react";
 import { Provider } from "react-redux";
-import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import AppContext from "./contexts/AppContext";
 import history from "history.js";
 import routes from "./RootRoutes";
@@ -9,7 +9,7 @@ import { Store } from "./redux/Store";
 import { GlobalCss, MatxSuspense, MatxTheme, MatxLayout } from "matx";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 import AuthGuard from "./auth/AuthGuard";
-import { AuthProvider } from "app/contexts/FirebaseAuthContext";
+import { AuthProvider } from "app/contexts/JWTAuthContext";
 import { SettingsProvider } from "app/contexts/SettingsContext";
 
 const App = () => {
@@ -20,42 +20,24 @@ const App = () => {
           <MatxTheme>
             <GlobalCss />
             <Router history={history}>
-               {/* <AuthProvider> */}
-               {/* {!localStorage.getItem('rememberMe')&&( */}
+              <AuthProvider>
                 <MatxSuspense>
-                  <Switch> 
+                  <Switch>
                     {/* AUTHENTICATION PAGES (SIGNIN, SIGNUP ETC.) */}
-                    {sessionRoutes.map((item, i) => 
-                    
-                    
+                    {sessionRoutes.map((item, i) => (
                       <Route
                         key={indexedDB}
                         path={item.path}
                         component={item.component}
                       />
-                    
-                    )}
+                    ))}
                     {/* AUTH PROTECTED DASHBOARD PAGES */}
-                    {/* <AuthGuard> */}
-                   {localStorage.getItem('rememberMe')&&
-                    
-                   ( 
-
+                    <AuthGuard>
                       <MatxLayout />
-                      )}  
-                    {!localStorage.getItem('rememberMe')&&
-                      
-                      history.push("/ ")
-                      // window.location.href = `../dashboard/default`;
-                    
-                      
-                    }
-
-                    {/* </AuthGuard> */}
-                  </Switch> 
+                    </AuthGuard>
+                  </Switch>
                 </MatxSuspense>
-               {/* )} */}
-              {/* </AuthProvider>  */}
+              </AuthProvider>
             </Router>
           </MatxTheme>
         </SettingsProvider>

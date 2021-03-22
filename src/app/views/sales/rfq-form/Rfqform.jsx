@@ -3,7 +3,8 @@ import { Formik } from "formik";
 import axios from "axios";
 import moment from "moment";
 import history from "history.js";
-import url, { getrfq,getVendorList } from "../../invoice/InvoiceService"
+import url, { getrfq,getVendorList } from "../../invoice/InvoiceService";
+import clsx from "clsx";
 
 
 
@@ -17,7 +18,8 @@ import {
   MenuItem,
   Icon,
   Button,
-  Fab
+  Fab,
+  Tooltip
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -37,12 +39,13 @@ import { values } from "lodash";
 const maxNumber = 3;
 
 const InvoiceForm = ({ }) => {
+  const [files, setFiles] = useState([]);
   const formData = new FormData();
   const arr = [];
   const onChange = (imageList) => {
     // data for submit
     //Getting total number of images
-    // console.log(imageList)
+    
     var images = imageList.length
     // console.log(imageList)
     // Create an object of formData 
@@ -68,7 +71,7 @@ const InvoiceForm = ({ }) => {
       });
 
     }
-
+   
     // axios.post("http://localhost/file/controller/post.php", formData);
   };
 
@@ -80,10 +83,11 @@ const InvoiceForm = ({ }) => {
   const [inputValue, setInputValue] = useState(moment().format("YYYY-MM-DD"));
   const [date, setDate] = useState(new Date());
   const open = false;
-  const [files, setFiles] = useState([]);
-  const [rfqfiles, setrfqFiles] = useState([]);
+  const [rfqFiles, setrfqFiles] = useState([]);
+  const [upload, setupload] = useState([]);
   const [message, setmessage] = useState(false);
   const [queProgress, setQueProgress] = useState(0);
+  const [party_id, setparty_id] = useState('');
   const [dargClass, setDragClass] = useState("");
   const [status, setstatus] = useState(false);
   const [contactstatus, setcontactstatus] = useState(false);
@@ -97,9 +101,10 @@ const InvoiceForm = ({ }) => {
 
   let isEmpty = !!!files.length;
   const handleSingleRemove = (index) => {
-    let tempList = [...files];
+    let tempList = [...rfqFiles];
     tempList.splice(index, 1);
     setFiles([...tempList]);
+    setrfqFiles([...tempList]);
   };
   const handleAllRemove = () => {
     setFiles([]);
@@ -116,7 +121,8 @@ const InvoiceForm = ({ }) => {
       return item;
     });
     setFiles([...allFiles]);
-    // console.log(files)
+ 
+
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -144,32 +150,34 @@ const InvoiceForm = ({ }) => {
     setFiles([...allFiles]);
   };
   const handleFileSelect = (event) => {
+    setrfqFiles(listrfq)
+    setupload(event.target.files)
     let files = event.target.files;
     let filesd = event.target.files;
    
     
 
    
-    for (var a = 0; a < files.length; a++) {
-      formData.append(
-        "myFile" + a,
-        files[a],
-        files[a].name,
-      );
+    // for (let a = 0; a < files.length; a++) {
+    //   formData.append(
+    //     "myFile" + a,
+    //     files[a],
+    //     files[a].name,
+    //   );
 
-    
+     
          
-    }
+    // }
+    // setrfqFiles(event.taraget.files)
+   
     
   
   
-    for (const iterator of filesd) {
+    for (let iterator of filesd) {
       
       listrfq.push({
-        file: iterator,
-        uploading: false,
-        error: false,
-        progress: 0,
+        src: URL.createObjectURL(iterator),
+        
       });
  
 
@@ -177,16 +185,17 @@ const InvoiceForm = ({ }) => {
  
     
   }
-  // setrfq()
+ 
   
-
+  
+  setrfqFiles(listrfq)
 
     // setstatus(true)
   };
   useEffect(() => {
     getVendorList().then(({ data }) => {
       setCustomerList(data);
-      // console.log(data)
+      
 
     });
   }, []);
@@ -199,10 +208,11 @@ const InvoiceForm = ({ }) => {
     return subTotal;
   };
   const setrfq= (event) => {
-
+    setparty_id(event.target.value)
    
     url.get("parties/" + event.target.value).then(({ data }) => {
       setcustomercontact(data[0].contacts);
+     
      
    
 
@@ -222,23 +232,34 @@ const InvoiceForm = ({ }) => {
   };
 
   const handleSubmit = async (values, { isSubmitting, resetForm }) => {
-    const myObjStr = JSON.stringify(values);
-    console.log(values)
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ' - ' + pair[1]);
+    
+    for (let a = 0; a < upload.length; a++) {
+      formData.append(
+        "myFile" + a,
+        upload[a],
+        upload[a].name,
+      );
+
+     
+         
     }
+    values.party_id=party_id
+    const myObjStr = JSON.stringify(values);
+
+    
     
     for (const [key, value] of Object.entries(values)) {
-      // console.log(`${key}: ${value}`);
+     
       let list = [];
       if (`${key}` === "rfq_details") {
         for (const iterator of values.rfq_details) {
           list.push({
             file: iterator,
           });
-          // console.log(JSON.stringify(values.rfq_details))
-
-          formData.append('tags', JSON.stringify(values.rfq_details));
+          
+          
+          formData.append('rfq_details', JSON.stringify(values.rfq_details));
+          
         }
       }
       else {
@@ -253,19 +274,19 @@ const InvoiceForm = ({ }) => {
     const res = { ...values, arr }
 
     
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     "content-type": "multipart/form-data",
+    //     "Access-Control-Allow-Origin": "*",
+    //   },
+    // };
     if (values.rfq_details) {
 
     // url.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php',formData)
-
-    axios.post('http://www.amacoerp.com/amaco/php_file/controller/post.php', formData)
+      
+    url.post('rfq', formData)
         .then(function (response) {
-          // console.log(response);
+          
 
           Swal.fire({
             title: 'Success',
@@ -279,7 +300,7 @@ const InvoiceForm = ({ }) => {
         })
 
         .catch(function (error) {
-          // console.log(error)
+        
         })
       resetForm({ values: '' })
     }
@@ -341,9 +362,10 @@ const InvoiceForm = ({ }) => {
                     name="party_id"
                     size="small"
                     variant="outlined"
+                    value={values.party_id}
                     select
                     
-                    value={values.CustomerList}
+                   
                     // onChange={handleChange}
                     onClick={(event)=>setrfq(event)}
                     required
@@ -416,7 +438,7 @@ const InvoiceForm = ({ }) => {
                     
                     label="Contact Person"
                     style={{minWidth:200,maxWidth:'250px'}}
-                    name="party_id"
+                    name="contact_id"
                     size="small"
                     variant="outlined"
                     select
@@ -533,7 +555,7 @@ const InvoiceForm = ({ }) => {
                   </span>
                 )}
               </div>
-              {status && (
+             
                 <Card className="mb-6" elevation={2}>
                   <div className="p-4">
                     <Grid
@@ -562,33 +584,31 @@ const InvoiceForm = ({ }) => {
                   </div>
                   <Divider></Divider>
  
-                  <p className="px-4">{sum} File Selected</p>
-
-                  {rfqfiles.map((item, index) => {
-                   
-                  //  let { filerfq, uploading, error, progress } = item;
+                  <div className="flex flex-wrap justify-center items-center m--2">
+                  {rfqFiles.map((item, index) => {
+                   console.log(item)
+                 
                     return (
-                      <div className="px-4 py-4" key={item.file.name}>
-                        <Grid
-                          container
-                          spacing={2}
-                          justify="center"
-                          alignItems="center"
-                          direction="row"
-                        >
-                          <Grid item lg={4} md={4} sm={12} xs={12}>
-                           {item.file.name} 
-                          </Grid>
-                          <Grid item lg={1} md={1} sm={12} xs={12}>
-                           {(item.file.size / 1024 / 1024).toFixed(1)} MB 
-                  </Grid>
                       
-                        </Grid>
-                      </div>
+                        
+                          <Card
+                          elevation={6}
+                          className={clsx({
+                            "flex-column justify-center items-center py-6 px-8 m-2 cursor-pointer": true,
+                          })}>
+                          <Tooltip title="Remove"><span style={{paddingRight:0}}><Icon color="error" className="" onClick={(event) => handleSingleRemove(index)}>close</Icon></span></Tooltip>
+                          <img src={item.src} style={{width:'100px',height:'100px'}}/>
+                          {/* <span><Icon color="error" onClick={(event) => handleSingleRemove(index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span> */}
+                          </Card>
+                          
+                      
+                     
+                  
                     );
                   })}
+                      </div>
                 </Card>
-              )}
+          
               <div className="mt-8">
                 <Button color="primary" variant="outlined" type="submit">
                   <Icon>save</Icon>Save

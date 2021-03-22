@@ -1,7 +1,7 @@
 import { authRoles } from "./auth/authRoles";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const navigations = [
+export const navigations1 = [
   {
     name: "Dashboard",
     path: "/dashboard/default",
@@ -63,58 +63,6 @@ export const navigations = [
   // }
   // ]
 },
-{
-  name: "Account",
-  icon: "developer_board",
-  children: [
-    {
-  name: "Expenses",
-  icon: "attach_money",
-  path: "/expenseview",
-    },
-    {
-      name: "Transaction",
-      icon: "account_balance_wallet",
-      path: "/transaction",
-    },
-    {
-      name: "Statements",
-      icon: "book",
-      children: [
-        {
-      name: "Customer",
-      icon: "people",
-      path: "/customeraccount",
-        },
-        {
-          name: "Account",
-          icon: "account_balance",
-          path: "/expenseview",
-        },
-      ]
-    }
 
-    
-  ]
-  
-},
-{
-  name: "Report",
-  icon: "assignment",
-  children: [
-    {
-      name: "Product",
-      path: "/product/producthistory",
-      icon:"folder",
-    },
-  ]
-},
-{
-  name: "Users",
-  icon: "people",
-  path: "/user",
-
-  
-}
 ];
 

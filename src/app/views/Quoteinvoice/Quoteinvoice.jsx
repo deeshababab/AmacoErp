@@ -219,9 +219,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
     arr.grand_total=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
-
+    arr.party_id=party_id
+    console.log(arr)
     const json = Object.assign({}, arr);
-    console.log(json)
+  
     
     const config = {
       headers: {
@@ -239,7 +240,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           icon:'success',
           text: 'Data saved successfully.',
         });
-        history.push("/inv")
+        // history.push("/inv")
       //  window.location.href="../quoateview"
       })
       .catch(function (error) {
@@ -265,7 +266,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setqno(data[0].quotation_no)
       setpono(data[0].po_number)
       // setrdate(data[0].requested_date)
-      
+      setparty_id(data[0].party.id)
       setdiscount(data[0].discount_in_p)
    
      setState({

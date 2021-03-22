@@ -39,6 +39,7 @@ const locale = navigator.language;
 
 
 
+
 // import Image from 'react-image-resizer';
 
 
@@ -49,16 +50,21 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
    
     
     "@media print": {
-      
+      "@page": {
+        "@bottom-left": {
+            content: "counter(page)"
+         }
+     },
       
       "body, html": {
         visibility: "hidden",
         size: "auto",
+        marginTop:'10px'
       
-        content: 'none !important',
-        "-webkit-print-color-adjust": "exact !important",
+        // content: 'none !important',
+        // "-webkit-print-color-adjust": "exact !important",
     
-       
+      
         
       
 
@@ -190,6 +196,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
   const [vendor_id,setvendor_id]=useState('')
   const [designation, setdesignation] = useState('');
+  
   const { id } = useParams();
   const classes = useStyles();
   const { settings, updateSettings } = useSettings();
@@ -202,6 +209,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   function handleClose() {
     setAnchorEl(null);
   }
+  const i=0;
+  
   const handlePrinting = useReactToPrint({
     content: () => componentRef.current,
     header:()=> componentRef.current
@@ -418,7 +427,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </div>
       </div>
 
-    <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}}>
+    <div id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize: 16}}>
     <table >
         <thead style={{display:"table-header-group"}} >
             <tr>
@@ -494,47 +503,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <tr>
               <td>
         
-          <div className="px-2 pt-5 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h3 style={{fontSize:20}}><strong>REQUEST FOR QUOTATION</strong></h3>
-              {vat}
-            </div>
-          </div>
-          </div>
-          <div className="px-2 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h5 style={{fontWeight:1000}}>Supplier Name</h5>
-              {company}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="mr-4" align="right">
-              <h5 style={{fontWeight:1000}}>
-               RFQ Date
-              </h5>
-              {moment(rdate).format('DD MMM YYYY')}
-            </div>
-          </div>
-        </div>
-        <div className="px-2 flex justify-between">
-          <div className="flex">
-            <div className="pl-2 px-4 mb-4">
-              <h5 style={{fontWeight:1000}}>Email Id</h5>
-              {contactpersonemail}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="mr-4" align="right">
-              <h5 style={{fontWeight:1000}}>
-               Bid closing date
-              </h5>
-              {moment(ddate).format('DD MMM YYYY')}
-            </div>
-          </div>
-        </div>
-        
+          
       
         {/* <div className="viewer__order-info px-4 mb-4 flex justify-between">
           
@@ -648,16 +617,90 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <h5>BID CLOSING DATE: {ddate}</h5>
         </div>
       </div> */}
+      <div className="px-2 flex justify-between">
+            <div className="px-2 flex justify-end">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>Supplier Name</span>
+              <br></br>
+            {company}
+        
+            </div>
+            <div className="pl-2 pb-4 ">
+              <span style={{fontWeight:1000}}>Email ID</span>
+              <br></br>
+              {contactpersonemail}
+             
+             
+            </div>
+            
+            </div>
+            <div>
+              </div>
+              </div>
+            </div>
+            <div className="px-2 flex justify-left">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>RFQ Date</span>
+              <br></br>
+              {moment(rdate).format('DD MMM YYYY')}
+        
+            </div>
+            <div className="pl-2 pb-4 ">
+              <span style={{fontWeight:1000}}>Bid closing date</span>
+              <br></br>
+              {moment(ddate).format('DD MMM YYYY')}
+             
+             
+            </div>
+            
+            </div>
+            <div>
+              </div>
+              </div>
+            </div>
+
+
+
+            <div className="px-2 flex justify-left">
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2">
+              <h5 style={{fontWeight:1000}}></h5>
+              {/* {moment(createdate).format('DD MMM YYYY')} */}
+        
+            </div>
+            <div className="pl-2 ">
+              <h5 style={{fontWeight:1000}}></h5>
+              {/* {deliveryno} */}
+             
+             
+            </div>
+            <div className="pl-2 ">
+          
+              <h5 style={{fontWeight:1000}}></h5>
+              {/* {quotationno} */}
+            
+            </div>
+            </div>
+            <div>
+              </div>
+              </div>
+              </div>
+            </div>
       
         <Card className="mb-4" elevation={0} title="Rfq Details">
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
           <Table>
-            <TableHead  style={{border: "1px solid #ccc",fontFamily: "Calibri",backgroundColor:'#1d2257',fontWeight:1000,fontSize:15}}>
-              <TableRow style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>
-                <TableCell className="pl-0" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>S.No.</TableCell>
-                <TableCell className="px-0" colspan={3}  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>DESCRIPTION</TableCell>
-                <TableCell className="px-0"  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>Qty</TableCell>
-                <TableCell className="px-0" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize:15}}>UOM</TableCell>
+            <TableHead  style={{border: "1px solid #ccc",fontFamily: "Calibri",backgroundColor:'#1d2257',fontWeight:1000,fontSize: 16}}>
+              <TableRow style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}>
+                <TableCell className="pl-0" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}>S.No.</TableCell>
+                <TableCell className="px-0" colspan={3}  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}>DESCRIPTION</TableCell>
+                <TableCell className="px-0"  align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}>QTY</TableCell>
+                <TableCell className="px-0" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}>UOM</TableCell>
 
               </TableRow>
             </TableHead>
@@ -670,22 +713,22 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
                 return (
                   <TableRow key={index}>
-                    <TableCell className="pl-0 capitalize" align="left" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
+                    <TableCell className="pr-0 capitalize" align="left" colspan={1} align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize: 16}}>
                       {index + 1}
                     </TableCell>
 
 
-                    <TableCell className="pl-0 capitalize" align="left" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
+                    <TableCell className="pr-0 pl-2 capitalize" align="left" colspan={3} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize: 16}}>
                       <strong>{item.product[0].name}</strong>({item.product[0].description})
 
                     </TableCell>
 
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
+                    <TableCell className="pr-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize: 16}}>
                      {item.quantity} 
                      
 
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize:15}}>
+                    <TableCell className="pr-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#000',fontSize: 16}}>
                       {item.product[0].unit_of_measure}
                     </TableCell>
 
@@ -711,22 +754,22 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         </table>
         <div class="footer">
       <footer style={{visibility: "hidden" }}>
-             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
-          
-          <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
-                
-        </div>
-         <div class="main" style={{width:'100%'}} > 
-       <div  class="right" style={{width: '90px',height: '10ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
-        <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
-        </div>
+      
         
         {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
+        <div >
+        <div id="outer" style={{"position": "relative", width:'1050px', backgroundColor:'#c1c1c1',"transform": "skew(-20deg)",marginLeft:'40px',marginRight:'50px'}}>
+        <p style={{color:'#fff',paddingTop:5,paddingBottom:5,"transform": "skew(20deg)"}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        <div id="spacer" style={{width: "200px", height: "10px", marginRight:0,}}></div>
+        <div style={{"position": "fixed", bottom: 0, width: "100%", height: 30, backgroundColor:"#1d2257",}}> <p   style={{textAlign: 'center',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:10,"transform": "skew(20deg)"}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p></div>
+    </div> 
+           </div>
+        <h6> </h6>
         
         
         </footer>
         </div>
-    
+       
     
         </div>
 
@@ -745,10 +788,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 >
                   photo_library
               </Icon>
-
-                {/* <h5 className="m-0">{item.file_name}</h5> */}
-
-                <a href={"http://www.amacoerp.com/amaco/php_file/images/" + id + "/" + item.file_name} target="_blank">{item.file_name}</a>
+                  
+               
+                <a href={item.img_url} target="_blank">{item.file_name.split("/")[2]}</a>
+                {/* <a href={"http://www.amacoerp.com/amaco/php_file/images/" + id + "/" + item.file_name} target="_blank">{item.file_name}</a> */}
               </Card>
             ))}
             

@@ -3,7 +3,8 @@ import { Formik } from "formik";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import NestedMenuItem from "material-ui-nested-menu-item";
-
+import moment from "moment";
+import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import history from "history.js";
 import {
@@ -12,6 +13,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Fab,
   Card,
   Divider,
   TextField,
@@ -28,6 +30,8 @@ import ContactPersonForm from "./ContactPersonForm";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import FormDialog from "./paymentaccount"
 import MemberEditorDialog from "./paymentaccount";
+import FormDialog1 from "./AddField"
+import MemberEditorDialog1 from "./AddField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import {
@@ -35,9 +39,9 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import url, { getpaymentaccount } from "../../../../views/invoice/InvoiceService";
+import url,{ getpaymentaccount } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
-
+const role=localStorage.getItem('role')
 
 const CustomerForm = () => {
   const options = [
@@ -50,23 +54,99 @@ const CustomerForm = () => {
     { value: '2', label: 'Other' },
 
   ];
+  let formData = new FormData();
   const [tabIndex, setTabIndex] = useState(0);
   const [created_by, setcreated_by] = useState(1);
+  const [state, setState] = useState(initialValues);
   const [paid_date, setpaid_date] = useState(new Date());
+  
   const [paid_by, setpaid_by] = useState(1);
   const [paid_to, setpaid_to] = useState('');
   const [amount, setamount] = useState('');
   const [payment_account_id, setpayment_account_id] = useState('');
+  const [payment_account_name, setpayment_account_name] = useState('');
   const [description, setdescription] = useState('');
   const [taxamount, settaxamount] = useState(0);
   const [referrence_bill_no, setreferrence_bill_no] = useState('');
   const [tax, settax] = useState(false);
   const [accounttype, setaccounttype] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  const [shouldOpenEditorDialog1, setShouldOpenEditorDialog1] = useState(false);
   const [menuPosition, setMenuPosition] = useState(null);
   const [cat, setcat] = useState([]);
+  const [field, setfield] = useState([]);
   const [catid, setcatid] = useState('');
   const [catname, setcatname] = useState('');
+  const [index1, setindex1] = useState('');
+  const [files, setFiles] = useState([]);
+  const [payment_account, setpayment_account] = useState([]);
+  const [accountstatus, setaccountstatus] = useState(false);
+  const [close, setclose] = useState(false);
+  const  [list,setList] = useState([]);
+  const [bank_ref_no, setbank_ref_no] = useState('');
+  const [bank_slip, setbank_slip] = useState();
+  const [company, setcompany] = useState(false);
+  const [company_name, setcompany_name] = useState('');
+  
+ 
+  const handlebankSelect = (event,f) => {
+   
+    let files = event.target.files;
+    
+    const src = URL.createObjectURL(event.target.files[0]);
+    setclose(true)
+    setindex1(f)
+    setbank_slip(event.target.files[0])
+  
+    // formData.append('bank_slip',event.target.files[0])
+    // for (let [key, value] of formData) {
+    //   console.log(`${key}: ${value}`)
+    // }
+
+    // for (const iterator of files) {
+    //   list.push({
+    //     file: URL.createObjectURL(event.target.files[0]),
+    //     column_id:f,
+    //     progress: f,
+    //   });
+
+    // }
+    
+  };
+  
+  const handleFileSelect = (event,f) => {
+ 
+    let files = event.target.files;
+    
+    const src = URL.createObjectURL(event.target.files[0]);
+    setclose(true)
+    setindex1(f)
+   
+
+    for (const iterator of files) {
+      list.push({
+        file: event.target.files[0],
+        column_id:f,
+        progress: f,
+      });
+      
+    }
+    
+   
+    field.map((element, i) => {
+      if(element.id===f)
+      {
+        element.file=event.target.files[0];
+        element.column_id=f
+      }
+
+    })
+
+    setFiles(list);
+   
+   
+  };
+
   const Menu1 = ({data}) => {
     
   return (<li>
@@ -79,17 +159,17 @@ const CustomerForm = () => {
           label={m.category.name}
           parentMenuOpen={handleItem}
           value="1"
-          onClick={e => handleItem(e.target.value)}
+          onClick={e => searchcat(m.sub_categories.length >0,m.category.name,m.category.id)}
         >
             
                  
                
                
        <MenuItem onClick={e=>Addnewsubcat(m.category.id,m.category.name)}>     
-      <Icon align="left">add</Icon> Add New
+      <Icon align="left">add</Icon> Add Subcategory
         </MenuItem>  
           
-        {m.sub_categories.length >0 ? <Menu1 data={m.sub_categories}  /> :<MenuItem onClick={e=>Addnewsubcat(m.category.id,m.category.name)}>     
+        {m.sub_categories.length >0 ? <Menu1 data={m.sub_categories}  /> :<MenuItem onClick={e=>AddField(m.category.id,m.category.name)}>     
       <Icon align="left">add</Icon> Add Field
         </MenuItem> }
           {/* { m.sub_categories.length >0 && <Menu1 data={m.sub_categories}  /> } */}
@@ -126,6 +206,24 @@ const CustomerForm = () => {
   const handleItemClick = (event: React.MouseEvent) => {
     setMenuPosition(null);
   };
+  const searchcat = (event,name,i) => {
+    if(event)
+    {
+      setaccountstatus(false)
+    }
+    else{
+      url.get(`columns/${i}`).then(({ data }) => {
+        
+         setfield(data[0].column)
+       })
+       
+    
+      setaccountstatus(true);
+      setpayment_account_id(i)
+      setpayment_account_name(name)
+      setMenuPosition(null);
+    }
+  };
   const Addnewsubcat = (i,n) => {
  
     setcatid(i)
@@ -133,6 +231,12 @@ const CustomerForm = () => {
     setShouldOpenEditorDialog(true);
     setMenuPosition(null)
   };
+  const AddField =(i,n)=>{
+    setcatid(i)
+    setcatname(n)
+    setShouldOpenEditorDialog1(true);
+    setMenuPosition(null)
+  }
   const handleItem = (e) => {
 
     // setMenuPosition(null);
@@ -147,6 +251,14 @@ const CustomerForm = () => {
   ] = useState(false);
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+
+  };
+  const [
+    shouldOpenConfirmationDialog1,
+    setShouldOpenConfirmationDialog1,
+  ] = useState(false);
+  const handleDialogClose1 = () => {
+    setShouldOpenEditorDialog1(false);
 
   };
 
@@ -164,9 +276,14 @@ const CustomerForm = () => {
 
     });
     url.get("account-categories").then(({ data }) => {
-     console.log(data)
+     
       setcat(data)
-    })
+    });
+    url.get("payment-account").then(({ data }) => {
+     
+      setpayment_account(data)
+    });
+    
     
 
   }, [])
@@ -175,45 +292,79 @@ const CustomerForm = () => {
 
 
   const handleSubmit = async (values, { isSubmitting, resetForm }) => {
-    console.log(values);
-    const frmdetails = {
-      paid_date: paid_date,
-      referrence_bill_no: parseInt(referrence_bill_no),
-      description: description,
-      amount: (parseFloat(amount).toFixed(2)),
-      paid_to: paid_to,
-      paid_by: paid_by,
-      created_by: created_by,
-      payment_account_id: parseInt(payment_account_id),
-      created_by: created_by,
-      tax: (parseFloat(taxamount).toFixed(2))
+    // const frmdetails = {
+    //   paid_date: paid_date,
+    //   referrence_bill_no: parseInt(referrence_bill_no),
+    //   description: description,
+    //   amount: (parseFloat(amount).toFixed(2)),
+    //   paid_to: paid_to,
+    //   paid_by: paid_by,
+    //   created_by: created_by,
+    //   payment_account_id: parseInt(payment_account_id),
+    //   created_by: created_by,
+    //   tax: (parseFloat(taxamount).toFixed(2)),
+    //   status:"new",
+    //   data:field,
+    //   bank_slip:formData.append('bank_slip',bank_slip),
+    //   bank_ref_no:bank_ref_no
+    // }
+    const newItem = new FormData();
+    for (const key of Object.keys(files)) {
+      newItem.append('item', files[key].file)
     }
+    formData.append("paid_date", paid_date)
+    formData.append("referrence_bill_no", referrence_bill_no)
+    formData.append("amount", amount)
+    formData.append("paid_to", paid_to)
+    formData.append("description",description)
+    formData.append("created_by",created_by)
+    formData.append("account_category_id",payment_account_id)
+    formData.append("company_name",company)
+    formData.append("payment_account_id",paid_by)
+    formData.append("created_by",created_by)
+    formData.append("tax", taxamount)
+    formData.append("status", "new")
+    formData.append("data",field)
+    formData.append("bank_ref_no",bank_ref_no)
+    formData.append("bank_slip",bank_slip)
 
-    console.log(frmdetails)
-    url.post('expense', frmdetails)
+
+    for (let [key, value] of formData) {
+      console.log(`${key}: ${value}`)
+      console.log(JSON.stringify(value))
+    }
+   
+
+    url.post('expense', formData)
       .then(function (response) {
-
-        console.log(response)
+          console.log(response)
+       
         Swal.fire({
           title: 'Success',
           type: 'success',
           icon: 'success',
           text: 'Data saved successfully.',
         });
-        history.push(`/expenseview`)
+      history.push(`/expenseview`)
       })
       .catch(function (error) {
 
       })
 
-    setpaid_to('')
-    setpaid_by('')
-    setreferrence_bill_no('')
-    setamount('')
-    setcreated_by('')
-    setdescription('')
+    // setpaid_to('')
+    // setpaid_by('')
+    // setreferrence_bill_no('')
+    // setamount('')
+    // setcreated_by('')
+    // setdescription('')
 
 
+  };
+  const handleSingleRemove = (index) => {
+    let tempList = [...files];
+    tempList.splice(index, 1);
+    setFiles([...tempList]);
+    setclose(false)
   };
 
   const handleTabChange = (e, value) => {
@@ -222,6 +373,61 @@ const CustomerForm = () => {
   const handleDateChange = (date) => {
     setpaid_date(date)
   };
+  
+  const setremark = (event, index) => {
+    event.persist()
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+        element[event.target.name] = event.target.value;
+        
+      
+
+      }
+      return element;
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  }
+  const handleComment = (e, item,i) => {
+    e.preventDefault();
+    let result = field;   // copy state
+    result = result.map((el) => {  // map array to replace the old comment with the new one
+      if (el.name === item.name) 
+      {
+        el.text = e.target.value;
+        el.column_id = i;
+      }
+      return el;
+    });
+    setfield(result);
+     // set state with new comment
+  };
+  const handleCommentdate = (e, item,i) => {
+   
+    let result = field;   // copy state
+    result = result.map((el) => {  // map array to replace the old comment with the new one
+      if (el.name === item.name)
+      { 
+        el.date =  e;
+        el.column_id = i;
+      }
+      return el;
+    });
+    setfield(result);
+  
+     // set state with new comment
+  };
+  
+  
 
 
   return (
@@ -248,6 +454,23 @@ const CustomerForm = () => {
         <ConfirmationDialog
           open={shouldOpenConfirmationDialog}
           onConfirmDialogClose={handleDialogClose}
+          text="Are you sure to delete?"
+        />
+      )}
+    {shouldOpenEditorDialog1 && (
+        <MemberEditorDialog1
+          handleClose={handleDialogClose1}
+          open={shouldOpenEditorDialog1}
+          accounttype={setaccounttype}
+          catid={catid}
+          catname={catname}
+          setcat={setcat}
+        />
+      )}
+      {shouldOpenConfirmationDialog1 && (
+        <ConfirmationDialog
+          open={shouldOpenConfirmationDialog1}
+          onConfirmDialogClose={handleDialogClose1}
           text="Are you sure to delete?"
         />
       )}
@@ -282,8 +505,9 @@ const CustomerForm = () => {
 
 
 
-                <Button className="mb-4 w-full" size="small" onClick={handleRightClick}>
-                 Choose Payment Account
+                <Button className="mb-4 w-full" variant="outlined" size="small" onClick={handleRightClick}>
+                 <span style={{textAlign:'left'}}>
+                 Choose Expenses Category
                   <Menu
         open={!!menuPosition}
         onClose={() => setMenuPosition(null)}
@@ -291,18 +515,116 @@ const CustomerForm = () => {
         anchorPosition={menuPosition}
 
       >          <MenuItem onClick={e=>Addnewsubcat(null)}>
-                  <Icon align="left" >add</Icon>new
+                  <Icon align="left" >add</Icon>Add Expenses Category
                   </MenuItem> 
                    <Menu1 data={cat} >
                    
                     </Menu1> 
           
           </Menu>
+          </span>
+        
           </Button>
        
 
 
-                  
+                {accountstatus &&(
+                 <span>
+                <TextField
+                    className="mb-4 w-full"
+                    label="Payment Account"
+                    name="payment_account_name"
+                    size="small"
+                    variant="outlined"
+                    autoComplete="none"
+                    value={payment_account_name}
+                    // onChange={e => setpayment_account_id(e.target.value)}
+                  />
+                {field.map((item, index) => {
+                   
+                return (
+                  <span>
+                 {item.type==="file" &&(
+                   <div>
+                   <label htmlFor="upload-multiple-file" >
+                   {item.name}
+                 </label>
+                 <TextField
+                  //  className="hidden"
+                  className="mb-4 w-full"
+                   onChange={e=>handleFileSelect(e,item.id)}
+                   id="upload-multiple-file"
+                   type="file"
+                   variant="outlined"
+                   size="small"
+                   autoComplete="none"
+                  //  label={item.name}
+                  //  value={item.name}
+                   multiple
+                   
+                 />
+
+                 {close && (
+                  <span>
+                     {files.map((items, index) => {
+                      
+                       return(
+                        <span>
+                {items.progress=== item.id &&
+                (
+                  <span>
+                {/* <img src={items.file} width="50px" height="50px"/>
+                 <Icon className="bg-error"
+                        onClick={() => handleSingleRemove(index)}>cancel</Icon> */}
+                  </span>
+                )}
+                        </span>
+                       )}
+                     )}
+                 </span>
+                  )} 
+                 </div>   
+                 )}
+                   {item.type==="text" && (<TextField
+                    className="mb-4 w-full"
+                    label={item.name}
+                    name="payment_account_id"
+                    size="small"
+                    variant="outlined"
+                    name={item.name}
+                    value={item.text}
+                    autoComplete="none"
+                    onChange={(e) => {
+                      handleComment(e, item,item.id); 
+                    }}
+                    // onChange={(event) => handleIvoiceListChange(event, index)}
+                  />)}
+                  {item.type==="date" && (<MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      className="mb-4 w-full"
+                      margin="none"
+                      label={item.name}
+                      inputVariant="outlined"
+                      type="text"
+                      size="small"
+                      autoOk={true}
+                      value={item.date}
+                      onChange={(e) => {
+                        
+                        handleCommentdate(e,item,item.id); 
+                      }}
+                      format="MMMM dd, yyyy"
+                      // onChange={handleIvoiceListChange}
+                    />
+                  </MuiPickersUtilsProvider>
+                  )}
+                  </span>
+                  )}
+                )}
+                  </span>
+                  )
+                }
+
 
                   <TextField
                     className="mb-4 w-full"
@@ -310,20 +632,23 @@ const CustomerForm = () => {
                     name="firstName"
                     size="small"
                     variant="outlined"
+                    autoComplete="none"
                     value={paid_to}
                     onChange={e => setpaid_to(e.target.value)}
                   />
 
 
 
-                  <TextField
+          <CurrencyTextField
                     className="mb-4 w-full"
                     label="Amount"
                     name="Amount"
                     size="small"
                     variant="outlined"
                     value={values.amount}
-                    onChange={e => setamount(e.target.value)}
+                    currencySymbol="SAR"
+                    autoComplete="none"
+                    onChange={(event, value)=> setamount(value)}
                   />
 
 
@@ -362,13 +687,14 @@ const CustomerForm = () => {
                     
                   >
                       choose categories */}
-                      <TextField
+                     {role==="SA"?(<TextField
                     className="mb-4 w-full"
                     label="Paid By"
                     name="firstName"
                     size="small"
                     variant="outlined"
                     value={paid_by}
+                    autoComplete="none"
                     select
                     onChange={e => setpaid_by(e.target.value)}
                   >
@@ -382,15 +708,42 @@ const CustomerForm = () => {
                     >
                       <Icon>add</Icon>New
                     </Button> */}
-                    {options.map((item, ind) => (
-                      <MenuItem value={item.value} key={item}>
-                        {item.label}
+                   {payment_account.map((item, ind) => (
+                      <MenuItem value={item.id} key={item}>
+                        {item.name}
                       </MenuItem>
                     ))}
                     {/* </MenuItem> */}
-                  </TextField>
+                  </TextField>):''}
+                  {((paid_by === 11)||(paid_by === 12)) &&(<TextField
+                    className="mb-4 w-full"
+                    label="Reference Number"
+                    name="firstName"
+                    size="small"
+                    variant="outlined"
+                    value={bank_ref_no}
+                    autoComplete="none"
+                    onChange={e => setbank_ref_no(e.target.value)}
+                  >
+                    </TextField>)
+                  }
 
-                
+{((paid_by === 11) ||(paid_by === 12)) &&( 
+  <span>
+  <label for="myfile">Upload Bank Slip :</label>
+<TextField
+                  className="mb-4 w-full"
+                   onChange={e=>handlebankSelect(e)}
+                   id="upload-multiple-file"
+                   type="file"
+                   label=""
+                   variant="outlined"
+                   autoComplete="none"
+                   size="small"
+                  
+                   
+                 />
+                 </span>)}
          
                     {/* <MenuItem onClick={() => {
                       setShouldOpenEditorDialog(true);
@@ -424,6 +777,7 @@ const CustomerForm = () => {
                     size="small"
                     variant="outlined"
                     value={description}
+                    autoComplete="Disabled"
                     onChange={e => setdescription(e.target.value)}
                   />
 
@@ -437,6 +791,7 @@ const CustomerForm = () => {
                     size="small"
                     type="text"
                     variant="outlined"
+                    autoComplete="none"
                     value={referrence_bill_no}
                     onChange={e => setreferrence_bill_no(e.target.value)}
                   />
@@ -466,19 +821,47 @@ const CustomerForm = () => {
                       }
                       labelPlacement="end"
                     />   {tax && (
-                      <TextField
-                        style={{ width: '430px' }}
+                      <CurrencyTextField
+                        // style={{ width: '430px' }}
                         label="Tax Amount"
                         name="website"
                         size="small"
                         type="text"
                         variant="outlined"
+                        fullWidth
                         value={taxamount}
-                        onChange={e => settaxamount(e.target.value)}
+                        currencySymbol="SAR"
+                        onChange={(event, value)=> settaxamount(value)}
                       />
                     )}
 
                   </RadioGroup>
+                  {/* <p className="mt-0 mb-1">
+          What kind of property are you interested in?
+        </p> */}
+        <div className="mb-4">
+            <FormControlLabel
+              style={{fontWeight:1000}}
+              className="block h-32"
+              control={<Checkbox />}
+              label="Is company name mentioned in invoice?"
+              value={company}
+              onChange={e => setcompany(!company)}
+            />
+        </div>
+        {/* {company&& (
+                      <TextField
+                        // style={{ width: '430px' }}
+                        label="Company Name"
+                        name="website"
+                        size="small"
+                        type="text"
+                        variant="outlined"
+                        fullWidth
+                        value={company_name}
+                        onChange={e => setcompany_name(e.target.value)}
+                      />
+                    )} */}
 
 
 

@@ -1,7 +1,9 @@
 import FirebaseLogin from "./login/FirebaseLogin";
+import JwtLogin from "./login/JwtLogin.jsx";
 import NotFound from "./NotFound";
 import ForgotPassword from "./ForgotPassword";
 import FirebaseRegister from "./register/FirebaseRegister";
+import React from "react";
 
 const sessionRoutes = [
   {
@@ -9,8 +11,8 @@ const sessionRoutes = [
     component: FirebaseRegister,
   },
   {
-    path: "/ ",
-    component: FirebaseLogin,
+    path: "/session/signin",
+    component: JwtLogin,
   },
   {
     path: "/session/forgot-password",
@@ -20,6 +22,8 @@ const sessionRoutes = [
     path: "/session/404",
     component: NotFound,
   },
+  
+  
 ];
 
 export default sessionRoutes;

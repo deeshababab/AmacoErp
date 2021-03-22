@@ -31,13 +31,15 @@ import pagesRoutes from "./views/pages/pagesRoutes";
 import dataTableRoutes from "./views/data-table/dataTableRoutes";
 import invRoutes from "./views/inv/invRoutes";
 import ExpenseRoutes from "./views/expense/ExpenseRoutes";
+import userRoutes from "./views/user/userroutes";
+import statementRoutes from "./views/statements/StatementRoute"
 
 const redirectRoute = [
   {
     path: "/",
     exact: true,
     
-    component: () => <Redirect to="/ " />,
+    component: () => <Redirect to="/dashboard/default" />,
   },
 ];
 
@@ -49,6 +51,8 @@ const redirectRoute = [
 
 const routes = [
   ...dashboardRoutes,
+  ...statementRoutes,
+  ...userRoutes,
   ...ExpenseRoutes,
   ...invRoutes,
   ...QuoteRoute,

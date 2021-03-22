@@ -68,7 +68,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
       
         content: 'none !important',
         "-webkit-print-color-adjust": "exact !important",
-    
+        marginTop:'10px'
        
         
       
@@ -83,9 +83,9 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 
         /* These do the magic */
         position: "fixed",
-        //top: '1em',
+        marginTop: '100px',
         left: 0,
-        // paddingBottom:130
+        paddingTop:130,
         justifySelf:"end"
        
       },
@@ -105,6 +105,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
         position: "fixed",
         height:"100px",
         top:0,
+        
         
         },
         ".footer": {
@@ -216,6 +217,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
   const [shouldOpenDialog, setShouldOpenDialog] = useState(false);
   const [shouldOpenAddList, setShouldOpenAddList] = useState(false);
   const [columnTitle, setColumnTitle] = useState("");
+  const [prefix, setprefix] = useState("");
+  const [srcfile, setsrcfile] = useState("");
   const [message, setmessage] = useState(false);
   const [state, setState] = React.useState({
     
@@ -306,6 +309,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
       if(data[0].contact!==null)
       {
         setcontactperson(data[0].contact.fname)
+        setprefix(data[0].contact.prefix)
         setdesignation(data[0].contact.designation)
         setcontactpersonemail(data[0].contact.email)
       }
@@ -702,9 +706,9 @@ function PrintMe(DivID) {
         </div>
       </div>
 
-    <div  id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize:15}} > 
+    <div  id="print-area" ref={componentRef} style={{fontFamily: "Calibri",fontSize: 16}} > 
       <table >
-        <thead style={{display:"table-header-group"}} >
+        <thead   style={{display:"table-header-group",marginTop:'20px'}} >
             <tr>
               
               <td>
@@ -832,22 +836,25 @@ function PrintMe(DivID) {
         </div> */}
         <div className="px-2 flex justify-between">
             <div className="px-2 flex justify-end">
-          <div className="flex " >
-              <div className="pr-12">
-              <div className="pl-2">
-              <h5 style={{fontWeight:1000}}>Customer Name</h5>
+              <div className="flex " >
+              <div className="">
+              <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>Customer Name</span>
+              <br></br>
             {company}
         
             </div>
-            <div className="pl-2 pt-2">
-              <h5 style={{fontWeight:1000}}>Customer Address</h5>
+            <div className="pl-2 pb-4">
+              <span style={{fontWeight:1000}}>Customer Address</span>
+              <br></br>
               {street},{city},{zipcode}
              
              
             </div>
-            <div className="pl-2 pt-2">
+            <div className="pl-2 ">
           
-              <h5 style={{fontWeight:1000}}>Vendor Id</h5>
+              <span style={{fontWeight:1000}}>Vendor ID</span>
+              <br></br>
               {vendor_id}
             
             </div>
@@ -856,23 +863,26 @@ function PrintMe(DivID) {
               </div>
               </div>
             </div>
-            <div className="px-4 flex justify-center">
+            <div className="px-2 flex justify-center">
           <div className="flex " >
-              <div className="pr-12 pt-2">
-              <div>
-              <h5 style={{fontWeight:1000}}>Attention</h5>
-              {contactperson}
+              <div className="pb-2">
+              <div className="pb-4">
+              <span style={{fontWeight:1000,paddingBottom:0}}>Attention</span>
+              <br></br>
+              {contactperson?contactperson:'--'}
              
              
             </div>
-            <div className="justify-center pt-2">
-              <h5 style={{fontWeight:1000}}>Designation</h5>
-              {designation}
+            <div className="justify-center pb-4">
+              <span style={{fontWeight:1000}}>Designation</span>
+              <br></br>
+              {designation?designation:'--'}
           
             </div>
-            <div className="pt-2">
-              <h5 style={{fontWeight:1000}}>Email Id</h5>
-              {contactpersonemail}
+            <div className="">
+              <span style={{fontWeight:1000}}>Email ID</span>
+              <br></br>
+              {contactpersonemail?contactpersonemail:'--'}
            
             </div>
             </div>
@@ -882,27 +892,29 @@ function PrintMe(DivID) {
             </div>
             <div className="px-2 mr-1 flex justify-end">
           <div className="flex " >
-              <div className="pr-2 pt-2">
-              <div className="mr-1" align="right">
-              <h5 style={{fontWeight:1000}}>
+              <div className="">
+              <div className="mr-1 pb-4" align="left">
+              <span style={{fontWeight:1000}}>
                Quotation Date
-              </h5>
+              </span>
+              <br></br>
               {moment(psdate).format('DD MMM YYYY')}
              
              
             </div>
-            <div className="mr-1 pt-2" align="right">
-              <h5 style={{fontWeight:1000}}>
+            <div className="mr-1 pb-4" align="left">
+              <span style={{fontWeight:1000}}>
               Quotation Number
-              </h5>
+              </span>
+              <br></br>
              
               {qid}
             
             </div>
-            <div className="mr-1 pt-2" align="right">
-              <h5 style={{fontWeight:1000}}>
+            <div className="mr-1 " align="left">
+              <span style={{fontWeight:1000}}>
              RFQ Number
-              </h5>
+              </span>
                
               {rfq}
             </div>
@@ -915,54 +927,58 @@ function PrintMe(DivID) {
 
        
        
-        
+      <hr></hr>  
       <div className="viewer__order-info px-4 mb-4 flex justify-between" >
         <Table>  
-          <TableRow style={{border: "1px solid #ccc",marginBottom:200}} >
-            <h6 align="left" style={{marginTop:"5px"}} className="pl-2">Subject : Quotation for General Items</h6>
+          <TableRow style={{marginBottom:200}} >
+            Subject: Quotation for General Items
           </TableRow>
         </Table>
       </div>
-      <div className="viewer__order-info px-4 mb-4 flex justify-between">
+      <div className="viewer__order-info px-4 flex justify-between">
         <Table> 
           <TableRow className="pl-4"> 
-            Dear Sir/Madam,
+            {prefix?(prefix==="Mr"?"Dear Sir,":"Dear Madam,"):'Dear Sir/Madam,'}
             <br></br>
             Thank you for requesting us for the quotation of below mentioned items, please find our best price for the supply of requested 
-            items. We look forward for our valued P.O.
+            items.<br></br>
+             We look forward for our valued P.O.
           </TableRow>
         </Table>
       </div>
-      <br></br>
-      <div className="px-4 mb-2 pl-4 flex justify-between">
+      <div className="px-4 mb-2 pl-4 pt-4 flex justify-between">
         <Table style={{width: "100%", fontSize: 12, border: "none",}} className="pl-4" >  
           <TableHead style={{backgroundColor:'#1d2257',display:'table-row-group'}}>
             <TableRow  style={{pageBreakInside:'avoid'}}> 
-              <TableCell className="pl-0" colspan={1} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 14}} align="center">S.No.</TableCell>
-               
-                <TableCell className="px-0" colspan={5} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontColor:'#fff',fontWeight:1000,fontSize: 14}}  align="center">RFQ DESCRIPTION</TableCell>
+              <TableCell className="pr-0" colspan={1} style={{border: "1px solid #ccc",width:"50px",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}} align="center">S.No.</TableCell>
+              <TableCell className="px-0" colspan={2} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontColor:'#fff',fontWeight:1000,fontSize: 16}}  align="center">ITEM</TableCell>
+                <TableCell className="px-0" colspan={5} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontColor:'#fff',fontWeight:1000,fontSize: 16}}  align="center">RFQ DESCRIPTION</TableCell>
         
-                <TableCell className="px-0" colspan={4} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontColor:'#fff',fontWeight:1000,fontSize: 14}}  align="center">AMACO DESCRIPTION</TableCell>
-                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:80,color:'#fff',fontWeight:1000,fontSize: 14}}  align="center">QTY</TableCell>
-                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 14}}  align="center">UOM</TableCell>
+                <TableCell className="px-0" colspan={4} style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontColor:'#fff',fontWeight:1000,fontSize: 16}}  align="center">AMACO DESCRIPTION</TableCell>
+                <TableCell className="px-0" style={{border: "1px solid #ccc",fontFamily: "Calibri",width:80,color:'#fff',fontWeight:1000,fontSize: 16}}  align="center">QTY</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",color:'#fff',fontWeight:1000,fontSize: 16}}  align="center">UOM</TableCell>
                 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",width:110,color:'#fff',fontWeight:1000,fontSize: 14}}  align="center">UNIT PRICE</TableCell> 
-                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",width:110,color:'#fff',fontWeight:1000,fontSize: 14}}  align="center">TOTAL</TableCell>
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",width:110,color:'#fff',fontWeight:1000,fontSize: 16}}  align="center">UNIT PRICE</TableCell> 
+                <TableCell className="px-0"style={{border: "1px solid #ccc",fontFamily: "Calibri",width:110,color:'#fff',fontWeight:1000,fontSize: 16}}  align="center">TOTAL</TableCell>
               </TableRow>
             </TableHead>
             <TableBody >
               {qdetails.map((item, index) => {
                 return (
                   <TableRow key={index} style={{border: "1px solid #ccc", pageBreakInside: 'avoid'}}>
-                    <TableCell className="pl-0" align="center" colspan={1} style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 14}} >
+                    <TableCell className="pr-0" align="center" colspan={1} style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} >
                       {index + 1}
                     </TableCell>
                    
-
-                    <TableCell className="pl-2 capitalize" align="left" colspan={5}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 14}}>
+                    <TableCell className="pr-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} colspan={2}>
+                   
+                    <img className="w-48" src={item.file} alt="" />
+                      
+                    </TableCell>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={5}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16}}>
                      {item.description}
                     </TableCell>
-                    <TableCell className="pl-2 capitalize" align="left" colspan={4}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 14}}>
+                    <TableCell className="pl-2 capitalize" align="left" colspan={4}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16}}>
                      {item.product.description}
                     </TableCell>
                     {/* <TableCell className="pl-0 capitalize" align="center"  colspan={3}  style={{border: "1px solid #ccc",fontFamily: "Calibri",}}>
@@ -970,18 +986,18 @@ function PrintMe(DivID) {
 
                     </TableCell> */}
                     
-                    <TableCell className="pl-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 14}}>
+                    <TableCell className="pr-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                     {nf.format(item.quantity)}
                   
                       
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 14}}>
+                    <TableCell className="pr-0 capitalize" align="center" style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                     {item.product.unit_of_measure}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 14}} >
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} >
                     {parseFloat(item.sell_price).toLocaleString(undefined, {minimumFractionDigits:2})}
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 14}}>
+                    <TableCell className="pl-0 capitalize" style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}}>
                   
                     {parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
                    
@@ -996,7 +1012,7 @@ function PrintMe(DivID) {
               })}
    
               <TableRow style={{ border: "1px solid #ccc",pageBreakInside:'avoid',pageBreakAfter:'always',pageBreakBefore:'always' }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={10}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={12}>
                     <div className="px-4 flex justify-between" style={{ fontFamily: "Calibri" }}>
                       <div className="flex">
                         <div className="pr-12">
@@ -1007,15 +1023,15 @@ function PrintMe(DivID) {
                               </h5>
                             </td>
                           </TableRow>
-                          <tr style={{fontSize: 14, textAlign: 'left' }} >
+                          <tr style={{fontSize: 16, textAlign: 'left' }} >
                             <td><strong>Bank Name</strong></td>
                             <td >National Commercial Bank</td>
                           </tr>
-                          <tr style={{fontSize: 14, textAlign: 'left' }}>
+                          <tr style={{fontSize: 16, textAlign: 'left' }}>
                             <td ><strong>Account No</strong></td>
                             <td >6000000242200</td>
                           </tr>
-                          <tr style={{ height: 5, fontSize: 14, textAlign: 'left' }}>
+                          <tr style={{ height: 5, fontSize: 16, textAlign: 'left' }}>
                             <td ><strong>IBAN No</strong></td>
                             <td >SA3610000006000000242200</td>
                           </tr>
@@ -1025,42 +1041,40 @@ function PrintMe(DivID) {
 
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
-                    المبلغ الخاضع للضريبة
-                  <br></br>
+                   
                     SUB TOTAL 
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
+                  {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
                     SAR
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} >
+                  </TableCell> */}
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
                   {/* <IntlProvider locale='en-US'>
                   <FormattedNumber value={total_value} currency={"SAR"} style="currency" />
                   </IntlProvider> */}
-                  {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                  {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}  SAR
                   </TableCell>
 
                 </TableRow>
                 
                 <TableRow style={{ border: "1px solid #ccc",pageBreakInside:'avoid' }}>
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
-                    القيمة الضريبية
-                  <br></br>
+                  
                  TOTAL VAT AMOUNT (15%)
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
+                  {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} >
-                  {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})}
+                  </TableCell> */}
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
+                  {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
                   </TableCell>
                 </TableRow>
              
                 <TableRow style={{ border: "1px solid #ccc",pageBreakInside:'avoid' }}>
-                  <TableCell className="pl-0 capitalize" colspan={10} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
+                  <TableCell className="pl-0 capitalize" colspan={12} style={{ border: "1px solid #ccc",fontFamily: "Calibri" }}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
-                        <div className="pr-12" style={{wordBreak:'break-word'}}>
+                        <div className="pr-12" style={{wordBreak:'break-word',fontSize: 16}}>
 
                           <strong>TOTAL IN WORDS</strong><br></br>{ress}
                         </div>
@@ -1070,19 +1084,18 @@ function PrintMe(DivID) {
                   
                   <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:'break-word' }} colspan={2}>
                   
-                  المجموع الكلي
-                  <br></br>
+                 
                    GRAND TOTAL
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "50px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
+                  {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "50px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
-                  </TableCell>
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri" }}>
+                  </TableCell> */}
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri" }} colspan={2}>
                    
                     {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word'}}>
                     <FormattedNumber value={net_amount} currency={"SAR"} style="currency" />
                     </IntlProvider> */}
-                    {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
+                    {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
               
                   </TableCell>
                 </TableRow>
@@ -1099,39 +1112,51 @@ function PrintMe(DivID) {
         
         <div className="viewer__order-info px-4 mb-4 flex justify-between">
           <div>
-          <td style={{color:"red"}} colspan={2}>NOTES</td>
-          <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
+          {/* <td style={{color:"red"}} colspan={2}>NOTES</td>
+          <tr style={{ height: 5, fontSize: 16,textAlign: 'left'}}>
               
               <td colspan={2}><li>Quoted prices are for complete lot, any partial order is subject to reconfirmation.</li></td>
             </tr>
-      <tr style={{ height: 5, fontSize: 14,textAlign: 'left'}}>
+      <tr style={{ height: 5, fontSize: 16,textAlign: 'left'}}>
               <td colspan={2}><li>This is a system generated quote and hence does not required any signature.</li></td>
-        </tr>
+        </tr> */}
         <td style={{color:"red"}} colspan={2}>TERMS</td>
-        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td style={{fontSize:15,color:'#1d2257'}}><Icon style={{fontSize:15,color:'#1d2257'}} className="pt-1">timelapse</Icon> Quoatation Validity  </td>
+        <tr style={{ height: 5, fontSize: 16,textAlign: 'left' }}>
+              
+              <td style={{fontSize: 16,color:'#1d2257',height:20}}>
+                <Icon style={{fontSize:16,color:'#1d2257',paddingTop:2}} >timelapse</Icon> Quoatation Validity 
+              </td>
               <td>{validity}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td ><Icon style={{fontSize:15,color:'#1d2257'}} className="pt-1">monetization_on</Icon> Payment Terms  </td>
+        <tr style={{ height: 5, fontSize: 16,textAlign: 'left' }}>
+              <td ><Icon style={{fontSize:16,color:'#1d2257',paddingTop:2}}>monetization_on</Icon> Payment Terms  </td>
               <td>{payment_terms}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td><Icon style={{fontSize:15,color:'#1d2257'}} className="pt-1">verified_user</Icon> Warranty </td>
+        <tr style={{ height: 5, fontSize: 16,textAlign: 'left' }}>
+              <td><Icon style={{fontSize:16,color:'#1d2257',paddingTop:2}} >verified_user</Icon> Warranty </td>
               <td>{warranty}</td>
         </tr>
-        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td ><Icon style={{fontSize:15,color:'#1d2257'}} className="pt-1">watch_later</Icon> Delivery Time </td>
+        <tr style={{ height: 5, fontSize: 16,textAlign: 'left' }}>
+              <td ><Icon style={{fontSize:16,color:'#1d2257',paddingTop:2}} >watch_later</Icon> Delivery Time </td>
               <td>{delivery_time}</td>
         </tr>
           
-        <tr style={{ height: 5, fontSize: 14,textAlign: 'left' }}>
-              <td ><Icon style={{fontSize:15,color:'#1d2257'}} className="pt-1">local_shipping</Icon> Inco-Term </td>
+        <tr style={{ height: 5, fontSize: 16,textAlign: 'left' }}>
+              <td ><Icon style={{fontSize: 16,color:'#1d2257'}} className="pt-1">local_shipping</Icon> Inco-Term </td>
               <td>{inco_terms}</td>
+        </tr>
+        <br></br>
+        <td style={{color:"red"}} colspan={2}>NOTES</td>
+          <tr style={{ height: 5, fontSize: 16,textAlign: 'left'}}>
+              
+              <td colspan={2}><li style={{fontSize: 16,}}>Quoted prices are for complete lot, any partial order is subject to reconfirmation.</li></td>
+            </tr>
+      <tr style={{ height: 5, fontSize: 16,textAlign: 'left'}}>
+              <td colspan={2}><li style={{fontSize: 16,}}>This is a system generated quote and hence does not required any signature.</li></td>
         </tr>
             
             
-            {/* <p style={{fontSize:15}}>
+            {/* <p style={{fontSize: 16}}>
              Inco-Term {inco_terms}
             </p> */}
         
@@ -1144,26 +1169,26 @@ function PrintMe(DivID) {
       <br></br>
       <div className="viewer__order-info px-4 mb-4 flex justify-between">
       <div >
-            <h6>We trust our offer falls in line with your requirements. For any clarification please contact under signed.</h6>
+            <h5>We trust our offer falls in line with your requirements. For any clarification please contact under signed.</h5>
+            <br></br>
             <h5>Best Regards,</h5>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-            <td style={{ height: 'auto !important' }}>Mr.Abbas Ahamed Shazli</td>
-
+            <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
+            <td style={{ height: 'auto !important',fontWeight:1000 }}>Mr. Abbas Ahamed Shazli</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
             <td >Business Development Manager - ISD Division</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-            <td>ABBAS@AMACO.COM.SA | 535515212 </td>
+            <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
+            <td>abbas@amaco.com.sa | +966 535515212 </td>
             </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+            <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
             <td>Amaco Arabia Contracting Company</td>
             </tr>
-            <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
-            <td>P.O. BOX 9290, AI Jubail 31951, KSA  </td>
+            <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
+            <td>P.O. Box 9290, AI Jubail 31951, KSA  </td>
             </tr>
             
-            {/* <tr style={{ height: 5, fontSize: 14, textAlign: 'left'}}>
+            {/* <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
             <td>535515212</td>
             </tr> */}
       </div>
@@ -1180,7 +1205,7 @@ function PrintMe(DivID) {
         </table>
         <div class="footer">
          <footer style={{visibility: "hidden" }}>
-             <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
+             {/* <div style={{visibility: "hidden" }} style={{'borderBottom': '30px solid #c1c1c1','borderLeft': '50px solid transparent','height': 0,'width': '100%',paddingLeft:'0'}}>
           
           <p style={{color:'#fff',paddingTop:5,paddingBottom:5}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
                 
@@ -1189,7 +1214,14 @@ function PrintMe(DivID) {
        <div  class="right" style={{width: '60px',height: '5ex',backgroundColor: '#fff',shapeOutside: 'polygon(100% 0, 100% 100%, 0 100%)',float: 'right',webkitClipPath: 'polygon(100% 0, 100% 100%, 0 100%)'}}></div>           
         <p   style={{textAlign: 'center',backgroundColor: '#1d2257',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:5}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p>
         </div>
-        
+         */}
+          <div >
+        <div id="outer" style={{"position": "relative", width:'1050px', backgroundColor:'#c1c1c1',"transform": "skew(-20deg)",marginLeft:'40px',marginRight:'50px'}}>
+        <p style={{color:'#fff',paddingTop:5,paddingBottom:5,"transform": "skew(20deg)"}} align="center"> Tel.: +966 13 363 2387| Fax: +966 13 363 2387 | P.O.Box 9290 | Jubail 31951 | Kingdom of Saudi Arabia</p>
+        <div id="spacer" style={{width: "200px", height: "10px", marginRight:0,}}></div>
+        <div style={{"position": "fixed", bottom: 0, width: "100%", height: 30, backgroundColor:"#1d2257",}}> <p   style={{textAlign: 'center',color:'white',fontFamily: "Calibri",paddingTop:5,paddingBottom:10,"transform": "skew(20deg)"}}>E-mail: sales@amaco.com.sa | Website: www.amaco.com.sa</p></div>
+    </div> 
+           </div>
         {/* <h6 style={{textAlign:"center"}}>page 1 of 1</h6> */}
             </footer>
             </div>

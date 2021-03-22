@@ -1,10 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useEffect, useState } from "react";
 import Scrollbar from "react-perfect-scrollbar";
 import { navigations } from "app/navigations";
+import { navigations1 } from "app/navigations1";
 import { MatxVerticalNav } from "matx";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import useSettings from 'app/hooks/useSettings';
+
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   scrollable: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const Sidenav = ({ children }) => {
   const classes = useStyles();
   const { settings, updateSettings } = useSettings();
-
+  const [x,setx]=useState('')
   const updateSidebarMode = (sidebarSettings) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
     let activeLayoutSettings = settings[activeLayoutSettingsName];
@@ -44,6 +46,9 @@ const Sidenav = ({ children }) => {
       },
     });
   };
+  useEffect(() => {
+     setx(localStorage.getItem("role"))
+  })
 
   return (
     <Fragment>
@@ -52,7 +57,10 @@ const Sidenav = ({ children }) => {
         className={clsx("relative px-4", classes.scrollable)}
       >
         {children}
-        <MatxVerticalNav items={navigations} /> 
+        <MatxVerticalNav 
+        items={x ==="SA" ? navigations : navigations1} 
+        /> 
+        
       </Scrollbar>
 
       <div

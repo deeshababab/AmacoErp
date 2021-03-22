@@ -172,7 +172,7 @@ const SimpleMuiTable = () => {
     
     {
       name: "po_number",
-      label: "PO Number",
+      label: "P.O. Number",
       options: {
         filter: true,
       },

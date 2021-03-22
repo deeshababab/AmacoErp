@@ -7,6 +7,8 @@ import {
   Divider,
   Switch,
   IconButton,
+  MenuItem,
+  TextField
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
@@ -20,7 +22,11 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import CustomerBillings from "./customers/customer-viewer/CustomerBillings"
 import url,{getparties} from "../invoice/InvoiceService"
-
+const prefixs = [
+  { value: 'Mr', label: 'Mr' },
+  { value: 'Mrs', label: 'Mrs' },
+  { value: 'Ms', label: 'Ms' }
+];
 const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact}) => {
   let search = window.location.search;
   let params = new URLSearchParams(search);
@@ -32,6 +38,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   const [contact2, setcontact2] = useState('');
   const [address, setaddress] = useState('');
   const [designation, setdesignation] = useState('');
+  const [prefix, setprefix] = useState('');
   const [userList, setUserList] = useState([]);
   const { ids } = useParams();
   
@@ -71,7 +78,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
         mobno:contact1,
         landline:contact2,
         email:email,
-        address:address
+        address:address,
+        prefix:prefix
   
   
       }
@@ -190,6 +198,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
        setcontact2(data[0].landline)
        setdesignation(data[0].designation)
        setaddress(data[0].address)
+       setprefix(data[0].prefix)
 
     });
     }
@@ -250,7 +259,25 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       <div className="p-6">
         <h4 className="mb-5">Contact Details</h4>
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
-         
+        <div className="flex">
+          <TextField
+            className="mr-2"
+            autoComplete="none"
+            label="Prefix"
+            variant="outlined"
+            onChange={e => setprefix(e.target.value)}
+            value={prefix}
+            size="small"
+            style={{width:'180px'}}
+            select
+
+          >
+             {prefixs.map((item, ind) => (
+                      <MenuItem value={item.value} key={item}>
+                        {item.label}
+                      </MenuItem>
+                    ))}
+              </TextField>
               <TextValidator
                 className="w-full mb-4"
                 label="First Name"
@@ -262,9 +289,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 }
                 type="text"
                 name="fname"
+                style={{width:724}}
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
               />
+            
+              </div>
               <TextValidator
                 className="w-full mb-4"
                 label="Last Name"

@@ -95,6 +95,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [PriceList, setPriceList] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
   const [pricestatus, setpricestatus] = useState(false);
+  const [fstatus, setfstatus] = useState(-1);
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -112,7 +113,89 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let id = tempId.substr(2, tempId.length - 1);
     setState((state) => ({ ...state, id }));
   }, []);
+  const formData =new FormData()
+  const handleFileSelect = (event,index) => {
+
+  
+  
+    
+    event.persist()
+   
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['src'] = URL.createObjectURL(event.target.files[0]);
+        let files = event.target.files[0];
+        // formData.append('files',event.target.files[0])
+        
+    
+        
+        element[`files`]=event.target.files[0]
+       
+        
+        return element;
+
+      }
+     
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+    
+     
+    
+  
+  };
+  const deleteFileSelect = (event,index) => {
+
+  
  
+    
+      event.persist()
+     
+      let tempItemList = [...state.item];
+      
+      tempItemList.map((element, i) => {
+        let sum=0;
+      
+        if (index === i) 
+        {
+         
+          // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+          // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+          element['src'] =null;
+          
+         
+          
+          return element;
+  
+        }
+       
+        
+      });
+  
+      setState({
+        ...state,
+        item: tempItemList,
+      });
+    
+      
+       
+      
+    
+    };
+  
 
 
   const handleChange = (event,fieldName) => {
@@ -207,6 +290,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     tempItemList.push({
       product_id: "",
+      src:'',
       description:"",
       descriptions:"",
       quantity:0,
@@ -366,19 +450,45 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.rfq_id=null
     arr.transaction_type="sale"
     const json = Object.assign({}, arr);
- 
-    url.post('sale-quotation', json)
+    formData.append('discount_in_p',discount)
+    formData.append('total_value',parseFloat(subTotalCost).toFixed(2))
+    formData.append('net_amount',GTotal)
+    formData.append('vat_in_value',parseFloat(vat).toFixed(2))
+    formData.append('po_number',id)
+    formData.append('party_id',party_id)
+    formData.append('validity',validity)
+    formData.append('warranty',warranty)
+    formData.append('delivery_time',delivery_time)
+    formData.append('inco_terms',inco_terms)
+    formData.append('payment_terms',payment_terms)
+    formData.append('contact_id',contactid)
+    formData.append('ps_date',warranty)
+    formData.append('rfq_id',null)
+    formData.append('transaction_type',"sale")
+    // JSON.stringify(values.rfq_details)
+   
+    
+    tempItemList.map((answer, i) => {  
+      formData.append(`quotation_detail${i}`,JSON.stringify(answer))
+      console.log(formData.get(`quotation_detail${i}`))
+      answer.files&& (formData.append(`file${i}`,answer.files))
+    })
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
+    
+    url.post('sale-quotation',formData)
       .then(function (response) {
         
-         
+         console.log(response)
         Swal.fire({
           title: 'Success',
           type: 'success',
           icon:'success',
           text: 'Data saved successfully.',
         });
-        // history.push("/product/viewproduct")
-        window.location.href="../quoateview"
+        history.push("/quoateview")
+        // window.location.href="../quoateview"
       })
       .catch(function (error) {
         
@@ -444,6 +554,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       product_id: "",
       description:"",
       descriptions:"",
+      files:[],
       quantity:0,
       product_price_list:[
         {
@@ -502,7 +613,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           
           
             element.product_price_list.splice(id, element.product_price_list.length);
-            console.log(element.product_price_list)
+        
             data.prices.map((v, i) => {
          
               element.product_price_list.push({
@@ -510,7 +621,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 firm_name:v.firm_name,
                 id:v.product_id
               })
-              console.log(element.product_price_list)
+             
             })
          
           
@@ -701,6 +812,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
+              <TableCell className="px-0" style={{width:'50px'}}></TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
@@ -741,7 +853,41 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                  
                   <TableCell className="pl-sm-24 capitalize" align="left" style={{width:50}}>
                     {index + 1}
-                    
+                    </TableCell>
+                    <TableCell className="px-0" style={{width:'150px'}}>
+                    {/* <label htmlFor="upload-single-file">
+            
+              <div className="flex items-center">
+                <Icon className="pr-8">cloud_upload</Icon>
+         
+              </div>
+            
+          </label>
+          <input
+            // className="hidden"
+            onChange={(event) => handleFileSelect(event,index)}
+            id="upload-single-file"
+            type="file"
+            name="file"
+            
+          
+    
+            // value={item.files}
+          />
+          <img className="w-48" src={item.src} alt="" /> */}
+        {!item.src ?(<Icon
+  variant="contained"
+  component="label"
+  onChange={(event) => handleFileSelect(event,index)}
+>
+file_upload
+  <input
+    type="file"
+    hidden
+  />
+</Icon>)
+            
+:(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator

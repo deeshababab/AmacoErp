@@ -22,12 +22,19 @@ export const getInvoice = () => {
     return url.get("http://dataqueuesystems.com/amaco/amaco/public/api/parties/1")
 }
 // const  url = "http://www.amacoerp.com/amaco/public/api/";
- const url = axios.create({
-    baseURL: 'http://www.amacoerp.com/amaco/public/api/',
+//  const url = axios.create({
+//     baseURL: 'http://www.amacoerp.com/amaco/public/api/',
+//     // timeout: 1000,
+    
+//     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
+//   });
+  const url = axios.create({
+    baseURL: 'http://www.amacoerp.com/amaco_test/public/api/',
     // timeout: 1000,
     
     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
   });
+  const role =localStorage.getItem('role')
 
 
 // const  url = "http://dataqueuesystems.com/amaco/amaco/public/api/";

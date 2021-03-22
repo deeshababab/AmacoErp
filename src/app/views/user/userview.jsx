@@ -5,8 +5,8 @@ import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import FormDialog from "./partycontact"
-import MemberEditorDialog from "./partycontact"
+import FormDialog from "./useradd"
+import MemberEditorDialog from "./useradd"
 import Tooltip from '@material-ui/core/Tooltip';
 import url from "../invoice/InvoiceService"
 // import { Button } from 'react-bootstrap';
@@ -26,7 +26,7 @@ const columnStyleWithWidth = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "300px",
+  width: "200px",
   wordBreak: "break-word",
   wordWrap: "break-word",
   overflowWrap:"break-word",
@@ -44,10 +44,10 @@ const columnStyleWithWidthSno = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
-   
+    const [userid, setuserid] = useState(null);
 
     useEffect(() => {
-        url.get("parties").then(({ data }) => {
+        url.get("users").then(({ data }) => {
             if (isAlive) setUserList(data);
            
         });
@@ -58,7 +58,7 @@ const SimpleMuiTable = () => {
     const [count, setCount] = useState(0);
   
     function getrow(e) {
-      url.get("parties").then(({ data }) => {
+      url.get("users").then(({ data }) => {
         if (isAlive) setUserList(data);
     });
     return () => setIsAlive(false);
@@ -91,24 +91,29 @@ const SimpleMuiTable = () => {
       } 
     ]); 
   }; 
+  const edituser = (id) => {
+      setuserid(id)
+      setShouldOpenEditorDialog(true)
+
+  }
   const removeData = (id) => {
     
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this imaginary file!',
-      icon: 'danger',
+    //   title: 'Are you sure?',
+      text: 'Are you sure want to delete the user? ',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        url.delete(`parties/${id}`)
+        url.delete(`users/${id}`)
     .then(res => {
         
         getrow()
         Swal.fire(
           'Deleted!',
-          'Your imaginary file has been deleted.',
+          'User  has been deleted.',
           'success'
         )
         
@@ -116,7 +121,6 @@ const SimpleMuiTable = () => {
     } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Your imaginary file is safe :)',
           'error'
         )
       }
@@ -132,7 +136,7 @@ const columns = [
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidthSno}>  
-          <span style={{marginLeft:15}}>S.No.</span> 
+          <span align="center">S.No.</span> 
         </TableCell>
       )
    },
@@ -146,7 +150,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <span style={{paddingLeft:15}}>Company Name</span>
+            <span style={{paddingLeft:15}}>Name</span>
           </TableCell>
         )
      },
@@ -159,7 +163,7 @@ const columns = [
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidth}>  
-          <span style={{paddingLeft:15}}>Address</span>
+          <span style={{paddingLeft:15}}>Email</span>
         </TableCell>
       )
    },
@@ -170,7 +174,7 @@ const columns = [
 
 {
   name: "vat_no",
-  label: "VAT No",
+  label: "Role",
   options: {
       filter: true,
   },
@@ -195,13 +199,16 @@ const columns = [
             console.log(tableMeta.rowData)
             return (
               <span>
-              <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }>
+              {/* <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }> */}
             
-                <Tooltip title="Party contact details">
-                <Icon color="primary">arrow_forward</Icon>
+                <Tooltip title="Delete User">
+                <Icon color="error" onClick={e=>removeData(tableMeta.rowData[5])}>delete</Icon>
+                </Tooltip>
+                <Tooltip title="Edit User">
+                <Icon color="secondary" onClick={e=>edituser(tableMeta.rowData[5])}>edit</Icon>
                 </Tooltip>
             
-            </Link>
+            {/* </Link> */}
             </span>
             
             
@@ -222,13 +229,15 @@ const columns = [
           <Breadcrumb
             routeSegments={[
               // { name: "", path: "./Addparty" },
-              { name: "Party" }
+              { name: "Users" }
             ]}
           />
-           {shouldOpenEditorDialog && (
+        {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
             open={shouldOpenEditorDialog}
+            userid={userid}
+            userList={setUserList}
           />
         )}
         {shouldOpenConfirmationDialog && (
@@ -241,22 +250,23 @@ const columns = [
       
        
         <div className="text-right">
-                <Link to={"./Addparty"}>
+                {/* <Link to={"./Addparty"}> */}
                 <Button
             className="py-2"
             color="primary"
             variant="outlined"
+            onClick={e=>setShouldOpenEditorDialog(true)}
           >
           <Icon>add</Icon>
           Add New
           </Button>
-          </Link>
+          {/* </Link> */}
           
           </div>
           </div>
           </div>
       <MUIDataTable
-                title={"Party"}
+                title={"Users"}
                 data={
                   userList.map((item, index) => {
                     // console.log(item)
@@ -264,9 +274,9 @@ const columns = [
                       return [
           
                         ++index,
-                        item.firm_name,
-                        (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+", \n":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
-                        item.vat_no,
+                        item.name,
+                        item.email,
+                        item.role_name,
                         item.contact,
                         item.id,
                       ]
@@ -278,6 +288,7 @@ const columns = [
                     filterType: "textField",
                     responsive: "simple",
                     selectableRows: "none", 
+                    elevation: 0,
                     rowsPerPageOptions: [10, 20, 40, 80, 100],
                 }}
             />
