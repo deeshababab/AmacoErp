@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
+  Radio,
   FormControl,
   FormControlLabel,
   Divider,
   RadioGroup,
   Grid,
   Card,
-  Select,
   MenuItem,
   Table,
   TableHead,
@@ -15,7 +15,6 @@ import {
   TableCell,
   TableBody,
   Link,
-  InputLabel,
   Icon,
   TextField,
   Tooltip
@@ -26,13 +25,13 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice,getCustomerList} from "../invoice/InvoiceService";
+import { getInvoiceById, addInvoice, updateInvoice, getCustomerList } from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
 import axios from "axios";
-import url,{getVendorList,capitalize_arr} from "../invoice/InvoiceService";
+import url,{getVendorList} from "../invoice/InvoiceService";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -42,18 +41,16 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
-// import Select from 'react-select';
+import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import FormDialog from "./Addmargin";
 import MemberEditorDialog from "./Addmargin";
-import FormDialog_product from "../../views/product/Addproduct_popup"
-import MemberEditorDialog_product from "../../views/product/Addproduct_popup";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
-import ListSubheader from '@material-ui/core/ListSubheader';
-import { Autocomplete } from "@material-ui/lab";
+import FormDialog_product from "../../views/product/Addproduct_popup"
+import MemberEditorDialog_product from "../../views/product/Addproduct_popup";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -77,12 +74,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [rdate, setrdate] = useState([]);
   const [ddate, setddate] = useState([]);
   const [cname, setcname] = useState('abcd');
-  const [party_id, setparty_id] = useState('');
+  const [party_id, setparty_id] = useState(0);
   const [rfq_details, setrfqdetails] = useState([]);
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
-  const [ProductList1, setProductList1] = useState([]);
   const [validity,setvalidity] =useState('3 Days')
   const [payment_terms,setpayment_terms] =useState('100% Advance')
   const [warranty,setwarranty] =useState('NA')
@@ -94,15 +90,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [price, setprice] = useState(0);
   const [pprice, setpprice] = useState(0);
   const [marginprice, setmarginprice] = useState(0);
-  const [productid, setproductid] = useState('');
+  const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
   const [CustomerList, setCustomerList] = useState([]);
   const [customercontact, setcustomercontact] = useState([]);
-  const [PriceList, setPriceList] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
-  const [pricestatus, setpricestatus] = useState(false);
-  const [fstatus, setfstatus] = useState(-1);
+  const [ProductList1, setProductList1] = useState([]);
+  const[quotation_no,setquotation_no]=useState('')
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -119,102 +114,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     shouldOpenConfirmationDialogproduct,
     setshouldOpenConfirmationDialogproduct,
   ] = useState(false);
-
+  const formData=new FormData()
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
     let id = tempId.substr(2, tempId.length - 1);
     setState((state) => ({ ...state, id }));
   }, []);
-  const formData =new FormData()
-  const handleFileSelect = (event,index) => {
-
-  
-  
-    
-    event.persist()
-   
-    let tempItemList = [...state.item];
-    
-    tempItemList.map((element, i) => {
-      let sum=0;
-    
-      if (index === i) 
-      {
-       
-        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
-        element['src'] = URL.createObjectURL(event.target.files[0]);
-        let files = event.target.files[0];
-        // formData.append('files',event.target.files[0])
-        
-    
-        
-        element[`files`]=event.target.files[0]
-       
-        
-        return element;
-
-      }
-     
-      
-    });
-
-    setState({
-      ...state,
-      item: tempItemList,
-    });
-  
-    
-     
-    
-  
-  };
-  const deleteFileSelect = (event,index) => {
-
-  
- 
-    
-      event.persist()
-     
-      let tempItemList = [...state.item];
-      
-      tempItemList.map((element, i) => {
-        let sum=0;
-      
-        if (index === i) 
-        {
-         
-          // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-          // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
-          element['src'] =null;
-          element[`files`]=null;
-         
-          
-          return element;
-  
-        }
-       
-        
-      });
-  
-      setState({
-        ...state,
-        item: tempItemList,
-      });
-    
-      
-       
-      
-    
-    };
-  
-
 
   const handleChange = (event,fieldName) => {
     // setState({ ...state, ['discount']:event.target.value });
     event.persist();
    
+    // discount=subTotalCost-parseFloat(event.target.value * subTotalCost/100);
+    // vat= ((discount * 15) / 100).toFixed(2);
+    // GTotal=discount + vat;
+   
     
+    // setState({ ...state, ['fieldname']:event.target.value });
     let tempItemList = [...state.item];
     setdstatus(true)
     setdiscount(event.target.value)
@@ -227,7 +143,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
 
   };
-  
   
 
   const handleSellerBuyerChange = (event, fieldName) => {
@@ -276,10 +191,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-       
+        
         // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
         // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
-        element[event.target.name] = capitalize_arr(event.target.value);
+        element[event.target.name] = event.target.value;
         
       
 
@@ -301,14 +216,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempItemList = [...state.item];
     
     tempItemList.push({
+      id:null,
       product_id: "",
-      src:'',
       description:"",
       descriptions:"",
       quantity:0,
       product_price_list:[
         {
-          price:""
+          price:"",
+          firm_name:""
         }
       ],
       purchase_price:0.00,
@@ -322,6 +238,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       ...state,
       item: tempItemList,
     });
+
   };
 
   const deleteItemFromInvoiceList = (index) => {
@@ -360,20 +277,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   };
   const calcualteprice = (pprice,marginprice) => {
     let tempItemList = [...state.item];
+    
     tempItemList.map((element, i) => {
       let sum=0;
     
       if (indexset === i) 
       {
-        // console.log(element.product[0].product_price.price)
-        
-        element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity).toFixed(2);
-        element['margin'] = marginprice;
-        // element['name'] = pprice;
-        
+        console.log(element.quantity_required)
         element['purchase_price']=pprice;
-
+        element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(pprice)).toFixed(2);
+        element['total_amount']=((element.sell_price)*element.quantity).toFixed(2);
+        element['margin'] = marginprice;
+        element['name'] = pprice;
         
       
 
@@ -391,11 +306,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
   const priceset = (a,b,c) => {
     url.get("parties/" + c).then(({ data }) => {
-
       setproList(data[0].contacts);
       
     });
-  
+    alert(c)
   };
   const expandData= (id) => {
    
@@ -405,7 +319,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
   };
   const calcualtep = (event,index) => {
-   
     let tempItemList = [...state.item];
     
     tempItemList.map((element, i) => {
@@ -420,6 +333,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         element.sell_price=parseFloat((element.margin * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
         element.total_amount=((element.sell_price)*element.quantity).toFixed(2);
         
+        
       
 
       }
@@ -432,7 +346,129 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       item: tempItemList,
     }); 
   }
+  const deleteFileSelect = (event,index) => {
 
+  
+ 
+    
+    event.persist()
+   
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['src'] =null;
+        element[`files`]=null;
+       
+        
+        return element;
+
+      }
+     
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+    
+     
+    
+  
+  };
+  const deletequotefile = (id) => {
+
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this File!',
+      icon: 'danger',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      icon: 'warning',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        url.delete(`delete-quotation-detail/${id}`)
+        // axios.get(`http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/deleterfqfile.php?id=${id}`)
+          .then(res => {
+
+
+            Swal.fire(
+              'Deleted!',
+              'File has been deleted.',
+              'success'
+            )
+            setIsAlive(true)
+           
+
+          })
+         
+
+
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Your File is safe :)',
+          'error'
+        )
+      }
+    })
+
+  };
+  const handleFileSelect = (event,index) => {
+
+  
+  
+    
+    event.persist()
+   
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['src'] = URL.createObjectURL(event.target.files[0]);
+        let files = event.target.files[0];
+        // formData.append('files',event.target.files[0])
+        
+    
+        
+        element[`files`]=event.target.files[0]
+       
+        
+        return element;
+
+      }
+     
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+    
+     
+    
+  
+  };
   const handleSubmit = () => {
     
     // setState({ ...state, ['subTotalCost']: subTotalCost });
@@ -446,6 +482,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // arr.push({
     // Quotedetails:tempItemList,
     // });
+    arr.contact_id=contactid
     arr.quotation_details=tempItemList
     arr.discount_in_p=discount
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
@@ -478,6 +515,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('ps_date',Quote_date)
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
+    formData.append('id',id)
+    formData.append('parent_id',id)
+    formData.append('quotation_no',quotation_no)
     // JSON.stringify(values.rfq_details)
    
     
@@ -489,8 +529,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     for (var pair of formData.entries()) {
       console.log(pair[0]+ ', ' + pair[1]); 
   }
-    
-    url.post('sale-quotation',formData)
+
+    url.post(`sale-quotation`,formData)
       .then(function (response) {
         
          console.log(response)
@@ -501,9 +541,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           text: 'Data saved successfully.',
         })
         .then((result) => {
-        history.push("/quoateview")
-        })
+          history.push("/quoateview")
         // window.location.href="../quoateview"
+        })
       })
       .catch(function (error) {
         
@@ -535,63 +575,39 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   useEffect(() => {
     getCustomerList().then(({ data }) => {
       setCustomerList(data);
-    
+      // console.log(data)
 
     });
-    
-   
     url.get("products").then(({ data }) => {
       setproList(data)
-
       
-    // setState({
-    //     ...state,
-    //     item: data,
-    //   }); 
-    
-    });
-    
-    
-    
-//     url.get(url+"rfq/"+ id).then(({ data }) => {
-     
-//       setcname(data[0].party[0].firm_name)
-//       setcontactid(data[0].contact.id)
-//       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
-//       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
-//       setparty_id(data[0].party_id)
-//      setState({
-//       ...state,
-//       item: data[0].rfq_details,
-//     });
-//    });
-    let tempItemList = [...state.item];
    
-    tempItemList.push({
-      product_id: "",
-      description:"",
-      descriptions:"",
-      files:[],
-      quantity:0,
-      product_price_list:[
-        {
-          price:"",
-          firm_name:"",
-          id:""
-        }
-      ],
-      purchase_price:0.00,
-      margin:0,
-      sell_price:0.00,
-      remark:"",
-      total_amount:0.00
-      
+    });
+    
 
+    
+    url.get(`sale-quotation/${id}`).then(({ data }) => {
+      console.log(data[0].quotation_no)
+      setQuote_date(data[0].ps_date)
+      setquotation_no(data[0].quotation_no)
+      console.log(data[0])
+      setProductList1(data[0].quotation_details[0].product_price_list)
+      if(data[0].contact!==null)
+      {
+      setcontactid(data[0].contact.id)
+      }
+      setparty_id(data[0].party_id)
+      console.log(data[0].quotation_details)
+      setState({
+        ...state,
+        item: data[0].quotation_details,
+      });
+      
     });
-    setState({
-      ...state,
-      item: tempItemList,
-    });
+    return setIsAlive(false)
+   
+   
+ 
 
 
   }, [id, isNewInvoice, isAlive, generateRandomId]);
@@ -605,60 +621,58 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setShouldOpenEditorDialog(true);
 
   }
-  const product_popup=()=>{
-    setshouldOpenConfirmationDialogproduct(true)
-  }
   const setProductdescription = (event,index,id)=>{
     if(event.target.value!=="false")
     {
     url.get("products/" + event.target.value).then(({ data }) => {
-        let tempItemList = [...state.item];
-        data.prices.map((element, i) => {
-            // console.log(element)
-        })
-        setProductList1(data.prices)
-        // setProductList1(data.prices)
-    
+      let tempItemList = [...state.item];
+     
+      // setProductList1(data.prices)
+      // console.log(data.prices)
+       
     
     tempItemList.map((element, i) => {
       let sum=0;
-    
+     
       if (index === i) 
       {
         
+        // element.product_price_list.push(
+        //   {
+        //     price:data.prices
+        //   }
+        // )
         element['product_id']= event.target.value;
         element['descriptionss']= data.product[0].description;
-        
         if(element.product_price_list.length>=1)
         {
           
           
           
             element.product_price_list.splice(id, element.product_price_list.length);
-        
             data.prices.map((v, i) => {
          
               element.product_price_list.push({
                 price:v.price,
                 firm_name:v.firm_name,
-                id:v.product_id
               })
-             
+           
             })
          
           
         }
         else{
+
         data.prices.map((v, i) => {
          
           element.product_price_list.push({
             price:v.price,
-            firm_name:v.firm_name,
-            id:v.product_id
+            firm_name:v.firm_name
           })
        
         })
       }
+       
         setproductid(id)
         
       
@@ -672,22 +686,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       ...state,
       item: tempItemList,
     }); 
+   
     })
   }
   else
   {
-   
     setshouldOpenEditorDialogproduct(true)
   }
+
   }
-  var cars = [
-    { id: 1, model: "CRV", company: "Honda" },
-    { id: 2, model: "Accord", company: "Honda" },
-    { id: 3, model: "800", company: "Maruti" },
-    { id: 4, model: "Civic", company: "Honda" },
-    { id: 5, model: "Model S", company: "Tesla" }
-    ]
-  
   let subTotalCost = 0;
   let GTotal = 0;
   let dis_per = 0;
@@ -710,14 +717,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   } = state;
   
   return (
-    
+   
   <div className="m-sm-30">
-    <Card elevation={3}>
+    <Card elevation={6}>
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Create Sales Quotation</h3>
+          <h3 align="left"> Revise Sales Quotation</h3>
           </div>
           <div className="mb-6">
          
@@ -760,19 +767,19 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     size="small"
                     variant="outlined"
                     
-                    // value={values.CustomerList}
+                    value={party_id}
                     // onChange={handleChange}
                     onClick={(event)=>setcontact(event)}
                     required
                     select
                   >
-                    <MenuItem onClick={() => {
+                    {/* <MenuItem onClick={() => {
                           history.push("/party/addparty");
                         }}>
                       
-                        <Icon>add</Icon>New
-                {/* </Button> */}
-                    </MenuItem>
+                        <Icon>add</Icon>new
+               
+                    </MenuItem> */}
                     {CustomerList.map((item) => (
                       <MenuItem value={item.id} key={item.id}>
                         {item.firm_name}
@@ -796,6 +803,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     select
                     // value={values.contact_id}
                     onChange={(e)=>setcontactid(e.target.value)}
+                    required
                    
                   >
                     
@@ -809,17 +817,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   }
                   </div>
                   
-                  
           <div>
            
             
             <div className="text-right pt-4">
-            {/* <h5 className="font-normal">
-                <strong>Quote Date: </strong>
-              </h5> */}
+            
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                      className="m-2"
+                      className="ml-2"
                       margin="none"
                       label="Quote Date"
                       inputVariant="outlined"
@@ -846,12 +851,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'50px'}}></TableCell>
+              <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Sprice</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
@@ -862,7 +867,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              
+              console.log(item.product)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -887,29 +892,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                  
                   <TableCell className="pl-sm-24 capitalize" align="left" style={{width:50}}>
                     {index + 1}
-                    </TableCell>
-                    <TableCell className="px-0" style={{width:'150px'}}>
-                    {/* <label htmlFor="upload-single-file">
-            
-              <div className="flex items-center">
-                <Icon className="pr-8">cloud_upload</Icon>
-         
-              </div>
-            
-          </label>
-          <input
-            // className="hidden"
-            onChange={(event) => handleFileSelect(event,index)}
-            id="upload-single-file"
-            type="file"
-            name="file"
-            
-          
-    
-            // value={item.files}
-          />
-          <img className="w-48" src={item.src} alt="" /> */}
-        {!item.src ?(<Icon
+                    
+                  </TableCell>
+                  <TableCell className="px-0" style={{width:'50px'}}>
+                   
+       {item.file?(<span><Icon color="error" onClick={(event) => deletequotefile(item.id)}>close</Icon><img className="w-48" src={item.file} alt="" ></img></span>):!item.src ?(<Icon
   variant="contained"
   component="label"
   onChange={(event) => handleFileSelect(event,index)}
@@ -923,6 +910,7 @@ file_upload
             
 :(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
                   </TableCell>
+                  
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
                       label="Item"
@@ -940,7 +928,7 @@ file_upload
                     //   errorMessages={["this field is required"]}
                     select
                     >
-                      <MenuItem value="false">
+                       <MenuItem value="false">
                          <Icon>add</Icon>Add New
                           </MenuItem>
                          {proList.map((item) => (
@@ -977,7 +965,6 @@ file_upload
                       variant="outlined"
                       size="small"
                       name="quotedescription"
-                      inputProps={{style: {textTransform: 'capitalize'}}}
                       fullWidth
                       value={item.descriptionss?item.descriptionss :"" }
               
@@ -991,14 +978,13 @@ file_upload
                       variant="outlined"
                       size="small"
                       fullWidth
-                      inputProps={{min: 0, style: { textAlign: 'center' }}}
             
                       name="quantity"
                       value={item.quantity}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
-                  {/* <TextField
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
+                  <TextField
                       label="Unit Price"
                       variant="outlined"
                       // onChange={(event) => calcualtep(event,index)}
@@ -1008,56 +994,20 @@ file_upload
                       size="small"
                       
                       fullWidth
-                     
-                      value={item.purchase_price?item.purchase_price:""}
+                      value={item.purchase_price}
                       select
-                   
+                      required
+                      
                       
                     >
-                      
-                      {item.product_price_list.map((e, key) => (
-                        <datalist id="some-list">
-                        <option value="first_value">Some Description</option>
-                        <option value="another_value">Another Thing Here</option>
-                        <option value="first_second_third">More Stuff</option>
-                      </datalist>
-                      
-        
-                      ))}
-                       
-                    </TextField> */}
-                    {/* <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel> */}
-                    <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
-        <Select
-          native
-         
-          // onChange={handleChange}
-         
-          onChange={(event) => calcualtep(event, index)}
-          label="Price"
-          inputProps={{
-            name: 'purchase_price',
-            id: 'outlined-age-native-simple',
-          }}
-          style={{width:90,height:40}}
-        >
-          <option aria-label="None" value="" />
-          {item.product_price_list.map((item, id) => (
-          <optgroup label={item.firm_name} style={{fontSize:12}}>
-            <option value={item.price}>{item.price}</option>
-          </optgroup>
-          ))}
-          
-        </Select>
-        </FormControl>
-                   
-                    
-                    
-
-        
-     
-                    
+                       {item.product_price_list.map((item,i) => (
+                        
+                        <MenuItem value={item.price} key={index}>
+                         
+                          {item.price}-{item.firm_name}  
+                        </MenuItem>
+                      ))} 
+                    </TextField>
                     
                   </TableCell> 
 
@@ -1070,7 +1020,6 @@ file_upload
                       // onBlur={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
-                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       size="small"
                       name="margin"
                       style={{width:'75%',float:'left'}}
@@ -1082,7 +1031,7 @@ file_upload
                     />
                     {/* <Tooltip title="Reference">
                   <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
-                        setMargin(item.product_id,index,item.name);
+                         setMargin(item.product_id,index,item.name);
                       }}>
                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                 </Icon>
@@ -1099,7 +1048,6 @@ file_upload
                       size="small"
                       
                       name="sell_price"
-                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                       value={item.sell_price}
       
@@ -1115,7 +1063,6 @@ file_upload
                       size="small"
                      
                       name="total_amount"
-                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                      
                       value={item.total_amount}
                       
@@ -1269,7 +1216,6 @@ file_upload
                 size="small"
                 style={{width:'90px'}}
                 onChange={(event) => handleChange(event, "discount")}
-                inputProps={{min: 0, style: { textAlign: 'center' }}}
                 value={discount}
                 // style={{width:50}}
                 // validators={["required"]}
@@ -1285,7 +1231,6 @@ file_upload
                 size="small"
                 name="dis_per"
                 style={{width:'90px'}}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={(event) => handleChange(event, "discount")}
                 value={discount?dis_per:0.00}
                 // validators={["required"]}
@@ -1302,7 +1247,6 @@ file_upload
                 size="small"
                 name="vat"
                 value={subTotalCost?vat:0}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1317,7 +1261,6 @@ file_upload
                 value={subTotalCost?GTotal:0.00}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
               />
               
                
@@ -1365,10 +1308,9 @@ file_upload
             text="Are you sure to delete?"
           />
         )}
-        </Card>
+          </Card>
     </div>
   
-    
   );
 };
 

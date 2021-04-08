@@ -45,6 +45,7 @@ const CustomerBillings = () => {
     setAnchorEl(event.currentTarget);
   }
   const setcontacts = (id) => {
+    handleClose()
     setstatus(id)
     setShouldOpenEditorDialog(id);
 
@@ -83,12 +84,13 @@ const CustomerBillings = () => {
 
   }, []);
   const removeData = (id) => {
-    // alert(id)
+    handleClose()
+   
     // let url = `https://jsonplaceholder.typicode.com/users/${id}`
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this contact details!',
-      icon: 'danger',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it'
@@ -169,7 +171,7 @@ const getData = () => {
           {customercontact.map((item, index) => {
             
             return (
-              <TableRow key={index}>
+              <TableRow key={index+1}>
                 <TableCell className="pl-0" align="center">{i++}</TableCell>
 
                 <TableCell className="pl-0" style={{wordBreak:'break-word'}}>{item.fname}</TableCell>
@@ -181,7 +183,7 @@ const getData = () => {
                 
               
                 <TableCell className="pl-0" align="center">
-                <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
+                {/* <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
                         aria-haspopup="true"
                         onClick={handleClick}
                         style={{marginRight:'0.5rem'}}
@@ -189,8 +191,8 @@ const getData = () => {
                         <Tooltip title="Subcategory list">
                           <Icon color="primary" style={{paddingRight:12}}>expand_more</Icon>
                         </Tooltip>
-                      </IconButton>
-                <Menu
+                      </IconButton> */}
+                {/* <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
@@ -198,23 +200,25 @@ const getData = () => {
                 >
               <MenuItem onClick={() => {
                     setcontacts(item.id);
-                  }}>
+                  }}> */}
                 
                     <Tooltip title="Edit contact details">
-                    <Icon color="secondary">edit</Icon>
+                    <Icon color="secondary" onClick={() => {
+                    setcontacts(item.id);
+                  }}>edit</Icon>
                     
                     </Tooltip>
-                    Edit
-                  </MenuItem>
-                  <MenuItem onClick={() => removeData(item.id)}>
+                    
+                  {/* </MenuItem> */}
+                  {/* <MenuItem onClick={() => removeData(item.id)}> */}
                  
                   <Tooltip title="Delete contact details">
-                    <Icon color="error" >delete</Icon>
+                    <Icon color="error" onClick={() => removeData(item.id)}>delete</Icon>
                   </Tooltip>
-                  Delete
+               
                   
-                  </MenuItem>
-                </Menu>
+                  {/* </MenuItem>
+                </Menu> */}
                   
 
                   

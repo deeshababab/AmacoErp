@@ -81,7 +81,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
     return () => setIsAlive(true);
   };
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
 
   useEffect(() => {

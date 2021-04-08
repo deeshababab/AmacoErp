@@ -9,9 +9,23 @@ import useSettings from 'app/hooks/useSettings';
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
+  
   scrollable: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    // paddingLeft: 20,
+    // paddingRight: 20,
+  
+  
+    // width: "150px",
+    "overflow-y": "auto !important",
+    // "background-color": "#aaa",
+    // "border-radius": "6px",
+    // transition: "background-color .2s linear, width .2s ease-in-out",
+    // "-webkit-transition": "background-color .2s linear, width .2s ease-in-out",
+    // width: "6px",
+    // right: "2px",
+    // position: "absolute"
+    
+  
   },
   sidenavMobileOverlay: {
     position: "fixed",
@@ -53,11 +67,14 @@ const Sidenav = ({ children }) => {
   return (
     <Fragment>
       <Scrollbar
+        
         options={{ suppressScrollX: true }}
+        
         className={clsx("relative px-4", classes.scrollable)}
       >
         {children}
         <MatxVerticalNav 
+        
         items={x ==="SA" ? navigations : navigations1} 
         /> 
         

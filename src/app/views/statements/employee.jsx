@@ -37,7 +37,7 @@ import logos from "./../invoice/vision2030.png";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import useSettings from "../../hooks/useSettings";
 import apiurl from "../../../config";
-import url, { getCustomerList } from "../invoice/InvoiceService";
+import url, { getCustomerList, getpaymentaccount } from "../invoice/InvoiceService";
 import Arabic from "../../../lang/ar.json";
 import { IntlProvider, FormattedNumber } from "react-intl";
 import { FormattedMessage } from "react-intl";
@@ -163,7 +163,7 @@ const Customer = ({
   const componentRef = useRef();
 
   const [UserList, setUserList] = useState([]);
-  const [party_id, setparty_id] = useState("");
+  const [payment_account_id, setpayment_account_id] = useState("");
   const [IsAlive, setIsAlive] = useState(false);
   const [thstatus, setthstatus] = useState(false);
   const [from_date, setfrom_date] = useState(new Date());
@@ -192,20 +192,25 @@ const Customer = ({
   useEffect(() => {
     // updateSidebarMode({ mode: "close" })
     document.title = "Request for quoatation - Amaco";
-    getCustomerList().then(({ data }) => {
+    getpaymentaccount().then(({ data }) => {
+       
       setUserList(data);
     });
     url
-      .post(
-        "all-account-statement"
+      .get(
+        "all-account-statement" +
+          "payment_account_id=" +
+          payment_account_id +
+          "&from_date=" +
+          moment(from_date).format("YYYY-MM-DD") +
+          "&to_date=" +
+          moment(to_date).format("YYYY-MM-DD")
       )
       .then(({ data }) => {
         const myArr = Object.values(data[0].data).sort(
-          (a, b) => new Date(b[0].date) - new Date(a[0].date)
+          (a, b) => new Date(a[0].date) - new Date(b[0].date)
         );
-        setfrom_date(new Date())
-        setto_date(new Date())
-        setparty_id('')
+
         setstatements(myArr);
         setarr_length(Object.keys(myArr).length);
       
@@ -220,7 +225,9 @@ const Customer = ({
             sum1 += parseFloat(item[0].credit.split(",").join(""));
           }
         });
-
+        setfrom_date(new Date())
+        setto_date(new Date())
+        setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
         setfdate(data[0].from_date);
@@ -228,10 +235,10 @@ const Customer = ({
         settdate(data[0].to_date);
 
         setcredit_days(data[0].credit_days);
-        // setcname(data[0].firm_name);
-        setopening_balance(0.0);
+        setcname(data[0].firm_name);
+        setopening_balance(data[0].opening_balance);
         setthstatus(true);
-      });  
+      });
   }, []);
 
   const handlePrint = () => {
@@ -281,69 +288,22 @@ const Customer = ({
 
   const handleSubmit = () => {
     const formData1 = {
-      party_id: party_id,
+      payment_account_id: payment_account_id,
       from_date: "2021-01-03",
       to_date: "2021-03-22",
     };
 
-    // formData.append('party_id',party_id)
+    // formData.append('payment_account_id',payment_account_id)
     // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
     // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
-    // console.log(formData.get('party_id'))
+    // console.log(formData.get('payment_account_id'))
     // console.log(formData.get('from_date'))
     // console.log(formData.get('to_date'))
-
-    if(party_id==="All")
-    {
-      alert('hi')
-      url
-      .post(
-        "all-account-statement?"+
-          "from_date=" +
-          moment(from_date).format("YYYY-MM-DD") +
-          "&to_date=" +
-          moment(to_date).format("YYYY-MM-DD")
-      )
-      .then(({ data }) => {
-        const myArr = Object.values(data[0].data).sort(
-          (a, b) => new Date(b[0].date) - new Date(a[0].date)
-        );
-        setfrom_date(new Date())
-        setto_date(new Date())
-        setparty_id('')
-        setstatements(myArr);
-        setarr_length(Object.keys(myArr).length);
-      
-
-        var sum = parseFloat(data[0].opening_balance);
-        var sum1 = 0.0;
-        Object.values(data[0].data).map((item, i) => {
-          if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
-          }
-          if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
-          }
-        });
-
-        setdsum(sum);
-        setcsum(sum1);
-        setfdate(data[0].from_date);
-
-        settdate(data[0].to_date);
-
-        setcredit_days(data[0].credit_days);
-        setcname(data[0].firm_name);
-        setopening_balance(data[0].opening_balance);
-        setthstatus(true);
-      });  
-    }
-    else{
     url
       .post(
-        "account-statement?" +
-          "party_id=" +
-          party_id +
+        "advance-payment-statement?" +
+          "payment_account_id=" +
+          payment_account_id +
           "&from_date=" +
           moment(from_date).format("YYYY-MM-DD") +
           "&to_date=" +
@@ -353,10 +313,7 @@ const Customer = ({
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(a[0].date) - new Date(b[0].date)
         );
-        console.log(data[0].firm_name)
-        setfrom_date(new Date())
-        setto_date(new Date())
-        setparty_id('')
+
         setstatements(myArr);
         setarr_length(Object.keys(myArr).length);
       
@@ -371,7 +328,9 @@ const Customer = ({
             sum1 += parseFloat(item[0].credit.split(",").join(""));
           }
         });
-
+        setfrom_date(new Date())
+        setto_date(new Date())
+        setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
         setfdate(data[0].from_date);
@@ -383,7 +342,6 @@ const Customer = ({
         setopening_balance(data[0].opening_balance);
         setthstatus(true);
       });
-    }
   };
   const handleDateChange = (date) => {
     setfrom_date(date);
@@ -416,7 +374,7 @@ const Customer = ({
           <Breadcrumb
             routeSegments={[
               // { name: "Expense", path: "/expenseview" },
-              { name: "Customer Statements" },
+              { name: "Account Statements" },
             ]}
           />
           <div className="text-right">
@@ -431,77 +389,7 @@ const Customer = ({
           </div>
         </div>
       </div>
-      <ValidatorForm className="px-0 pb-0" onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item lg={3} xs={12}>
-            <TextField
-              className="mb-4 w-full"
-              label="Name"
-              name="workPhone"
-              size="small"
-              variant="outlined"
-              onChange={(e) => setparty_id(e.target.value)}
-              fullWidth
-              value={party_id}
-              autoComplete="Disabled"
-              select
-            >
-              <MenuItem value="All" >
-                 All
-                </MenuItem>
-              {UserList.map((item, ind) => (
-                <MenuItem value={item.id} key={item}>
-                  {item.firm_name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item lg={3} md={6} xs={12}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className="mb-4 w-full"
-                margin="none"
-                label="From Date"
-                inputVariant="outlined"
-                type="text"
-                size="small"
-                autoOk={true}
-                value={from_date}
-                format="MMMM dd, yyyy"
-                onChange={handleDateChange}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-
-          <Grid item lg={3} xs={12}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className="mb-4 w-full"
-                margin="none"
-                label="To Date"
-                inputVariant="outlined"
-                type="text"
-                size="small"
-                autoOk={true}
-                value={to_date}
-                format="MMMM dd, yyyy"
-                onChange={handleDateChange1}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-          <Grid item lg={3} xs={12}>
-            <Button
-              color="primary"
-              variant="outlined"
-              type="submit"
-              onClick={handleSubmit}
-            >
-              <Icon>save</Icon> Generate Statement
-            </Button>
-          </Grid>
-        </Grid>
-      </ValidatorForm>
+      
       <div className={clsx("invoice-viewer py-4 pt-0", classes.customer)}>
         <div className="viewer_actions px-4 mb-5 flex items-center justify-between">
           <div>
@@ -537,7 +425,7 @@ const Customer = ({
                           />
                         </div>
 
-                        <div className="viewer__order-info px-4 mb-4 flex justify-between"></div>
+                        <div className="viewer__order-info px-4 mb-4  flex justify-between"></div>
                       </div>
                       <div className="flex">
                         <div style={{ marginLeft: "50px",marginRight:10 }}>
@@ -778,7 +666,7 @@ const Customer = ({
                               fontSize: 16,
                             }}
                           >
-                            Credit Days
+                            
                           </TableCell>
                           <TableCell
                             className="pr-0 capitalize"
@@ -790,7 +678,7 @@ const Customer = ({
                               fontSize: 16,
                             }}
                           >
-                            45 Days
+                          
                           </TableCell>
                         </TableRow>
                       </Table>
@@ -839,7 +727,22 @@ const Customer = ({
                             >
                               INV.#
                             </TableCell>
-                            
+                            <TableCell
+                              className="px-0"
+                              style={{
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                color: "#fff",
+                                fontColor: "#fff",
+                                fontWeight: 1000,
+                                fontSize: 16,
+                                width:50
+                              }}
+                              align="center"
+                            >
+                              DOCUMENT #
+                            </TableCell>
+
                             <TableCell
                               className="px-0"
                               style={{
@@ -898,34 +801,8 @@ const Customer = ({
                             >
                               BALANCE
                             </TableCell>
-                            <TableCell
-                              className="px-0"
-                              style={{
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                width: 50,
-                                color: "#fff",
-                                fontWeight: 1000,
-                                fontSize: 16,
-                              }}
-                              align="center"
-                            >
-                              AGE
-                            </TableCell>
-                            <TableCell
-                              className="px-0"
-                              style={{
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                width: 100,
-                                color: "#fff",
-                                fontWeight: 1000,
-                                fontSize: 16,
-                              }}
-                              align="center"
-                            >
-                              INV.STATUS
-                            </TableCell>
+                            
+                            
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -960,7 +837,18 @@ const Customer = ({
                             >
                               --
                             </TableCell>
-                            
+                            <TableCell
+                              className="pl-2 capitalize"
+                              align="left"
+                              style={{
+                                border: "1px solid #ccc",
+                                wordBreak: "break-word",
+                                fontFamily: "Calibri",
+                                fontSize: 16,
+                              }}
+                            >
+                              --
+                            </TableCell>
                             <TableCell
                               className="pl-2 capitalize"
                               align="left"
@@ -1041,26 +929,7 @@ const Customer = ({
                                 }
                               )}
                             </TableCell>
-                            <TableCell
-                              className="pl-0 capitalize"
-                              style={{
-                                textAlign: "right",
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                fontSize: 16,
-                              }}
-                            ></TableCell>
-                              <TableCell
-                                  className="pl-0 capitalize"
-                                  style={{
-                                    textAlign: "right",
-                                    border: "1px solid #ccc",
-                                    fontFamily: "Calibri",
-                                    fontSize: 16,
-                                  }}
-                                >
-                                  --
-                                </TableCell>
+                            
                           </TableRow>
                           {statements.map((item, index) => {
                             
@@ -1100,7 +969,18 @@ const Customer = ({
                                     ? ""
                                     : item[0].code_no}
                                 </TableCell>
-                                
+                                <TableCell
+                                  className="pl-2 capitalize"
+                                  align="left"
+                                  style={{
+                                    border: "1px solid #ccc",
+                                    wordBreak: "break-word",
+                                    fontFamily: "Calibri",
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  --
+                                </TableCell>
                                 <TableCell
                                   className="pl-2 capitalize"
                                   align="left"
@@ -1162,74 +1042,12 @@ const Customer = ({
                                         index
                                       ))}
                                 </TableCell>
-                                <TableCell
-                                  className="pl-0 capitalize"
-                                  style={{
-                                    textAlign: "right",
-                                    border: "1px solid #ccc",
-                                    fontFamily: "Calibri",
-                                    fontSize: 16,
-                                  }}
-                                >
-                                  {item[0].debit
-                                    ? moment(new Date(), "YYYY-MM-DD").diff(
-                                        moment(`${item[0].date}`, "YYYY-MM-DD"),
-                                        "days"
-                                      )
-                                    : ""}
-                                </TableCell>
-                                {item[0].description==="Received"?(<TableCell
-                                  className="pl-0 capitalize"
-                                  style={{
-                                    textAlign: "right",
-                                    border: "1px solid #ccc",
-                                    fontFamily: "Calibri",
-                                    fontSize: 16,
-                                  }}
-                                >
-                                 
-                                </TableCell>):
-                                (csum<parseFloat(osum.split(",").join(""))?(<TableCell
-                                className="pl-0 capitalize"
-                                style={{
-                                  textAlign: "right",
-                                  border: "1px solid #ccc",
-                                  fontFamily: "Calibri",
-                                  fontSize: 16,
-                                  color:'blue'
-                                }}
-                              >
-                               <small
-                    className={clsx({
-                      "border-radius-4  text-white px-2 py-2px bg-error": true,
-                      
-                    })}
-                  >
-                   OVERDUE
-                  </small>
-                              </TableCell>):
-                              (<TableCell
-                                className="pl-0 capitalize"
-                                style={{
-                                  textAlign: "right",
-                                  border: "1px solid #ccc",
-                                  fontFamily: "Calibri",
-                                  fontSize: 16,
-                                  color:'green'
-                                }}
-                              >
-                               <small
-                    className={clsx({
-                      "border-radius-4  text-white px-2 py-2px bg-green": true,
-                      
-                    })}
-                  >
-                    CLEARED
-                  </small>
-                              </TableCell>))
-                              
-                               }
                                 
+                                
+                                
+                               
+                              
+                             
                               </TableRow>
                             );
                            
@@ -1272,6 +1090,16 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             ></TableCell>
+                            <TableCell
+                              className="pl-2 capitalize"
+                              align="left"
+                              style={{
+                                border: "1px solid #ccc",
+                                wordBreak: "break-word",
+                                fontFamily: "Calibri",
+                                fontSize: 16,
+                              }}
+                            ></TableCell>
 
                             <TableCell
                               className="pl-0 capitalize"
@@ -1282,9 +1110,7 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                              {dsum.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                              })}
+                             
                             </TableCell>
                             <TableCell
                               className="pl-0 capitalize"
@@ -1295,9 +1121,7 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                              {csum.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                              })}
+                              
                             </TableCell>
                             <TableCell
                               className="pl-0 capitalize"
@@ -1313,28 +1137,8 @@ const Customer = ({
                                 minimumFractionDigits: 2,
                               })}
                             </TableCell>
-                            <TableCell
-                              className="pl-0 capitalize"
-                              style={{
-                                textAlign: "right",
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                fontSize: 16,
-                              }}
-                            >
                            
-                            </TableCell>
-                              <TableCell
-                                  className="pl-0 capitalize"
-                                  style={{
-                                    textAlign: "right",
-                                    border: "1px solid #ccc",
-                                    fontFamily: "Calibri",
-                                    fontSize: 16,
-                                  }}
-                                >
-                                 
-                                </TableCell>
+                             
                           </TableRow>
                         </TableBody>
                       </Table>

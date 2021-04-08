@@ -89,8 +89,9 @@ export const navigations = [
         {
           name: "Account",
           icon: "account_balance",
-          path: "/expenseview",
+          path: "/account",
         },
+        
       ]
     }
 
@@ -115,6 +116,7 @@ export const navigations = [
   path: "/user",
 
   
-}
+},
+
 ];
 

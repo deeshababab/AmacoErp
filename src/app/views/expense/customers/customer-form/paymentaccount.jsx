@@ -34,7 +34,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
 
 
@@ -215,8 +215,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
           </Grid>
 
           <div className="flex justify-between items-center">
-            <Button variant="contained" color="primary" type="submit">
-              Save
+            <Button variant="outlined" color="primary" type="submit">
+              <Icon>save</Icon>Save
             </Button>
             <div className="flex justify-between items-center">
             <Button
@@ -224,7 +224,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
               color="secondary"
               onClick={() => handleClose()}
             >
-              Cancel
+              <Icon>cancel</Icon>Cancel
             </Button>
             
             <Button
@@ -233,7 +233,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
               color="primary"
               onClick={() => getrow()}
             >
-              view
+              <Icon>remove_red_eye</Icon>view
             </Button>
             </div>
           </div>

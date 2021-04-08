@@ -4,9 +4,12 @@ import {
   Radio,
   FormControl,
   FormControlLabel,
+  Select,
   Divider,
   RadioGroup,
+  InputLabel,
   Grid,
+  Card,
   MenuItem,
   Table,
   TableHead,
@@ -40,7 +43,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
@@ -48,6 +50,8 @@ import FormDialog from "./Addmargin";
 import MemberEditorDialog from "./Addmargin";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
+import FormDialog_product from "../../views/product/Addproduct_popup"
+import MemberEditorDialog_product from "../../views/product/Addproduct_popup";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -100,12 +104,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  const [shouldOpenEditorDialogproduct, setshouldOpenEditorDialogproduct] = useState(false);
   const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
   const [
     shouldOpenConfirmationDialog,
     setShouldOpenConfirmationDialog,
   ] = useState(false);
-
+  const [
+    shouldOpenConfirmationDialogproduct,
+    setshouldOpenConfirmationDialogproduct,
+  ] = useState(false);
+  const formData=new FormData()
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
     let id = tempId.substr(2, tempId.length - 1);
@@ -337,7 +346,129 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       item: tempItemList,
     }); 
   }
+  const deleteFileSelect = (event,index) => {
 
+  
+ 
+    
+    event.persist()
+   
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['src'] =null;
+        element[`files`]=null;
+       
+        
+        return element;
+
+      }
+     
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+    
+     
+    
+  
+  };
+  const deletequotefile = (id) => {
+
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this File!',
+      icon: 'danger',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      icon: 'warning',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        url.delete(`delete-quotation-detail/${id}`)
+        // axios.get(`http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/deleterfqfile.php?id=${id}`)
+          .then(res => {
+
+
+            Swal.fire(
+              'Deleted!',
+              'File has been deleted.',
+              'success'
+            )
+            setIsAlive(true)
+           
+
+          })
+         
+
+
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Your File is safe :)',
+          'error'
+        )
+      }
+    })
+
+  };
+  const handleFileSelect = (event,index) => {
+
+  
+  
+    
+    event.persist()
+   
+    let tempItemList = [...state.item];
+    
+    tempItemList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+       
+        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
+        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        element['src'] = URL.createObjectURL(event.target.files[0]);
+        let files = event.target.files[0];
+        // formData.append('files',event.target.files[0])
+        
+    
+        
+        element[`files`]=event.target.files[0]
+       
+        
+        return element;
+
+      }
+     
+      
+    });
+
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+  
+    
+     
+    
+  
+  };
   const handleSubmit = () => {
     
     // setState({ ...state, ['subTotalCost']: subTotalCost });
@@ -369,19 +500,48 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.rfq_id=null
     arr.transaction_type="sale"
     const json = Object.assign({}, arr);
+    formData.append('discount_in_p',discount)
+    formData.append('total_value',parseFloat(subTotalCost).toFixed(2))
+    formData.append('net_amount',GTotal)
+    formData.append('vat_in_value',parseFloat(vat).toFixed(2))
+    formData.append('po_number',id)
+    formData.append('party_id',party_id)
+    formData.append('validity',validity)
+    formData.append('warranty',warranty)
+    formData.append('delivery_time',delivery_time)
+    formData.append('inco_terms',inco_terms)
+    formData.append('payment_terms',payment_terms)
+    formData.append('contact_id',contactid)
+    formData.append('ps_date',Quote_date)
+    formData.append('rfq_id',null)
+    formData.append('transaction_type',"sale")
+    formData.append('id',id)
+    // JSON.stringify(values.rfq_details)
+   
+    
+    tempItemList.map((answer, i) => {  
+      formData.append(`quotation_detail${i}`,JSON.stringify(answer))
+      console.log(formData.get(`quotation_detail${i}`))
+      answer.files&& (formData.append(`file${i}`,answer.files))
+    })
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
 
-    url.put(`sale-quotation/${id}`, json)
+    url.post(`sale-quotation-update`,formData)
       .then(function (response) {
         
-         
+         console.log(response)
         Swal.fire({
           title: 'Success',
           type: 'success',
           icon:'success',
           text: 'Data saved successfully.',
-        });
-        // history.push("/product/viewproduct")
-        window.location.href="../quoateview"
+        })
+        .then((result) => {
+          history.push("/quoateview")
+        // window.location.href="../quoateview"
+        })
       })
       .catch(function (error) {
         
@@ -393,6 +553,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    setshouldOpenEditorDialogproduct(false);
    
   };
   const setcontact= (event) => {
@@ -426,15 +587,21 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get(`sale-quotation/${id}`).then(({ data }) => {
       
       setQuote_date(data[0].ps_date)
+      console.log(data[0])
       setProductList1(data[0].quotation_details[0].product_price_list)
+      if(data[0].contact!==null)
+      {
       setcontactid(data[0].contact.id)
+      }
       setparty_id(data[0].party_id)
       console.log(data[0].quotation_details)
       setState({
         ...state,
         item: data[0].quotation_details,
       });
+      
     });
+    return setIsAlive(false)
    
    
  
@@ -452,6 +619,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   }
   const setProductdescription = (event,index,id)=>{
+    if(event.target.value!=="false")
+    {
     url.get("products/" + event.target.value).then(({ data }) => {
       let tempItemList = [...state.item];
      
@@ -516,6 +685,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     }); 
    
     })
+  }
+  else
+  {
+    setshouldOpenEditorDialogproduct(true)
+  }
 
   }
   let subTotalCost = 0;
@@ -540,8 +714,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   } = state;
   
   return (
-    
+   
   <div className="m-sm-30">
+    <Card elevation={6}>
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
@@ -642,13 +817,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <div>
            
             
-            <div className="text-right">
-            <h5 className="font-normal">
-                <strong>Quote Date: </strong>
-                <span>
-                  {rdate}
-                  </span>
-              </h5>
+            <div className="text-right pt-4">
+            
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
                       className="ml-2"
@@ -678,6 +848,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
+              <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
@@ -720,6 +891,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     {index + 1}
                     
                   </TableCell>
+                  <TableCell className="px-0" style={{width:'50px'}}>
+                   
+       {item.file?(<span><Icon color="error" onClick={(event) => deletequotefile(item.id)}>close</Icon><img className="w-48" src={item.file} alt="" ></img></span>):!item.src ?(<Icon
+  variant="contained"
+  component="label"
+  onChange={(event) => handleFileSelect(event,index)}
+>
+file_upload
+  <input
+    type="file"
+    hidden
+  />
+</Icon>)
+            
+:(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
+                  </TableCell>
+                  
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
                       label="Item"
@@ -728,6 +916,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="product_id"
                       fullWidth
                       variant="outlined"
+                      inputProps={{style: {textTransform: 'capitalize'}}}
                       
                       size="small"
                       value={item.product_id?item.product_id:""}
@@ -736,6 +925,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     //   errorMessages={["this field is required"]}
                     select
                     >
+                       <MenuItem value="false">
+                         <Icon>add</Icon>Add New
+                          </MenuItem>
                          {proList.map((item) => (
                           <MenuItem value={item.id} key={item.id}>
                            {item.name}
@@ -753,6 +945,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="description"
                       fullWidth
                       variant="outlined"
+                      inputProps={{style: {textTransform: 'capitalize'}}}
                       
                       size="small"
                       value={item? item.description: null}
@@ -782,13 +975,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       fullWidth
-            
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       name="quantity"
                       value={item.quantity}
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                  <TextValidator
+                  {/* <TextField
                       label="Unit Price"
                       variant="outlined"
                       // onChange={(event) => calcualtep(event,index)}
@@ -798,8 +991,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       
                       fullWidth
-                      value={item.purchase_price?item.purchase_price:""}
+                      value={item.purchase_price}
                       select
+                      required
                       
                       
                     >
@@ -810,7 +1004,31 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                           {item.price}-{item.firm_name}  
                         </MenuItem>
                       ))} 
-                    </TextValidator>
+                    </TextField> */}
+                    <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
+        <Select
+          native
+         
+          // onChange={handleChange}
+          value={item.purchase_price}
+          onChange={(event) => calcualtep(event, index)}
+          label="Price"
+          inputProps={{
+            name: 'purchase_price',
+            id: 'outlined-age-native-simple',
+          }}
+          style={{width:90,height:40}}
+        >
+          <option   />
+          {item.product_price_list.map((item, id) => (
+          <optgroup label={item.firm_name}>
+            <option value={item.price}>{item.price}</option>
+          </optgroup>
+          ))}
+          
+        </Select>
+        </FormControl>
                     
                   </TableCell> 
 
@@ -828,6 +1046,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.margin}
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
               
@@ -851,6 +1070,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       size="small"
                       
                       name="sell_price"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                       value={item.sell_price}
       
@@ -868,6 +1088,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="total_amount"
                      
                       value={item.total_amount}
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                     />
                   </TableCell>
@@ -1020,6 +1241,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 style={{width:'90px'}}
                 onChange={(event) => handleChange(event, "discount")}
                 value={discount}
+                inputProps={{min: 0, style: { textAlign: 'center' }}}
                 // style={{width:50}}
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
@@ -1034,6 +1256,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 size="small"
                 name="dis_per"
                 style={{width:'90px'}}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={(event) => handleChange(event, "discount")}
                 value={discount?dis_per:0.00}
                 // validators={["required"]}
@@ -1050,6 +1273,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 size="small"
                 name="vat"
                 value={subTotalCost?vat:0}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1062,6 +1286,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 size="small"
                 name="net_amount"
                 value={subTotalCost?GTotal:0.00}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1095,7 +1320,25 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             text="Are you sure to delete?"
           />
         )}
+        {shouldOpenEditorDialogproduct && (
+          <MemberEditorDialog_product
+            handleClose={handleDialogClose}
+            open={shouldOpenEditorDialogproduct}
+            
+            
+          />
+        )}
+        {shouldOpenConfirmationDialogproduct && (
+          <ConfirmationDialog
+            open={shouldOpenConfirmationDialogproduct}
+            onConfirmDialogClose={handleDialogClose}
+            
+            text="Are you sure to delete?"
+          />
+        )}
+          </Card>
     </div>
+  
   );
 };
 

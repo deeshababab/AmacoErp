@@ -198,6 +198,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [rdate, setrdate] = useState([]);
   const [ddate, setddate] = useState([]);
   const [cname, setcname] = useState([]);
+  const [cname_ar, setcname_ar] = useState([]);
   const [company, setcompany] = useState("");
   const [city, setcity] = useState("");
   const [street, setstreet] = useState("");
@@ -302,6 +303,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         setdis_per(data[0].discount_in_percentage)
         setpodetails(data[0].invoice_detail)
         setcompany(data[0].quotation.party.firm_name)
+        setcname_ar(data[0].quotation.party.firm_name_in_ar)
         setcity(data[0].quotation.party.city)
         setstreet(data[0].quotation.party.street)
         setzipcode(data[0].quotation.party.zip_code)
@@ -441,6 +443,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 
   const deleteinvoice = () => {
+    handleClose()
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this Invoice!',
@@ -802,7 +805,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 اسم الشركة وعنوانها
 
               </span><br></br>
-              <span>{company}</span><br></br>
+              <span>{cname_ar}</span><br></br>
               <span>{street}-{city}, {zipcode}</span>
           
 
@@ -878,7 +881,16 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
 
                       <TableCell className="pl-2 capitalize" align="left" colspan={3} style={{ border: "1px solid #ccc",wordBreak:"break-word", fontFamily: "Calibri",fontSize: 16}}>
-                        {item.product.description}
+                     <div>
+  <span style={{textAlign:"left"}}>
+  {item.product.description}
+    <span style={{float:"right"}}>
+    {item.product.name_in_ar?item.product.name_in_ar:''}
+    </span>
+</span>
+
+                        
+                        </div>
 
                       </TableCell>
 
@@ -942,7 +954,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}} >
                     االمجموع الفرعي        
                     <br></br>
                  SUB TOTAL
@@ -970,7 +982,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   </TableCell>
                 </TableRow> */}
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} >
+                  <TableCell className="pr-0 pl-1 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} >
                     القيمة الضريبية
                   <br></br>
                   TOTAL VAT AMOUNT (15%)
@@ -996,7 +1008,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word" }} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word" }} >
                   المجموع الكلي <br></br>
                   GRAND TOTAL
                   </TableCell>

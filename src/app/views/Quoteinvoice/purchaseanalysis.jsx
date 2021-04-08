@@ -7,6 +7,7 @@ import {
   Divider,
   // RadioGroup,
   // Grid,
+  Card,
   MenuItem,
   Table,
   TableHead,
@@ -45,7 +46,9 @@ import url from "../invoice/InvoiceService";
 import Swal from "sweetalert2";
 import { ConfirmationDialog } from "matx";
 // import FormDialog from "./Addmargin";
-import MemberEditorDialog from "./Addmargin";
+// import MemberEditorDialog from "./Addmargin";
+import FormDialog from "../product/productprice";
+import MemberEditorDialog from "../product/productprice";
 import moment from "moment";
 // import { sortedLastIndex } from "lodash";
 
@@ -370,8 +373,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           type: 'success',
           icon:'success',
           text: 'Data saved successfully.',
-        });
+        })
+        .then((result) => {
+
         history.push("../Newinvoiceview")
+      })
       
       })
       .catch(function (error) {
@@ -443,6 +449,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
   <div className="m-sm-30">
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
+    <Card elevation={3}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
@@ -543,12 +550,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24"  align="left">S.No.</TableCell>
-              <TableCell className="px-0" >Rfq description</TableCell>
-              <TableCell className="px-0" >Our Description</TableCell>
+              <TableCell className="pl-2" style={{width:50}} align="left">S.No.</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'200px'}}>Pprice</TableCell>
-              <TableCell className="px-0"style={{width:'200px'}}>Total</TableCell>
+              <TableCell className="px-0" style={{width:'200px'}}>Price</TableCell>
+              <TableCell className="px-0"style={{width:'150px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
                <TableCell className="px-0">Action</TableCell> 
             </TableRow>
@@ -579,14 +586,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 <TableRow key={index}>
                   
                  
-                  <TableCell className="pl-sm-24 capitalize" align="left" style={{width:50}}>
+                  <TableCell className="pl-2 capitalize" align="left" style={{width:50}}>
                     {index + 1}
                     
                   </TableCell>
                  
                   
 
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -601,7 +608,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="Our description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -623,7 +630,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       fullWidth
-            
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       name="quantity"
                       value={item.quantity? item.quantity:""}
                       validators={["required"]}
@@ -637,6 +644,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       name="purchase_price"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       size="small"
                       
                       fullWidth
@@ -645,7 +653,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       
                     >
+                     
                        {item.product[0].product_price.map((item) => (
+                          
                           <MenuItem value={item.price} key={item.id}>
                             {item.price}-{item.party.firm_name} 
                           </MenuItem>
@@ -666,7 +676,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       type="text"
                       variant="outlined"
                       size="small"
-                     
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       name="total_amount"
                      
                       value={item.total_amount ? item.total_amount: ""}
@@ -682,7 +692,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       name="remark"
-                      style={{width:'75%',float:'left'}}
+                      style={{width:'100%',float:'left'}}
                       fullWidth
                       value={item.remark?item.remark:null }
                       
@@ -803,7 +813,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
+              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
               {/* <div>
               <TextField
                 className="mb-4 mr-2"
@@ -843,6 +853,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 variant="outlined"
                 size="small"
                 name="vat"
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 value={subTotalCost?vat:0}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
@@ -855,6 +866,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 variant="outlined"
                 size="small"
                 name="net_amount"
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 value={subTotalCost?GTotal:0.00}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
@@ -866,6 +878,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </div>
         </div>
       </ValidatorForm>
+      </Card>
       </div>
       
       {shouldOpenEditorDialog && (

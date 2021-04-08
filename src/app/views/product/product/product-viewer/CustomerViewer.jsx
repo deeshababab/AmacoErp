@@ -6,12 +6,16 @@ import CustomerInvoice from "./CustomerInvoice";
 import CustomerLogs from "./CustomerLogs";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
+
 // import MemberEditorDialog from "../../partycontact"
 // import FormDialog from "../../partycontact"
 
 const CustomerViewer = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+  const foo =parseInt(params.get('id'))
   
   const [
     shouldOpenConfirmationDialog,
@@ -38,8 +42,9 @@ const CustomerViewer = () => {
       <div className="mb-sm-30">
         <Breadcrumb
           routeSegments={[
-            { name: "", path: "/party/viewparty" },
-            // { name: "Product Details" },
+            { name: "Product View", path: "/product/viewproduct/2" },
+            { name: "Category", path: "/product/viewsubcategory" },
+            { name: "Product Details" },
           ]}
         />
       </div>

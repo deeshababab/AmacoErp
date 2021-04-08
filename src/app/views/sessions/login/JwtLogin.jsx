@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import {
   Card,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Button,
   CircularProgress,

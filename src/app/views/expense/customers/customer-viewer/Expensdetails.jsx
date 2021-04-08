@@ -20,6 +20,10 @@ import {
 } from "@material-ui/core";
 
 import url from "../../../invoice/InvoiceService"
+import pdf from "../../pdf.png";
+import excel from "../../excel.png";
+import doc from "../../doc.jpg";
+import zip from "../../zipp.png";
 
 
 const CustomerInfo = () => {
@@ -31,7 +35,41 @@ const CustomerInfo = () => {
   const [files, setfiles] = useState([]);
   const [accountname, setaccountname] = useState('');
   const [img, setimg] = useState('');
+  const [ref_img, setref_img] = useState('');
   const [columndata, setcolumndata] = useState([]);
+  const filetype=(type,file_value)=>{
+    console.log(type)
+    if(type==="jpg")
+    {
+      return file_value;
+    }
+    else if(type==="png")
+    {
+      return file_value;
+    }
+    else if(type==="jpeg")
+    {
+      return file_value;
+    }
+    else if(type==="pdf")
+    {
+      return pdf;
+    }
+    else if(type==="docx")
+    {
+      return doc;
+    }
+    else if(type==="exe")
+    {
+      return excel;
+    }
+    else if(type==="zip")
+    {
+      return zip;
+    }
+
+
+  }
   useEffect(() => {
 
    
@@ -41,6 +79,8 @@ const CustomerInfo = () => {
          setaccountname(data[0].payment_account[0].name)
          setcolumndata(data[0].column_data)
          setimg(data.img)
+         setref_img(data.referrenceImgUrl)
+         
       });
 
   }, []);
@@ -82,10 +122,7 @@ const CustomerInfo = () => {
             <TableCell className="pl-4">Payment Account</TableCell>
             <TableCell>{accountname}</TableCell>
           </TableRow>
-              <TableRow>
-              <TableCell className="pl-4">Reference Bill Number</TableCell>
-              <TableCell>{ExpenseList.referrence_bill_no}</TableCell>
-            </TableRow>
+             
             
            
             <TableRow>
@@ -94,7 +131,7 @@ const CustomerInfo = () => {
             </TableRow>
             <TableRow>
               <TableCell className="pl-4">Tax Amount</TableCell>
-              <TableCell>{parseFloat(ExpenseList.tax).toLocaleString(undefined, {minimumFractionDigits:2})}
+              <TableCell>{ExpenseList.tax!==null?parseFloat(ExpenseList.tax).toLocaleString(undefined, {minimumFractionDigits:2}):'0.00'}
          </TableCell>
             </TableRow>
             <TableRow>
@@ -106,11 +143,21 @@ const CustomerInfo = () => {
               <TableCell>{ExpenseList.paid_to}</TableCell>
             </TableRow>
             {columndata.map((item, index) => {
-              console.log(item.column)
+              console.log(item.column.type)
               return (
               <TableRow>
               <TableCell className="pl-4">{item.column.name}</TableCell>
-              <TableCell>{item.value}</TableCell>
+              {item.column.type==="file"?<TableCell >
+              <Tooltip title="View">
+                <a href={item.file}>
+              <img src={filetype(item.file.split('.')[3],item.file,index)} width="100px" height="100px"></img>
+               
+                </a></Tooltip></TableCell>:<TableCell>{item.value}
+                </TableCell>}
+                
+                
+               
+              
             </TableRow>
             )
               }
@@ -130,29 +177,51 @@ const CustomerInfo = () => {
             <TableCell className="pl-4">Amount</TableCell>
             <TableCell>{parseFloat(ExpenseList.amount).toLocaleString(undefined, {minimumFractionDigits:2})}
          </TableCell>
+         
+          
           </TableRow>
-          {ExpenseList.bank_ref_no!==null &&(<TableRow>
-            <TableCell className="pl-4">Bank Reference Number</TableCell>
-            <TableCell>{ExpenseList.bank_ref_no}</TableCell>
+          <TableRow>
+              <TableCell className="pl-4">Reference Bill Number</TableCell>
+              <TableCell>{ExpenseList.referrence_bill_no}</TableCell>
           </TableRow>
-          )}
-          {ExpenseList.bank_slip!=="No file uploaded"&&(<TableRow>
-          <TableCell className="pl-4">Bank Slip</TableCell>
+          
+          {ref_img==="No file Uploaded"?'':(<TableRow>
+          <TableCell className="pl-4">Reference Bill</TableCell>
             <TableCell >
             
            
             
-            {/* {files.map((item, index) => ( */}
-              {/* <Card
-                elevation={6}
-                className={clsx({
-                  "flex-column justify-left items-center pr-4 cursor-pointer": true,
-                })}
-              > */}
-               
+           
 
                 {/* <h5 className="m-0">{item.file_name}</h5> */}
                 <Tooltip title="View">
+                <a href={ref_img}>{(<img src={filetype(ref_img.split('.')[3],ref_img)} href={ref_img} className="border-radius-4 w-100 mr-3"  style={{width:100,height:100}} target="_blank">
+                
+                </img>)}
+               
+                
+               
+                </a>
+                </Tooltip>
+              {/* </Card> */}
+            {/* ))} */}
+                   
+
+            </TableCell>
+        
+          </TableRow>
+              )}
+          {ExpenseList.bank_ref_no!==null &&(<TableRow>
+            <TableCell className="pl-4">Bank Reference Number</TableCell>
+            <TableCell>{ExpenseList.bank_ref_no}</TableCell>
+            
+          </TableRow>
+          )}
+          {ExpenseList.bank_slip!==null&&(<TableRow>
+          <TableCell className="pl-4">Bank Slip</TableCell>
+            <TableCell >
+            
+                          <Tooltip title="View">
                 <a href={img}><img src={img} href={img} className="border-radius-4 w-100 mr-3"  style={{width:100,height:100}} target="_blank">
                  
                 </img></a>

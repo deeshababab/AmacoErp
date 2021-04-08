@@ -33,7 +33,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "580px",
+    width: "520px",
     wordBreak: "break-all",
     
   }
@@ -43,7 +43,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "140px",
+    width: "200px",
     wordBreak: "break-word",
     
   }

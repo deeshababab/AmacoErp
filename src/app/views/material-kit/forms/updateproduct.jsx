@@ -29,7 +29,7 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
 import { useParams, matchPath } from "react-router-dom";
 import { database } from "firebase/app";
-import url from "../../invoice/InvoiceService"
+import url,{capitalize_arr} from "../../invoice/InvoiceService"
 
 
 
@@ -169,6 +169,7 @@ const SimpleForm = () => {
   const [mq, setmq] = useState('');
   const [modelno, setmodelno] = useState('');
   const [manid, setmanid] = useState('');
+  const [name_in_ar, setname_in_ar] = useState('');
   const [firm, setfirm] = useState([]);
   const [manuarr, setmanuarr] = useState([]);
 
@@ -233,6 +234,7 @@ const SimpleForm = () => {
       if (isAlive) setUserList(data);
 
       setdescription(data.product[0].description)
+      setname_in_ar(data.product[0].name_in_ar)
       setunit_of_measure(data.product[0].unit_of_measure)
       setunit_Price(data.product[0].unit_price)
       setcategoryid(data.product[0].category_id)
@@ -274,8 +276,8 @@ const SimpleForm = () => {
 
   const submitValue = () => {
     const frmdetails = {
-      name: product,
-      description: description,
+      name: product?capitalize_arr(product):'',
+      description: description?capitalize_arr(description):'',
       // unit_price: unit_Price,
       unit_of_measure: unit_of_measure,
       division_id: selectedValue,
@@ -286,7 +288,8 @@ const SimpleForm = () => {
       category_id: selectedOption1,
       // party_id: vendors,
       model_no:modelno,
-      manufacturer_id:manid
+      manufacturer_id:manid,
+      name_in_ar:name_in_ar
 
     }
 
@@ -299,8 +302,10 @@ const SimpleForm = () => {
           type: 'success',
           icon:'success',
           text: 'Data saved successfully.',
-        });
+        })
+        .then((result) => {
         history.push(`/product/Viewproduct/${selectedOption1}`)
+        })
       })
       .catch(function (error) {
 
@@ -373,6 +378,23 @@ const SimpleForm = () => {
               onChange={e => setproduct(e.target.value)}
               type="text"
               name="product"
+              inputProps={{style: {textTransform: 'capitalize'}}}
+
+            />
+            <TextValidator
+              className="mb-4 w-full"
+              label="اسم المنتج"
+              variant="outlined"
+              size="small"
+              
+              value={name_in_ar}
+              onChange={e => setname_in_ar(e.target.value)}
+              type="text"
+              name="product"
+              validators={[
+                "required",
+              ]}
+              errorMessages={["this field is required"]}
 
             />
             <TextValidator
@@ -384,6 +406,7 @@ const SimpleForm = () => {
               onChange={e => setdescription(e.target.value)}
               name="description"
               variant="outlined"
+              inputProps={{style: {textTransform: 'capitalize'}}}
             // validators={["required"]}
             // errorMessages={["this field is required"]}
             />

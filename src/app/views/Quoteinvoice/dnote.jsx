@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Grid,
   MenuItem,
+  Card,
   Table,
   TableHead,
   TableRow,
@@ -243,7 +244,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     const json = Object.assign({}, arr);
     
-    
+    console.log(arr)
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -252,7 +253,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     };
     url.post('delivery-notes',json)
       .then(function (response) {
-        
+        console.log(response)
         
         Swal.fire({
           title: 'Success',
@@ -342,6 +343,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   return (
     <div className="m-sm-30">
+    <Card elevation={3}>
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
       
@@ -368,7 +370,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="primary"
               disabled={loading}
             >
-              <Icon>save</Icon> Save & Print Invoice
+              <Icon>save</Icon> Save 
             </Button>
           </div>
         </div>
@@ -477,7 +479,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'500px'}}>Rfq description</TableCell> 
+              <TableCell className="px-0" style={{width:'400px'}}>Rfq description</TableCell> 
               <TableCell className="px-0" style={{width:70}}>UOM</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Delivered Qty</TableCell>
@@ -625,11 +627,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       value={item? item.delivering_quantity: item.delivering_quantity}
-                      validators={[
-                        "required",
-                        
-                      ]}
-                      errorMessages={["this field is required"]}
+                      
                     />
                   </TableCell>
 
@@ -686,6 +684,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </div>
       </ValidatorForm>
     </div>
+    </Card>
     </div>
   );
 };

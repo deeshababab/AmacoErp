@@ -297,6 +297,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     //   });
   }, []);
   const deleteRfq = ()=>{
+    handleClose()
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this RFQ!',
@@ -784,10 +785,18 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   "flex-column justify-center items-center py-6 px-8 m-2 cursor-pointer": true,
                 })}
               >
-                <Icon
+                {item.file_name.split(".")[1]==='jpg'&&(<Icon
                 >
                   photo_library
-              </Icon>
+              </Icon>)}
+              {item.file_name.split(".")[1]==='png'&&(<Icon
+                >
+                  photo_library
+              </Icon>)}
+              {item.file_name.split(".")[1]==='pdf'&&(<Icon
+                >
+                 picture_as_pdf
+              </Icon>)}
                   
                
                 <a href={item.img_url} target="_blank">{item.file_name.split("/")[2]}</a>

@@ -62,10 +62,19 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
     return () => setIsAlive(true);
   };
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
 
+const capitalize_arr =(value) =>{
+  let wordsArray = value.split(' ')
+    let capsArray = []
 
+    wordsArray.forEach(word => {
+        capsArray.push(word[0].toUpperCase() + word.slice(1))
+    });
+
+    return capsArray.join(' ')
+}
   const handleFormSubmit = () => {
     var arr=[]
      getcategories().then(({ data }) => {
@@ -93,8 +102,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
         console.log(data.indexOf(cname))
         const frmdetails = {
 
-          name: cname,
-          description: cdescription,
+          name: capitalize_arr(cname),
+          description:capitalize_arr(cdescription),
           parent_id:catid
     
     
@@ -108,13 +117,16 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
               type: 'success',
               icon:'success',
               text: 'Data saved successfully.',
-            });
+            })
+            .then((result) => {
             
           
            getcategories().then(({ data }) => {
             catList(data)
     
             });
+            
+            })
             handleClose()
             // history.push('/product/viewsubcategory');
           })
@@ -284,12 +296,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
               <TextValidator
                 className="w-full mb-4"
                 label="Name"
-                
+                autoComplete="off"
                 variant="outlined"
                 onChange={e => setcname(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 name="cname"
                 value={cname}
                 validators={["required"]}
@@ -314,6 +327,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
               <TextValidator
                 className="w-full mb-4"
                 label="Description"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 onChange={e => setcdescription(e.target.value)
                 }
                 variant="outlined"
@@ -339,7 +353,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
             </Button>
             
             <Button
-            
+              className="ml-4"
               variant="outlined"
               color="primary"
               onClick={() => getrow()}

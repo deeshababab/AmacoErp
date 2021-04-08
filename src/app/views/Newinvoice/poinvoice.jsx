@@ -243,12 +243,12 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     // updateSidebarMode({ mode: "close" })
     document.title="Purchase Order - Amaco"
     url.get("purchase-quotation/"+id).then(({ data }) => {
-     console.log(moment(data[0].updated_at).format('DD MMM YYYY'))
+    //  console.log(data[0].rfq.id)
     // setcname(data[0].party.fname)
       setpo_number(data[0].po_number)
 
       setqid(data[0].id)
-      setrno(data[0].rfq_id)
+      setrno(data[0].rfq.id)
       setrdate(moment(data[0].updated_at).format('DD MMM YYYY'))
       setcompany(data[0].party.firm_name)
       setcity(data[0].party.city)

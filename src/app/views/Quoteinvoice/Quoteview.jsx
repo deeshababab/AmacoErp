@@ -209,6 +209,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
   const [contactperson, setcontactperson] = useState('');
   const [contactpersonemail, setcontactpersonemail] = useState('');
   const [contactpersoncontact, setcontactpersoncontact] = useState('');
+  const [is_revised, setis_revised] = useState('');
   const [designation, setdesignation] = useState('')
   const [vendor_id,setvendor_id]=useState('')
   const { id,s } = useParams();
@@ -304,6 +305,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
       setvalidity(data[0].validity)
       setwarranty(data[0].warranty)
       setinco_terms(data[0].inco_terms)
+      setis_revised(data[0].is_revised)
       setpayment_terms(data[0].payment_terms)
       setdelivery_time(data[0].delivery_time)
       if(data[0].contact!==null)
@@ -369,6 +371,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
 
   }
   const deletequote = ()=>{
+    handleClose()
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this Quotation!',
@@ -422,6 +425,11 @@ const editqoute = () => {
 
   // window.location.href = `/Quoteedit/${id}`
   history.push(`/Quoteedit/${id}`)
+}
+const reviseqoute = () => {
+
+  // window.location.href = `/Quoteedit/${id}`
+  history.push(`/revisequote/${id}`)
 }
 
 function PrintMe(DivID) {
@@ -584,6 +592,9 @@ function PrintMe(DivID) {
                       <MenuItem  onClick={() => editqoute()}>
                       Edit Quotaion
                       </MenuItem>
+                      {!is_revised &&<MenuItem  onClick={() => reviseqoute()}>
+                      Revise Quotaion
+                      </MenuItem>}
                     
           </Menu>
           {s==="accept"&&
@@ -606,16 +617,16 @@ function PrintMe(DivID) {
             Generate Delivery Note
           </Button>
           }
-          {/* {s==="new"&&
-           <Button
+          {s==="new"&&
+          <Button
             className="mr-4 py-2"
+            style={{border:'1px solid #ff3d57',color:'#ff3d57'}}
             variant="outlined"
-            onClick={() => statuschange('accept')}
-            style={{border:'1px solid #119144',color:'#119144'}}
+            onClick={() => statuschange('reject')}
           >
-            <Icon>check_circle</Icon> Accepted
+            <Icon>cancel</Icon> Rejected
           </Button>
-          } */}
+          }
           
         {shouldOpenAddList ? (
           <ClickAwayListener onClickAway={() => handleAddListToggle(false)}>
@@ -654,10 +665,22 @@ function PrintMe(DivID) {
                     // setColumnTitle("");
                   statuschange('accept')
                   }}
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                 >
-                  Add
+                 <Icon>add</Icon> Add
+                </Button>
+                <Button
+                  onClick={() => {
+                    // handleAddList(columnTitle);
+                    // setColumnTitle("");
+                  statuschange('accept')
+                  }}
+                  variant="outlined"
+                  color="secondary"
+                  className="ml-2"
+                >
+                  <Icon>cancel</Icon>Skip
                 </Button>
                 {message&&
                 <h6 color="error">P.O. Number already exits</h6>
@@ -670,7 +693,7 @@ function PrintMe(DivID) {
           <span>
             
          {s==="new" &&
-          <Button
+          !is_revised &&<Button
           className="mr-4 py-2"
           variant="outlined"
           onClick={() => handleAddListToggle(true)}
@@ -685,16 +708,7 @@ function PrintMe(DivID) {
         
       
 
-          {s==="new"&&
-          <Button
-            className="mr-4 py-2"
-            style={{border:'1px solid #ff3d57',color:'#ff3d57'}}
-            variant="outlined"
-            onClick={() => statuschange('reject')}
-          >
-            <Icon>cancel</Icon> Rejected
-          </Button>
-          }
+          
           {/*<Button
             onClick={handlePrint}
             className="py-2"
@@ -913,10 +927,10 @@ function PrintMe(DivID) {
             </div>
             <div className="mr-1 " align="left">
               <span style={{fontWeight:1000}}>
-             RFQ Number
+             {/* RFQ Number */}
               </span>
                
-              {rfq}
+              {/* {rfq} */}
             </div>
             </div>
             <div>
@@ -972,7 +986,7 @@ function PrintMe(DivID) {
                    
                     <TableCell className="pr-0 capitalize" align="center"  style={{border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16}} colspan={2}>
                    
-                    <img className="w-48" src={item.file} alt="" />
+                    {item.file?<img className="w-48" src={item.file} alt="" />:''}
                       
                     </TableCell>
                     <TableCell className="pl-2 capitalize" align="left" colspan={5}  style={{border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16}}>
@@ -1040,7 +1054,7 @@ function PrintMe(DivID) {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
                    
                     SUB TOTAL 
 
@@ -1058,14 +1072,14 @@ function PrintMe(DivID) {
                 </TableRow>
                 
                 <TableRow style={{ border: "1px solid #ccc",pageBreakInside:'avoid' }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
                   
                  TOTAL VAT AMOUNT (15%)
                   </TableCell>
                   {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
                   </TableCell> */}
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
                   {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
                   </TableCell>
                 </TableRow>
@@ -1082,7 +1096,7 @@ function PrintMe(DivID) {
                     </div>
                   </TableCell>
                   
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:'break-word' }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:'break-word' }} colspan={2}>
                   
                  
                    GRAND TOTAL

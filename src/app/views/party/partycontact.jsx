@@ -72,14 +72,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     {
       const frmdetails = {
         party_id:foo,
-        fname: fname,
-        lname: lname,
-        designation:designation,
+        fname: fname.charAt(0). toUpperCase() + fname. slice(1),
+        lname: lname.charAt(0). toUpperCase() + lname. slice(1),
+        designation:designation.charAt(0). toUpperCase() + designation. slice(1),
         mobno:contact1,
         landline:contact2,
         email:email,
-        address:address,
-        prefix:prefix
+        address:address.charAt(0). toUpperCase() + address. slice(1),
+        prefix:prefix.charAt(0). toUpperCase() + prefix. slice(1)
   
   
       }
@@ -97,9 +97,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
           Swal.fire({
             title: 'Success',
             type: 'success',
-            icon:'sucess',
+            icon:'success',
             text: 'Data saved successfully.',
-          });
+          })
+          .then((result) => {
+            
+          })
           
         })
         .catch(function (error) {
@@ -112,29 +115,35 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     else
     {
     const frmdetails = {
-      party_id:foo,
-      fname: fname,
-      lname: lname,
-      designation:designation,
-      mobno:contact1,
-      landline:contact2,
-      email:email,
-      address:address
+        party_id:foo,
+        fname: fname.charAt(0). toUpperCase() + fname. slice(1),
+        lname: lname.charAt(0). toUpperCase() + lname. slice(1),
+        designation:designation.charAt(0). toUpperCase() + designation. slice(1),
+        mobno:contact1,
+        landline:contact2,
+        email:email,
+        address:address.charAt(0). toUpperCase() + address. slice(1),
+        prefix:prefix.charAt(0). toUpperCase() + prefix. slice(1)
+
 
     }
     // setcdescription('')
     // setcname('')
-    Swal.fire({
-      title: 'Success',
-      icon:'success',
-      type: 'success',
-      text: 'Data saved successfully.',
-    });
+    
     console.log(frmdetails)
     url.post('contact', frmdetails)
       .then(function (response) {
         url.get("parties/" + foo).then(({ data }) => {
           customercontact(data[0].contacts);
+          Swal.fire({
+            title: 'Success',
+            icon:'success',
+            type: 'success',
+            text: 'Data saved successfully.',
+          })
+          .then((result) => {
+
+          })
           
         });
         resetform();
@@ -185,7 +194,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   }
 
   useEffect(() => {
-
+    
     if(contactid)
     {
       
@@ -258,7 +267,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     <Dialog onClose={handleClose} open={open}  style={{zIndex:1000}} maxWidth={maxWidth} fullWidth={fullWidth}>
       <div className="p-6">
         <h4 className="mb-5">Contact Details</h4>
-        <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
+        <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off" inputProps={{style: {textTransform: 'capitalize'}}}>
         <div className="flex">
           <TextField
             className="mr-2"
@@ -281,6 +290,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
               <TextValidator
                 className="w-full mb-4"
                 label="First Name"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 size="small"
                 variant="outlined"
                 value={fname}
@@ -298,6 +308,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
               <TextValidator
                 className="w-full mb-4"
                 label="Last Name"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 size="small"
                 variant="outlined"
                 onChange={e => setlname(e.target.value)
@@ -326,6 +337,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
               <TextValidator
                 className="w-full mb-4"
                 label="Designation"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 size="small"
                 variant="outlined"
                 onChange={e => setdesignation(e.target.value)
@@ -368,6 +380,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
               <TextValidator
                 className="w-full mb-4"
                 label="Address"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 size="small"
                 variant="outlined"
                 onChange={e => setaddress(e.target.value)

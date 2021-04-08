@@ -64,7 +64,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
     return () => setIsAlive(true);
   };
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
 
 
@@ -90,13 +90,17 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
               type: 'success',
               icon:'success',
               text: 'Data saved successfully.',
-            });
+            })
+            .then((result) => {
+          
             url.get("products/" + catid).then(({ data }) => {
               productprice(data.prices);
-              handleClose()
+             
               
              
             });
+          })
+          handleClose()
             
           setcname('');
           setcprice('')

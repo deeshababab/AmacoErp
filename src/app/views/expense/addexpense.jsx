@@ -390,6 +390,7 @@ const SimpleForm = ({ open, handleClose }) => {
                         <TextValidator
                             className="mb-4 w-full"
                             label="Paid To"
+                            autoComplete="off"
                             value={description}
                             onChange={e => setdescription(e.target.value)}
                             type="textarea"

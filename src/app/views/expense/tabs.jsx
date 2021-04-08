@@ -33,7 +33,9 @@ const TabViewer = () => {
     setShouldOpenConfirmationDialog1,
   ] = useState(false);
   const handleDialogClose1 = () => {
+  
     setShouldOpenEditorDialog1(false);
+    // setTabIndex(0)
     url.get('advance-payments').then(({ data }) => {
       setdata1(data)
 
@@ -62,9 +64,15 @@ const TabViewer = () => {
 
   };
   useEffect(() => {
-    setTabIndex(0)
+    
+      
+      // tabIndex?setTabIndex(1):setTabIndex(0) 
+     setTabIndex(0)
+    
+    
     // return <SimpleMuiTable data1={data1}/>
   },[])
+  
 
   const handleDeleteUser = (user) => {
 
@@ -160,7 +168,7 @@ const TabViewer = () => {
       <Divider className="mb-6" />
 
       {tabIndex === 0 && <SimpleMuiTable data1={data1}/>}
-      {tabIndex === 1 && <Paymentview />}
+      {tabIndex === 1 && <Paymentview data1={data1} />}
       {/* {tabIndex === 1 && <CustomerLogs />} */}
     </div>
   );

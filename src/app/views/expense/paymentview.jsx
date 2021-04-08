@@ -41,7 +41,7 @@ const columnStyleWithWidth1 = {
 }
 
 
-const PaymentTable = () => {
+const PaymentTable = ({data1}) => {
   const [userList, setuserList] = useState([]); 
 useEffect(() => {
     
@@ -50,7 +50,7 @@ useEffect(() => {
       
 
   })
-},[])
+},[data1])
 const removeData = (id) => {
   // alert(id)
   // let url = `https://jsonplaceholder.typicode.com/users/${id}`

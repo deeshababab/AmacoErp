@@ -146,7 +146,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <p style={{marginLeft:18}}>S.No.</p> 
+            <span style={{marginLeft:18}}>S.No.</span> 
           </TableCell>
         )
      }
@@ -309,11 +309,14 @@ const columns = [
             ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),
 
-            item.payment_account[0].name,
+             item.payment_account[0].name,
+            
+            // item.referrence_bill_no,
             item.referrence_bill_no,
+
             item.paid_to,
             parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),
-            parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}),
+            item.tax!==null?parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}):('0.00'),
             item.id
           ]
         

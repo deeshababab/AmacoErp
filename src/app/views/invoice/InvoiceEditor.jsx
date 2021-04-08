@@ -33,7 +33,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
 import axios from "axios";
-import url, { getProductList } from "../invoice/InvoiceService";
+import url, { getProductList,capitalize_arr } from "../invoice/InvoiceService";
 import Select from 'react-select';
 import dateFormat from 'dateformat';
 import moment from "moment";
@@ -60,6 +60,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [ProductList, setProductList] = useState([]);
   const [listrfq, setlistrfq] = useState([]);
   const [files, setfiles] = useState([]);
+  const [upload, setupload] = useState([]);
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
@@ -100,29 +101,40 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
 
 
+  
+  const handleSingleRemove = (index) => {
+    let tempList = [...upload];
+    tempList.splice(index, 1);
+    setupload([...tempList]);
+    // setrfqFiles([...tempList]);
+  };
   // File Select 
   const handleFileSelect = (event) => {
     let files = event.target.files;
     let filesd = event.target.files;
 
-    for (var a = 0; a < files.length; a++) {
-      formData.append(
-        "myFile" + a,
-        files[a],
-        files[a].name,
-      );
-    }
+    // for (var a = 0; a < files.length; a++) {
+    //   formData.append(
+    //     "myFile" + a,
+    //     files[a],
+    //     files[a].name,
+    //   );
+    // }
     for (const iterator of filesd) {
-
+    
       listrfq.push({
-        file: iterator,
-        uploading: false,
-        error: false,
-        progress: 0,
+        created_at: "2021-03-30T06:43:07.000000Z",
+        file_name: iterator.name,
+        id:null,
+        img_url: "http://www.amacoerp.com/amaco_test/public/rfq/30/Screenshot (9) - Copy.png",
+        // rfq_id: 30
+        file:iterator
+        // updated_at: "2021-03-30T06:43:07.000000Z"
       });
 
     }
-
+    // setfiles(listrfq)
+    setupload(listrfq)
   };
 
   const generateRandomId = useCallback(() => {
@@ -251,7 +263,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        axios.get(`http://www.amacoerp.com/amaco/php_file/controller/deleterfqfile.php?id=${id}`)
+        url.delete(`fileUpload/${id}`)
         // axios.get(`http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/deleterfqfile.php?id=${id}`)
           .then(res => {
 
@@ -261,7 +273,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               'File has been deleted.',
               'success'
             )
-
+              setIsAlive(true)
           })
           getrfq()
 
@@ -304,25 +316,41 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let arr = []
     setState({ ...state, loading: true });
     let tempState = { ...state };
-    console.log(tempState.item)
+    let tempItemList =[...state.item];
     delete tempState.loading;
-    arr.rfq = tempState.item
+    console.log(tempItemList)
+    arr.rfq_details = tempItemList
     arr.requested_date = rdate
     arr.require_date = ddate
     arr.rfqid = id
-
-
-    const json = Object.assign({}, arr);
+    
+    // const json = Object.assign({}, arr);
+    // console.log('json data'+json)
    
-    console.log(arr.rfq.length)
-    if(arr.rfq.length!==0)
-    {
-    formData.append('rfq', JSON.stringify(json))
-    axios.post('http://www.amacoerp.com/amaco/php_file/controller/rfqupdate.php', formData)
+   console.log(upload)
+    for (let a = 0; a < upload.length; a++) {
+      formData.append(
+        "myFile" + a,
+        upload[a].file,
+        upload[a].name,
+      );
+    }
 
-    // axios.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/rfqupdate.php', formData)
-    .then(({ data }) => {
-        
+     
+         
+    
+    
+    if(arr.rfq_details.length!==0)
+    {
+      
+    formData.append('rfq_details',JSON.stringify(tempItemList))
+    formData.append('requested_date',rdate)
+    formData.append('require_date',rdate)
+    formData.append('rfq_id',id)
+      // console.log(formData.get(`requested_date`))
+      url.post(`rfq-update`,formData)
+    .then((response) => {
+        console.log(response)
       Swal.fire({
         title: 'Success',
         type: 'success',
@@ -331,13 +359,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       })
       .then((result) => {
       
-          history.push(`/invoice/${id}`)
+        history.push(`/invoice/${id}`)
        
       })
         getrfq()
     })
       .catch(function (error) {
-        console.log(error)
+        // console.log(error)
       })
     }
     else
@@ -395,6 +423,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setcname(data[0].party[0].firm_name)
       setrdate(moment(data[0].requested_date).format("MMMM DD, YYYY"))
       setfiles(data[0].files)
+      console.log(data[0].files)
 
       setddate(moment(data[0].require_date).format("MMMM DD, YYYY"))
       // console.log(dateFormat(data[0].requested_date, "mmmm dS, yyyy"))
@@ -412,6 +441,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
       setProductList(data)
     })
+    return setIsAlive(false)
   }, [id, isNewInvoice, isAlive, generateRandomId]);
   const data = ProductList.map((guest, index) => {
     return {
@@ -549,13 +579,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
             <TableHead>
               <TableRow className="bg-default">
-                <TableCell className="pl-sm-24">#</TableCell>
-                <TableCell className="px-0">Item Name</TableCell>
+                <TableCell className="pl-2" width={50}>S.No.</TableCell>
+                <TableCell className="px-0" width={200}>Item Name</TableCell>
 
-                <TableCell className="px-0">Quantity</TableCell>
-                <TableCell className="px-0">description</TableCell>
+                <TableCell className="px-0" width={100}>Quantity</TableCell>
+                <TableCell className="px-0" width={700}>description</TableCell>
                 {/* <TableCell className="px-0">Cost</TableCell> */}
-                <TableCell className="px-0">Action</TableCell>
+                <TableCell className="p-0" align="center">Action</TableCell>
               </TableRow>
             </TableHead>
 
@@ -565,7 +595,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 const id = item.product[0].id
                 return (
                   <TableRow key={index}>
-                    <TableCell className="pl-sm-24 capitalize" align="left">
+                    <TableCell className="pl-2 capitalize" align="left" width={50}>
                       {index + 1}
                     </TableCell>
 
@@ -624,7 +654,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
 
-                    <TableCell className="pl-0 capitalize" align="left">
+                    <TableCell className="pl-0 capitalize" align="left" width={100}>
                       <TextValidator
                         label="Quantity"
                         type="text"
@@ -632,22 +662,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                         size="small"
                         name="quantity"
                         value={item.quantity}
+                        inputProps={{min: 0, style: { textAlign: 'center' }}}
                         onChange={(event) => handleIvoiceListChange(event, index)}
                         fullWidth
 
 
                       />
                     </TableCell>
-                    <TableCell className="pl-0 capitalize" align="left">
+                    <TableCell className="pl-0 capitalize" align="left" width={700}>
                       <TextValidator
                         label="Description"
-
+                        inputProps={{style: {textTransform: 'capitalize'}}}
                         type="text"
                         name="description"
                         fullWidth
                         variant="outlined"
                         size="small"
-                        value={item ? item.description : null}
+                        value={item.description?capitalize_arr(item.description) : null}
                         onChange={(event) => handleIvoiceListChange(event, index)}
 
                       />
@@ -657,7 +688,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     {item.unit * item.price}
                   </TableCell> */}
 
-                    <TableCell className="pl-0 capitalize" align="left">
+                    <TableCell className="pr-0 capitalize" align="center">
                       <Button onClick={() => deleteItemFromInvoiceList(index)}>
                         <Icon color="error" fontSize="small">
                           delete
@@ -678,14 +709,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         </ValidatorForm>
         <label htmlFor="upload-multiple-file">
           <Button
-            className="capitalize"
+            className="capitalize ml-2"
             color="primary"
             component="span"
             variant="contained"
             size="small"
           >
 
-            <Icon className="pr-8">cloud_upload</Icon>
+            <Icon className="pr-8 pl-2">cloud_upload</Icon>
             <span>Attach File</span>
 
           </Button>
@@ -708,6 +739,42 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 })}
               >
 
+            {item.file_name.split(".")[1]==='jpg'&&(<Icon
+                >
+                  photo_library
+              </Icon>)}
+              {item.file_name.split(".")[1]==='png'&&(<Icon
+                >
+                  photo_library
+              </Icon>)}
+              {item.file_name.split(".")[1]==='pdf'&&(<Icon
+                >
+                 picture_as_pdf
+              </Icon>)}
+              
+
+                {/* <h5 className="m-0">{item.file_name}</h5> */}
+
+
+                {item.rfq_id &&<a href={"http://www.amacoerp.com/amaco/php_file/images/" + id + "/" + item.file_name} target="_blank">{item.file_name.split("/")[2]}</a>}
+                {!item.rfq_id &&<a href={"http://www.amacoerp.com/amaco/php_file/images/" + id + "/" + item.file_name} target="_blank">{item.file_name}</a>}
+                
+                <IconButton onClick={() => deleterfqfile(item.id)}>
+                  <Tooltip title="Delete File">
+                    <Icon color="error">close</Icon>
+                  </Tooltip>
+                </IconButton>
+              </Card>
+            ))}
+            {upload.map((item, index) => (
+              
+              <Card
+                elevation={6}
+                className={clsx({
+                  "flex-column justify-center items-center  px-8 m-2 cursor-pointer": true,
+                })}
+              >
+
                 <Icon
                 >
                   photo_library
@@ -717,7 +784,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
                 <a href={"http://www.amacoerp.com/amaco/php_file/images/" + id + "/" + item.file_name} target="_blank">{item.file_name}</a>
-                <IconButton onClick={() => deleterfqfile(item.id)}>
+               
+                
+                <IconButton onClick={() => handleSingleRemove(item.id)}>
                   <Tooltip title="Delete File">
                     <Icon color="error">close</Icon>
                   </Tooltip>

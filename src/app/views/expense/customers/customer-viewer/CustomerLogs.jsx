@@ -120,7 +120,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <p style={{marginLeft:18}}>S.No.</p> 
+            <span style={{marginLeft:18}}>S.No.</span> 
           </TableCell>
         )
      }

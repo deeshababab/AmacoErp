@@ -177,7 +177,7 @@ const InvoiceForm = ({ }) => {
       
       listrfq.push({
         src: URL.createObjectURL(iterator),
-        
+        name:iterator.name
       });
  
 
@@ -257,7 +257,7 @@ const InvoiceForm = ({ }) => {
             file: iterator,
           });
           
-          
+        
           formData.append('rfq_details', JSON.stringify(values.rfq_details));
           
         }
@@ -293,7 +293,8 @@ const InvoiceForm = ({ }) => {
             type: 'success',
             icon: 'success',
             text: 'Data saved successfully.',
-          });
+          })
+          
           getrfq()
           // window.location.href = "/sales/rfq-form/rfqview"
           history.push("/sales/rfq-form/rfqview")
@@ -323,10 +324,7 @@ const InvoiceForm = ({ }) => {
       </div>
 
       <Card elevation={3}>
-        <div className="flex p-4">
-          <h4 className="m-0">New RFQ</h4>
-        </div>
-        <Divider className="mb-2" />
+        
 
         <Formik
           className=".bg-green"
@@ -347,7 +345,22 @@ const InvoiceForm = ({ }) => {
             resetForm,
             
           }) => (
+            <div>
+             
+        
             <form className="p-4" onSubmit={handleSubmit} encType="multipart/form-data">
+            <div className="flex justify-between">
+            <div className="flex p-4">
+          <h4 className="m-0">New RFQ</h4>
+        </div>
+        <div className="">
+                <Button color="primary" variant="outlined" type="submit" fullWidth>
+                  <Icon>save</Icon> Save
+                                </Button>
+
+          </div>
+        </div>
+        <Divider className="mb-2" />
               <Grid container spacing={3} alignItems="center">
                 {/* <Grid item md={2} sm={4} xs={12}>
                                     customer name
@@ -586,7 +599,7 @@ const InvoiceForm = ({ }) => {
  
                   <div className="flex flex-wrap justify-center items-center m--2">
                   {rfqFiles.map((item, index) => {
-                   console.log(item)
+                   console.log(item.name)
                  
                     return (
                       
@@ -597,7 +610,12 @@ const InvoiceForm = ({ }) => {
                             "flex-column justify-center items-center py-6 px-8 m-2 cursor-pointer": true,
                           })}>
                           <Tooltip title="Remove"><span style={{paddingRight:0}}><Icon color="error" className="" onClick={(event) => handleSingleRemove(index)}>close</Icon></span></Tooltip>
-                          <img src={item.src} style={{width:'100px',height:'100px'}}/>
+                          {item.name.split('.')[1]!=='pdf'?(<img src={item.src} style={{width:'100px',height:'100px'}}/>):(<Icon
+                          className="bg-error"
+                          style={{width:'100px',height:'100px'}}
+                >
+                 picture_as_pdf
+              </Icon>)}
                           {/* <span><Icon color="error" onClick={(event) => handleSingleRemove(index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span> */}
                           </Card>
                           
@@ -609,15 +627,17 @@ const InvoiceForm = ({ }) => {
                       </div>
                 </Card>
           
-              <div className="mt-8">
+              {/* <div className="mt-8">
                 <Button color="primary" variant="outlined" type="submit">
                   <Icon>save</Icon>Save
                                 </Button>
 
-              </div>
+              </div> */}
             </form>
+            </div>
           )}
         </Formik>
+      
       </Card>
     </div>
   );

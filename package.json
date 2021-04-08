@@ -55,6 +55,8 @@
     "react-big-calendar": "^0.24.6",
     "react-bootstrap": "^1.4.0",
     "react-currency-input-field": "^3.2.4",
+    "react-datalist-field": "^20.3.1",
+    "react-datalist-input": "^2.1.1",
     "react-dom": "^16.8.6",
     "react-dropzone": "^11.2.0",
     "react-file-uploader": "^1.0.0",

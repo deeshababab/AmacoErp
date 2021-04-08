@@ -15,7 +15,7 @@ import {
 import { FieldArray } from "formik";
 import { Autocomplete } from "@material-ui/lab";
 import { calculateAmount ,getCustomerList} from "./Rfqformservice";
-import {getProductList} from "../../../../app/views/invoice/InvoiceService"
+import {getProductList,capitalize_arr} from "../../../../app/views/invoice/InvoiceService"
 
 const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) => {
   const [isAlive, setIsAlive] = useState(true);
@@ -28,6 +28,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
       // arrayHelpers.push({})
       // console.log(data);
     });
+    console.log(values)
    
     return () => setIsAlive(false);
   }, [isAlive]);
@@ -41,7 +42,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
             <TableHead>
               <TableRow>
               <TableCell colSpan={2}>S.No.</TableCell>
-                <TableCell colSpan={4}>Item Details</TableCell>
+                <TableCell colSpan={3}>Item Details</TableCell>
                 <TableCell colSpan={2}>Quantity </TableCell>
                 <TableCell colSpan={5}>Description</TableCell>
                 <TableCell colSpan={1} className="p-0" align="center" />
@@ -52,10 +53,10 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
               {values.rfq_details?.map((item, ind) => (
                 
                 <TableRow className="position-relative" key={ind}>
-                  <TableCell className="p-0" align="left">
+                  <TableCell className="pl-0" align="left">
                   {ind+1}
                   </TableCell>
-                  <TableCell colSpan={4} className="p-0" align="left">
+                  <TableCell colSpan={3} className="pl-0" align="left">
                     <div className="flex rfq_details-center">
                      
                       <Autocomplete
@@ -82,63 +83,35 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                     </div>
                   </TableCell>
 
-                  <TableCell colSpan={2} className="p-0" align="left">
+                  <TableCell colSpan={2} className="pl-0" align="left">
                     <TextField
                       name={`rfq_details[${ind}].quantity`}
                       size="small"
                       variant="outlined"
                       type="number"
                       fullWidth
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       defaultValue={item.quantity || ""}
                       onChange={handleChange}
                       required
                     />
                   </TableCell>
-                  <TableCell colSpan={5} className="p-0" align="left">
+                  <TableCell colSpan={5} className="pl-0" align="left">
                     <TextField
                       name={`rfq_details[${ind}].descriptionss`}
                       size="small"
                       variant="outlined"
                       type="textarea"
                       fullWidth
-                      value={item.descriptionss || ""}
+                      inputProps={{style: {textTransform: 'capitalize'}}}
+                      value={item.descriptionss?capitalize_arr(item.descriptionss) :""}
                       onChange={handleChange}
                       required
                     />
                   </TableCell>
-                  <TableCell colSpan={2} className="p-0" align="left">
-                    {/* <TextField
-                      name={`rfq_details[${ind}].discount`}
-                      size="small"
-                      variant="outlined"
-                      type="number"
-                      fullWidth
-                      value={item.discount || ""}
-                      onChange={handleChange}
-                      InputProps={{
-                        style: {
-                          paddingRight: 0,
-                        },
-                        endAdornment: (
-                          <Select
-                            name={`rfq_details[${ind}].discountType`}
-                            margin="none"
-                            variant="standard"
-                            disableUnderline
-                            value={item.discountType || "%"}
-                            onChange={handleChange}
-                          >
-                            <MenuItem value="$">$</MenuItem>
-                            <MenuItem value="%">%</MenuItem>
-                          </Select>
-                        ),
-                      }}
-                    /> */}
-                  </TableCell>
-                  {/* <TableCell colSpan={2} className="p-0" align="center">
-                    {calculateAmount(item).toFixed(2)}
-                  </TableCell> */}
-                  <TableCell colSpan={1} className="p-0" align="center">
+                  
+               
+                  <TableCell colSpan={1} className="pl-0" align="center">
                     <IconButton
                       size="small"
                       onClick={() => arrayHelpers.remove(ind)}

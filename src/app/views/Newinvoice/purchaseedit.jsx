@@ -16,7 +16,8 @@ import {
   Link,
   Icon,
   TextField,
-  Tooltip
+  Tooltip,
+  Card
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -88,6 +89,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
+  const [po_number, setpo_number] = useState('');
   const [pricelist, setpricelist] = useState([]);
   
   let calculateAmount=[];
@@ -345,7 +347,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.net_amount=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
     arr.rfq_id=id
-    arr.po_number=id
+    arr.po_number=po_number
     arr.party_id=party_id
     arr.validity=validity
     arr.warranty=warranty
@@ -395,7 +397,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get("purchase-quotation/"+ id).then(({ data }) => {
     
       // setcname(data[0].party[0].firm_name)
-      console.log(data[0].quotation_details)
+      setpo_number(data[0].po_number)
       // setpricelist(data[0].product_price_list)
       setcontactid(data[0].contact.id)
       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
@@ -440,6 +442,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   return (
     
   <div className="m-sm-30">
+    <Card elevation={3}>
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
@@ -539,14 +542,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24"  align="left">S.No.</TableCell>
-              <TableCell className="px-0" >Rfq description</TableCell>
-              <TableCell className="px-0" >Our Description</TableCell>
+              <TableCell className="px-2" style={{width:'80px'}} align="left">S.No.</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}} >Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'200px'}}>Pprice</TableCell>
-              <TableCell className="px-0"style={{width:'200px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'180px'}}>Remark</TableCell>
-               <TableCell className="px-0">Action</TableCell> 
+              <TableCell className="px-0" style={{width:'150px'}} >Price</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Total</TableCell>
+              <TableCell className="px-0"style={{width:'200px'}}>Remark</TableCell>
+               <TableCell className="px-0" style={{width:'50px'}}>Action</TableCell> 
             </TableRow>
           </TableHead>
 
@@ -575,14 +578,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 <TableRow key={index}>
                   
                  
-                  <TableCell className="pl-sm-24 capitalize" align="left" style={{width:50}}>
+                  <TableCell className="pl-2 capitalize" align="left" style={{width:50}}>
                     {index + 1}
                     
                   </TableCell>
                  
                   
 
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -597,7 +600,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'180px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="Our description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -621,12 +624,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
             
                       name="quantity"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       value={item.quantity? item.quantity:""}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" >
                   <TextValidator
                       label="Unit Price"
                       variant="outlined"
@@ -654,7 +658,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}} >
                     <TextValidator
                       label="QTotal"
                       
@@ -662,14 +666,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       type="text"
                       variant="outlined"
                       size="small"
-                     
+                      
                       name="total_amount"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                      
                       value={item.total_amount ? item.total_amount: ""}
                       
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
                     <TextValidator
                       label="Remark"
                       onChange={(event) => setremark(event, index)}
@@ -799,7 +804,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
+              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
               {/* <div>
               <TextField
                 className="mb-4 mr-2"
@@ -834,6 +839,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TextValidator
                 className="mb-4 "
                 label="Vat"
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={handleChange}
                 type="text"
                 variant="outlined"
@@ -850,6 +856,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 className="mb-4"
                 variant="outlined"
                 size="small"
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 name="net_amount"
                 value={subTotalCost?GTotal:0.00}
                 validators={["required"]}
@@ -863,7 +870,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         </div>
       </ValidatorForm>
       </div>
-    
+    </Card>
     </div>
   );
 };

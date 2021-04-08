@@ -41,6 +41,7 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import url,{ getpaymentaccount } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
+import { now } from "lodash";
 const role=localStorage.getItem('role')
 
 const CustomerForm = () => {
@@ -60,13 +61,13 @@ const CustomerForm = () => {
   const [state, setState] = useState(initialValues);
   const [paid_date, setpaid_date] = useState(new Date());
   
-  const [paid_by, setpaid_by] = useState(1);
+  const [paid_by, setpaid_by] = useState('');
   const [paid_to, setpaid_to] = useState('');
   const [amount, setamount] = useState('');
   const [payment_account_id, setpayment_account_id] = useState('');
   const [payment_account_name, setpayment_account_name] = useState('');
   const [description, setdescription] = useState('');
-  const [taxamount, settaxamount] = useState(0);
+  const [taxamount, settaxamount] = useState(0.00);
   const [referrence_bill_no, setreferrence_bill_no] = useState('');
   const [tax, settax] = useState(false);
   const [accounttype, setaccounttype] = useState([]);
@@ -79,6 +80,7 @@ const CustomerForm = () => {
   const [catname, setcatname] = useState('');
   const [index1, setindex1] = useState('');
   const [files, setFiles] = useState([]);
+  const [file_path, setfile_path] = useState();
   const [payment_account, setpayment_account] = useState([]);
   const [accountstatus, setaccountstatus] = useState(false);
   const [close, setclose] = useState(false);
@@ -87,7 +89,7 @@ const CustomerForm = () => {
   const [bank_slip, setbank_slip] = useState();
   const [company, setcompany] = useState(false);
   const [company_name, setcompany_name] = useState('');
-  
+  const [isAlive, setisAlive] = useState(false);
  
   const handlebankSelect = (event,f) => {
    
@@ -98,19 +100,18 @@ const CustomerForm = () => {
     setindex1(f)
     setbank_slip(event.target.files[0])
   
-    // formData.append('bank_slip',event.target.files[0])
-    // for (let [key, value] of formData) {
-    //   console.log(`${key}: ${value}`)
-    // }
-
-    // for (const iterator of files) {
-    //   list.push({
-    //     file: URL.createObjectURL(event.target.files[0]),
-    //     column_id:f,
-    //     progress: f,
-    //   });
-
-    // }
+    
+    
+  };
+  const handlebillSelect = (event,f) => {
+   
+    let files = event.target.files;
+    
+    const src = URL.createObjectURL(event.target.files[0]);
+    
+    setfile_path(event.target.files[0])
+  
+    
     
   };
   
@@ -127,6 +128,7 @@ const CustomerForm = () => {
       list.push({
         file: event.target.files[0],
         column_id:f,
+        src:URL.createObjectURL(event.target.files[0]),
         progress: f,
       });
       
@@ -207,6 +209,7 @@ const CustomerForm = () => {
     setMenuPosition(null);
   };
   const searchcat = (event,name,i) => {
+    
     if(event)
     {
       setaccountstatus(false)
@@ -215,13 +218,15 @@ const CustomerForm = () => {
       url.get(`columns/${i}`).then(({ data }) => {
         
          setfield(data[0].column)
+         
        })
-       
+      
     
       setaccountstatus(true);
       setpayment_account_id(i)
       setpayment_account_name(name)
       setMenuPosition(null);
+      console.log(field)
     }
   };
   const Addnewsubcat = (i,n) => {
@@ -251,6 +256,7 @@ const CustomerForm = () => {
   ] = useState(false);
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    setisAlive(true)
 
   };
   const [
@@ -259,6 +265,7 @@ const CustomerForm = () => {
   ] = useState(false);
   const handleDialogClose1 = () => {
     setShouldOpenEditorDialog1(false);
+    setisAlive(true)
 
   };
 
@@ -275,6 +282,10 @@ const CustomerForm = () => {
       setaccounttype(data)
 
     });
+    if(localStorage.getItem('role')!=='SA')
+    {
+      setpaid_by(localStorage.getItem('user_id'))
+    }
     url.get("account-categories").then(({ data }) => {
      
       setcat(data)
@@ -283,10 +294,10 @@ const CustomerForm = () => {
      
       setpayment_account(data)
     });
-    
+    return setisAlive(true)
     
 
-  }, [])
+  }, [isAlive])
 
 
 
@@ -312,6 +323,11 @@ const CustomerForm = () => {
     for (const key of Object.keys(files)) {
       newItem.append('item', files[key].file)
     }
+    if(tax)
+    {
+    formData.append("tax", taxamount)
+    formData.append("company_name",company)
+    }
     formData.append("paid_date", paid_date)
     formData.append("referrence_bill_no", referrence_bill_no)
     formData.append("amount", amount)
@@ -319,21 +335,27 @@ const CustomerForm = () => {
     formData.append("description",description)
     formData.append("created_by",created_by)
     formData.append("account_category_id",payment_account_id)
-    formData.append("company_name",company)
+    
     formData.append("payment_account_id",paid_by)
     formData.append("created_by",created_by)
-    formData.append("tax", taxamount)
+    
     formData.append("status", "new")
-    formData.append("data",field)
+    formData.append("data",JSON.stringify(field))
     formData.append("bank_ref_no",bank_ref_no)
     formData.append("bank_slip",bank_slip)
-
-
+    formData.append("file_path",file_path)
+    console.log(field)
+    files.map((answer, i) => {  
+      // formData.append(`quotation_detail${i}`,JSON.stringify(answer))
+      formData.append(`file${answer.column_id}`,answer.file)
+      console.log(formData.get(`file`))
+      // answer.files&& (formData.append(`file${i}`,answer.files))
+    })
     for (let [key, value] of formData) {
       console.log(`${key}: ${value}`)
       console.log(JSON.stringify(value))
     }
-   
+  
 
     url.post('expense', formData)
       .then(function (response) {
@@ -344,6 +366,7 @@ const CustomerForm = () => {
           type: 'success',
           icon: 'success',
           text: 'Data saved successfully.',
+         
         });
       history.push(`/expenseview`)
       })
@@ -365,6 +388,21 @@ const CustomerForm = () => {
     tempList.splice(index, 1);
     setFiles([...tempList]);
     setclose(false)
+  };
+  const handleField_Fileremove = (index) => {
+    let tempList = [...files];
+    // tempList.splice(index, 1);
+    tempList.map((element, i) => {
+      let sum=0;
+    
+      if (index === i) 
+      {
+        element['file']=null;
+        element['progress']=null;
+      }
+    })
+    setFiles([...tempList]);
+ 
   };
 
   const handleTabChange = (e, value) => {
@@ -418,6 +456,11 @@ const CustomerForm = () => {
       if (el.name === item.name)
       { 
         el.date =  e;
+        el.column_id = i;
+      }
+      else
+      {
+        el.date =  new Date();
         el.column_id = i;
       }
       return el;
@@ -499,7 +542,7 @@ const CustomerForm = () => {
             setFieldValue,
             resetForm
           }) => (
-            <form className="p-4" onSubmit={handleSubmit}>
+            <form className="p-4" onSubmit={handleSubmit} autoComplete="off">
               <Grid container spacing={6}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
 
@@ -541,7 +584,7 @@ const CustomerForm = () => {
                     // onChange={e => setpayment_account_id(e.target.value)}
                   />
                 {field.map((item, index) => {
-                   
+                    console.log('send'+Object.values(item))
                 return (
                   <span>
                  {item.type==="file" &&(
@@ -558,24 +601,25 @@ const CustomerForm = () => {
                    variant="outlined"
                    size="small"
                    autoComplete="none"
+                   required
                   //  label={item.name}
                   //  value={item.name}
-                   multiple
+                 
                    
                  />
 
                  {close && (
                   <span>
                      {files.map((items, index) => {
-                      
+                     
                        return(
                         <span>
                 {items.progress=== item.id &&
                 (
                   <span>
-                {/* <img src={items.file} width="50px" height="50px"/>
+                <img src={items.src} width="50px" height="50px"/>
                  <Icon className="bg-error"
-                        onClick={() => handleSingleRemove(index)}>cancel</Icon> */}
+                        onClick={() => handleField_Fileremove(index)}>cancel</Icon>
                   </span>
                 )}
                         </span>
@@ -597,6 +641,7 @@ const CustomerForm = () => {
                     onChange={(e) => {
                       handleComment(e, item,item.id); 
                     }}
+                    required
                     // onChange={(event) => handleIvoiceListChange(event, index)}
                   />)}
                   {item.type==="date" && (<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -605,15 +650,19 @@ const CustomerForm = () => {
                       margin="none"
                       label={item.name}
                       inputVariant="outlined"
+                      name="date"
                       type="text"
                       size="small"
-                      autoOk={true}
-                      value={item.date}
+                      autoOk={false}
+                      hintText="Portrait Dialog"
+                      errorText="This is an error message."
+                      value={item.date?item.date:null}
                       onChange={(e) => {
                         
                         handleCommentdate(e,item,item.id); 
                       }}
                       format="MMMM dd, yyyy"
+                      required
                       // onChange={handleIvoiceListChange}
                     />
                   </MuiPickersUtilsProvider>
@@ -687,14 +736,14 @@ const CustomerForm = () => {
                     
                   >
                       choose categories */}
-                     {role==="SA"?(<TextField
+                    {role==="SA"?(<TextField
                     className="mb-4 w-full"
                     label="Paid By"
                     name="firstName"
                     size="small"
                     variant="outlined"
                     value={paid_by}
-                    autoComplete="none"
+                    autoComplete="off"
                     select
                     onChange={e => setpaid_by(e.target.value)}
                   >
@@ -714,7 +763,22 @@ const CustomerForm = () => {
                       </MenuItem>
                     ))}
                     {/* </MenuItem> */}
-                  </TextField>):''}
+                  </TextField>):(<TextField
+                    className="mb-4 w-full"
+                    label="Paid By"
+                    name="firstName"
+                    size="small"
+                    variant="outlined"
+                    value={localStorage.getItem('user_name')}
+                    autoComplete="off"
+                    selected
+                  >
+                   {payment_account.map((item, ind) => (
+                      <MenuItem value={item.id} key={item}>
+                        {item.name}
+                      </MenuItem>
+                    ))} 
+                  </TextField>)}
                   {((paid_by === 11)||(paid_by === 12)) &&(<TextField
                     className="mb-4 w-full"
                     label="Reference Number"
@@ -727,6 +791,31 @@ const CustomerForm = () => {
                   >
                     </TextField>)
                   }
+                  <label for="myfile">Upload Reference Bill :</label>
+                  <TextField
+                  className="mb-4 w-full"
+                   onChange={e=> handlebillSelect(e)}
+                   id="upload-multiple-file"
+                   type="file"
+                   label=""
+                   variant="outlined"
+                   autoComplete="none"
+                   size="small"
+                  
+                   
+                 />
+                 <TextField
+                    className="mb-4 w-full"
+                    label="Referrence Bill No"
+                    name="website"
+                    size="small"
+                    type="text"
+                    variant="outlined"
+                    autoComplete="none"
+                    value={referrence_bill_no}
+                    onChange={e => setreferrence_bill_no(e.target.value)}
+                  />
+
 
 {((paid_by === 11) ||(paid_by === 12)) &&( 
   <span>
@@ -784,17 +873,7 @@ const CustomerForm = () => {
 
 
 
-                  <TextField
-                    className="mb-4 w-full"
-                    label="Referrence Bill No"
-                    name="website"
-                    size="small"
-                    type="text"
-                    variant="outlined"
-                    autoComplete="none"
-                    value={referrence_bill_no}
-                    onChange={e => setreferrence_bill_no(e.target.value)}
-                  />
+                  
 
                   <FormLabel component="legend" labelPlacement="start">Tax paid?</FormLabel>
                   <RadioGroup
@@ -839,7 +918,7 @@ const CustomerForm = () => {
                   {/* <p className="mt-0 mb-1">
           What kind of property are you interested in?
         </p> */}
-        <div className="mb-4">
+        {tax&&(<div className="mb-4">
             <FormControlLabel
               style={{fontWeight:1000}}
               className="block h-32"
@@ -848,7 +927,7 @@ const CustomerForm = () => {
               value={company}
               onChange={e => setcompany(!company)}
             />
-        </div>
+        </div>)}
         {/* {company&& (
                       <TextField
                         // style={{ width: '430px' }}

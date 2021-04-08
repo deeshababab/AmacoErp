@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
-import url, {getparties} from "../../invoice/InvoiceService"
+import url, {getparties,capitalize_arr} from "../../invoice/InvoiceService"
 import InputMask from 'react-input-mask';
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -69,6 +69,7 @@ const Addparty = ({open, handleClose}) => {
   });
   const [selectedValue, setSelectedValue] = useState('');
   const [Firm_Name, setFirm_name] = useState('');
+  const [company_name_ar, setcompany_name_ar] = useState('');
   const [email, setemail] = useState('');
   const [mobno, setmobno] = useState('');
   const [mobnocode, setmobnocode] = useState(+966);
@@ -105,51 +106,55 @@ const Addparty = ({open, handleClose}) => {
   const handleSubmit = () => {
    
     const frmdetails = {
-      firm_name:Firm_Name,
+      firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
       vat_no:vat_no,
       post_box_no:post_box_no,
-      street:street,
-      proviance:proviance,
-      country:country,
+      street:street?capitalize_arr(street):'',
+      proviance:proviance?capitalize_arr(proviance):'',
+      country:country?capitalize_arr(country):'',
       contact:contactcode+contact,
       zip_code:zip_code,
       mobno:mobnocode+mobno,
       landline:landlinecode+landline,
       email:email,
       website:website,
-      city:city,
+      city:city?capitalize_arr(city):"",
       fax:fax+"/"+faxext,
-      fname:fname,
-      lname:lname,
-      designation:suffix,
+      fname:fname?capitalize_arr(fname):"",
+      lname:lname?capitalize_arr(lname):"",
+      designation:suffix?capitalize_arr(suffix):"",
       opening_balance:parseFloat(ob).toFixed(2),
       party_type:selectedValue, 
       credit_days:creditdays,
       credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
-      bank_address:bank_address,
+      bank_address:bank_address?capitalize_arr(bank_address):"",
       account_no:account_no,
       vendor_id:vendor_id,
-      address:address,
+      address:address?capitalize_arr(address):"",
       party_code:partycode,
-      prefix:prefix
+      prefix:prefix?capitalize_arr(prefix):"",
+      company_name_ar:company_name_ar
     }
-   console.log(frmdetails)
+  
      
     
     url.post('parties',frmdetails)
    
       .then(function (response) {
+        console.log(response.data)
         Swal.fire({  
           title: 'Success',  
           type: 'success',
           icon:'success',
           text: 'Data saved successfully.',  
-        });
+        })
+        .then((result) => {
       getparties()
       history.push('/party/viewparty')
+      })
       })
       .catch(function (error) {
          
@@ -193,6 +198,7 @@ const resetform = () => {
       [event.target.name]: event.target.value,
     });
   };
+  
   const handleChange1 = selectedOption => {
     this.setState({ selectedOption });
   };
@@ -225,6 +231,7 @@ const resetform = () => {
           <TextField
             className="mr-2"
             autoComplete="none"
+            
             label="Prefix"
             variant="outlined"
             onChange={e => setprefix(e.target.value)}
@@ -241,15 +248,17 @@ const resetform = () => {
                     ))}
             </TextField>
                 <TextField
-                    className="mb-4 w-full"
-                    label="First Name"
-                    autoComplete="new-password"
+                    className="mb-4 w-full text-capitalize"
+                    label="First name"
+                    textTransform
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     onChange={e => setfname(e.target.value)}
                                 type="text"
                                 name="fname"
                                 variant="outlined"
                                 size="small"
                                 value={fname}
+                               
                             />
                 </div>
               <div className="flex mb-4">
@@ -257,6 +266,7 @@ const resetform = () => {
             className="mr-2"
             autoComplete="none"
             label="Last Name"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             variant="outlined"
             onChange={e => setlname(e.target.value)}
             value={lname}
@@ -266,6 +276,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Designation"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             autoComplete="none"
             variant="outlined"
             value={suffix}
@@ -278,6 +289,7 @@ const resetform = () => {
                <TextValidator
                                 className="mb-4 w-full"
                                 label="Email Address"
+                                
                                 autoComplete="none"
                                 onChange={e => setemail(e.target.value)}
                                 type="text"
@@ -360,6 +372,7 @@ const resetform = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="Address"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 autoComplete="none"
                                 onChange={e => setaddress(e.target.value)}
                                 name="address"
@@ -389,6 +402,7 @@ const resetform = () => {
                                 className="mb-4 w-full"
                                 label="Bank Name"
                                 autoComplete="none"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 onChange={e => setbank_name(e.target.value)}
                                 name="website"
                                 type="text"
@@ -429,6 +443,7 @@ const resetform = () => {
           <TextValidator
                     className="mb-4 w-full"
                     label="Company Name"
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     autoComplete="none"
                     onChange={e => setFirm_name(e.target.value)}
                                 type="text"
@@ -438,10 +453,22 @@ const resetform = () => {
                                 value={Firm_Name}
                                 
                             />
+                  <TextValidator
+                    className="mb-4 w-full"
+                    label="اسم الشركة"
+                    autoComplete="none"
+                    onChange={e => setcompany_name_ar(e.target.value)}
+                                type="text"
+                                name="company_name_ar"
+                                variant="outlined"
+                                size="small"
+                                value={company_name_ar}
+                                
+                            />
                             <div className="flex mb-4">
                             <TextField
                                 className="mr-2"
-                                label="Registration Number"
+                                label="Commercial Registration Number"
                                 autoComplete="none"
                                 onChange={e => setregno(e.target.value)}
                                 name="regno"
@@ -450,6 +477,7 @@ const resetform = () => {
                                 variant="outlined"
                                 value={regno}
                                 fullWidth
+                                required
                               
                             />
                         
@@ -483,6 +511,7 @@ const resetform = () => {
                                 className="mb-4 w-full"
                                 autoComplete="none"
                                 label="Street"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 onChange={e => setstreet(e.target.value)}
                                 type="text"
                                 size="small"
@@ -497,6 +526,7 @@ const resetform = () => {
             className="mr-2"
             autoComplete="none"
             label="City"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             variant="outlined"
             onChange={e => setcity(e.target.value)}
             value={city}
@@ -506,6 +536,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Province"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             autoComplete="none"
             variant="outlined"
             value={proviance}
@@ -528,6 +559,7 @@ const resetform = () => {
           <TextField
             className="ml-2"
             label="Country"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             autoComplete="none"
             variant="outlined"
             value={country}

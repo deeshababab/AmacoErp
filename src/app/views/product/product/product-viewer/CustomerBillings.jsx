@@ -120,10 +120,19 @@ const getData = () => {
     <div>
     <Card elevation={3}>
       
+    
+          
+
+
+
+
+
+          <div className="flex flex-wrap justify-between pt-2 m-2"> 
+    <h5 className="pt-2">Price List</h5>
       <div className="text-right">
                 
-                <Button
-            className="py-2"
+      <Button
+            className="pl-4"
             color="primary"
             variant="outlined"
             onClick={() => {
@@ -135,7 +144,8 @@ const getData = () => {
           </Button>
          
           </div>
-          <h5 className="p-2">Price List</h5>
+          
+          </div>
       <Divider />
       <Table >
         <TableHead>
@@ -155,7 +165,7 @@ const getData = () => {
 
                 <TableCell className="pl-0">{item.firm_name}</TableCell>
 
-                <TableCell className="pl-0">{parseFloat(item.price).toLocaleString()}</TableCell>
+                <TableCell className="pl-0">{parseFloat(item.price).toLocaleString(undefined, {minimumFractionDigits:2})}</TableCell>
 
                 <TableCell className="pl-0">
                   

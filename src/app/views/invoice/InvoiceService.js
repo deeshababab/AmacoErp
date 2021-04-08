@@ -21,19 +21,20 @@ export const updateInvoice = (invoice) => {
 export const getInvoice = () => {
     return url.get("http://dataqueuesystems.com/amaco/amaco/public/api/parties/1")
 }
-// const  url = "http://www.amacoerp.com/amaco/public/api/";
-//  const url = axios.create({
-//     baseURL: 'http://www.amacoerp.com/amaco/public/api/',
-//     // timeout: 1000,
-    
-//     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
-//   });
-  const url = axios.create({
-    baseURL: 'http://www.amacoerp.com/amaco_test/public/api/',
+
+ const url = axios.create({
+    baseURL: 'http://www.amacoerp.com/amaco/public/api/',
     // timeout: 1000,
     
     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
   });
+//   const url = axios.create({
+//     baseURL: 'http://www.amacoerp.com/amaco_test/public/api/',
+    
+//     // timeout: 1000,
+    
+//     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
+//   });
   const role =localStorage.getItem('role')
 
 
@@ -68,7 +69,16 @@ export const getpaymentaccount = () => {
 export const getpaymentaccountcategory = () => {
     return url.get("account-categories");
 };
-    
+export const capitalize_arr =(value) =>{
+    let wordsArray = value.split(' ')
+      let capsArray = []
+  
+      wordsArray.forEach(word => {
+          capsArray.push(word[0].toUpperCase() + word.slice(1))
+      });
+  
+      return capsArray.join(' ')
+  }  
   
 
 export default url;

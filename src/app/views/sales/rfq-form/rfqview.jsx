@@ -36,7 +36,7 @@ const columnStyleWithWidth1 = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "600px",
+  width: "400px",
   wordBreak: "break-all",
 }
 

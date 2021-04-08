@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Grid,
   MenuItem,
+  Card,
   Table,
   TableHead,
   TableRow,
@@ -240,7 +241,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           icon:'success',
           text: 'Data saved successfully.',
         });
-        // history.push("/inv")
+        history.push("/inv")
       //  window.location.href="../quoateview"
       })
       .catch(function (error) {
@@ -307,6 +308,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   return (
     <div className="m-sm-30">
+    <Card elevation={3}>
     <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
       
@@ -593,6 +595,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       name="uom"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       fullWidth
                       value={item ?item.product.unit_of_measure :null }
               
@@ -609,6 +612,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="quantity"
                       min="1"
                       max={item.quantity}
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       value={item.quantity}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
@@ -625,6 +629,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       value={item? item.sell_price: null}
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
                     />
@@ -641,6 +646,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       variant="outlined"
                       size="small"
                       name="total_amount"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       fullWidth
                       value={item.total_amount}
                       
@@ -689,13 +695,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
+              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
               <TextValidator
                 className="mb-4"
                 label="Discount"
                 type="text"
                 variant="outlined"
                 size="small"
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={(event) => handleChange(event, "discount")}
                 value={discount}
                 // validators={["required"]}
@@ -710,6 +717,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 size="small"
                 name="vat"
                 value={subTotalCost?vat:0}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -722,6 +730,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 size="small"
                 name="net_amount"
                 value={subTotalCost?GTotal:0.00}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -740,6 +749,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </div>
       </ValidatorForm>
     </div>
+    </Card>
     </div>
   );
 };

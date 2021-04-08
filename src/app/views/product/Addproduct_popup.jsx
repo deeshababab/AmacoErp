@@ -5,18 +5,22 @@ import Select from 'react-select';
 import { useParams } from "react-router-dom";
 import { MDBSelect } from "mdbreact";
 import Swal from "sweetalert2";
-import FormDialog from "../../product/Addcategory"
+import FormDialog from "../product/Addcategory"
 import {
   Dialog,
   Divider,
   Switch,
   IconButton,
+  Menu,
+  ListSubheader
+
 } from "@material-ui/core";
-import MemberEditorDialog from "../../product/Addcategory";
+import MemberEditorDialog from "../product/Addcategory";
 import history from "history.js";
-import {getVendorList,getcategories,getmanufacturer} from "../../invoice/InvoiceService"
-import FormDialog1 from "../../../views/product/manufacture";
-import MemberEditorDialog1 from "../../../views/product/manufacture";
+import {getVendorList,getcategories,getmanufacturer} from "../invoice/InvoiceService"
+import FormDialog1 from "../../views/product/manufacture";
+import MemberEditorDialog1 from "../../views/product/manufacture";
+import NestedMenuItem from "material-ui-nested-menu-item";
 
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,8 +44,9 @@ import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
-import Addparty from "./addparty"
-import url,{capitalize_arr} from "../../invoice/InvoiceService"
+// import Addparty from "./addparty"
+import url,{capitalize_arr} from "../invoice/InvoiceService"
+
 const ooptions = [
   {
     id: 3,
@@ -64,7 +69,7 @@ const options = [
   { value: '3', label: 'Vanilla' },
 ];
 
-const SimpleForm = ({open, handleClose}) => {
+const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,pprice,marginprice,calcualteprice,productname }) => {
   const [state, setState] = useState({
     date: new Date(),
   });
@@ -216,8 +221,16 @@ const SimpleForm = ({open, handleClose}) => {
   const [manufacture, setmanufacture] = useState([]);
   const [manufactureid, setmanufactureid] = useState();
   const [customerList, setCustomerList] = useState([]);
+  const [category_list, setcategory_list] = useState([]);
+  const [subcatList, setsubcatList] = useState([]);
   const { id } = useParams();
   const [productcatid, setproductcatid] = useState(id);
+  const [menuPosition, setMenuPosition] = useState(null);
+  
+  const [
+    shouldOpenConfirmationDialogproduct,
+    setshouldOpenConfirmationDialogproduct,
+  ] = useState(false);
   const [, updateData] = useState([
     { id: 1, name: "Pankaj 1" },
     { id: 2, name: "Pankaj 2" },
@@ -271,6 +284,11 @@ const SimpleForm = ({open, handleClose}) => {
       getcategory()
     
     });
+    getcategories().then(({ data }) => {
+    
+      setcategory_list(data)
+    
+    });
    
     url.get("products-in-category").then(({ data }) => {
       setooptions(data);
@@ -282,16 +300,21 @@ const SimpleForm = ({open, handleClose}) => {
 
 
     });
-    url.get("categories/"+id).then(({ data }) => {
-      console.log(data.name)
-      setsubcategory(data.name)
+    // url.get("categories/"+id).then(({ data }) => {
+    //   console.log(data.name)
+    //   setsubcategory(data.name)
      
 
 
-    });
+    // });
     
     
   },[]);
+  
+   
+    
+    
+ 
 
   const submitValue = () => {
     const frmdetails = {
@@ -365,7 +388,8 @@ const SimpleForm = ({open, handleClose}) => {
     setdescription('');
 
   };
-
+  const [fullWidth, setFullWidth] = React.useState(true);
+  const [maxWidth, setMaxWidth] = React.useState("md");
 
 
   const {
@@ -383,12 +407,18 @@ const SimpleForm = ({open, handleClose}) => {
   } = state;
 
   return (
-    
-    <div>
-      <ValidatorForm onSubmit={submitValue} onError={() => null}>
-        <Grid container spacing={6}>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-
+      <Dialog onClose={handleClose} open={open} className="px-6 pt-2 pb-4" style={{zIndex:1000}} fullWidth={fullWidth}
+    maxWidth={maxWidth}>
+      <div className="p-6"  >
+        
+        <h4 className="mb-5">Add Product</h4>
+        
+        
+      <ValidatorForm 
+      // onSubmit={handleFormSubmit}
+       autoComplete="off">
+          <Grid className="mb-4" container spacing={4}>
+            <Grid item sm={6} xs={12}>
             <TextValidator
               className="mb-4 w-full"
               label="Product Name"
@@ -478,15 +508,15 @@ const SimpleForm = ({open, handleClose}) => {
                 onChange={e => setmodelno(e.target.value)}
                 fullWidth
               />
-              </div>
+          </div>
+ 
               
-
+             
+            </Grid>
             
 
-          </Grid>
-
-          <Grid item lg={6} md={6} sm={12} xs={12}>
-          <div className="flex mb-4">
+            <Grid item sm={6} xs={12}>
+            <div className="flex mb-4">
             {/* <TextValidator
               className="mr-2"
               label="category type"
@@ -530,20 +560,7 @@ const SimpleForm = ({open, handleClose}) => {
                 fullWidth
                 
               />   */}
-            <TextField
-                className="mr-2"
-                label="Sub Category"
-                variant="outlined"
-                value={subcategory}
-                size="small"
-                validators={[
-                  "required",
-                ]}
-                errorMessages={["this field is required"]}
-              
-                onChange={e => setmq(e.target.value)}
-                fullWidth
-              />
+            
               <TextField
                 className="ml-2"
                 label="Manufacturer"
@@ -646,26 +663,66 @@ const SimpleForm = ({open, handleClose}) => {
                 onChange={e => setmq(e.target.value)}
                 fullWidth
               />
+              
             </div>
             <div className="flex mb-4">
-            
-            
-           
+            <TextField
+                className="mr-2"
+                label="Category"
+                variant="outlined"
+                value={subcategory}
+                size="small"
+                style={{width:250}}
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
               
+                onChange={e => setmq(e.target.value)}
+                select
+              >
+                {category_list.map((item,id)=>(
+                <MenuItem>
+                    {item.name}
+                </MenuItem>
+                ))
+                }
+                
+                </TextField>
+            <TextField
+                className="mr-2"
+                label="Sub Category"
+                variant="outlined"
+                value={subcategory}
+                size="small"
+                style={{width:250}}
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
               
-            </div>
-
-
-
+                onChange={e => setmq(e.target.value)}
+                select
+              >
+                {category_list.map((item,id)=>(
+                <ListSubheader>
+                    {item.name}
+                </ListSubheader>
+                ))
+                }
+                
+                </TextField>
+                </div>
+              
+            </Grid>
           </Grid>
-        </Grid>
-        
-        <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit">
+          
+          <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit">
            <Icon>save</Icon> 
           <span className="pl-2 capitalize">Save</span>
         </Button>
         
-        <Button className="mr-4 py-2" color="secondary" variant="outlined" onClick={() => history.push(`/product/viewproduct/${id}`)}>
+        <Button className="mr-4 py-2" color="secondary" variant="outlined" onClick={handleClose}>
           <Icon>cancel</Icon>
           <span className="pl-2 capitalize">cancel</span>
         </Button>
@@ -673,52 +730,16 @@ const SimpleForm = ({open, handleClose}) => {
           <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
         </Button>
-      </ValidatorForm>
-      <card>
-        {shouldOpenEditorDialog && (
-           
-          <MemberEditorDialog
-            handleClose={handleDialogClose}
-            open={shouldOpenEditorDialog}
-          />
-          
-        )}
-        {shouldOpenConfirmationDialog && (
-          
-          <ConfirmationDialog
-            open={shouldOpenConfirmationDialog}
-            onConfirmDialogClose={handleDialogClose}
-            text="Are you sure to delete?"
-          />
-        )}
+        </ValidatorForm>
+        </div>
 
-      </card>
-      <card>
-        {shouldOpenEditorDialog1 && (
-           
-          <MemberEditorDialog1
-            handleClose={handleDialogClose1}
-            open={shouldOpenEditorDialog1}
-            setid={setproductcatid}
-            manufacture={setmanufacture}
-          />
-          
-        )}
-        {shouldOpenConfirmationDialog1 && (
-          
-          <ConfirmationDialog
-            open={shouldOpenConfirmationDialog1}
-            onConfirmDialogClose={handleDialogClose1}
-            text="Are you sure to delete?"
-
-          />
-        )}
-
-      </card>
-    </div>
+        
+    </Dialog>
+  
 
 
   );
-};
+              }
 
-export default SimpleForm;
+
+export default MemberEditorDialog_product;

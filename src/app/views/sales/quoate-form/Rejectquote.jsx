@@ -167,7 +167,7 @@ const RejectQuote = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth} >  
-              <p style={{marginLeft:18}}>Quotation No</p> 
+              <span style={{marginLeft:18}}>Quotation No</span> 
             </TableCell>
           )
        }
@@ -181,7 +181,7 @@ const RejectQuote = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1} >  
-              <p style={{marginLeft:18}}>Company Name</p> 
+              <span style={{marginLeft:18}}>Company Name</span> 
             </TableCell>
           )
        }

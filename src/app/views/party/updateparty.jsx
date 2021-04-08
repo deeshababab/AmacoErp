@@ -23,7 +23,7 @@ import "date-fns";
 // import Select from 'react-select';
 // import Axios from "axios";
 import Swal from "sweetalert2";
-import url,{getparties} from "../invoice/InvoiceService";
+import url,{getparties,capitalize_arr} from "../invoice/InvoiceService";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 // const optionss = [
 //     { value: 'Vendor', label: 'vendor' },
@@ -98,6 +98,7 @@ const SimpleForm = () => {
   const [bank_address, setbank_address] = useState('');
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
+  const [company_name_ar, setcompany_name_ar] = useState('');
   // const [address, setaddress] = useState('');
   
   // get the id value
@@ -127,6 +128,7 @@ const SimpleForm = () => {
           setproviance(data[0].proviance)
           setcountry(data[0].country)
           setzip_code(data[0].zip_code)
+          setcompany_name_ar(data[0].firm_name_in_ar)
           // setfname(data[0].contacts[0].fname)
           // setlname(data[0].contacts[0].lname)
           // setsuffix(data[0].contacts[0].designation)
@@ -155,17 +157,17 @@ const SimpleForm = () => {
   const handleSubmit = () => {
   
     const frmdetails = {
-      firm_name:Firm_Name,
+      firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
       vat_no:vat_no,
       post_box_no:post_box_no,
-      street:street,
-      proviance:proviance,
-      country:country,
+      street:street?capitalize_arr(street):'',
+      proviance:proviance?capitalize_arr(proviance):'',
+      country:country?capitalize_arr(country):'',
       contact:contact,
       zip_code:zip_code,
       website:website,
-      city:city,
+      city:city?capitalize_arr(city):'',
       fax:fax,
       opening_balance:parseFloat(ob).toFixed(2),
       party_type:partytype,
@@ -173,10 +175,11 @@ const SimpleForm = () => {
       credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
-      bank_address:bank_address,
+      bank_address:bank_address?capitalize_arr(bank_address):'',
       account_no:account_no,
       vendor_id:vendor_id,
-      party_code:partycode
+      party_code:partycode,
+      company_name_ar:company_name_ar
       
     }
    
@@ -190,8 +193,10 @@ const SimpleForm = () => {
             type: 'success', 
             icon:'success', 
             text: 'Data saved successfully.',  
-          });
+          })
+          .then((result) => {
         history.push(`/pages/view-customer?id=${foo}`)
+        })
       })
       .catch(function (error) {
         
@@ -355,6 +360,7 @@ const SimpleForm = () => {
           <TextValidator
                     className="mb-4 w-full"
                     label="Company Name"
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     onChange={e => setFirm_name(e.target.value)}
                                 type="text"
                                 name="Firm_Name"
@@ -363,17 +369,29 @@ const SimpleForm = () => {
                                 value={Firm_Name}
                                 
                             />
+                             <TextValidator
+                    className="mb-4 w-full"
+                    label="اسم الشركة"
+                    autoComplete="none"
+                    onChange={e => setcompany_name_ar(e.target.value)}
+                                type="text"
+                                name="company_name_ar"
+                                variant="outlined"
+                                size="small"
+                                value={company_name_ar}
+                                
+                            />
                             <div className="flex mb-4">
                             <TextValidator
                                 className="mr-2"
-                                label="Registration Number"
+                                label="Commercial Registration Number"
                                 onChange={e => setregno(e.target.value)}
                                 name="regno"
                                 size="small"
                                 type="text"
                                 variant="outlined"
                                 value={regno}
-                                fullWidth
+                                style={{width:'230px'}}
                               
                             />
                         
@@ -404,6 +422,7 @@ const SimpleForm = () => {
                              <TextValidator
                                 className="mb-4 w-full"
                                 label="Street"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 onChange={e => setstreet(e.target.value)}
                                 type="text"
                                 size="small"
@@ -417,6 +436,7 @@ const SimpleForm = () => {
           <TextField
             className="mr-2"
             label="City"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             variant="outlined"
             onChange={e => setcity(e.target.value)}
             value={city}
@@ -426,6 +446,7 @@ const SimpleForm = () => {
           <TextField
             className="ml-2"
             label="Province"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             variant="outlined"
             value={proviance}
             size="small"
@@ -446,6 +467,7 @@ const SimpleForm = () => {
           <TextField
             className="ml-2"
             label="Country"
+            inputProps={{style: {textTransform: 'capitalize'}}}
             variant="outlined"
             value={country}
             size="small"
@@ -695,6 +717,7 @@ const SimpleForm = () => {
                             <TextField
                                 className="mb-4 w-full"
                                 label="Bank Name"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 onChange={e => setbank_name(e.target.value)}
                                 name="website"
                                 type="text"
@@ -720,6 +743,7 @@ const SimpleForm = () => {
                                 className="mb-4 w-full"
                                 label="Bank Address"
                                 onChange={e => setbank_address(e.target.value)}
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 name="website"
                                 type="text"
                                 size="small"

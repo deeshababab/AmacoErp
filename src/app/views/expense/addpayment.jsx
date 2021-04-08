@@ -54,7 +54,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
   const handleDateChange = (date) => {
     setreceived_date(date)

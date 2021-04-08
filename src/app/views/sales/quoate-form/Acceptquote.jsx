@@ -43,7 +43,7 @@ const AcceptQuote = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "140px",
+    width: "200px",
     wordBreak: "break-word",
     
   }

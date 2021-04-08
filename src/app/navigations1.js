@@ -63,6 +63,42 @@ export const navigations1 = [
   // }
   // ]
 },
+{
+  name: "Account",
+  icon: "developer_board",
+  children: [
+    {
+  name: "Expenses",
+  icon: "attach_money",
+  path: "/expenseview",
+    },
+    {
+      name: "Transaction",
+      icon: "account_balance_wallet",
+      path: "/transaction",
+    },
+    {
+      name: "Statements",
+      icon: "book",
+      children: [
+        {
+      name: "Customer",
+      icon: "people",
+      path: "/customeraccount",
+        },
+        {
+          name: "Account",
+          icon: "account_balance",
+          path: "/account",
+        },
+        
+      ]
+    }
+
+    
+  ]
+  
+},
 
 ];
 

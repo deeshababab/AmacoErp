@@ -95,7 +95,9 @@ export const AuthProvider = ({ children }) => {
     console.log(response.data)
     localStorage.setItem("role", role)
     localStorage.setItem("auth_user", user)
-    console.log(JSON.stringify(localStorage.getItem("auth_user")))
+    localStorage.setItem("user_name", user.name)
+    localStorage.setItem("user_id", user.id)
+    console.log(localStorage.getItem("auth_user"))
     setSession(accessToken);
 
 

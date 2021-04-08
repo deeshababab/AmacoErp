@@ -16,8 +16,8 @@ import {
 } from "@material-ui/core";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import url, { getparties } from "../../../invoice/InvoiceService"
-import MemberEditorDialog from "../../partycontact"
-import FormDialog from "../../partycontact"
+import MemberEditorDialog from "../../Addbank";
+import FormDialog from "../../Addbank";
 import history from "history.js";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -39,6 +39,7 @@ const BankDetails = () => {
  
   const [designation, setdesignation] = useState('');
   const [status, setstatus] = useState('');
+  const [isAlive, setisAlive] = useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {
@@ -56,6 +57,7 @@ const BankDetails = () => {
   ] = useState(false);
 
   const handleDialogClose = () => {
+    setisAlive(false)
     setstatus('');
     setShouldOpenEditorDialog(false);
     getparties()
@@ -76,32 +78,35 @@ const BankDetails = () => {
 
     url.get("parties/" + foo).then(({ data }) => {
       setcustomercontact(data[0].contacts);
-      setbankdetails(data)
+      setbankdetails(data[0].bank)
      
-    });
+    }
+    );
+    return setisAlive(true)
 
-  }, []);
+
+  }, [isAlive]);
   const removeData = (id) => {
     // alert(id)
     // let url = `https://jsonplaceholder.typicode.com/users/${id}`
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You will not be able to recover this contact details!',
-      icon: 'danger',
+      text: 'You will not be able to recover this bank details!',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it'
     }).then((result) => {
       if (result.value) {
-        url.delete(`contact/${id}`)
+        url.delete(`party-bank/${id}`)
     .then(res => {
         
         Swal.fire(
           'Deleted!',
-          'Your Contactdetails has been deleted.',
+          'Your bankdetails has been deleted.',
           'success'
         )
-        getData();
+       setisAlive(false)
         
     })
   
@@ -130,18 +135,37 @@ const getData = () => {
     <div>
     
       <Card className="mt-6" elevation={3}>
+      <div className="flex flex-wrap justify-between mb-6"> 
       <h5 className="p-2">Bank Details</h5>
+      <div className="text-right">
+                
+                <Button
+            className="py-2"
+            style={{marginTop:"10px",marginRight:10}}
+            color="primary"
+            variant="outlined"
+            onClick={() => {
+              setShouldOpenEditorDialog(true);
+            }}
+          >
+          <Icon>add</Icon>
+          Add New
+          </Button>
+         
+          </div>
+        </div>
+          
       <Table>
       <TableHead>
       <TableRow>
      
         
-            
+          <TableCell className="px-0" align="center">S.No.</TableCell>
             <TableCell className="px-0" align="center">Bank Name</TableCell>
             <TableCell className="px-0" >Account Number</TableCell>
             <TableCell className="px-0">IBAN Number</TableCell>
             <TableCell className="px-0">Bank Address</TableCell>
-        
+            <TableCell className="px-0">Action</TableCell>
         
         </TableRow>
         </TableHead>
@@ -150,7 +174,7 @@ const getData = () => {
           console.log(item)
           return(
               <TableRow key={index}>
-              
+              <TableCell className="pl-0" align="center">{++index}</TableCell>
               <TableCell className="pl-0" align="center">{item.bank_name}</TableCell>
             
             
@@ -161,6 +185,20 @@ const getData = () => {
             
              
               <TableCell className="pl-0">{item.bank_address}</TableCell>
+              <TableCell className="pl-0"><Tooltip title="Edit Bank details">
+                    <Icon color="secondary" onClick={() => {
+                    setcontacts(item.id);
+                  }}>edit</Icon>
+                    
+                    </Tooltip>
+                    
+                  {/* </MenuItem> */}
+                  {/* <MenuItem onClick={() => removeData(item.id)}> */}
+                 
+                  <Tooltip title="Delete Bank details">
+                    <Icon color="error" onClick={() => removeData(item.id)}>delete</Icon>
+                  </Tooltip>
+               </TableCell>
             </TableRow>
           )
         })
@@ -168,6 +206,24 @@ const getData = () => {
             </TableBody>
             </Table>
       </Card>
+      <div>
+        {shouldOpenEditorDialog && (
+          <MemberEditorDialog
+            handleClose={handleDialogClose}
+            contactid={status}
+            open={shouldOpenEditorDialog}
+            customercontact={setcustomercontact}
+
+          />
+        )}
+        {shouldOpenConfirmationDialog && (
+          <ConfirmationDialog
+            open={shouldOpenConfirmationDialog}
+            onConfirmDialogClose={handleDialogClose}
+            text="Are you sure to delete?"
+          />
+        )}
+      </div>
       </div>
   );
 };

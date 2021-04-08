@@ -12,6 +12,10 @@ const QuoteRoutes = [
     component: React.lazy(() => import("./Quoteedit"))
   },
   {
+    path: "/revisequote/:id",
+    component: React.lazy(() => import("./Revisequote"))
+  },
+  {
     path: "/dnote/:id",
     component: React.lazy(() => import("./dnote"))
   },
