@@ -232,7 +232,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const [productcatid, setproductcatid] = useState(id);
   const [menuPosition, setMenuPosition] = useState(null);
   const [cat, setcat] = useState([]);
-  const [message, setmessage] = useState(true);
+  const [message, setmessage] = useState(false);
   const [catid, setcatid] = useState('');
   const [
     shouldOpenConfirmationDialogproduct,
@@ -355,7 +355,8 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
 
     }
  
-    console.log(frmdetails)
+   if(catid)
+   {
     url.post('products', frmdetails)
       .then(function (response) {
         
@@ -374,6 +375,11 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
         
       })
     resetform()
+   }
+   else
+   {
+     setmessage(true)
+   }
     
 
   }
@@ -396,6 +402,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
     setState({ ...state, date });
   };
   const resetform = () => {
+    setmessage(false)
     setunit_Price('');
     setunit_of_measue('');
     setreal_price('');
