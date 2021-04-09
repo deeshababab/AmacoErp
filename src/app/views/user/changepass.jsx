@@ -110,6 +110,7 @@ const [message, setmessage] = useState('')
     setnpassword('')
     setcpassword('')
     setopassword('')
+    setmessage('')
 
   }
   

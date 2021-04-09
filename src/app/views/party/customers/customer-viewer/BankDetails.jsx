@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from "sweetalert2";
+import MUIDataTable from "mui-datatables";
 import {
   Button,
   Card,
@@ -131,6 +132,75 @@ const getData = () => {
     
   });
 }
+const columns = [
+  {
+      name: "id", // field name in the row object
+      label: "S.No.", // column title that will be shown in table
+      options: {
+         
+          filter: true,
+      },
+  },
+  {
+    name: "id", // field name in the row object
+    label: "Bank Name", // column title that will be shown in table
+    options: {
+       
+        filter: true,
+    },
+},
+{
+  name: "id", // field name in the row object
+  label: "Account Number", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "IBAN Number", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "Bank Address", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id",
+  label: "Action",
+  options: {
+      filter: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+       
+          return (
+            <span>
+          <Tooltip title="Edit Bank details">
+                    <Icon color="secondary" onClick={() => {
+                    setcontacts(tableMeta.rowData[5]);
+                  }}>edit</Icon>
+                    
+                    </Tooltip>
+         
+                 
+                  <Tooltip title="Delete Bank details">
+                    <Icon color="error" onClick={() => removeData(tableMeta.rowData[5])}>delete</Icon>
+                  </Tooltip>
+          </span>
+          
+          )
+          
+      },
+  },
+},
+]
   return (
     <div>
     
@@ -155,7 +225,7 @@ const getData = () => {
           </div>
         </div>
           
-      <Table>
+      {/* <Table>
       <TableHead>
       <TableRow>
      
@@ -191,9 +261,7 @@ const getData = () => {
                   }}>edit</Icon>
                     
                     </Tooltip>
-                    
-                  {/* </MenuItem> */}
-                  {/* <MenuItem onClick={() => removeData(item.id)}> */}
+         
                  
                   <Tooltip title="Delete Bank details">
                     <Icon color="error" onClick={() => removeData(item.id)}>delete</Icon>
@@ -204,7 +272,33 @@ const getData = () => {
         })
       }
             </TableBody>
-            </Table>
+            </Table> */}
+            <MUIDataTable
+
+                data={
+                  bankdetails.map((item, index) => {
+                    // console.log(item)
+                   
+                      return [
+          
+                        ++index,
+                        item.bank_name,
+                        item.account_no,
+                        item.iban_no,
+                        item.bank_address,
+                        item.id,
+                      ]
+                    
+                  })
+                }
+                columns={columns}
+                options={{
+                    filterType: "textField",
+                    responsive: "simple",
+                    selectableRows: "none", 
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
       </Card>
       <div>
         {shouldOpenEditorDialog && (

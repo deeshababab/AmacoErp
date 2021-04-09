@@ -84,11 +84,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [discount,setdiscount] =useState('0')
   const [ponum,setponum] =useState('')
   const [dstatus, setdstatus] = useState(false);
+  const [is_partial, setis_partial] = useState(false);
+  const [is_complted, setis_complted] = useState(false);
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  let arr=[];
 
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
@@ -235,6 +238,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // arr.push({
     //   invoice_details:tempItemList,
     // });
+    console.log(total_balance)
+    if(total_balance>0)
+   {
+     setis_partial(true)
+     arr.is_partial=true
+   }
+   else
+   {
+    arr.is_partial=false
+    arr.is_completed=true
+   }
+  
     arr.delivery_note_details=tempItemList
     arr.quotation_id=parseInt(id)
     arr.discount_in_percentage=discount
@@ -244,7 +259,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     const json = Object.assign({}, arr);
     
-    console.log(arr)
+   
+  console.log(json)
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -293,14 +309,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
       setdiscount(data[0].discount_in_p)
      
-    
+      
       
      setState({
       ...state,
       item: data[0].quotation_details,
     });
-    console.log(data[0].quotation_details)
-   
+    let tempItemList = [...state.item];
+    
+    
+    
     
    
     
@@ -323,7 +341,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   let subTotalCost = 0;
   let GTotal = 0;
   let discount1=0;
-
+  let total_balance=0;
   let {
     orderNo,
     net_amount,
@@ -491,6 +509,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
+            console.log(item)
+             total_balance+=(parseInt(item.balance))
              
               if(!dstatus)
               {
@@ -636,7 +656,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   <TableCell className="pl-0 capitalize" align="left">
                     <TextField
-                      label="QTotal"
+                      label="Balance Qty"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"

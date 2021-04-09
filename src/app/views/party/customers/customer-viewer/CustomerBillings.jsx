@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from "sweetalert2";
+import MUIDataTable from "mui-datatables";
 import {
   Button,
   Card,
@@ -129,6 +130,84 @@ const getData = () => {
     
   });
 }
+const columns = [
+  {
+      name: "id", // field name in the row object
+      label: "S.No.", // column title that will be shown in table
+      options: {
+         
+          filter: true,
+      },
+  },
+  {
+    name: "id", // field name in the row object
+    label: "Name", // column title that will be shown in table
+    options: {
+       
+        filter: true,
+    },
+},
+{
+  name: "id", // field name in the row object
+  label: "Designation", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "Address", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "Contact", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "Email", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id",
+  label: "Action",
+  options: {
+      filter: true,
+      customBodyRender: (value, tableMeta, updateValue) => {
+       
+          return (
+            <span>
+          <Tooltip title="Edit contact details">
+                    <Icon color="secondary" onClick={() => {
+                    setcontacts(tableMeta.rowData[6]);
+                  }}>edit</Icon>
+                    
+                    </Tooltip>
+                    
+                 
+                 
+                  <Tooltip title="Delete contact details">
+                    <Icon color="error" onClick={() => removeData(tableMeta.rowData[6])}>delete</Icon>
+                  </Tooltip>
+          </span>
+          
+          )
+          
+      },
+  },
+},
+]
   return (
     <div>
     <Card elevation={3}>
@@ -153,7 +232,7 @@ const getData = () => {
           
           </div>
       <Divider />
-      <Table >
+      {/* <Table >
         <TableHead>
           <TableRow>
             <TableCell className="pl-0" align="center">S.No.</TableCell>
@@ -183,25 +262,7 @@ const getData = () => {
                 
               
                 <TableCell className="pl-0" align="center">
-                {/* <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                        style={{marginRight:'0.5rem'}}
-                        >
-                        <Tooltip title="Subcategory list">
-                          <Icon color="primary" style={{paddingRight:12}}>expand_more</Icon>
-                        </Tooltip>
-                      </IconButton> */}
-                {/* <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                >
-              <MenuItem onClick={() => {
-                    setcontacts(item.id);
-                  }}> */}
-                
+               
                     <Tooltip title="Edit contact details">
                     <Icon color="secondary" onClick={() => {
                     setcontacts(item.id);
@@ -209,17 +270,14 @@ const getData = () => {
                     
                     </Tooltip>
                     
-                  {/* </MenuItem> */}
-                  {/* <MenuItem onClick={() => removeData(item.id)}> */}
+                 
                  
                   <Tooltip title="Delete contact details">
                     <Icon color="error" onClick={() => removeData(item.id)}>delete</Icon>
                   </Tooltip>
                
                   
-                  {/* </MenuItem>
-                </Menu> */}
-                  
+                 
 
                   
                 </TableCell>
@@ -228,7 +286,34 @@ const getData = () => {
             );
           })}
         </TableBody>
-      </Table>
+      </Table> */}
+       <MUIDataTable
+
+data={
+  customercontact.map((item, index) => {
+    // console.log(item)
+   
+      return [
+
+        ++index,
+        item.fname,
+        item.designation,
+        item.address,
+        item.mobno,
+        item.email,
+        item.id,
+      ]
+    
+  })
+}
+columns={columns}
+options={{
+    filterType: "textField",
+    responsive: "simple",
+    selectableRows: "none", 
+    rowsPerPageOptions: [10, 20, 40, 80, 100],
+}}
+/>
       <div>
         {shouldOpenEditorDialog && (
           <MemberEditorDialog

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from "sweetalert2";
+import MUIDataTable from "mui-datatables";
 import {
   Button,
   Card,
@@ -116,6 +117,55 @@ const getData = () => {
     
   });
 }
+const columns = [
+  {
+      name: "id", // field name in the row object
+      label: "S.No.", // column title that will be shown in table
+      options: {
+         
+          filter: true,
+      },
+  },
+  {
+    name: "id", // field name in the row object
+    label: "Party Name", // column title that will be shown in table
+    options: {
+       
+        filter: true,
+    },
+},
+{
+  name: "id", // field name in the row object
+  label: "Price", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+{
+  name: "id", // field name in the row object
+  label: "Action", // column title that will be shown in table
+  options: {
+    filter: true,
+    customBodyRender: (value, tableMeta, updateValue) => {
+        return (
+          <span>
+        
+        <IconButton>
+                  <Tooltip title="Delete contact details">
+                    <Icon color="error" onClick={() => removeData(tableMeta.rowData[3])
+                      }
+                    >delete</Icon>
+                  </Tooltip>
+                  </IconButton>
+        </span>
+        
+        )
+        
+    },
+},
+},
+]
   return (
     <div>
     <Card elevation={3}>
@@ -147,7 +197,7 @@ const getData = () => {
           
           </div>
       <Divider />
-      <Table >
+      {/* <Table >
         <TableHead>
           <TableRow>
             <TableCell className="pl-0" align="center">S.No.</TableCell>
@@ -183,7 +233,37 @@ const getData = () => {
             );
           })}
         </TableBody>
-      </Table>
+      </Table> */}
+      
+      <MUIDataTable
+               
+                data={
+                 
+                  productprice.map((item, index) => {
+                    // console.log(item)
+                   
+                      return [
+          
+                        ++index,
+                        item.firm_name,
+                        parseFloat(item.price).toLocaleString(undefined, {minimumFractionDigits:2}),
+                        item.id,
+                      ]
+                    
+                  })
+                  
+                }
+                columns={columns}
+                options={{
+                    filterType: "textField",
+                    responsive: "simple",
+                    selectableRows: "none",
+                   
+                     
+                    elevation: 0,
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
       <div>
         {shouldOpenEditorDialog && (
           <MemberEditorDialog

@@ -855,7 +855,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Sprice</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
                <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 

@@ -90,6 +90,7 @@ const CustomerForm = () => {
   const [company, setcompany] = useState(false);
   const [company_name, setcompany_name] = useState('');
   const [isAlive, setisAlive] = useState(false);
+  const [message, setmessage] = useState('');
  
   const handlebankSelect = (event,f) => {
    

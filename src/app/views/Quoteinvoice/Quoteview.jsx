@@ -592,9 +592,9 @@ function PrintMe(DivID) {
                       <MenuItem  onClick={() => editqoute()}>
                       Edit Quotaion
                       </MenuItem>
-                      {!is_revised &&<MenuItem  onClick={() => reviseqoute()}>
+                     {s!=="accept"?!is_revised &&<MenuItem  onClick={() => reviseqoute()}>
                       Revise Quotaion
-                      </MenuItem>}
+                      </MenuItem>:''}
                     
           </Menu>
           {s==="accept"&&

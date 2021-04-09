@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Breadcrumb,ConfirmationDialog } from "matx";
-import Axios from "axios";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -8,9 +7,7 @@ import Swal from "sweetalert2";
 import FormDialog from "./partycontact"
 import MemberEditorDialog from "./partycontact"
 import Tooltip from '@material-ui/core/Tooltip';
-import url from "../invoice/InvoiceService"
-// import { Button } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import url from "../invoice/InvoiceService";
 import {
     Table,
     TableHead,
@@ -44,30 +41,10 @@ const columnStyleWithWidthSno = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
-   
-
-    useEffect(() => {
-        url.get("parties").then(({ data }) => {
-            if (isAlive) setUserList(data);
-           
-        });
-        console.log(localStorage.getItem('rememberMe'))
-        return () => setIsAlive(false);
-    }, [isAlive]);
-    
     const [count, setCount] = useState(0);
-  
-    function getrow(e) {
-      url.get("parties").then(({ data }) => {
-        if (isAlive) setUserList(data);
-    });
-    return () => setIsAlive(false);
-    }
-  
-   
-  const [click, setClick] = useState([]); 
-  const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
-  const [
+    const [click, setClick] = useState([]); 
+    const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+    const [
     shouldOpenConfirmationDialog,
     setShouldOpenConfirmationDialog,
   ] = useState(false);
@@ -76,53 +53,34 @@ const SimpleMuiTable = () => {
    
   };
 
-  const handleDeleteUser = (user) => {
+    useEffect(() => {
+      // get the party Information
+        url.get("parties").then(({ data }) => {
+            if (isAlive) setUserList(data);
+           
+        });
+        
+       
+        return () => setIsAlive(false);
+    }, [isAlive]);
     
-    setShouldOpenConfirmationDialog(true);
-  };
+    
+   // get the party Information
+    function getrow(e) {
+      url.get("parties").then(({ data }) => {
+        if (isAlive) setUserList(data);
+    });
+    return () => setIsAlive(false);
+    }
+  
+   
+  
+
+  
 
     
-  const addNumber = () => { 
-    setClick([ 
-      ...click, 
-      { 
-        id: click.length, 
-        value: Math.random() * 10 
-      } 
-    ]); 
-  }; 
-  const removeData = (id) => {
-    
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this imaginary file!',
-      icon: 'danger',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`parties/${id}`)
-    .then(res => {
-        
-        getrow()
-        Swal.fire(
-          'Deleted!',
-          'Your imaginary file has been deleted.',
-          'success'
-        )
-        
-    })
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Your imaginary file is safe :)',
-          'error'
-        )
-      }
-    })
-    
-}
+  
+  
 
 const columns = [
   {
@@ -192,7 +150,7 @@ const columns = [
         
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-            console.log(tableMeta.rowData)
+           
             return (
               <span>
               <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }>
@@ -259,7 +217,7 @@ const columns = [
                 title={"Party"}
                 data={
                   userList.map((item, index) => {
-                    // console.log(item)
+                 
                    
                       return [
           

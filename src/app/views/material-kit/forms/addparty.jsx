@@ -702,10 +702,11 @@ const resetform = () => {
                     select
                     fullWidth
                     value={selectedValue}
-                    validators={[
-                      "required",
-                    ]}
-                    errorMessages={["this field is required"]}
+                    
+                    // validators={[
+                    //   "required",
+                    // ]}
+                    // errorMessages={["this field is required"]}
                     onChange={e => setSelectedValue(e.target.value)
                     }
                   >

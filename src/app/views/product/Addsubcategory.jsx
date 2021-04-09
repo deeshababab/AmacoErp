@@ -185,7 +185,8 @@ const capitalize_arr =(value) =>{
           customClass:{
             zIndex: 1000
           },
-           title:'Cancelled'
+           title:'Cancelled',
+           icon:'error'
           // 'Cancelled',
           // 'Your imaginary file is safe :)',
           // 'error',

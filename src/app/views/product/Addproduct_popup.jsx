@@ -5,9 +5,13 @@ import Select from 'react-select';
 import { useParams } from "react-router-dom";
 import { MDBSelect } from "mdbreact";
 import Swal from "sweetalert2";
-import FormDialog from "../product/Addcategory"
+import FormDialog from "../product/Addcategory";
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+
 import {
   Dialog,
+  Collapse,
   Divider,
   Switch,
   IconButton,
@@ -46,6 +50,7 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
 // import Addparty from "./addparty"
 import url,{capitalize_arr} from "../invoice/InvoiceService"
+import { identity } from "lodash";
 
 const ooptions = [
   {
@@ -226,7 +231,9 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const { id } = useParams();
   const [productcatid, setproductcatid] = useState(id);
   const [menuPosition, setMenuPosition] = useState(null);
-  
+  const [cat, setcat] = useState([]);
+  const [message, setmessage] = useState(true);
+  const [catid, setcatid] = useState('');
   const [
     shouldOpenConfirmationDialogproduct,
     setshouldOpenConfirmationDialogproduct,
@@ -271,6 +278,10 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const pushData1 = () => {
     setShouldOpenEditorDialog1(true);
   }
+  const setcat_id=(id)=>{
+   setcatid(id);
+   setMenuPosition(null)
+  }
 
   const handleDeleteUser = (user) => {
 
@@ -300,20 +311,29 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
 
 
     });
-    // url.get("categories/"+id).then(({ data }) => {
-    //   console.log(data.name)
-    //   setsubcategory(data.name)
+    url.get("all-categories").then(({ data }) => {
+      
+      setcat(data)
      
 
 
-    // });
+    });
     
     
   },[]);
   
    
     
-    
+    const handleRightClick = (event: React.MouseEvent) => {
+    if (menuPosition) {
+      return;
+    }
+    event.preventDefault();
+    setMenuPosition({
+      top: event.pageY,
+      left: event.pageX
+    });
+  };
  
 
   const submitValue = () => {
@@ -323,7 +343,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
       description: description?capitalize_arr(description):'',
       unit_price: unit_Price,
       unit_of_measure: unit_of_measue,
-      category_id: id,
+      category_id: catid,
       division_id: selectedValue,
       type: ptype,
       hsn_code: hsn,
@@ -347,7 +367,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
           text: 'Data saved successfully.',
         })
         .then((result) => {
-        history.push(`/product/viewproduct/${id}`)
+        handleClose()
         })
       })
       .catch(function (error) {
@@ -415,7 +435,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
         
         
       <ValidatorForm 
-      // onSubmit={handleFormSubmit}
+      onSubmit={submitValue}
        autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
             <Grid item sm={6} xs={12}>
@@ -665,58 +685,47 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               />
               
             </div>
-            <div className="flex mb-4">
-            <TextField
-                className="mr-2"
-                label="Category"
-                variant="outlined"
-                value={subcategory}
-                size="small"
-                style={{width:250}}
-                validators={[
-                  "required",
-                ]}
-                errorMessages={["this field is required"]}
-              
-                onChange={e => setmq(e.target.value)}
-                select
-              >
-                {category_list.map((item,id)=>(
-                <MenuItem>
-                    {item.name}
-                </MenuItem>
-                ))
-                }
-                
-                </TextField>
-            <TextField
-                className="mr-2"
-                label="Sub Category"
-                variant="outlined"
-                value={subcategory}
-                size="small"
-                style={{width:250}}
-                validators={[
-                  "required",
-                ]}
-                errorMessages={["this field is required"]}
-              
-                onChange={e => setmq(e.target.value)}
-                select
-              >
-                {category_list.map((item,id)=>(
-                <ListSubheader>
-                    {item.name}
-                </ListSubheader>
-                ))
-                }
-                
-                </TextField>
-                </div>
-              
+            <Button className="mb-4 w-full" variant="outlined" size="small" onClick={handleRightClick}>
+                 <span style={{textAlign:'left'}}>
+                 Select Category
+                 </span>
+
+            <Menu
+        open={!!menuPosition}
+        onClose={() => setMenuPosition(null)}
+        anchorReference="anchorPosition"
+        anchorPosition={menuPosition}
+      >
+        
+        {cat.map((item,i)=>
+        (
+         
+       
+        <NestedMenuItem
+          label={item.category.name}
+          parentMenuOpen={!!menuPosition}
+         
+        >
+        {item.sub_categories.length>0 && item.sub_categories.map((items,i)=>
+          (
+          <MenuItem onClick={()=>setcat_id(items.id)}>{items.name}</MenuItem>
+          ))}
+         
+          
+        </NestedMenuItem>
+      )
+
+        )}
+        
+        
+      </Menu>
+      </Button>
+     
             </Grid>
+            {message &&(<><Icon onClose={()=>setmessage(false)} color="error">error</Icon><span>Select the category</span></> )}
           </Grid>
           
+      
           <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit">
            <Icon>save</Icon> 
           <span className="pl-2 capitalize">Save</span>

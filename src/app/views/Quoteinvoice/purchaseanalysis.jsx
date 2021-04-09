@@ -8,11 +8,15 @@ import {
   // RadioGroup,
   // Grid,
   Card,
+  Tooltip,
+  Select,
   MenuItem,
   Table,
   TableHead,
   TableRow,
   TableCell,
+  InputLabel,
+  FormControl,
   TableBody,
   // Link,
   Icon,
@@ -93,6 +97,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
+  const [partyids, setpartyids] = useState();
+  const [productprice,setproductprice]=useState([])
+  const [catid, setcatid] = useState();
   const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
   
   let calculateAmount=[];
@@ -226,6 +233,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     });
   };
 
+
   const deleteItemFromInvoiceList = (index) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -307,6 +315,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setProductList(filtered)
    
   };
+  const setproductids=(id,index)=>{
+    setcatid(id)
+    setpartyids(party_id)
+    setShouldOpenEditorDialog(true)
+  }
   const calcualtep = (event,index) => {
     let tempItemList = [...state.item];
     
@@ -390,6 +403,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    setIsAlive(true)
+
    
   };
 
@@ -414,6 +429,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       item: data[0].rfq_details,
     });
    });
+   return setIsAlive(false)
   }, [id, isNewInvoice, isAlive, generateRandomId]);
 
   
@@ -425,6 +441,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setShouldOpenEditorDialog(true);
 
   }
+  
   let subTotalCost = 0;
   let GTotal = 0;
   let dis_per = 0;
@@ -638,7 +655,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
-                  <TextValidator
+                  {/* <TextValidator
                       label="Unit Price"
                       variant="outlined"
                       onChange={(event) => handleIvoiceListChange(event, index)}
@@ -660,8 +677,34 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                             {item.price}-{item.party.firm_name} 
                           </MenuItem>
                         ))} 
-                    </TextValidator>
-                    
+                    </TextValidator> */}
+                            {<><Tooltip title="Add price"><Icon onClick={()=>setproductids(item.product_id,index)} >add</Icon></Tooltip><FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
+        <Select
+          native
+         
+          // onChange={handleChange}
+         
+          onChange={(event) => calcualtep(event, index)}
+          label="Price"
+          inputProps={{
+            name: 'purchase_price',
+            id: 'outlined-age-native-simple',
+          }}
+          style={{width:150,height:40}}
+        >
+          <option></option>
+          
+       
+          {item.product[0].product_price.filter(x=>x.party.id===party_id).map((item, id) => (
+          <optgroup label={item.party.firm_name} style={{fontSize:12}}>
+            <option value={item.price}>{item.price}</option>
+          </optgroup>
+          ))}
+          
+        </Select>
+        </FormControl></>}
+                
                   </TableCell> 
 
                   
@@ -884,21 +927,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
+            contactid={status}
             open={shouldOpenEditorDialog}
-            productid={productid}
-            margin={margin}
-            marginprice={setmarginprice}
-            pprice={setpprice}
-            calcualteprice={calcualteprice}
-            productname={productname}
-            
+            catid={catid}
+            partyids={partyids}
+            productprice={setproductprice}
           />
         )}
         {shouldOpenConfirmationDialog && (
           <ConfirmationDialog
             open={shouldOpenConfirmationDialog}
             onConfirmDialogClose={handleDialogClose}
-            
             text="Are you sure to delete?"
           />
         )}

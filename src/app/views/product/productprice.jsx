@@ -20,7 +20,7 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import url, {getcategories,getProductList,getVendorList}from "../invoice/InvoiceService"
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice }) => {
+const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,partyids }) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -167,7 +167,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice 
   }
 
   useEffect(() => {
-    console.log(catid)
+   setcname(partyids)
     url.get("parties-except/"+catid).then(({ data }) => {
         console.log(data)
         setcustomerList(data)

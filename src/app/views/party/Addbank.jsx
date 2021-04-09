@@ -64,7 +64,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       const frmdetails = {
         party_id:foo,
         iban_no:iban_no,
-        bank_name:bank_name?capitalize_arr(bank_address):"",
+        bank_name:bank_name?capitalize_arr(bank_name):"",
         bank_address:bank_address?capitalize_arr(bank_address):"",
         account_no:account_no,
         
@@ -106,7 +106,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   const frmdetails = {
            party_id:foo,
            iban_no:iban_no,
-           bank_name:bank_name?capitalize_arr(bank_address):"",
+           bank_name:bank_name?capitalize_arr(bank_name):"",
            bank_address:bank_address?capitalize_arr(bank_address):"",
            account_no:account_no,
       
@@ -118,12 +118,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       .then(function (response) {
         // url.get("parties/" + foo).then(({ data }) => {
         //   customercontact(data[0].contacts);
-        //   Swal.fire({
-        //     title: 'Success',
-        //     icon:'success',
-        //     type: 'success',
-        //     text: 'Data saved successfully.',
-        //   })
+          Swal.fire({
+            title: 'Success',
+            icon:'success',
+            type: 'success',
+            text: 'Data saved successfully.',
+          })
         //   .then((result) => {
 
         //   })

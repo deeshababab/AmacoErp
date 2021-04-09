@@ -46,8 +46,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./Addmargin";
-import MemberEditorDialog from "./Addmargin";
+import FormDialog from "../product/productprice";
+import MemberEditorDialog from "../product/productprice";
 import FormDialog_product from "../../views/product/Addproduct_popup"
 import MemberEditorDialog_product from "../../views/product/Addproduct_popup";
 import moment from "moment";
@@ -97,6 +97,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [productid, setproductid] = useState('');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
+  const [indexvalue, setindexvalue] = useState();
   const [CustomerList, setCustomerList] = useState([]);
   const [customercontact, setcustomercontact] = useState([]);
   const [PriceList, setPriceList] = useState([]);
@@ -125,6 +126,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let id = tempId.substr(2, tempId.length - 1);
     setState((state) => ({ ...state, id }));
   }, []);
+  const [catid,setcatid]=useState('')
+  const [productprice,setproductprice]=useState([])
   const formData =new FormData()
   const handleFileSelect = (event,index) => {
 
@@ -514,8 +517,58 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
   
   const handleDialogClose = () => {
+   
     setShouldOpenEditorDialog(false);
+    
+     
+      url.get("products/" + catid).then(({ data }) => {
+        let tempItemList = [...state.item];
+        data.prices.map((element, i) => {
+        
+        })
+        setProductList1(data.prices)
+        tempItemList.map((element, i) => {
+          let sum=0;
+        
+          if(indexvalue===i)
+          {
+            
+            element['product_id']= catid;
+            element['descriptionss']= data.product[0].description;
+            
+            
+              
+              
+              
+                element.product_price_list.splice(id, element.product_price_list.length);
+            
+                data.prices.map((v, i) => {
+             
+                  element.product_price_list.push({
+                    price:v.price,
+                    firm_name:v.firm_name,
+                    id:v.product_id
+                  })
+                 
+                })
+             
+          
+             }
+          return element
+      })
+      setState({
+        ...state,
+        item: tempItemList,
+      });
+    console.log(tempItemList)
+
+    })
+     
+  
+
     setshouldOpenEditorDialogproduct(false);
+    setIsAlive(true)
+
    
   };
   const setcontact= (event) => {
@@ -550,7 +603,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     //   }); 
     
     });
-    
+ 
+    return setIsAlive(false)
     
     
 //     url.get(url+"rfq/"+ id).then(({ data }) => {
@@ -679,6 +733,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
     setshouldOpenEditorDialogproduct(true)
   }
+  }
+  const setproductids=(id,index)=>{
+    setcatid(id)
+    setindexvalue(index)
+    setShouldOpenEditorDialog(true)
   }
   var cars = [
     { id: 1, model: "CRV", company: "Honda" },
@@ -851,9 +910,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Price</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Sprice</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
                <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
@@ -997,7 +1056,7 @@ file_upload
                       value={item.quantity}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                   {/* <TextField
                       label="Unit Price"
                       variant="outlined"
@@ -1027,7 +1086,7 @@ file_upload
                        
                     </TextField> */}
                     {/* <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel> */}
-                    <FormControl variant="outlined" className={classes.formControl}>
+                    {<>{item.product_id?(<Tooltip title="add price"><Icon onClick={()=>setproductids(item.product_id,index)}>add</Icon></Tooltip>):''}<FormControl variant="outlined" className={classes.formControl}>
         <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
         <Select
           native
@@ -1042,7 +1101,9 @@ file_upload
           }}
           style={{width:90,height:40}}
         >
-          <option aria-label="None" value="" />
+          <option></option>
+          
+       
           {item.product_price_list.map((item, id) => (
           <optgroup label={item.firm_name} style={{fontSize:12}}>
             <option value={item.price}>{item.price}</option>
@@ -1050,7 +1111,7 @@ file_upload
           ))}
           
         </Select>
-        </FormControl>
+        </FormControl></>}
                    
                     
                     
@@ -1328,7 +1389,7 @@ file_upload
       </ValidatorForm>
       </div>
       
-      {shouldOpenEditorDialog && (
+      {/* {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
             open={shouldOpenEditorDialog}
@@ -1346,6 +1407,22 @@ file_upload
             open={shouldOpenConfirmationDialog}
             onConfirmDialogClose={handleDialogClose}
             
+            text="Are you sure to delete?"
+          />
+        )} */}
+      {shouldOpenEditorDialog && (
+          <MemberEditorDialog
+            handleClose={handleDialogClose}
+            contactid={status}
+            open={shouldOpenEditorDialog}
+            catid={catid}
+            productprice={setproductprice}
+          />
+        )}
+        {shouldOpenConfirmationDialog && (
+          <ConfirmationDialog
+            open={shouldOpenConfirmationDialog}
+            onConfirmDialogClose={handleDialogClose}
             text="Are you sure to delete?"
           />
         )}
