@@ -853,7 +853,7 @@ const CustomerForm = () => {
                       )} */}
                     {/* </div>
                   </div> */}
-                  <div
+                  {/* <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
                       [classes.dropZone]: true,
@@ -876,7 +876,7 @@ file_upload
   />
 </Icon>):<><img src={ref_billno}  /><Icon color="error">close</Icon></>}
 </div>
-</div>
+</div> */}
                 
                   
                  <TextField
