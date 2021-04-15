@@ -42,7 +42,7 @@ const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
     url.get("expense").then(({ data }) => {
-      // console.log(data[0].payment_account[0].name)
+      
        setexpenseList(data);
        
     });
@@ -72,7 +72,7 @@ const setstatus=(id)=>{
           text: 'Updated successfully.',
         });
         url.get("expense").then(({ data }) => {
-          console.log(data)
+          
            setexpenseList(data);
            
         });
@@ -111,7 +111,7 @@ const removeData = (id) => {
       url.delete(`expense/${id}`)
         .then(res => {
           url.get("expense").then(({ data }) => {
-            console.log(data)
+            
              setexpenseList(data);
              
           });
@@ -211,6 +211,10 @@ const columns = [
           <Tooltip title="delete">
                <Icon color="error" onClick={() => removeData(tableMeta.rowData[7])} style={{cursor:'pointer'}}>close</Icon>
             </Tooltip>
+            <Tooltip title="Edit">
+                 <Icon color="secondary" onClick={() =>history.push(`/editexpense/${tableMeta.rowData[7]}`)
+         } style={{cursor:'pointer'}}>edit</Icon>
+        </Tooltip>
             <Tooltip title="view more">
                  <Icon color="primary" onClick={() =>history.push(`/expensedetails/${tableMeta.rowData[7]}`)
          } style={{cursor:'pointer'}}>arrow_forward</Icon>
@@ -304,7 +308,7 @@ const columns = [
       <MUIDataTable
         title={"New Expenses List"}
         data={expenseList.map((item, index) => {
-        // console.log(item.payment_account[0].name)
+        
           return [
             ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),

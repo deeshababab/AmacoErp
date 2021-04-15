@@ -296,9 +296,7 @@ const Customer = ({
     // formData.append('payment_account_id',payment_account_id)
     // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
     // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
-    // console.log(formData.get('payment_account_id'))
-    // console.log(formData.get('from_date'))
-    // console.log(formData.get('to_date'))
+    
     url
       .post(
         "advance-payment-statement?" +

@@ -152,7 +152,6 @@ const OrderList = () => {
               responsive: "standard",
               elevation: 0,
               rowsPerPageOptions: [10, 20, 40, 80, 100],
-              // onRowsDelete: (data) => console.log(data),
               customSearchRender: (
                 searchText,
                 handleSearch,

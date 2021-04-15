@@ -40,7 +40,7 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 
 const NotificationCard = ({ notification, isFirstIndex, isLastIndex }) => {
   const classes = useStyles();
-  // console.log(notification);
+ 
   return (
     <div className="relative">
       <div className="pl-12 pr-8 py-6">

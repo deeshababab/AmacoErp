@@ -36,12 +36,14 @@ const CustomerViewer = () => {
   return (
     <div className="m-sm-30">
       <div className="mb-sm-30">
+      <div className="flex flex-wrap justify-between pt-2">
         <Breadcrumb
           routeSegments={[
             { name: "Party", path: "/party/viewparty" },
             { name: "Party Details" },
           ]}
         />
+        </div>
       </div>
       <div>
       {shouldOpenEditorDialog && (

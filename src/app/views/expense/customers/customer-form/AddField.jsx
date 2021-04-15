@@ -172,7 +172,7 @@ const MemberEditorDialog1= ({ uid, open, handleClose,accounttype,catid,catname,s
     url.post('columns',json)
     .then(({ data }) => {
 
-        console.log(data)
+       
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -257,7 +257,7 @@ const MemberEditorDialog1= ({ uid, open, handleClose,accounttype,catid,catname,s
     
     
     url.get(`columns/${catid}`).then(({ data }) => {
-      console.log(data[0].column)
+     
        setfield(data[0].column)
      })
     

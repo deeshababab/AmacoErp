@@ -46,8 +46,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./Addmargin";
-import MemberEditorDialog from "./Addmargin";
+import FormDialog from "../product/productprice";
+import MemberEditorDialog from "../product/productprice";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
 import FormDialog_product from "../../views/product/Addproduct_popup"
@@ -98,6 +98,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [customercontact, setcustomercontact] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
   const [ProductList1, setProductList1] = useState([]);
+  const [catid,setcatid]=useState()
+  const [indexvalue,setindexvalue]=useState()
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -283,7 +285,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (indexset === i) 
       {
-        console.log(element.quantity_required)
+        
         element['purchase_price']=pprice;
         element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(pprice)).toFixed(2);
         element['total_amount']=((element.sell_price)*element.quantity).toFixed(2);
@@ -521,17 +523,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     tempItemList.map((answer, i) => {  
       formData.append(`quotation_detail${i}`,JSON.stringify(answer))
-      console.log(formData.get(`quotation_detail${i}`))
       answer.files&& (formData.append(`file${i}`,answer.files))
     })
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
+    
 
     url.post(`sale-quotation-update`,formData)
       .then(function (response) {
         
-         console.log(response)
+        
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -573,7 +572,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   useEffect(() => {
     getCustomerList().then(({ data }) => {
       setCustomerList(data);
-      // console.log(data)
+      
 
     });
     url.get("products").then(({ data }) => {
@@ -587,14 +586,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get(`sale-quotation/${id}`).then(({ data }) => {
       
       setQuote_date(data[0].ps_date)
-      console.log(data[0])
+     
       setProductList1(data[0].quotation_details[0].product_price_list)
       if(data[0].contact!==null)
       {
       setcontactid(data[0].contact.id)
       }
       setparty_id(data[0].party_id)
-      console.log(data[0].quotation_details)
+      
       setState({
         ...state,
         item: data[0].quotation_details,
@@ -625,7 +624,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       let tempItemList = [...state.item];
      
       // setProductList1(data.prices)
-      // console.log(data.prices)
+      
        
     
     tempItemList.map((element, i) => {
@@ -691,6 +690,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setshouldOpenEditorDialogproduct(true)
   }
 
+  }
+
+  const setproductids=(id,index)=>{
+    setcatid(id)
+    setindexvalue(index)
+    setShouldOpenEditorDialog(true)
   }
   let subTotalCost = 0;
   let GTotal = 0;
@@ -849,22 +854,22 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Item Name</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
+              <TableCell className="px-0" style={{width:'120px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>Margin %</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
-               <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
+              <TableCell className="px-0"style={{width:'120px'}}>Remark</TableCell>
+               <TableCell className="px-0" style={{width:'40px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item.product)
+              
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -980,7 +985,7 @@ file_upload
                       value={item.quantity}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
                   {/* <TextField
                       label="Unit Price"
                       variant="outlined"
@@ -1005,7 +1010,7 @@ file_upload
                         </MenuItem>
                       ))} 
                     </TextField> */}
-                    <FormControl variant="outlined" className={classes.formControl}>
+                    {<span><FormControl variant="outlined" className={classes.formControl}>
         <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
         <Select
           native
@@ -1018,7 +1023,7 @@ file_upload
             name: 'purchase_price',
             id: 'outlined-age-native-simple',
           }}
-          style={{width:90,height:40}}
+          style={{width:80,height:40}}
         >
           <option   />
           {item.product_price_list.map((item, id) => (
@@ -1028,13 +1033,13 @@ file_upload
           ))}
           
         </Select>
-        </FormControl>
+        </FormControl>{item.product_id?(<Tooltip title="add price"><Icon onClick={()=>setproductids(item.product_id,index)}>add</Icon></Tooltip>):''}</span>}
                     
                   </TableCell> 
 
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
                     <TextValidator
                       label="Margin"
                       onChange={(event) => calcualtep(event, index)}
@@ -1043,7 +1048,6 @@ file_upload
                       variant="outlined"
                       size="small"
                       name="margin"
-                      style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.margin}
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -1130,7 +1134,7 @@ file_upload
               size="small" onClick={addItemToInvoiceList}>Add Item</Button>
           </div>
         
-        <h6><strong>Terms</strong></h6>
+        <h6 className="pl-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         
@@ -1302,13 +1306,9 @@ file_upload
       {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
+            contactid={status}
             open={shouldOpenEditorDialog}
-            productid={productid}
-            margin={margin}
-            marginprice={setmarginprice}
-            pprice={setpprice}
-            calcualteprice={calcualteprice}
-            productname={productname}
+            catid={catid}
             
           />
         )}
@@ -1316,7 +1316,6 @@ file_upload
           <ConfirmationDialog
             open={shouldOpenConfirmationDialog}
             onConfirmDialogClose={handleDialogClose}
-            
             text="Are you sure to delete?"
           />
         )}

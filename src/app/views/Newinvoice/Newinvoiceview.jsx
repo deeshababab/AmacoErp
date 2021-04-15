@@ -268,37 +268,37 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         }
       }
     });
-    console.log(result)
+    
    
   }
   
 
   useEffect(() => {
 
-    console.log(ans)
+    
    
 
     
     myFunction()
     // translate('Ik spreek Engels', {to: 'en'}).then(res => {
-    //   console.log(res);
+  
     //   //=> I speak English
    
     //   //=> nl
     //   }).catch(err => {
-    //   console.error(err);
+   
     //   });
    
     
   // url.get(`https://api.mymemory.translated.net/get?q=Hello%20World!&langpair=en|ar`).then(({ data }) => {
-  //   console.log(data)
+ 
   // })
     
     document.title = "VAT Invoice - Amaco"
    
     url.get("invoice/" + id).then(({ data }) => {
       if (data) {
-        console.log(data)
+        
         setquoteid(data[0].quotation_id)
         setdis_per(data[0].discount_in_percentage)
         setpodetails(data[0].invoice_detail)
@@ -327,7 +327,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         // let street1=data[0].quotation.party.street;
         // let zipcode1=data[0].quotation.party.zipcode;
         // let res1=city1.concat(street1,zipcode1);
-        // console.log(res1)
+       
         // url.get(`https://api.mymemory.translated.net/get?q=${res1}!&langpair=en|ar`).then(({ data }) => {
         // setaraddress(data.responseData.translatedText)
         // })

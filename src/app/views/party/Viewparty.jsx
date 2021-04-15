@@ -176,7 +176,7 @@ const columns = [
     <div>
        <div className="m-sm-30">
       <div  className="mb-sm-30">
-      <div className="flex flex-wrap justify-between mb-6">
+      <div className="flex flex-wrap justify-between">
           <Breadcrumb
             routeSegments={[
               // { name: "", path: "./Addparty" },

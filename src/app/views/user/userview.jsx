@@ -51,7 +51,7 @@ const SimpleMuiTable = () => {
             if (isAlive) setUserList(data);
            
         });
-        console.log(localStorage.getItem('rememberMe'))
+        
         return () => setIsAlive(false);
     }, [isAlive]);
     
@@ -196,7 +196,7 @@ const columns = [
         
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-            console.log(tableMeta.rowData)
+           
             return (
               <span>
               {/* <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }> */}
@@ -269,7 +269,7 @@ const columns = [
                 title={"Users"}
                 data={
                   userList.map((item, index) => {
-                    // console.log(item)
+                   
                    
                       return [
           

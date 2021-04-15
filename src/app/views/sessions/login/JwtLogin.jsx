@@ -88,14 +88,14 @@ const JwtLogin = () => {
   };
 
   const handleFormSubmit = async (event) => {
-    console.log(userInfo.email)
+    
     setLoading(true);
     try {
       await login(userInfo.email, userInfo.password);
      
       history.push("/");
     } catch(e) {
-      // console.log(e);
+    
       setMessage(e.message);
       setLoading(false);
     }

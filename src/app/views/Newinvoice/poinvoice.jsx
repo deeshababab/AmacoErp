@@ -243,7 +243,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     // updateSidebarMode({ mode: "close" })
     document.title="Purchase Order - Amaco"
     url.get("purchase-quotation/"+id).then(({ data }) => {
-    //  console.log(data[0].rfq.id)
+    
     // setcname(data[0].party.fname)
       setpo_number(data[0].po_number)
 

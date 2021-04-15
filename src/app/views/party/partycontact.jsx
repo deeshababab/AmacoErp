@@ -86,7 +86,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       // setcdescription('')
       // setcname('')
       
-      console.log(frmdetails)
+      
       url.put("contact/"+contactid, frmdetails)
         .then(function (response) {
           url.get("parties/" + foo).then(({ data }) => {
@@ -130,7 +130,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     // setcdescription('')
     // setcname('')
     
-    console.log(frmdetails)
+    
     url.post('contact', frmdetails)
       .then(function (response) {
         url.get("parties/" + foo).then(({ data }) => {

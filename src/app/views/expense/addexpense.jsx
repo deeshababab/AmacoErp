@@ -261,7 +261,7 @@ const SimpleForm = ({ open, handleClose }) => {
 
         });
         url.get("categories/" + id).then(({ data }) => {
-            console.log(data.name)
+           
             setsubcategory(data.name)
 
 
@@ -293,7 +293,7 @@ const SimpleForm = ({ open, handleClose }) => {
         url.post('products', frmdetails)
             .then(function (response) {
 
-                console.log(response)
+               
                 Swal.fire({
                     title: 'Success',
                     icon:'success',

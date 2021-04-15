@@ -168,7 +168,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     updateSidebarMode({ mode: "close" })
     document.title = "VAT Invoice - Amaco"
     url.get("purchase-invoice/" + id).then(({ data }) => {
-      console.log(data[0].quotation.party.firm_name)
+      
       if (data) {
         setdis_per(data[0].discount_in_percentage)
         setpodetails(data[0].purchase_invoice_detail)
@@ -627,7 +627,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
               <TableBody >
                 {podetails.map((item, index) => {
 
-                   console.log(item.quotation_detail)
+                  
 
                   return (
 

@@ -106,7 +106,12 @@ export const navigations = [
     {
       name: "Product",
       path: "/product/producthistory",
-      icon:"folder",
+      
+    },
+    {
+      name: "Sales",
+      path: "/salesreport",
+      
     },
   ]
 },

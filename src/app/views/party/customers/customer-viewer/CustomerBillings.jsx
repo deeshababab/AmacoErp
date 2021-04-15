@@ -78,7 +78,6 @@ const CustomerBillings = () => {
 
     url.get("parties/" + foo).then(({ data }) => {
       setcustomercontact(data[0].contacts);
-      console.log(data[0].contacts)
       setbankdetails(data)
      
     });
@@ -291,7 +290,7 @@ const columns = [
 
 data={
   customercontact.map((item, index) => {
-    // console.log(item)
+   
    
       return [
 

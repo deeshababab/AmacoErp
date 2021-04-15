@@ -145,7 +145,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
     
     url.get(`product-quotation-detail/${productid}`).then(({ data }) => {
     if (isAlive) setmarginList(data);
-      console.log(data)
+      
 
     });
     
@@ -193,7 +193,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
 
-        console.log(tableMeta.rowData)
+        
           return (
             <Tooltip title="Select">
               <Icon color="primary" onClick={() => setmargin(tableMeta.rowData[2],tableMeta.rowData[1],tableMeta.rowData[3])

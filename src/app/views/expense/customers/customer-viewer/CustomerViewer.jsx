@@ -17,6 +17,7 @@ const CustomerViewer = () => {
   return (
     <div className="m-sm-30">
       <div className="mb-sm-30">
+      <div className="flex flex-wrap justify-between mb-6">
         <Breadcrumb
           routeSegments={[
             // { name: "Add Expense", path: "/addexpense" },
@@ -34,6 +35,7 @@ const CustomerViewer = () => {
           Add New
           </Button>
           </Link>
+          </div>
           </div>
         
       </div>

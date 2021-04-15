@@ -193,7 +193,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     document.title = "Delivery Note - Amaco"
     url.get("delivery-notes/" + id).then(({ data }) => {
      
-        console.log(data)
+        
       setcreatedate(data[1].created_at)
       if(data[1].quotation.contact!==null)
       {
@@ -209,7 +209,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     });
     // url.get("invoice/" + id).then(({ data }) => {
      
-    //   console.log(data)
+   
     //      setcreatedate(data[0].issue_date)
     //      setpodetails(data[0].invoice_detail)
     //      setcompany(data[0].quotation.party.firm_name)

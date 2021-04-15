@@ -7,10 +7,6 @@ import moment from "moment";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
 import history from "history.js";
-import { useDropzone } from "react-dropzone";
-import clsx from "clsx";
-
-
 import {
   Grid,
   FormControl,
@@ -46,18 +42,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import url,{ getpaymentaccount } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
 import { now } from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
-import logo from "../../pdf.png"
-
-const usestyles = makeStyles(({ palette, ...theme }) => ({
-  dropZone: {
-    transition: "all 350ms ease-in-out",
-    border: "2px dashed rgba(var(--body),0.3)",
-    "&:hover": {
-      background: "rgba(var(--body), 0.2) !important",
-    },
-  },
-}));
 const role=localStorage.getItem('role')
 
 const CustomerForm = () => {
@@ -71,13 +55,6 @@ const CustomerForm = () => {
     { value: '2', label: 'Other' },
 
   ];
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    acceptedFiles,
-  } = useDropzone({ accept: "image/*" });
-  const classes = usestyles();
   let formData = new FormData();
   const [tabIndex, setTabIndex] = useState(0);
   const [created_by, setcreated_by] = useState(1);
@@ -110,7 +87,6 @@ const CustomerForm = () => {
   const  [list,setList] = useState([]);
   const [bank_ref_no, setbank_ref_no] = useState('');
   const [bank_slip, setbank_slip] = useState();
-  const [ref_billno, setref_billno] = useState();
   const [company, setcompany] = useState(false);
   const [company_name, setcompany_name] = useState('');
   const [isAlive, setisAlive] = useState(false);
@@ -135,7 +111,6 @@ const CustomerForm = () => {
     const src = URL.createObjectURL(event.target.files[0]);
     
     setfile_path(event.target.files[0])
-    setref_billno(src)
   
     
     
@@ -252,7 +227,7 @@ const CustomerForm = () => {
       setpayment_account_id(i)
       setpayment_account_name(name)
       setMenuPosition(null);
-      
+    
     }
   };
   const Addnewsubcat = (i,n) => {
@@ -374,7 +349,7 @@ const CustomerForm = () => {
     files.map((answer, i) => {  
       // formData.append(`quotation_detail${i}`,JSON.stringify(answer))
       formData.append(`file${answer.column_id}`,answer.file)
-     
+      
       // answer.files&& (formData.append(`file${i}`,answer.files))
     })
     
@@ -502,7 +477,7 @@ const CustomerForm = () => {
         <Breadcrumb
           routeSegments={[
             { name: "Expense", path: "/expenseview" },
-            { name: "Expense Entry" },
+            { name: "Update Expense" },
           ]}
         />
       </div>
@@ -544,7 +519,7 @@ const CustomerForm = () => {
 
       <Card elevation={3}>
         <div className="flex p-4">
-          <h4 className="m-0">Expense Entry</h4>
+          <h4 className="m-0">Update Expense</h4>
         </div>
         <Divider className="mb-2" />
 
@@ -607,7 +582,7 @@ const CustomerForm = () => {
                     // onChange={e => setpayment_account_id(e.target.value)}
                   />
                 {field.map((item, index) => {
-                   
+                    
                 return (
                   <span>
                  {item.type==="file" &&(
@@ -827,57 +802,6 @@ const CustomerForm = () => {
                   
                    
                  />
-                 {/* <div
-                    className={clsx({
-                      "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
-                      [classes.dropZone]: true,
-                      "bg-light-gray": !isDragActive,
-                      "bg-gray": isDragActive,
-                    })}
-                    {...getRootProps()}
-                    onChange={(e)=> handlebillSelect(e)}
-                  >
-                     <input type="file" hidden/>
-                    <div className="flex-column items-center" >
-                   
-                      <Icon >
-                      file_upload
-                      
-                      </Icon>
-                      <img src={ref_billno} ></img>
-                      {/* {imageList.length ? (
-                        <span>{imageList.length} images were selected</span>
-                      ) : (
-                        <span>Drop product images</span>
-                      )} */}
-                    {/* </div>
-                  </div> */}
-                  {/* <div
-                    className={clsx({
-                      "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
-                      [classes.dropZone]: true,
-                      "bg-light-gray": !isDragActive,
-                      "bg-gray": isDragActive,
-                    })}
-                    {...getRootProps()}
-                    onChange={(e)=> handlebillSelect(e)}
-                  >
-                  <div className="flex-column items-center" >
-                  {!ref_billno?(<Icon
-  variant="contained"
-  component="label"
-  onChange={(event) => handlebillSelect(event)}
->
-file_upload
-  <input
-    type="file"
-    hidden
-  />
-</Icon>):<><img src={ref_billno}  /><Icon color="error">close</Icon></>}
-</div>
-</div> */}
-                
-                  
                  <TextField
                     className="mb-4 w-full"
                     label="Referrence Bill No"

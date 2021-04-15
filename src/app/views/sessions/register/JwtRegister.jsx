@@ -42,7 +42,7 @@ const JwtRegister = () => {
       register(state.email, state.username, state.password);
       history.push("/");
     } catch(e) {
-      // console.log(e);
+     
     }
   };
 

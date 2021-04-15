@@ -28,7 +28,7 @@ const SimpleMuiTable = () => {
     }, [isAlive]);
     const deleteeployee = (id) => {  
             debugger;  
-            // console.log(id)
+          
            
           }; 
    

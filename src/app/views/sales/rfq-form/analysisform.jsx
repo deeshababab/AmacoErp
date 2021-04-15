@@ -53,10 +53,10 @@ const AnalysisForm = ({ uid, open, handleClose }) => {
 
   const handleFormSubmit = async (event) => {
   
-    // console.log(analysisInfo);
+   
     url.post('analyse', analysisInfo)
       .then(function (response) {
-        // console.log(response);
+        
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -74,7 +74,7 @@ const AnalysisForm = ({ uid, open, handleClose }) => {
      
    
       .catch(function (error) {
-        // console.log(error)
+       
       })
 
     
@@ -82,7 +82,7 @@ const AnalysisForm = ({ uid, open, handleClose }) => {
   };
   useEffect(() => {
     getVendorList().then(({ data }) => {
-      // console.log(data)
+    
       setCustomerList(data)
     
   });

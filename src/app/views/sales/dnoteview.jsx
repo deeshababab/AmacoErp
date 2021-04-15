@@ -49,11 +49,8 @@ const SimpleMuiTable = () => {
   }
   useEffect(() => {
     url.get("delivery-notes").then(({ data }) => {
-      console.log(data)
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
-      // console.log(myJSON)
-      // console.log(data.length)
       // if(data.length)
       // {
       //   setUserList(data);
@@ -66,7 +63,6 @@ const SimpleMuiTable = () => {
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-    // console.log(invoiceId)
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
@@ -132,15 +128,12 @@ const SimpleMuiTable = () => {
     })
     // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
 
     // })
     // getrow()
     // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
-    //     console.log('res', res)
     // })
   }
   const columns = [
@@ -191,7 +184,6 @@ const SimpleMuiTable = () => {
     //     options: {
     //         filter: true,
     //         customBodyRender: (value, tableMeta, updateValue) => {
-    //              console.log(tableMeta.rowData)
     //             return (
     //             <IconButton onClick={() => removeData(tableMeta.rowData[4])
     //             }
@@ -211,7 +203,6 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta.rowData)
           return (
             <span>
             <Link to={"/invview/" + tableMeta.rowData[4]}>

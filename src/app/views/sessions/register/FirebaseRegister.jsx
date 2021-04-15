@@ -62,7 +62,7 @@ const FirebaseRegister = () => {
     } catch(e) {
       setMessage(e.message);
       setLoading(false);
-      // console.log(e);
+      
     }
   }
 
@@ -73,7 +73,7 @@ const FirebaseRegister = () => {
       history.push("/");
     } catch(e) {
       setLoading(false);
-      // console.log(e);
+     
       setMessage(e.message);
     }
   };

@@ -54,7 +54,7 @@ Mock.onPost("/api/notification/add").reply(config => {
 
 Mock.onPost("/api/notification/delete").reply(config => {
   let { id } = JSON.parse(config.data);
-  // console.log(config.data);
+  
 
   const response = NotificationDB.list.filter(
     notification => notification.id !== id

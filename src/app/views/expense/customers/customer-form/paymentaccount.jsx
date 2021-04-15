@@ -129,7 +129,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
     {
     url.get(`account-subcategories/${catid}`)
       .then(function (response) {
-        console.log(response.data)
+        
         setcatList(response.data)
         setcat(response.data)
 
@@ -139,7 +139,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
     {
     url.get(`account-subcategories/0`)
       .then(function (response) {
-        console.log(response.data)
+       
         setcatList(response.data)
 
     })
@@ -246,7 +246,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
             data={
                  
               catList.map((item, index) => {
-                // console.log(item)
+                
                
                   return [
       

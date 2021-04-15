@@ -189,7 +189,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        // console.log(element.product[0].product_price.price)
+        
         // element['purchase_price']=price;
         // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
         element['total_amount']=((event.target.value)*element.quantity).toFixed(2);
@@ -271,7 +271,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const calcualteprice = (event,index) => {
     event.persist()
     let tempItemList = [...state.item];
-    console.log(tempItemList)
     
     tempItemList.map((element, i) => {
       let sum=0;
@@ -328,7 +327,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        console.log(event.target.value)
         
         element['quantity_required']= event.target.value;
         
@@ -376,7 +374,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.transaction_type="purchase"
     arr.ps_date=Quote_date
     const json = Object.assign({}, arr);
-    console.log(json)
     url.post('purchase-quotation', json)
       .then(function (response) {
         
@@ -465,8 +462,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   return (
     
   <div className="m-sm-30">
-    <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
+    
+    
     <Card elevation={3}>
+    <div className={clsx("invoice-viewer py-4", classes.invoiceEditor)}>
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
@@ -580,7 +579,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -655,7 +653,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
-                  {/* <TextValidator
+                  <TextValidator
                       label="Unit Price"
                       variant="outlined"
                       onChange={(event) => handleIvoiceListChange(event, index)}
@@ -667,25 +665,26 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
                       value={item.purchase_price? item.purchase_price:""}
                       select
+                      required
                       
                       
                     >
-                     
-                       {item.product[0].product_price.map((item) => (
+                     {!item.product[0].product_price.filter(x=>x.party.id===party_id).length?<MenuItem onClick={()=>setproductids(item.product_id,index)}><Icon>add</Icon>Add New</MenuItem>:''}
+                       {item.product[0].product_price.filter(x=>x.party.id===party_id).map((item, id) => (
                           
                           <MenuItem value={item.price} key={item.id}>
-                            {item.price}-{item.party.firm_name} 
+                            {item.price}
                           </MenuItem>
                         ))} 
-                    </TextValidator> */}
-                            {<><Tooltip title="Add price"><Icon onClick={()=>setproductids(item.product_id,index)} >add</Icon></Tooltip><FormControl variant="outlined" className={classes.formControl}>
+                    </TextValidator>
+                            {/* {<><FormControl variant="outlined" className={classes.formControl}>
         <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
         <Select
           native
          
           // onChange={handleChange}
          
-          onChange={(event) => calcualtep(event, index)}
+          onChange={(event) => handleIvoiceListChange(event, index)}
           label="Price"
           inputProps={{
             name: 'purchase_price',
@@ -703,7 +702,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           ))}
           
         </Select>
-        </FormControl></>}
+        </FormControl>
+        {!item.product[0].product_price.filter(x=>x.party.id===party_id).length?<Tooltip title="Add price"><Icon onClick={()=>setproductids(item.product_id,index)} >add</Icon></Tooltip>:''}</>} */}
                 
                   </TableCell> 
 
@@ -756,7 +756,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </TableBody>
         </Table>
         
-        <h6><strong>Terms</strong></h6>
+        <h6 className="pl-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         
@@ -921,8 +921,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </div>
         </div>
       </ValidatorForm>
-      </Card>
+      
       </div>
+      </Card>
       
       {shouldOpenEditorDialog && (
           <MemberEditorDialog

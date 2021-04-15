@@ -368,7 +368,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (indexset === i) 
       {
-        // console.log(element.product[0].product_price.price)
+        
         
         element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
         element['total_amount']=((element['sell_price'])*element.quantity).toFixed(2);
@@ -486,17 +486,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     tempItemList.map((answer, i) => {  
       formData.append(`quotation_detail${i}`,JSON.stringify(answer))
-      console.log(formData.get(`quotation_detail${i}`))
       answer.files&& (formData.append(`file${i}`,answer.files))
     })
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
+    
     
     url.post('sale-quotation',formData)
       .then(function (response) {
         
-         console.log(response)
+        
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -560,7 +557,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         ...state,
         item: tempItemList,
       });
-    console.log(tempItemList)
+   
 
     })
      
@@ -668,7 +665,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get("products/" + event.target.value).then(({ data }) => {
         let tempItemList = [...state.item];
         data.prices.map((element, i) => {
-            // console.log(element)
+            
         })
         setProductList1(data.prices)
         // setProductList1(data.prices)
@@ -994,9 +991,10 @@ file_upload
                       
                       size="small"
                       value={item.product_id?item.product_id:""}
-                    //   validators={["required"]}
+                      required
+                      // validators={["required"]}
                       
-                    //   errorMessages={["this field is required"]}
+                      // errorMessages={["this field is required"]}
                     select
                     >
                       <MenuItem value="false">
@@ -1086,19 +1084,21 @@ file_upload
                        
                     </TextField> */}
                     {/* <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel> */}
-                    {<>{item.product_id?(<Tooltip title="add price"><Icon onClick={()=>setproductids(item.product_id,index)}>add</Icon></Tooltip>):''}<FormControl variant="outlined" className={classes.formControl}>
+                    {<><FormControl variant="outlined" className={classes.formControl}>
         <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
         <Select
           native
          
           // onChange={handleChange}
-         
+          required
           onChange={(event) => calcualtep(event, index)}
           label="Price"
           inputProps={{
             name: 'purchase_price',
             id: 'outlined-age-native-simple',
+            style: { textAlign: 'right' }
           }}
+         
           style={{width:90,height:40}}
         >
           <option></option>
@@ -1111,7 +1111,7 @@ file_upload
           ))}
           
         </Select>
-        </FormControl></>}
+        </FormControl>{item.product_id?(<Tooltip title="add price"><Icon onClick={()=>setproductids(item.product_id,index)}>add</Icon></Tooltip>):''}</>}
                    
                     
                     
@@ -1220,7 +1220,7 @@ file_upload
               size="small" onClick={addItemToInvoiceList}>Add Item</Button>
           </div>
         
-        <h6><strong>Terms</strong></h6>
+        <h6 className="px-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         

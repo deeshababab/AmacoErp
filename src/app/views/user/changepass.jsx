@@ -26,14 +26,14 @@ const SimpleForm = () => {
     date: new Date(),
   });
   const handleFormSubmit = (event) => {
-    console.log(user.id)
+    
     const formdata={
       id:user.id,
       password:opassword
     }
-    console.log(formdata)
+    
     url.post("old-password",formdata).then(({ data }) => {
-      console.log(data)
+      
       if(data.msg===false)
       {
         setmessage('Old password is Incorrect')
@@ -94,7 +94,7 @@ const [message, setmessage] = useState('')
       password:opassword
     }
     url.get("/old-password",formdata).then(({ data }) => {
-      console.log(data)
+     
       if(!data)
       {
         setmessage('Old password is Incorrect')
@@ -184,7 +184,7 @@ const [message, setmessage] = useState('')
           <Button variant="outlined" color="primary" type="submit" >
            <Icon>save</Icon> Save
           </Button>
-          <Button color=".bg-green" variant="outlined" type="submit" className="ml-4" onClick={resetform}>
+          <Button color=".bg-green" variant="outlined"  className="ml-4" onClick={resetform}>
         <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
         </Button>

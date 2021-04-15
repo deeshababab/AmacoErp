@@ -110,7 +110,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
             
             setcode(res)
             var con =data.contact.slice(4,);
-            console.log(res)
+           
             setcontact(con)
             setpassword(data.password)
             setrole_id(data.role_id)
@@ -157,7 +157,7 @@ if(userid)
         role_id:role_id,
         email:email
     }
-    console.log(formdata)
+    
     url.post('users', formdata)
     .then(function (data) {
         url.get('users').then(({ data }) => {

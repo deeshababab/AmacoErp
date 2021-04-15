@@ -255,7 +255,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
     document.title = "Request for quoatation - Amaco"
     url.get("rfq/" + id).then(({ data }) => {
-      console.log(data[0])
+      
 
       setrdate(moment(data[0].requested_date).format('DD MMM YYYY')
       )

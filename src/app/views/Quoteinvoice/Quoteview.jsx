@@ -285,7 +285,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
     // updateSidebarMode({ mode: "close" })
     document.title="Request for quoatation - Amaco"
     url.get("sale-quotation/"+id).then(({ data }) => {
-      console.log(data)
+      
       
       setrfq(data[0].rfq_id)
       setqid(data[0].quotation_no)
@@ -501,7 +501,7 @@ function PrintMe(DivID) {
      url.put(`update-quotation/${id}`,json)
     .then(res => {
         
-      console.log(res.data.msg)
+      
        if(res.data.msg)
        {
           setmessage(true)
@@ -1079,7 +1079,7 @@ function PrintMe(DivID) {
                   {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
                   </TableCell> */}
-                  <TableCell className="pr-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
                   {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
                   </TableCell>
                 </TableRow>

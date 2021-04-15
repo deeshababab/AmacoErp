@@ -50,9 +50,9 @@ const SimpleMuiTable = () => {
     url.get("purchase-invoice-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
-      // console.log(myJSON)
+    
       if (data.length){
-      // console.log(data[0])
+      
      
       setpoid(data[0].id)
       setpodetails(data);
@@ -63,7 +63,7 @@ const SimpleMuiTable = () => {
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-    // console.log(invoiceId)
+    
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
@@ -129,15 +129,14 @@ const SimpleMuiTable = () => {
     })
     // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
+    
 
     // })
     // getrow()
     // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
-    //     console.log('res', res)
+    
     // })
   }
   const columns = [
@@ -195,7 +194,7 @@ const SimpleMuiTable = () => {
     //     options: {
     //         filter: true,
     //         customBodyRender: (value, tableMeta, updateValue) => {
-    //              console.log(tableMeta.rowData)
+    //             
     //             return (
     //             <IconButton onClick={() => removeData(tableMeta.rowData[4])
     //             }
@@ -215,7 +214,7 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta.rowData)
+          
           return (
             <span>
                {/* <Link to={"/newinvoice/"+tableMeta.rowData[5]}></Link> */}
@@ -262,7 +261,7 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-      <div className="flex flex-wrap justify-between mb-6">
+      <div className="flex flex-wrap justify-between pt-2">
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },

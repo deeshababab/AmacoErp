@@ -33,7 +33,7 @@ const Auth0Login = () => {
       await loginWithPopup();
       history.push("/");
     } catch (e) {
-      // console.log(e);
+      
       setMessage(e.message);
     }
   };

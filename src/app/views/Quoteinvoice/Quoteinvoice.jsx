@@ -221,7 +221,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.grand_total=GTotal
     arr.vat_in_value=parseFloat(vat).toFixed(2)
     arr.party_id=party_id
-    console.log(arr)
+   
     const json = Object.assign({}, arr);
   
     
@@ -458,12 +458,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24">S.No.</TableCell>
+              <TableCell className="pl-2" width={80}>S.No.</TableCell>
               <TableCell className="px-0">Item Name</TableCell>
               <TableCell className="px-0">Rfq description</TableCell> 
-              <TableCell className="px-0">UOM</TableCell>
+              <TableCell className="px-0" width={100}>UOM</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Unit Price</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Unit Price</TableCell>
               <TableCell className="px-0">Total</TableCell>
               {/* <TableCell className="px-0">Action</TableCell> */}
             </TableRow>
@@ -530,7 +530,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
     {/* </div> */}
                 
-                  <TableCell className="pl-sm-24 capitalize" align="left">
+                  <TableCell className="pl-2 capitalize" align="left">
                     {index + 1}
                     {/* <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}

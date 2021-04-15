@@ -72,7 +72,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
     }
     url.post('advance-payments', formdata)
     .then(function (response) {
-        console.log(response)
+       
      
       Swal.fire({
         title: 'Success',
@@ -145,7 +145,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
     
     getpaymentaccount().then(({ data }) => {
         setpaymentaccount(data)
-        console.log(received_date)
+       
 
     });
     // url.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {

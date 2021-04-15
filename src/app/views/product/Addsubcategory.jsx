@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Divider,
   Switch,
+  TableCell,
   IconButton,
 } from "@material-ui/core";
 import history from "history.js";
@@ -63,6 +64,27 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   };
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
+  const columnStyleWithWidth = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "600px",
+    
+  }
+  const columnStyleWithWidth1 = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "50px",
+    wordBreak: "break-word",
+    wordWrap: "break-word",
+    overflowWrap:"break-word",
+    hyphens:"auto"
+  }
 
 
 const capitalize_arr =(value) =>{
@@ -88,18 +110,18 @@ const capitalize_arr =(value) =>{
 
       }
      
-      console.log(arr.indexOf(cname))
+      
 
       if(arr.indexOf(cname)>-1) 
       {
-        console.log(data.indexOf(cname))
+        
 
         setIsAlivecat(true)
         catid=null
       }
        else
        {
-        console.log(data.indexOf(cname))
+        
         const frmdetails = {
 
           name: capitalize_arr(cname),
@@ -236,7 +258,7 @@ const capitalize_arr =(value) =>{
     url.get(`sub-category/${catid}`).then(({ data }) => {
       setUserList(data);
       setIsAlive(false)
-      console.log(data)
+     
     });
   }
     // return () => setIsAlive(false);
@@ -251,10 +273,7 @@ const capitalize_arr =(value) =>{
     },
     {
       name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
+      lable:"Descriptions"
     },
     {
       name: "id",
@@ -266,7 +285,7 @@ const capitalize_arr =(value) =>{
   
           return (
             <IconButton onClick={() => removeData(tableMeta.rowData[2])
-            }
+            } style={{columnStyleWithWidth1}}
             >
               <Icon color="error">delete</Icon>
             </IconButton>

@@ -42,10 +42,10 @@ const SimpleMuiTable = () => {
   };
 
     useEffect(() => {
-      // console.log(id)
+    
         url.get("rfq/"+id).then(({ data }) => {
             if (isAlive) setRfqList(data[0].rfq_details);
-            // console.log(data[0].rfq_details)
+           
         });
         return () => setIsAlive(false);
     }, [isAlive]);
@@ -89,8 +89,7 @@ const SimpleMuiTable = () => {
       if (result.value) {
         url.delete(`parties/${id}`)
     .then(res => {
-        // console.log(res);
-        // console.log(res.data);
+        
         getrow()
         Swal.fire(
           'Deleted!',
@@ -113,15 +112,14 @@ const SimpleMuiTable = () => {
     })
     // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
+ 
         
     // })
     // getrow()
     // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
-    //     console.log('res', res)
+    
     // })
 }
 const columns = [
@@ -179,7 +177,7 @@ const columns = [
 //     options: {
 //         filter: true,
 //         customBodyRender: (value, tableMeta, updateValue) => {
-//              console.log(tableMeta.rowData)
+
 //             return (
 //             <IconButton onClick={() => removeData(tableMeta.rowData[4])
 //             }

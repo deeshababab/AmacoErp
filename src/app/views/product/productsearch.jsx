@@ -44,7 +44,7 @@ const MatxSearchBox = () => {
     
   url.get("category/"+name).then(({ data }) => {
 
-    console.log(data)
+    
     getcategories().then(({ data }) => {
       setcatList(data)
 

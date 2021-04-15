@@ -183,7 +183,7 @@ const SimpleForm = () => {
       
     }
    
-    console.log(frmdetails)
+  
     
     url.put("parties/"+foo, frmdetails)
       .then(function (response) {
@@ -518,7 +518,7 @@ const SimpleForm = () => {
                                 label=" Credit Limits"
 			                          variant="outlined"
 			                          value={creditlimit}
-                                maximumValue="9999999"
+                                maximumvalue="9999999"
                                 size="small"
                                 fullWidth
 			                          currencySymbol="SAR"
@@ -531,7 +531,7 @@ const SimpleForm = () => {
                                 label="Credit Days"
 			                          variant="outlined"
 			                          value={creditdays}
-                                maximumValue="9999999"
+                                maximumvalue="9999999"
                                 size="small"
                                 fullWidth
 			                          onChange={(event)=> setcreditdays(event.target.value)}

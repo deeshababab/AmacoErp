@@ -112,7 +112,7 @@ const SimpleMuiTable = ({data1}) => {
    
   ];
   useEffect(() => {
-    console.log(data1)
+   
     url.get("receipts").then(({ data }) => {
         setUserList(data)
     

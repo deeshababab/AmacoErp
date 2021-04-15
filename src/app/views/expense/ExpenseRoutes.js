@@ -27,6 +27,12 @@ const ExpenseRoutes = [
     ),
   },
   {
+    path: "/editexpense/:id",
+    component: React.lazy(() =>
+      import("./customers/customer-form/EditExpense")
+    ),
+  },
+  {
     path: "/addField",
     component: React.lazy(() =>
       import("./customers/customer-form/AddField")

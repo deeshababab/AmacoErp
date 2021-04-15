@@ -205,7 +205,7 @@ const Customer = ({
           moment(to_date).format("YYYY-MM-DD")
       )
       .then(({ data }) => {
-        console.log(data)
+        
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(b[0].date) - new Date(a[0].date)
         );
@@ -297,9 +297,7 @@ const Customer = ({
     // formData.append('payment_account_id',payment_account_id)
     // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
     // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
-    // console.log(formData.get('payment_account_id'))
-    // console.log(formData.get('from_date'))
-    // console.log(formData.get('to_date'))
+    
     if(payment_account_id==="All")
     {
       url
@@ -311,7 +309,7 @@ const Customer = ({
           moment(to_date).format("YYYY-MM-DD")
       )
       .then(({ data }) => {
-        console.log(data)
+       
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(b[0].date) - new Date(a[0].date)
         );
@@ -609,7 +607,7 @@ const Customer = ({
                           <TableCell
                             className="pl-2"
                             align="left"
-                            colSpan={3}
+                            colSpan={4}
                             style={{
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
@@ -619,15 +617,7 @@ const Customer = ({
                             {cname}
                           </TableCell>
 
-                          <TableCell
-                            className="pr-0 capitalize"
-                            align="center"
-                            style={{
-                              border: "1px solid #ccc",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          ></TableCell>
+                          
                           <TableCell
                             className="pr-0 capitalize"
                             align="center"
@@ -830,22 +820,7 @@ const Customer = ({
                             >
                               DATE
                             </TableCell>
-                            <TableCell
-                              className="px-0"
-                              colSpan={2}
-                              style={{
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                color: "#fff",
-                                fontColor: "#fff",
-                                width: 110,
-                                fontWeight: 1000,
-                                fontSize: 16,
-                              }}
-                              align="center"
-                            >
-                              INV.#
-                            </TableCell>
+                            
                             <TableCell
                               className="px-0"
                               style={{
@@ -855,8 +830,9 @@ const Customer = ({
                                 fontColor: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
-                                width:50
+                                width:100
                               }}
+                              colSpan={3}
                               align="center"
                             >
                               DOCUMENT #
@@ -871,7 +847,7 @@ const Customer = ({
                                 fontColor: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
-                                width:120
+                                width:300
                               }}
                               align="center"
                             >
@@ -882,7 +858,7 @@ const Customer = ({
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 180,
+                                width: 130,
                                 color: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
@@ -897,7 +873,7 @@ const Customer = ({
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
                                 color: "#fff",
-                                width: 180,
+                                width: 130,
                                 fontWeight: 1000,
                                 fontSize: 16,
                               }}
@@ -944,15 +920,17 @@ const Customer = ({
                               {fdate}
                             </TableCell>
 
+                            
                             <TableCell
-                              className="pr-0 capitalize"
-                              align="center"
+                              className="pl-2 capitalize"
+                              align="left"
                               style={{
                                 border: "1px solid #ccc",
+                                wordBreak: "break-word",
                                 fontFamily: "Calibri",
                                 fontSize: 16,
                               }}
-                              colSpan={2}
+                              colspan={3}
                             >
                               --
                             </TableCell>
@@ -964,18 +942,7 @@ const Customer = ({
                                 wordBreak: "break-word",
                                 fontFamily: "Calibri",
                                 fontSize: 16,
-                              }}
-                            >
-                              --
-                            </TableCell>
-                            <TableCell
-                              className="pl-2 capitalize"
-                              align="left"
-                              style={{
-                                border: "1px solid #ccc",
-                                wordBreak: "break-word",
-                                fontFamily: "Calibri",
-                                fontSize: 16,
+                                width:250
                               }}
                             >
                               opening_balance
@@ -989,6 +956,7 @@ const Customer = ({
                                   border: "1px solid #ccc",
                                   fontFamily: "Calibri",
                                   fontSize: 16,
+                                  width:150
                                 }}
                               >
                                 {parseFloat(opening_balance).toLocaleString(
@@ -1074,20 +1042,7 @@ const Customer = ({
                                   {moment(item[0].date).format("YYYY-MM-DD")}
                                 </TableCell>
 
-                                <TableCell
-                                  className="pr-0 capitalize"
-                                  align="center"
-                                  style={{
-                                    border: "1px solid #ccc",
-                                    fontFamily: "Calibri",
-                                    fontSize: 16,
-                                  }}
-                                  colSpan={2}
-                                >
-                                  {item[0].code_no === null
-                                    ? ""
-                                    : item[0].code_no}
-                                </TableCell>
+                                
                                 <TableCell
                                   className="pl-2 capitalize"
                                   align="left"
@@ -1097,6 +1052,7 @@ const Customer = ({
                                     fontFamily: "Calibri",
                                     fontSize: 16,
                                   }}
+                                  colspan={3}
                                 >
                                   --
                                 </TableCell>

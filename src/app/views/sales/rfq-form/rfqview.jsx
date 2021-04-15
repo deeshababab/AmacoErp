@@ -50,11 +50,11 @@ const SimpleMuiTable = () => {
     url.get("rfq").then(({ data }) => {
       // if (isAlive) setUserList(data);
       // var myJSON = JSON.stringify(data.id);
-      // console.log(myJSON)
+      
      
       if (data.length!==0){
         setUserList(data);
-      // console.log(data)
+      
         setrfq_details(data[0].rfq_details);
       }
     });
@@ -63,7 +63,7 @@ const SimpleMuiTable = () => {
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-    // console.log(invoiceId)
+    
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
@@ -227,7 +227,7 @@ const SimpleMuiTable = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-      <div className="flex flex-wrap justify-between mb-6">
+      <div className="flex flex-wrap justify-between">
         <Breadcrumb
           routeSegments={[
             { name: "Add new", path: "/sales/rfq-form/Rfqform" },
@@ -238,7 +238,7 @@ const SimpleMuiTable = () => {
         <div className="text-right">
           <Link to={"/sales/rfq-form/Rfqform"}>
             <Button
-              className="mt-4"
+              className="mt-2"
               variant="outlined"
               color="primary"
             >
@@ -251,7 +251,7 @@ const SimpleMuiTable = () => {
       <MUIDataTable
         title={"RFQ"}
         data={userList.map((item, index) => {
-          // console.log(item)
+       
          
             return [
 

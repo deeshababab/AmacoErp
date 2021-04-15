@@ -67,7 +67,7 @@ const CustomerBillings = () => {
 
     url.get("products/" + foo).then(({ data }) => {
       setproductprice(data.prices);
-      console.log(data.prices)
+      
      
     });
 
@@ -208,7 +208,7 @@ const columns = [
         </TableHead>
         <TableBody>
           {productprice.map((item, index) => {
-            console.log(item)
+           
             return (
               <TableRow key={index}>
                 <TableCell className="pl-0" align="center">{i++}</TableCell>
@@ -240,7 +240,7 @@ const columns = [
                 data={
                  
                   productprice.map((item, index) => {
-                    // console.log(item)
+                    
                    
                       return [
           

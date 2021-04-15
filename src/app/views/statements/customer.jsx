@@ -289,9 +289,7 @@ const Customer = ({
     // formData.append('party_id',party_id)
     // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
     // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
-    // console.log(formData.get('party_id'))
-    // console.log(formData.get('from_date'))
-    // console.log(formData.get('to_date'))
+    
 
     if(party_id==="All")
     {
@@ -353,7 +351,7 @@ const Customer = ({
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(a[0].date) - new Date(b[0].date)
         );
-        console.log(data[0].firm_name)
+        
         setfrom_date(new Date())
         setto_date(new Date())
         setparty_id('')
@@ -602,7 +600,7 @@ const Customer = ({
                           <TableCell
                             className="pl-2"
                             align="left"
-                            colSpan={3}
+                            colSpan={4}
                             style={{
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
@@ -612,15 +610,7 @@ const Customer = ({
                             {cname}
                           </TableCell>
 
-                          <TableCell
-                            className="pr-0 capitalize"
-                            align="center"
-                            style={{
-                              border: "1px solid #ccc",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          ></TableCell>
+                          
                           <TableCell
                             className="pr-0 capitalize"
                             align="center"
@@ -831,7 +821,7 @@ const Customer = ({
                                 fontFamily: "Calibri",
                                 color: "#fff",
                                 fontColor: "#fff",
-                                width: 110,
+                                width: 150,
                                 fontWeight: 1000,
                                 fontSize: 16,
                               }}
@@ -849,7 +839,7 @@ const Customer = ({
                                 fontColor: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
-                                width:120
+                                width:200
                               }}
                               align="center"
                             >
@@ -860,7 +850,7 @@ const Customer = ({
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 180,
+                                width: 130,
                                 color: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
@@ -875,7 +865,7 @@ const Customer = ({
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
                                 color: "#fff",
-                                width: 180,
+                                width: 130,
                                 fontWeight: 1000,
                                 fontSize: 16,
                               }}

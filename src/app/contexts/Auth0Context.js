@@ -27,7 +27,7 @@ const reducer = (state, action) => {
     }
     case "LOGIN": {
       const { user } = action.payload;
-      console.log(user)
+      
 
       return {
         ...state,

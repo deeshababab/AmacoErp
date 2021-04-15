@@ -29,7 +29,7 @@ const CustomerInfo = () => {
 
    
     url.get("products/"+foo).then(({ data }) => {
-          console.log(data.product[0])
+          
         setproductList(data.product[0]);
        
       });

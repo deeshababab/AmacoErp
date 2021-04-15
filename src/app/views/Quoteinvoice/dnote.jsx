@@ -140,12 +140,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     tempItemList.map((element, i) => {
       let sum=0;
-      console.log(element)
+      
       
       if (index === i) 
       {
         const res=parseInt(element.quantity)-parseInt(element.delivered_quantity);
-        console.log(res)
+        
         if(parseInt(event.target.value)>=parseInt(res))
         {
          
@@ -238,7 +238,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     // arr.push({
     //   invoice_details:tempItemList,
     // });
-    console.log(total_balance)
+    
     if(total_balance>0)
    {
      setis_partial(true)
@@ -260,7 +260,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     const json = Object.assign({}, arr);
     
    
-  console.log(json)
+  
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -269,7 +269,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     };
     url.post('delivery-notes',json)
       .then(function (response) {
-        console.log(response)
+        
         
         Swal.fire({
           title: 'Success',
@@ -509,7 +509,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-            console.log(item)
+            
              total_balance+=(parseInt(item.balance))
              
               if(!dstatus)
@@ -597,21 +597,24 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       size="small"
                       name="uom"
                       value={item?item.product.unit_of_measure:""}
               
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize"  align="left" style={{width:'150px'}}>
+                  <TableCell className="pl-0 capitalize"  align="center" style={{width:'150px'}}>
                     <TextValidator
                       label="Quantity"
                     //   onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
                       variant="outlined"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       size="small"
                       fullWidth
                       name="quantity"
+                      align="center"
                       min="1"
                       max={item.quantity}
                       value={item?item.quantity:""}
@@ -620,12 +623,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     />
                   </TableCell>
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{width:'150px'}}>
                     <TextValidator
                       label="delivered quantity"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
                       name="delivered_quantity"
+                      align="center"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       fullWidth
                       variant="outlined"
                       size="small"
@@ -637,11 +642,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{width:'150px'}}>
                     <TextValidator
                       label="delivery quantity"
                       onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       name="delivering_quantity"
                       fullWidth
                       variant="outlined"

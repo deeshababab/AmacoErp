@@ -50,7 +50,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
   const resetform = () => {
     
@@ -74,7 +74,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       // setcdescription('')
       // setcname('')
       
-      console.log(frmdetails)
+      
       url.put("party-bank/"+contactid, frmdetails)
         .then(function (response) {
           url.get("parties/" + foo).then(({ data }) => {
@@ -129,7 +129,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
         //   })
           
         // });
-        console.log(response.data)
+        
         resetform();
         handleClose();
         
@@ -315,7 +315,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             
             <Button
               variant="outlined"
-              className="mr-4 py-2"
+              className="mr-0 py-2"
               color="secondary"
               onClick={() => resetform()}
               onClick={() => handleClose()}

@@ -47,10 +47,10 @@ const InvoiceForm = ({ }) => {
     //Getting total number of images
     
     var images = imageList.length
-    // console.log(imageList)
+ 
     // Create an object of formData 
     // const formData = new FormData();
-    // console.log(imageList)
+ 
 
 
     //Saving multiple images in formadta varibale
@@ -599,7 +599,7 @@ const InvoiceForm = ({ }) => {
  
                   <div className="flex flex-wrap justify-center items-center m--2">
                   {rfqFiles.map((item, index) => {
-                   console.log(item.name)
+                  
                  
                     return (
                       

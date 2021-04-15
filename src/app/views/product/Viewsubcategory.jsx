@@ -63,9 +63,9 @@ const SimpleMuiTable = () => {
   const [originalList, setOriginalList] = useState([]);
   const [list, setList] = useState([]);
   function handleClick(event, id) {
-    console.log(id)
+   
     url.get("sub-category/" + id).then(({ data }) => {
-      console.log(data)
+      
       setsubcatList(data);
       setcatid(id)
     })
@@ -85,7 +85,7 @@ const SimpleMuiTable = () => {
 
 
   useEffect(() => {
-    console.log(getcategories())
+    
     url.get("products").then(({ data }) => {
       setUserList(data);
 
@@ -96,7 +96,6 @@ const SimpleMuiTable = () => {
     if (catid) {
       url.get("categories").then(({ data }) => {
         setcatList(data);
-        console.log(data)
         setOriginalList(data);
         setList(data);
 
@@ -250,7 +249,6 @@ const SimpleMuiTable = () => {
     () =>
 
       debounce((query) => {
-        console.log(query)
         let tempList = originalList.filter((item) =>
           item.name.toLowerCase().match(query.toLowerCase())
         );
@@ -407,7 +405,7 @@ const SimpleMuiTable = () => {
             { name: "Product Category" }
           ]}
         />
-      <div className="flex justify-end p-4" >
+      <div className="flex justify-end pr-4" >
       
         <TextField
           className="mt-4"

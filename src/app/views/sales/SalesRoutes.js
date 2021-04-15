@@ -72,6 +72,11 @@ const salesRoutes = [
         component: React.lazy(() => import("./dnoteview")),
     
     },
+    {
+        path: "/salesreport",
+        component: React.lazy(() => import("./salesreport")),
+    
+    },
     
 
 

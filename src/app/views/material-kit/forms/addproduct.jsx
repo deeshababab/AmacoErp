@@ -276,14 +276,14 @@ const SimpleForm = ({open, handleClose}) => {
       setooptions(data);
     })
     getmanufacturer().then(({ data }) => {
-        console.log(data)
+        
         setmanufacture(data);
      
 
 
     });
     url.get("categories/"+id).then(({ data }) => {
-      console.log(data.name)
+      
       setsubcategory(data.name)
      
 
@@ -312,11 +312,11 @@ const SimpleForm = ({open, handleClose}) => {
 
     }
  
-    console.log(frmdetails)
+    
     url.post('products', frmdetails)
       .then(function (response) {
         
-        console.log(response)
+        
         Swal.fire({
           title: 'Success',
           type: 'success',

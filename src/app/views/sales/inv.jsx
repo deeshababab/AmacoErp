@@ -113,15 +113,14 @@ const SimpleMuiTable = () => {
     })
     // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
+   
 
     // })
     // getrow()
     // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
-    //     console.log('res', res)
+    //     
     // })
   }
   const columns = [
@@ -168,7 +167,7 @@ const SimpleMuiTable = () => {
     //     options: {
     //         filter: true,
     //         customBodyRender: (value, tableMeta, updateValue) => {
-    //              console.log(tableMeta.rowData)
+    //              
     //             return (
     //             <IconButton onClick={() => removeData(tableMeta.rowData[4])
     //             }

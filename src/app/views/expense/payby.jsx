@@ -79,18 +79,18 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
 
       }
      
-      console.log(arr.indexOf(cname))
+      
 
       if(arr.indexOf(cname)>-1) 
       {
-        console.log(data.indexOf(cname))
+        
 
         setIsAlivecat(true)
         catid=null
       }
        else
        {
-        console.log(data.indexOf(cname))
+        
         const frmdetails = {
 
           name: cname,

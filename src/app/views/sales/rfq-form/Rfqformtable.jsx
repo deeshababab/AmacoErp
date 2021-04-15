@@ -23,12 +23,12 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
   // const [customerList, setCustomerList] = useState([]);
   useEffect(() => {
     getProductList().then(({ data }) => {
-      // console.log(data.value)
+      
       if (isAlive) setProductList(data)
       // arrayHelpers.push({})
-      // console.log(data);
+      
     });
-    console.log(values)
+   
    
     return () => setIsAlive(false);
   }, [isAlive]);
@@ -76,7 +76,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                               value: newValue
                             },
                           });
-                          // console.log(`rfq_details[${ind}]`)
+                          
                         }}
                         
                       />

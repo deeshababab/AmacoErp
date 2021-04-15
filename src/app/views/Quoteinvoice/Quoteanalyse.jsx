@@ -178,7 +178,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        // console.log(element.product[0].product_price.price)
+        
         // element['purchase_price']=price;
         element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
         element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
@@ -261,7 +261,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (indexset === i) 
       {
-        // console.log(element.product[0].product_price.price)
+        
         element['purchase_price']=pprice;
         element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
         element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
@@ -304,7 +304,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        console.log(event.target.value)
+        
      
         element['purchase_price']= event.target.value;
         
@@ -349,7 +349,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.payment_terms=payment_terms
     arr.contact_id=contactid
     const json = Object.assign({}, arr);
-    console.log(json)
+    
     url.post('quotation', json)
       .then(function (response) {
         
@@ -520,7 +520,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item)
+              
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)

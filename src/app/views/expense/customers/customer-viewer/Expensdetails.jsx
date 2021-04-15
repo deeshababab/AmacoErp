@@ -38,7 +38,7 @@ const CustomerInfo = () => {
   const [ref_img, setref_img] = useState('');
   const [columndata, setcolumndata] = useState([]);
   const filetype=(type,file_value)=>{
-    console.log(type)
+ 
     if(type==="jpg")
     {
       return file_value;
@@ -74,7 +74,7 @@ const CustomerInfo = () => {
 
    
     url.get("expense/"+id).then(({ data }) => {
-          console.log(data[0].payment_account[0].name)
+          
          setExpenseList(data[0]);
          setaccountname(data[0].payment_account[0].name)
          setcolumndata(data[0].column_data)
@@ -143,13 +143,13 @@ const CustomerInfo = () => {
               <TableCell>{ExpenseList.paid_to}</TableCell>
             </TableRow>
             {columndata.map((item, index) => {
-              console.log(item.column.type)
+              
               return (
               <TableRow>
               <TableCell className="pl-4">{item.column.name}</TableCell>
               {item.column.type==="file"?<TableCell >
               <Tooltip title="View">
-                <a href={item.file}>
+                <a href={item.file} target="_blank">
               <img src={filetype(item.file.split('.')[3],item.file,index)} width="100px" height="100px"></img>
                
                 </a></Tooltip></TableCell>:<TableCell>{item.value}
@@ -195,7 +195,7 @@ const CustomerInfo = () => {
 
                 {/* <h5 className="m-0">{item.file_name}</h5> */}
                 <Tooltip title="View">
-                <a href={ref_img}>{(<img src={filetype(ref_img.split('.')[3],ref_img)} href={ref_img} className="border-radius-4 w-100 mr-3"  style={{width:100,height:100}} target="_blank">
+                <a href={ref_img} target="_blank">{(<img src={filetype(ref_img.split('.')[3],ref_img)} href={ref_img} className="border-radius-4 w-100 mr-3"  style={{width:100,height:100}} >
                 
                 </img>)}
                

@@ -180,7 +180,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        // console.log(element.product[0].product_price.price)
+        
         // element['purchase_price']=price;
         // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
         element['total_amount']=((event.target.value)*element.quantity).toFixed(2);
@@ -260,8 +260,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const calcualteprice = (event,index) => {
     event.persist()
     let tempItemList = [...state.item];
-    console.log(tempItemList)
-    
+   
     tempItemList.map((element, i) => {
       let sum=0;
     
@@ -310,7 +309,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (index === i) 
       {
-        console.log(event.target.value)
+        
         
         element['quantity']= event.target.value;
         
@@ -358,7 +357,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.transaction_type="purchase"
     arr.ps_date=Quote_date
     const json = Object.assign({}, arr);
-    console.log(json)
+    
     url.put(`purchase-quotation/${id}`, json)
       .then(function (response) {
         
@@ -647,7 +646,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     >
                        {item.product_price_list.map((item) => (
                           <MenuItem value={item.price} key={item.price}>
-                           {item.price}-{item.firm_name}
+                           {item.price}
                           </MenuItem>
                         ))} 
                     </TextValidator>
@@ -704,7 +703,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           </TableBody>
         </Table>
         
-        <h6><strong>Terms</strong></h6>
+        <h6 className="pl-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         

@@ -124,7 +124,7 @@ const FirebaseLogin = () => {
     // url.post('auth/login', userInfo)
     //   .then(function (response) {
       let response = data.find(check => check.email === userInfo.email && check.password === userInfo.password);
-      console.log(response)
+      
       if(response)
         {
           setLoading(false)
@@ -138,7 +138,7 @@ const FirebaseLogin = () => {
           
         }
         else{
-          console.log(response)
+          
           setMessage("Email or password Incorrect. ")
           setLoading(false)
 

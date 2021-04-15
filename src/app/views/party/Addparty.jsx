@@ -16,7 +16,7 @@ class BasicForm extends Component {
             ]}
           />
         </div>
-        <Card className="px-6 pt-2 pb-4"><Addparty /></Card>
+        <Card className="pb-4"><Addparty /></Card>
       </div>
     );
   }

@@ -145,7 +145,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   const handleChange = (event) => {
     event.persist();
-    console.log(event.target.value)
+    
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
@@ -164,8 +164,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     event.persist();
 
     let tempItemList = [...state.item];
-    console.log(event.target.value)
-    console.log(event.target.name)
+    
     tempItemList.map((element, i) => {
       if (index === i) element[event.target.name] = event.target.value;
 
@@ -181,7 +180,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   const addItemToInvoiceList = () => {
     let tempItemList = [...state.item];
-    console.log(tempItemList)
+    
     tempItemList.push({
       created_at: "",
       description: "",
@@ -318,16 +317,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempState = { ...state };
     let tempItemList =[...state.item];
     delete tempState.loading;
-    console.log(tempItemList)
     arr.rfq_details = tempItemList
     arr.requested_date = rdate
     arr.require_date = ddate
     arr.rfqid = id
     
-    // const json = Object.assign({}, arr);
-    // console.log('json data'+json)
+    
    
-   console.log(upload)
+  
     for (let a = 0; a < upload.length; a++) {
       formData.append(
         "myFile" + a,
@@ -347,10 +344,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('requested_date',rdate)
     formData.append('require_date',rdate)
     formData.append('rfq_id',id)
-      // console.log(formData.get(`requested_date`))
+      
       url.post(`rfq-update`,formData)
     .then((response) => {
-        console.log(response)
+     
       Swal.fire({
         title: 'Success',
         type: 'success',
@@ -365,7 +362,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         getrfq()
     })
       .catch(function (error) {
-        // console.log(error)
+        
       })
     }
     else
@@ -389,15 +386,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setfiles(data[0].files)
 
       setddate(moment(data[0].require_date).format("MMMM DD, YYYY"))
-      // console.log(dateFormat(data[0].requested_date, "mmmm dS, yyyy"))
-      console.log(moment(data[0].requested_date).format("MMMM DD, YYYY"))
-      // console.log(moment(data[0].requested_date).format("MMMM dd, yyyy").toLocaleString())
-      //  setrfqdetails(data[0].rfq_details)
+      
+      
+     
       setState({
         ...state,
         item: data[0].rfq_details,
       });
-      console.log(data[0].rfq_details)
+     
     });
 
     url.get("products").then(({ data }) => {
@@ -419,17 +415,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
     url.get("rfq/" + id).then(({ data }) => {
-      console.log(data)
+      
       setcname(data[0].party[0].firm_name)
       setrdate(moment(data[0].requested_date).format("MMMM DD, YYYY"))
       setfiles(data[0].files)
-      console.log(data[0].files)
+      
 
       setddate(moment(data[0].require_date).format("MMMM DD, YYYY"))
-      // console.log(dateFormat(data[0].requested_date, "mmmm dS, yyyy"))
-    
-      // console.log(moment(data[0].requested_date).format("MMMM dd, yyyy").toLocaleString())
-      //  setrfqdetails(data[0].rfq_details)
+      
       setState({
         ...state,
         item: data[0].rfq_details,

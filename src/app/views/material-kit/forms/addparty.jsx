@@ -33,14 +33,14 @@ const optionss = [
     { value: 'Customer', label: 'Customer' },
   ];
   const telcode = [
-    { value: +973, label: "+973" },
-    { value: +965, label: "+965" },
-    { value: +961, label:"+961"},
-    { value: +968, label:"+968"},
-    { value: +974, label:"+974"},
-    { value: +966, label:"+966"},
-    { value: +971, label:"+971"},
-    { value: +967, label:"+967"},
+    { value: 973, label: "+973" },
+    { value: 965, label: "+965" },
+    { value: 961, label:"+961"},
+    { value: 968, label:"+968"},
+    { value: 974, label:"+974"},
+    { value: 966, label:"+966"},
+    { value: 971, label:"+971"},
+    { value: 967, label:"+967"},
   ];
   const data = [
     { value: 'Vendor', label: 'Vendor' },
@@ -144,7 +144,7 @@ const Addparty = ({open, handleClose}) => {
     url.post('parties',frmdetails)
    
       .then(function (response) {
-        console.log(response.data)
+       
         Swal.fire({  
           title: 'Success',  
           type: 'success',

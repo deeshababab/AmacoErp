@@ -7,6 +7,11 @@ import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../../views/invoice/InvoiceService"
 import moment from "moment";
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+  } from "@material-ui/pickers";
+  import DateFnsUtils from "@date-io/date-fns";
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,8 +24,12 @@ import {
   TableRow,
   Button,
   Typography,
-  Tooltip
+  Grid,
+  Tooltip,
+  TextField,
+  MenuItem,
 } from "@material-ui/core";
+import { ValidatorForm } from "react-material-ui-form-validator";
 const columnStyleWithWidth = {
   top: "0px",
   left: "0px",
@@ -112,7 +121,7 @@ const removeData = (id) => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Payment Account", // column title that will be shown in table
+      label: "Date", // column title that will be shown in table
     //   options : {
 	// 			customHeadRender: ({index, ...column}) =>{
     //       return (
@@ -125,7 +134,7 @@ const removeData = (id) => {
     },
     {
       name: "name",
-      label: "Received Date",
+      label: "Party Name",
       options : {
 				customBodyRender : (value, tableMeta, updateValue) => {
 					return (
@@ -138,53 +147,118 @@ const removeData = (id) => {
     },
     {
       name: "amount",
-      label: "Amount",
+      label: "Bill No.",
       options: {
         filter: true,
       },
     },
     {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <span>
-            {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
-              <Tooltip title="View More">
-                <Icon color="error" onClick={e=>removeData(tableMeta.rowData[4])}>delete</Icon>
-             </Tooltip>
-            {/* </Link> */}
-           
-          </span>
-
-          )
-
+        name: "amount",
+        label: "Grand Total",
+        options: {
+          filter: true,
         },
       },
-    },
+    // {
+    //   name: "id",
+    //   label: "Action",
+    //   options: {
+    //     filter: true,
+    //     customBodyRender: (value, tableMeta, updateValue) => {
+    //       return (
+    //         <span>
+    //         {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
+    //           <Tooltip title="View More">
+    //             <Icon color="error" onClick={e=>removeData(tableMeta.rowData[4])}>delete</Icon>
+    //          </Tooltip>
+    //         {/* </Link> */}
+           
+    //       </span>
+
+    //       )
+
+    //     },
+    //   },
+    // },
    
   ];
 
 
 
   return (
-    <div>
+    <div className="m-sm-30">
+      <div className="mb-sm-30">
+    
+        <Breadcrumb
+          routeSegments={[
+            // { name: "Add Expense", path: "/addexpense" },
+            { name: "Sales Reports" },
+          ]}
+        />
+        </div>
+        <ValidatorForm className="px-0 pb-0">
+        <Grid container spacing={2}>
+          
+          <Grid item lg={3} md={6} xs={12}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                className="mb-4 w-full"
+                margin="none"
+                label="From Date"
+                maxDate={new Date()}
+                inputVariant="outlined"
+                type="text"
+                size="small"
+                autoOk={true}
+                // value={from_date}
+                format="MMMM dd, yyyy"
+                // onChange={handleDateChange}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+
+          <Grid item lg={3} xs={12}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                className="mb-4 w-full"
+                margin="none"
+                label="To Date"
+                inputVariant="outlined"
+                type="text"
+                size="small"
+                autoOk={true}
+                // value={to_date}
+                format="MMMM dd, yyyy"
+                // onChange={handleDateChange1}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid item lg={3} xs={12}>
+            <Button
+              color="primary"
+              variant="outlined"
+              type="submit"
+            //   onClick={handleSubmit}
+            >
+              <Icon>save</Icon> Save
+            </Button>
+          </Grid>
+        </Grid>
+      </ValidatorForm>
       
       <MUIDataTable
-        title={"Receipt"}
-       data={userList.map((item, index) => {
+        title={"Sales Reports"}
+    //    data={userList.map((item, index) => {
         
-        return [
-         ++index,
-          item.payment_account?item.payment_account.name:'',
-          moment(item.received_date).format('DD MMM YYYY'),
-          item.amount,
-           item.id
-       ]
+    //     return [
+    //      ++index,
+    //       item.payment_account?item.payment_account.name:'',
+    //       moment(item.received_date).format('DD MMM YYYY'),
+    //       item.amount,
+    //        item.id
+    //    ]
         
-      })} 
+    //   })} 
          columns={columns}  
          options={{
            

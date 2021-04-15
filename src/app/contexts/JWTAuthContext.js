@@ -92,12 +92,11 @@ export const AuthProvider = ({ children }) => {
     const response = await url.post("/auth/login", { email, password });
     
     const { accessToken, user, role } = response.data;
-    console.log(response.data)
+    
     localStorage.setItem("role", role)
     localStorage.setItem("auth_user", user)
     localStorage.setItem("user_name", user.name)
     localStorage.setItem("user_id", user.id)
-    console.log(localStorage.getItem("auth_user"))
     setSession(accessToken);
 
 
@@ -141,10 +140,10 @@ export const AuthProvider = ({ children }) => {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
          
-              console.log(url.defaults.headers.common['Authorization'])
+              
               const response = await url.post("/auth/me");
               const { user } = response.data;
-              console.log('authme' + user)
+             
               dispatch({
                 type: "INIT",
                 payload: {

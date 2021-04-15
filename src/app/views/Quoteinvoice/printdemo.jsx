@@ -65,7 +65,7 @@ export const NestedMenu = () => {
  
 useEffect(() => {
   url.get("account-categories").then(({ data }) => {
-    console.log(data)
+    
     data.map((m,ind) => {
        setcat(data)
     })
@@ -78,7 +78,7 @@ useEffect(() => {
 },[])
   const handleRightClick = (event: React.MouseEvent) => {
     // url.get("account-categories").then(({ data }) => {
-    //   console.log(cat)
+  
     //   setcat(data)
     // })
     if (menuPosition) {
@@ -155,7 +155,7 @@ useEffect(() => {
          
         {data.map((m,ind) => {
           setstatus(true)
-          console.log(status)
+         
          
           return (
              <NestedMenuItem

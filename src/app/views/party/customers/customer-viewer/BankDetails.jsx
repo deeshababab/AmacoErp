@@ -241,7 +241,7 @@ const columns = [
         </TableHead>
         <TableBody>
         {bankdetails.map((item, index) => {
-          console.log(item)
+          
           return(
               <TableRow key={index}>
               <TableCell className="pl-0" align="center">{++index}</TableCell>
@@ -277,7 +277,7 @@ const columns = [
 
                 data={
                   bankdetails.map((item, index) => {
-                    // console.log(item)
+                    
                    
                       return [
           

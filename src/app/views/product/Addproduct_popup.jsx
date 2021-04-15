@@ -305,7 +305,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
       setooptions(data);
     })
     getmanufacturer().then(({ data }) => {
-        console.log(data)
+        
         setmanufacture(data);
      
 
@@ -360,7 +360,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
     url.post('products', frmdetails)
       .then(function (response) {
         
-        console.log(response)
+        
         Swal.fire({
           title: 'Success',
           type: 'success',

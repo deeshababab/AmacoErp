@@ -283,7 +283,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
       if (indexset === i) 
       {
-        console.log(element.quantity_required)
+        
         element['purchase_price']=pprice;
         element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(pprice)).toFixed(2);
         element['total_amount']=((element.sell_price)*element.quantity).toFixed(2);
@@ -523,17 +523,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
     tempItemList.map((answer, i) => {  
       formData.append(`quotation_detail${i}`,JSON.stringify(answer))
-      console.log(formData.get(`quotation_detail${i}`))
       answer.files&& (formData.append(`file${i}`,answer.files))
     })
-    for (var pair of formData.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
+    
 
     url.post(`sale-quotation`,formData)
       .then(function (response) {
         
-         console.log(response)
+       
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -575,7 +572,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   useEffect(() => {
     getCustomerList().then(({ data }) => {
       setCustomerList(data);
-      // console.log(data)
+     
 
     });
     url.get("products").then(({ data }) => {
@@ -587,17 +584,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     
     url.get(`sale-quotation/${id}`).then(({ data }) => {
-      console.log(data[0].quotation_no)
+     
       setQuote_date(data[0].ps_date)
       setquotation_no(data[0].quotation_no)
-      console.log(data[0])
+     
       setProductList1(data[0].quotation_details[0].product_price_list)
       if(data[0].contact!==null)
       {
       setcontactid(data[0].contact.id)
       }
       setparty_id(data[0].party_id)
-      console.log(data[0].quotation_details)
+      
       setState({
         ...state,
         item: data[0].quotation_details,
@@ -628,7 +625,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       let tempItemList = [...state.item];
      
       // setProductList1(data.prices)
-      // console.log(data.prices)
+     
        
     
     tempItemList.map((element, i) => {
@@ -867,7 +864,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              console.log(item.product)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)

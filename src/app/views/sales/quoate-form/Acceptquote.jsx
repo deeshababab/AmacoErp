@@ -50,10 +50,9 @@ const AcceptQuote = () => {
   useEffect(() => {
     url.get("quotations-accepted-list").then(({ data }) => {
       // if (isAlive) setUserList(data);
-      console.log(data)
+     
       // var myJSON = JSON.stringify(data.id);
-      // console.log(myJSON)
-      // console.log(data.length)
+     
       // if(data.length)
       // {
         setUserList(data);
@@ -66,7 +65,7 @@ const AcceptQuote = () => {
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
-    // console.log(invoiceId)
+    
     history.push(`/rfqanalysis/${invoiceId}`);
   };
 
@@ -132,15 +131,14 @@ const AcceptQuote = () => {
     })
     // url.delete(`http://dataqueuesystems.com/amaco/amaco/public/api/products/${id}`)
     // .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
+   
 
     // })
     // getrow()
     // url.delete(url).then(res => {
     //     const del = employees.filter(employee => id !== employee.id)
     //     setEmployees(del)
-    //     console.log('res', res)
+    //    
     // })
   }
   const columns = [
@@ -209,7 +207,7 @@ const AcceptQuote = () => {
     //     options: {
     //         filter: true,
     //         customBodyRender: (value, tableMeta, updateValue) => {
-    //              console.log(tableMeta.rowData)
+    //            
     //             return (
     //             <IconButton onClick={() => removeData(tableMeta.rowData[4])
     //             }

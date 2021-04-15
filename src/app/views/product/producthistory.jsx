@@ -55,9 +55,9 @@ const SimpleMuiTable = () => {
     const { id } = useParams();
 
   function handleClick(event,id) {
-    console.log(id)
+   
     url.get("sub-category/"+id).then(({ data }) => {
-      console.log(data)
+     
       setsubcatList(data);
     })
     setAnchorEl(event.currentTarget);
@@ -78,7 +78,7 @@ const SimpleMuiTable = () => {
       
       url.get("products")
       .then(function (response) {
-       console.log(response)
+       
         setUserList(response.data)
         
       })
@@ -90,11 +90,11 @@ const SimpleMuiTable = () => {
       //   });
       //   url.get(url+"categories").then(({ data }) => {
       //     setcatList(data);
-      //     console.log(data)
+     
          
 
       //  });
-       console.log(statList)
+       
        
         
         return () => setIsAlive(false);

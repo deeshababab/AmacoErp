@@ -39,6 +39,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
   const [customerList, setcustomerList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
+  
   const { id } = useParams();
   var found=null;
   const styles = {
@@ -81,7 +82,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
     
     
         }
-      console.log(frmdetails)
+      
         url.post('product-price', frmdetails)
           .then(function (response) {
             getcategories()
@@ -169,7 +170,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
   useEffect(() => {
    setcname(partyids)
     url.get("parties-except/"+catid).then(({ data }) => {
-        console.log(data)
+        
         setcustomerList(data)
     })
    
@@ -186,7 +187,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
     url.get(`product-price/${catid}`).then(({ data }) => {
     //   setcname(data.name)
       setcprice(data.price)
-      console.log(data)
+      
     });
   }
     // return () => setIsAlive(false);
@@ -242,7 +243,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
             <Grid item sm={6} xs={12}>
-              <TextValidator
+             {!cname?<TextValidator
                 className="w-full mb-4"
                 label="Vendor"
                 
@@ -253,18 +254,41 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
                 type="text"
                 name="cname"
                 value={cname}
-                validators={["required"]}
                 errorMessages={["This field is required"]}
                 select
+                
               >
-                {customerList.map((item, ind) => (
+               {customerList.map((item, ind) => (
                 
                 <MenuItem value={item.id} key={item}>
                   {item.firm_name}
                 </MenuItem>
               ))}
                   
-            </TextValidator>
+            </TextValidator>:<TextValidator
+                className="w-full mb-4"
+                label="Vendor"
+                
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                name="cname"
+                value={cname}
+                errorMessages={["This field is required"]}
+                select
+                
+              >
+               {customerList.filter(x=>x.id===cname).map((item, ind) => (
+                
+                <MenuItem value={item.id} key={item}>
+                  {item.firm_name}
+                </MenuItem>
+              ))}
+                  
+            </TextValidator>}
+            
               {isAlivecat &&(
             
             <span><Icon className="mr-2" fontSize="small" color="error">

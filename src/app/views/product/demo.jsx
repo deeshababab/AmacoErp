@@ -137,7 +137,7 @@ export const NestedMenu = () => {
       }
 ];
   const Menu1 = ({data}) => {
-      console.log(data[0].title)
+     
     return (<li>
         
         

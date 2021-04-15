@@ -44,7 +44,7 @@ const SimpleMuiTable = () => {
   };
 
     useEffect(() => {
-      // console.log(id)
+     
         url.get("products/"+id).then(({ data }) => {
             if (isAlive) setproductList(data[0]);
             
@@ -53,7 +53,7 @@ const SimpleMuiTable = () => {
         }); 
         url.get("analyse/"+id).then(({ data }) => {
           if (isAlive) setanalysisList(data[0].analyses_details);
-          // console.log(data[0].analyses_details)
+         
           
       }); 
        
@@ -65,7 +65,7 @@ const SimpleMuiTable = () => {
     function getrow(e) {
       url.get("parties").then(({ data }) => {
         if (isAlive) setproductList(data);
-        // console.log(data[0].name)
+       
     });
     return () => setIsAlive(false);
     }
@@ -99,8 +99,7 @@ const SimpleMuiTable = () => {
       if (result.value) {
         url.delete(`parties/${id}`)
     .then(res => {
-        // console.log(res);
-        // console.log(res.data);
+        
         getrow()
         Swal.fire(
           'Deleted!',

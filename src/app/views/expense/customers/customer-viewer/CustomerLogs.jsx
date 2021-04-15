@@ -42,7 +42,7 @@ const CustomerLogs = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
     url.get("expense-paid").then(({ data }) => {
-      console.log(data)
+     
        setexpenseList(data);
        
     });
@@ -51,7 +51,7 @@ const CustomerLogs = () => {
 // const setstatus=(id)=>{
 
 //   url.put(`expense/${id}`).then(({ data }) => {
-//     console.log(data)
+//    
   
     
 //  });
@@ -59,7 +59,7 @@ const CustomerLogs = () => {
 const updatestatus=(id)=>{
 
   url.put(`expense/${id}`).then(({ data }) => {
-    console.log(data)
+ 
   
     
  });
@@ -88,7 +88,7 @@ const setstatus=(id)=>{
           text: 'Updated successfully.',
         });
         url.get("expense-paid").then(({ data }) => {
-          console.log(data)
+          
            setexpenseList(data);
            
         });
@@ -176,7 +176,7 @@ const columns = [
     options: {
       filter: true,
       customBodyRender: (value, tableMeta, updateValue) => {
-        console.log(tableMeta)
+        
         return (
           <span>
          {tableMeta.rowData[7]!==null?(
