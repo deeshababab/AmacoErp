@@ -238,7 +238,7 @@ const SimpleMuiTable = () => {
         <div className="text-right">
           <Link to={"/sales/rfq-form/Rfqform"}>
             <Button
-              className="mt-2"
+              className="mt-2 py-2"
               variant="outlined"
               color="primary"
             >

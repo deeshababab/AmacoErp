@@ -344,7 +344,7 @@ const columns = [
     
   
   return ( 
-   
+    <div>
       <div className="m-sm-30">
       <div  className="mb-sm-30">
       <div className="viewer_actions px-4 flex justify-between">
@@ -368,6 +368,7 @@ const columns = [
         </Link>
         </div>
         </div>
+        </div>
           
       
           
@@ -388,7 +389,7 @@ const columns = [
           />
         )}
       
-      <div className="mb-sm-30">
+    
       <MUIDataTable
                 title={"Products"}
                 data={
@@ -427,8 +428,9 @@ const columns = [
                 }}
             />
             </div>
+           
             </div>
-            </div>
+           
   ); } 
    
 

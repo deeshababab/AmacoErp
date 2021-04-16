@@ -182,7 +182,7 @@ const columns = [
       <div className="text-right">
                 
       <Button
-            className="pl-4"
+            className="pl-4 py-2"
             color="primary"
             variant="outlined"
             onClick={() => {

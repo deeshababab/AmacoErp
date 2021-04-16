@@ -62,7 +62,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     setcontact1('');
     setcontact2('');
     setdesignation('');
-    handleClose();
+    
   
   };
 
@@ -399,21 +399,34 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             
          
           
-          <div className="flex justify-between items-center">
+          <div className="flex  items-center">
             <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit">
               <Icon>save</Icon>Save
             </Button>
-            <div className="flex justify-between items-center">
-            
             <Button
               variant="outlined"
               className="mr-4 py-2"
               color="secondary"
-              onClick={() => resetform()}
-              // onClick={() => handleClose()}
+              // onClick={() => resetform()}
+              onClick={() => handleClose()}
             >
              <Icon>cancel</Icon> Cancel
             </Button>
+            {!contactid &&(<Button color=".bg-green" className="py-2" variant="outlined" type="reset" onClick={resetform}>
+            <Icon>loop</Icon>
+          <span className="pl-2 capitalize">reset</span>
+            </Button>)}
+            <div className="flex justify-between items-center">
+            
+            {/* <Button
+              variant="outlined"
+              className="mr-4 py-2"
+              color="secondary"
+              onClick={() => resetform()}
+              
+            >
+             <Icon>cancel</Icon> Cancel
+            </Button> */}
             </div>
           </div>
         </ValidatorForm>

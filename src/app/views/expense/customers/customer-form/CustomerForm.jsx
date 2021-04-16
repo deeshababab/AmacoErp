@@ -9,7 +9,8 @@ import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import history from "history.js";
 import { useDropzone } from "react-dropzone";
 import clsx from "clsx";
-import ReactImageMagnify from 'react-image-magnify';
+// import InnerImageZoom from 'react-inner-image-zoom';
+import ImageZoom from 'react-medium-image-zoom'
 
 
 import {
@@ -816,7 +817,7 @@ const CustomerForm = () => {
                     </TextField>)
                   }
                   <label for="myfile">Upload Reference Bill :</label>
-                  <TextField
+                  {/* <TextField
                   className="mb-4 w-full"
                    onChange={e=> handlebillSelect(e)}
                    id="upload-multiple-file"
@@ -827,7 +828,7 @@ const CustomerForm = () => {
                    size="small"
                   
                    
-                 />
+                 /> */}
                  {/* <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
@@ -853,7 +854,7 @@ const CustomerForm = () => {
                       )} */}
                     {/* </div>
                   </div> */}
-                  {/* <div
+                  <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
                       [classes.dropZone]: true,
@@ -874,9 +875,22 @@ file_upload
     type="file"
     hidden
   />
-</Icon>):<><img src={ref_billno}  /><Icon color="error">close</Icon></>}
+</Icon>):<><ImageZoom
+        image={{
+          src: `${ref_billno}`,
+          alt: 'Golden Gate Bridge',
+          className: 'img',
+          style: { width: '50em' }
+        }}
+        zoomImage={{
+          src: `${ref_billno}`,
+          alt: 'Golden Gate Bridge'
+        }}
+        
+        ></ImageZoom><Icon  style={{ position: 'relative' }} >delete</Icon></>}
 </div>
-</div> */}
+</div>
+
                 
                   
                  <TextField

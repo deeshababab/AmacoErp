@@ -126,14 +126,14 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
             </TableBody>
           </Table>
           <Button
-            className="mt-4"
+            className="mt-4 py-2 ml-4"
             color="primary"
             variant="contained"
             size="small"
             onClick={() => arrayHelpers.push({})
             }
           >
-            + Add New 
+            <Icon>add</Icon>Add New 
           </Button>
         </div>
       )}

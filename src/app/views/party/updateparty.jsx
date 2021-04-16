@@ -5,6 +5,7 @@ import {
   Button,
   Icon,
   Grid,
+  Card,
   // Radio,
   // RadioGroup,
   // FormControlLabel,
@@ -248,6 +249,7 @@ const SimpleForm = () => {
             ]}
           />
         </div>
+        <Card className="p-4" elevation={3}>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -553,7 +555,7 @@ const SimpleForm = () => {
       />
       </div> */}
       <TextField
-                className="mr-2"
+                className="mr-0"
                 variant="outlined"
                 label="Party Type"
                 size="small"
@@ -764,6 +766,7 @@ const SimpleForm = () => {
           <span className="pl-2 capitalize">cancel</span>
         </Button>
       </ValidatorForm>
+      </Card>
       </div>
     </div>
   );

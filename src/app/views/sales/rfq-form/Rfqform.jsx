@@ -354,7 +354,7 @@ const InvoiceForm = ({ }) => {
           <h4 className="m-0">New RFQ</h4>
         </div>
         <div className="">
-                <Button color="primary" variant="outlined" type="submit" fullWidth>
+                <Button color="primary" className="mt-2 py-2" variant="outlined" type="submit" fullWidth>
                   <Icon>save</Icon> Save
                                 </Button>
 
@@ -499,6 +499,7 @@ const InvoiceForm = ({ }) => {
                 <label htmlFor="upload-multiple-file">
                   <Button
                     className="capitalize"
+                    className="py-2"
                     color="primary"
                     component="span"
                     variant="contained"

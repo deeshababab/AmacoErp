@@ -318,11 +318,19 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
             </Grid>
           </Grid>
           
-          <div className="flex justify-between items-center">
-            <Button variant="outlined" color="primary" type="submit">
+          <div className="flex  items-center">
+            <Button variant="outlined"  className="mr-4 py-2"color="primary" type="submit">
               <Icon>save</Icon>Save
             </Button>
-            <div className="flex justify-between items-center">
+            <Button
+              variant="outlined"
+              className="mr-4 py-2"
+              color="secondary"
+              onClick={() => handleClose()}
+            >
+              <Icon>cancel</Icon>Cancel
+            </Button>
+            {/* <div className="flex justify-between items-center">
             <Button
               variant="outlined"
               color="secondary"
@@ -331,19 +339,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
               <Icon>cancel</Icon>Cancel
             </Button>
             
-            {/* <Button
             
-              variant="outlined"
-              color="primary"
-              onClick={() => getrow()}
-            >
-              view
-            </Button> */}
-            </div>
+            </div> */}
           </div>
           
         </ValidatorForm>
-        <Divider className="mb-2" />
+       
         {!isAlive &&
           <MUIDataTable
             title={"Category"}

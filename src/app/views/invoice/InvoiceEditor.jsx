@@ -694,15 +694,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </TableBody>
           </Table>
           <div className="flex justify-end px-4 mb-4">
-            <Button className="mt-4"
+            <Button className="mt-4 py-2"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>Add Item</Button>
           </div>
         </ValidatorForm>
         <label htmlFor="upload-multiple-file">
           <Button
-            className="capitalize ml-2"
+            className="capitalize ml-4 py-2"
             color="primary"
             component="span"
             variant="contained"

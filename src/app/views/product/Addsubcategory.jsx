@@ -8,6 +8,7 @@ import {
   Switch,
   TableCell,
   IconButton,
+  Tooltip,
 } from "@material-ui/core";
 import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -96,6 +97,10 @@ const capitalize_arr =(value) =>{
     });
 
     return capsArray.join(' ')
+}
+const resetform = () =>{
+  setcname('')
+  setcdescription('')
 }
   const handleFormSubmit = () => {
     var arr=[]
@@ -359,12 +364,12 @@ const capitalize_arr =(value) =>{
             </Grid>
           </Grid>
           
-          <div className="flex justify-between items-center">
-            <Button variant="outlined" color="primary" type="submit">
+          <div className="flex">
+            <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
              <Icon>save</Icon> Save
             </Button>
-            <div className="flex justify-between items-center">
             <Button
+              className="mr-4 py-2"
               variant="outlined"
               color="secondary"
               onClick={() => setcatid()}
@@ -372,19 +377,27 @@ const capitalize_arr =(value) =>{
               <Icon>cancel</Icon>Cancel
             </Button>
             
-            <Button
-              className="ml-4"
-              variant="outlined"
-              color="primary"
-              onClick={() => getrow()}
-            >
-              <Icon color="primary">remove_red_eye</Icon>view
-            </Button>
+              
+           <Button color=".bg-green" variant="outlined"  className="mr-4 py-2" type="reset" onClick={resetform}>
+             <Icon>loop</Icon>Reset
+           </Button>
+           
+            
+           
+            {/* <div style={{justifyContent: "flex-end",display:"flex"}}> */}
+            
+              
+              
+            {/* </Button> */}
+            <Tooltip title="view">
+              <Icon color="primary" align="right" style={{position:'absolute',right:50}} onClick={() => getrow()}>remove_red_eye</Icon>
+              </Tooltip>
             </div>
-          </div>
+           
+            
           
         </ValidatorForm>
-        <Divider className="mb-2" />
+        {/* <Divider className="mb-2" /> */}
         {!isAlive &&
           <MUIDataTable
             title={"Category"}

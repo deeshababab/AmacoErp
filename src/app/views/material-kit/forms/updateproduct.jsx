@@ -368,9 +368,9 @@ const SimpleForm = () => {
       <ValidatorForm onSubmit={submitValue} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-
+          <h6>Update Product Details</h6>
             <TextValidator
-              className="mb-4 w-full"
+              className="mb-4 mt-2 w-full"
               label="Product Name"
               variant="outlined"
               size="small"
@@ -462,7 +462,7 @@ const SimpleForm = () => {
 
           <Grid item lg={6} md={6} sm={12} xs={12}>
 
-            <div className="flex mb-4">
+            <div className="flex mb-4 mt-8">
               <TextField
                 className="mr-2"
                 variant="outlined"

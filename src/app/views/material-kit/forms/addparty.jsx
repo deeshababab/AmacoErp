@@ -693,7 +693,7 @@ const resetform = () => {
                             </div>
                             <div className="flex mb-4">
                             <TextField
-                    className="mr-2"
+                    className="mr-0"
                     label="Party type"
                     autoComplete="none"
                     name="selectedvalue"
@@ -771,7 +771,7 @@ const resetform = () => {
           <span className="pl-2 capitalize">cancel</span>
         </Button>
       
-        <Button color=".bg-green" variant="outlined" type="submit" onClick={resetform}>
+        <Button color=".bg-green" variant="outlined" type="reset" onClick={resetform} className="mr-4 py-2">
         <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
         </Button>

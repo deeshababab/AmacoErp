@@ -1099,7 +1099,7 @@ file_upload
             style: { textAlign: 'right' }
           }}
          
-          style={{width:90,height:40}}
+          style={{width:110,height:40}}
         >
           <option></option>
           
@@ -1214,10 +1214,10 @@ file_upload
           
         </Table>
         <div className="flex justify-end px-4 mb-4">
-            <Button className="mt-4"
+            <Button className="mt-4 py-2"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>Add Item</Button>
           </div>
         
         <h6 className="px-4"><strong>Terms</strong></h6>

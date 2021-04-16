@@ -387,8 +387,9 @@ const SimpleForm = ({open, handleClose}) => {
     <div>
       <ValidatorForm onSubmit={submitValue} onError={() => null}>
         <Grid container spacing={6}>
+        
           <Grid item lg={6} md={6} sm={12} xs={12}>
-
+          <h6>Product Details</h6>
             <TextValidator
               className="mb-4 w-full"
               label="Product Name"
@@ -486,7 +487,7 @@ const SimpleForm = ({open, handleClose}) => {
           </Grid>
 
           <Grid item lg={6} md={6} sm={12} xs={12}>
-          <div className="flex mb-4">
+          <div className="flex mb-4 mt-6">
             {/* <TextValidator
               className="mr-2"
               label="category type"
@@ -545,7 +546,7 @@ const SimpleForm = ({open, handleClose}) => {
                 fullWidth
               />
               <TextField
-                className="ml-2"
+                className="ml-2 "
                 label="Manufacturer"
                 variant="outlined"
                 onChange={e => setmanid(e.target.value)}

@@ -910,7 +910,7 @@ file_upload
   />
 </Icon>)
             
-:(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
+:(<span><Tooltip title="delete"><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon></Tooltip><img className="w-48" src={item.src} alt="" ></img></span>)}
                   </TableCell>
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
@@ -1128,10 +1128,10 @@ file_upload
           
         </Table>
         <div className="flex justify-end px-4 mb-4">
-            <Button className="mt-4"
+            <Button className="mt-4 py-2"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>Add Item</Button>
           </div>
         
         <h6 className="pl-4"><strong>Terms</strong></h6>

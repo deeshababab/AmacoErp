@@ -53,7 +53,10 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   const [maxWidth, setMaxWidth] = React.useState("sm");
 
   const resetform = () => {
-    
+    setbank_address('')
+    setbank_name('')
+    setiban_no('')
+    setaccount_no('')
   
   };
 
@@ -307,11 +310,24 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             
          
           
-          <div className="flex justify-between items-center">
+          <div className="flex  items-center">
             <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit">
               <Icon>save</Icon>Save
             </Button>
-            <div className="flex justify-between items-center">
+            <Button
+              variant="outlined"
+              className="mr-0 py-2"
+              color="secondary"
+              
+              onClick={() => handleClose()}
+            >
+             <Icon>cancel</Icon> Cancel
+            </Button>
+            {!contactid &&(<Button color=".bg-green" variant="outlined"  className="ml-4 py-2"type="reset" onClick={resetform}>
+            <Icon>loop</Icon>
+          <span className="pl-2 capitalize">reset</span>
+            </Button>)}
+            {/* <div className="flex justify-between items-center">
             
             <Button
               variant="outlined"
@@ -322,7 +338,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             >
              <Icon>cancel</Icon> Cancel
             </Button>
-            </div>
+            </div> */}
           </div>
         </ValidatorForm>
         
