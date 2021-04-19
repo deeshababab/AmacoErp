@@ -100,6 +100,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [ProductList1, setProductList1] = useState([]);
   const [catid,setcatid]=useState()
   const [indexvalue,setindexvalue]=useState()
+  const [productprice,setproductprice]=useState([])
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -552,7 +553,55 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    url.get("products/" + catid).then(({ data }) => {
+      let tempItemList = [...state.item];
+      data.prices.map((element, i) => {
+      
+      })
+      setProductList1(data.prices)
+      tempItemList.map((element, i) => {
+        let sum=0;
+      
+        if(indexvalue===i)
+        {
+          
+          element['product_id']= catid;
+          element['descriptionss']= data.product[0].description;
+          
+          
+            
+            
+            
+              element.product_price_list.splice(id, element.product_price_list.length);
+          
+              data.prices.map((v, i) => {
+           
+                element.product_price_list.push({
+                  price:v.price,
+                  firm_name:v.firm_name,
+                  id:v.product_id
+                })
+               
+              })
+           
+        
+           }
+        return element
+    })
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+ 
+
+  })
+
     setshouldOpenEditorDialogproduct(false);
+    url.get("products").then(({ data }) => {
+      setproList(data)
+      
+   
+    });
    
   };
   const setcontact= (event) => {
@@ -1309,6 +1358,7 @@ file_upload
             contactid={status}
             open={shouldOpenEditorDialog}
             catid={catid}
+            productprice={setproductprice}
             
           />
         )}

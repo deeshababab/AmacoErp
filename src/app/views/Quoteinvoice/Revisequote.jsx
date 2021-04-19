@@ -4,8 +4,10 @@ import {
   Radio,
   FormControl,
   FormControlLabel,
+  Select,
   Divider,
   RadioGroup,
+  InputLabel,
   Grid,
   Card,
   MenuItem,
@@ -41,12 +43,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./Addmargin";
-import MemberEditorDialog from "./Addmargin";
+import FormDialog from "../product/productprice";
+import MemberEditorDialog from "../product/productprice";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
 import FormDialog_product from "../../views/product/Addproduct_popup"
@@ -97,7 +98,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [customercontact, setcustomercontact] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
   const [ProductList1, setProductList1] = useState([]);
-  const[quotation_no,setquotation_no]=useState('')
+  const [catid,setcatid]=useState()
+  const [indexvalue,setindexvalue]=useState()
+  const [productprice,setproductprice]=useState([])
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -516,8 +519,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
     formData.append('id',id)
-    formData.append('parent_id',id)
-    formData.append('quotation_no',quotation_no)
     // JSON.stringify(values.rfq_details)
    
     
@@ -527,10 +528,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     })
     
 
-    url.post(`sale-quotation`,formData)
+    url.post(`sale-quotation-update`,formData)
       .then(function (response) {
         
-       
+        
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -552,7 +553,55 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    url.get("products/" + catid).then(({ data }) => {
+      let tempItemList = [...state.item];
+      data.prices.map((element, i) => {
+      
+      })
+      setProductList1(data.prices)
+      tempItemList.map((element, i) => {
+        let sum=0;
+      
+        if(indexvalue===i)
+        {
+          
+          element['product_id']= catid;
+          element['descriptionss']= data.product[0].description;
+          
+          
+            
+            
+            
+              element.product_price_list.splice(id, element.product_price_list.length);
+          
+              data.prices.map((v, i) => {
+           
+                element.product_price_list.push({
+                  price:v.price,
+                  firm_name:v.firm_name,
+                  id:v.product_id
+                })
+               
+              })
+           
+        
+           }
+        return element
+    })
+    setState({
+      ...state,
+      item: tempItemList,
+    });
+ 
+
+  })
+
     setshouldOpenEditorDialogproduct(false);
+    url.get("products").then(({ data }) => {
+      setproList(data)
+      
+   
+    });
    
   };
   const setcontact= (event) => {
@@ -572,7 +621,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   useEffect(() => {
     getCustomerList().then(({ data }) => {
       setCustomerList(data);
-     
+      
 
     });
     url.get("products").then(({ data }) => {
@@ -584,9 +633,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     
     url.get(`sale-quotation/${id}`).then(({ data }) => {
-     
+      
       setQuote_date(data[0].ps_date)
-      setquotation_no(data[0].quotation_no)
      
       setProductList1(data[0].quotation_details[0].product_price_list)
       if(data[0].contact!==null)
@@ -625,7 +673,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       let tempItemList = [...state.item];
      
       // setProductList1(data.prices)
-     
+      
        
     
     tempItemList.map((element, i) => {
@@ -692,6 +740,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
 
   }
+
+  const setproductids=(id,index)=>{
+    setcatid(id)
+    setindexvalue(index)
+    setShouldOpenEditorDialog(true)
+  }
   let subTotalCost = 0;
   let GTotal = 0;
   let dis_per = 0;
@@ -721,7 +775,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Revise Sales Quotation</h3>
+        <h3 align="left"> Revise Sales Quotation</h3>
           </div>
           <div className="mb-6">
          
@@ -849,21 +903,22 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Item Name</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Pprice</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Sprice</TableCell>
+              <TableCell className="px-0" style={{width:'120px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>Margin %</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
-               <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
+              <TableCell className="px-0"style={{width:'120px'}}>Remark</TableCell>
+               <TableCell className="px-0" style={{width:'40px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
+              
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -904,7 +959,7 @@ file_upload
   />
 </Icon>)
             
-:(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
+:(<span><Tooltip title="delete"><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon></Tooltip><img className="w-48" src={item.src} alt="" ></img></span>)}
                   </TableCell>
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
@@ -974,13 +1029,13 @@ file_upload
                       variant="outlined"
                       size="small"
                       fullWidth
-            
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       name="quantity"
                       value={item.quantity}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                  <TextField
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
+                  {/* <TextField
                       label="Unit Price"
                       variant="outlined"
                       // onChange={(event) => calcualtep(event,index)}
@@ -1003,13 +1058,37 @@ file_upload
                           {item.price}-{item.firm_name}  
                         </MenuItem>
                       ))} 
-                    </TextField>
+                    </TextField> */}
+                    {<span><FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">Price</InputLabel>
+        <Select
+          native
+         
+          // onChange={handleChange}
+          value={item.purchase_price}
+          onChange={(event) => calcualtep(event, index)}
+          label="Price"
+          inputProps={{
+            name: 'purchase_price',
+            id: 'outlined-age-native-simple',
+          }}
+          style={{width:80,height:40}}
+        >
+          <option   />
+          {item.product_price_list.map((item, id) => (
+          <optgroup label={item.firm_name}>
+            <option value={item.price}>{item.price}</option>
+          </optgroup>
+          ))}
+          
+        </Select>
+        </FormControl>{item.product_id?(<Tooltip title="add price"><Icon onClick={()=>setproductids(item.product_id,index)}>add</Icon></Tooltip>):''}</span>}
                     
                   </TableCell> 
 
                   
                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
                     <TextValidator
                       label="Margin"
                       onChange={(event) => calcualtep(event, index)}
@@ -1018,9 +1097,9 @@ file_upload
                       variant="outlined"
                       size="small"
                       name="margin"
-                      style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.margin}
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
               
@@ -1044,6 +1123,7 @@ file_upload
                       size="small"
                       
                       name="sell_price"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                       value={item.sell_price}
       
@@ -1061,6 +1141,7 @@ file_upload
                       name="total_amount"
                      
                       value={item.total_amount}
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                     />
                   </TableCell>
@@ -1096,13 +1177,13 @@ file_upload
           
         </Table>
         <div className="flex justify-end px-4 mb-4">
-            <Button className="mt-4"
+            <Button className="mt-4 py-2"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>Add Item</Button>
           </div>
         
-        <h6><strong>Terms</strong></h6>
+        <h6 className="pl-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         
@@ -1213,6 +1294,7 @@ file_upload
                 style={{width:'90px'}}
                 onChange={(event) => handleChange(event, "discount")}
                 value={discount}
+                inputProps={{min: 0, style: { textAlign: 'center' }}}
                 // style={{width:50}}
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
@@ -1227,6 +1309,7 @@ file_upload
                 size="small"
                 name="dis_per"
                 style={{width:'90px'}}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={(event) => handleChange(event, "discount")}
                 value={discount?dis_per:0.00}
                 // validators={["required"]}
@@ -1243,6 +1326,7 @@ file_upload
                 size="small"
                 name="vat"
                 value={subTotalCost?vat:0}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1255,6 +1339,7 @@ file_upload
                 size="small"
                 name="net_amount"
                 value={subTotalCost?GTotal:0.00}
+                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1270,13 +1355,10 @@ file_upload
       {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
+            contactid={status}
             open={shouldOpenEditorDialog}
-            productid={productid}
-            margin={margin}
-            marginprice={setmarginprice}
-            pprice={setpprice}
-            calcualteprice={calcualteprice}
-            productname={productname}
+            catid={catid}
+            productprice={setproductprice}
             
           />
         )}
@@ -1284,7 +1366,6 @@ file_upload
           <ConfirmationDialog
             open={shouldOpenConfirmationDialog}
             onConfirmDialogClose={handleDialogClose}
-            
             text="Are you sure to delete?"
           />
         )}

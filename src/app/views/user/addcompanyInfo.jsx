@@ -9,6 +9,10 @@ import {
   TableCell,
   IconButton,
   Tooltip,
+  TextField,
+  StepLabel,
+  Step,
+  Stepper,
 } from "@material-ui/core";
 import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -228,7 +232,48 @@ const resetform = () =>{
 
     handleClose()
   }
-
+  const getSteps = () => {
+    return ["logo1", "logo2", "logo3"];
+  };
+  
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return <Button
+        variant="contained"
+        component="label"
+      >
+        Upload File
+        <input
+          type="file"
+          style={{ display: "none" }}
+        />
+      </Button>;
+      case 1:
+        return <TextField label="Company Name"></TextField>;
+      case 2:
+        return <TextField label="Address"></TextField>;
+      default:
+        return "";
+    }
+  }
+  
+ 
+    const [activeStep, setActiveStep] = useState(0);
+    const steps = getSteps();
+  
+    const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+  
+    const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+  
+    const handleReset = () => {
+      setActiveStep(0);
+    };
+  
   useEffect(() => {
     
     // url.get(url+"categories").then(({ data }) => {
@@ -313,10 +358,10 @@ const resetform = () =>{
         <h4 className="mb-5">Add Sub Category</h4>
         )}
         {!catid &&(
-         <h4 className="mb-5">Add Category</h4>   
+         <h4 className="mb-5">Company Info</h4>   
         )}
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
-          <Grid className="mb-4" container spacing={4}>
+          <Grid className="mb-0" container spacing={4}>
             <Grid item sm={6} xs={12}>
               <TextValidator
                 className="w-full mb-4"
@@ -327,6 +372,53 @@ const resetform = () =>{
                   // .log(isAlive)
                 }
                 type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="Email"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="Contact Number"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="Address"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                rows={5}
+                multiline
+                type="textarea"
                 inputProps={{style: {textTransform: 'capitalize'}}}
                 name="cname"
                 value={cname}
@@ -351,7 +443,7 @@ const resetform = () =>{
             <Grid item sm={6} xs={12}>
               <TextValidator
                 className="w-full mb-4"
-                label="Description"
+                label="Company Registration No"
                 inputProps={{style: {textTransform: 'capitalize'}}}
                 onChange={e => setcdescription(e.target.value)
                 }
@@ -360,11 +452,86 @@ const resetform = () =>{
                 name="cdescription"
                 value={cdescription}
               />
+              <TextValidator
+                className="w-full mb-4"
+                label="Vat Number"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="P.O.Box No."
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="Website"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="w-full mb-4"
+                label="Fax"
+                autoComplete="off"
+                variant="outlined"
+                onChange={e => setcname(e.target.value)
+                  // .log(isAlive)
+                }
+                type="text"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                name="cname"
+                value={cname}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
               
             </Grid>
+
           </Grid>
-          
-          <div className="flex">
+          <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+     
+        {activeStep === steps.length ? (
+          <div className="mt-1 mb-3">
+            <div className="flex items-center mb-4">
+              <Icon>done</Icon> <span className="ml-2">Done</span>
+            </div>
+            {/* <Button variant="contained" color="secondary" onClick={handleReset}>
+              Reset
+            </Button> */}
             <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
              <Icon>save</Icon> Save
             </Button>
@@ -376,11 +543,61 @@ const resetform = () =>{
             >
               <Icon>cancel</Icon>Cancel
             </Button>
+          </div>
+        ) : (
+          <div>
+            {getStepContent(activeStep)}
+            <div className="pt-3">
+              <Button
+                variant="outlined"
+                color="secondary"
+                className="ml-4 py-2"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+
+              >
+                  <Icon>arrow_back</Icon>
+                Back
+              </Button>
+              <Button
+                className="ml-4 py-2"
+                variant="outlined"
+                color="primary"
+                onClick={handleNext}
+              >
+            {activeStep !== steps.length - 1?<Icon>arrow_forward</Icon>:""}
+                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                
+              </Button>
+              <Button
+              className="ml-4 py-2"
+              variant="outlined"
+              color="secondary"
+              onClick={() => setcatid()}
+            >
+              <Icon>cancel</Icon>Cancel
+            </Button>
+            </div>
+          </div>
+        )}
+     
+
+          
+          <div className="flex">
+            {/* <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
+             <Icon>save</Icon> Save
+            </Button>
+            <Button
+              className="mr-4 py-2"
+              variant="outlined"
+              color="secondary"
+              onClick={() => setcatid()}
+            >
+              <Icon>cancel</Icon>Cancel
+            </Button> */}
             
               
-           <Button color=".bg-green" variant="outlined"  className="mr-4 py-2" type="reset" onClick={resetform}>
-             <Icon>loop</Icon>Reset
-           </Button>
+          
            
             
            
@@ -389,9 +606,7 @@ const resetform = () =>{
               
               
             {/* </Button> */}
-            <Tooltip title="view">
-              <Icon color="primary" align="right" style={{position:'absolute',right:50}} onClick={() => getrow()}>expand_more</Icon>
-              </Tooltip>
+            
             </div>
            
             

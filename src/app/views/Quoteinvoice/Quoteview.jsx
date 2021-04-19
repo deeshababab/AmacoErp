@@ -589,9 +589,9 @@ function PrintMe(DivID) {
                       <MenuItem  onClick={() => handlePrinting()}>
                       Print Quotation
                       </MenuItem>
-                      <MenuItem  onClick={() => editqoute()}>
+                      {s!=="accept"?<MenuItem  onClick={() => editqoute()}>
                       Edit Quotaion
-                      </MenuItem>
+                      </MenuItem>:''}
                      {s!=="accept"?!is_revised &&<MenuItem  onClick={() => reviseqoute()}>
                       Revise Quotaion
                       </MenuItem>:''}

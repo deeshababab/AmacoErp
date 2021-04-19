@@ -162,15 +162,15 @@ const Layout1Topbar = () => {
                   <span className="pl-4"> Home </span>
                 </Link>
               </MenuItem> */}
-              {/* <MenuItem>
+              <MenuItem>
                 <Link
                   className={classes.menuItem}
-                  to="/page-layouts/user-profile"
+                  to="/profile"
                 >
                   <Icon> person </Icon>
                   <span className="pl-4"> Profile </span>
                 </Link>
-              </MenuItem> */}
+              </MenuItem>
               <MenuItem className={classes.menuItem} onClick={e=>history.push('/changepass')}>
                 <Icon > settings </Icon>
                 <span className="pl-4" >Change Password</span>

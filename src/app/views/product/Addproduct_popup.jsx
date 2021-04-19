@@ -589,7 +589,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               />   */}
             
               <TextField
-                className="ml-2"
+                className="mr-0"
                 label="Manufacturer"
                 variant="outlined"
                 onChange={e => setmanid(e.target.value)}
@@ -742,7 +742,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
           <Icon>cancel</Icon>
           <span className="pl-2 capitalize">cancel</span>
         </Button>
-        <Button color=".bg-green" variant="outlined" type="submit" onClick={resetform}>
+        <Button color=".bg-green" variant="outlined" type="reset" onClick={resetform}>
           <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
         </Button>

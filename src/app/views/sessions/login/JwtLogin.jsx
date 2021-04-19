@@ -94,6 +94,7 @@ const JwtLogin = () => {
       await login(userInfo.email, userInfo.password);
      
       history.push("/");
+      
     } catch(e) {
     
       setMessage(e.message);

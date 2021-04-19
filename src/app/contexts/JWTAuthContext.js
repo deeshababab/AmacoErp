@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     const response = await url.post("/auth/login", { email, password });
     
     const { accessToken, user, role } = response.data;
-    
+  
     localStorage.setItem("role", role)
     localStorage.setItem("auth_user", user)
     localStorage.setItem("user_name", user.name)

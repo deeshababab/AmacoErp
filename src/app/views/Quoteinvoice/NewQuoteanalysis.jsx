@@ -564,7 +564,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
 
     setshouldOpenEditorDialogproduct(false);
-    setIsAlive(true)
+    url.get("products").then(({ data }) => {
+      setproList(data)
+      
+   
+    });
 
    
   };

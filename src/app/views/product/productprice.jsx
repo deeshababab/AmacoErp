@@ -70,7 +70,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
 
 
   const handleFormSubmit = () => {
-       
+       alert(catid)
        
        
         const frmdetails = {

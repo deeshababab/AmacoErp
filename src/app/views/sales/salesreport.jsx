@@ -51,15 +51,38 @@ const columnStyleWithWidth1 = {
 
 
 const PaymentTable = ({data1}) => {
-  const [userList, setuserList] = useState([]); 
+  const [sales_Report, setsales_Report] = useState([]); 
+  const [from_date, setfrom_date] = useState(new Date()); 
+  const [to_date, setto_date] = useState(new Date()); 
+  const handleDateChange = (date) => {
+    setfrom_date(date);
+  };
+
+  const handleDateChange1 = (date) => {
+    setto_date(date);
+  };
 useEffect(() => {
     
-  url.get("advance-payments").then(({ data }) => {
-      setuserList(data)
+  // url.get("advance-payments").then(({ data }) => {
+  //     setsales_Report(data)
       
 
-  })
+  // })
 },[data1])
+const handleSubmit = ()=>{
+  url
+      .post(
+        "sale-report?" +
+          "from_date=" +
+          moment(from_date).format("YYYY-MM-DD") +
+          "&to_date=" +
+          moment(to_date).format("YYYY-MM-DD")
+      )
+      .then(({ data }) => {
+        setsales_Report(data)
+        console.log(data)
+      })
+}
 const removeData = (id) => {
   // alert(id)
   // let url = `https://jsonplaceholder.typicode.com/users/${id}`
@@ -76,7 +99,7 @@ const removeData = (id) => {
       url.delete(`advance-payments/${id}`)
         .then(res => {
           url.get("advance-payments").then(({ data }) => {
-            setuserList(data)
+            setsales_Report(data)
             
     
         })
@@ -108,16 +131,16 @@ const removeData = (id) => {
     {
       name: "id", // field name in the row object
       label: "S.No.", // column title that will be shown in table
-    //   options: {
+      options: {
        
-    //     customHeadRender: ({index, ...column}) =>{
-    //       return (
-    //         <TableCell key={index} style={columnStyleWithWidth}>  
-    //           <p style={{marginLeft:18}}>S.No.</p> 
-    //         </TableCell>
-    //       )
-    //    }
-    //   }
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth}>  
+              <span style={{marginLeft:18}}>S.No.</span> 
+            </TableCell>
+          )
+       }
+      }
     },
     {
       name: "fname", // field name in the row object
@@ -134,16 +157,17 @@ const removeData = (id) => {
     },
     {
       name: "name",
-      label: "Party Name",
-      options : {
-				customBodyRender : (value, tableMeta, updateValue) => {
-					return (
-						<Typography component={'span'} noWrap={false}>
-							{value}
-						</Typography>
-					)
-				}
-			}
+      label: "Company Name",
+      options: {
+       
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth1}>  
+              <span style={{marginLeft:18}}>Company Name</span> 
+            </TableCell>
+          )
+       }
+      }
     },
     {
       name: "amount",
@@ -196,7 +220,7 @@ const removeData = (id) => {
           ]}
         />
         </div>
-        <ValidatorForm className="px-0 pb-0">
+        <ValidatorForm className="px-0 pb-0" onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           
           <Grid item lg={3} md={6} xs={12}>
@@ -210,9 +234,9 @@ const removeData = (id) => {
                 type="text"
                 size="small"
                 autoOk={true}
-                // value={from_date}
+                value={from_date}
                 format="MMMM dd, yyyy"
-                // onChange={handleDateChange}
+                onChange={handleDateChange}
               />
             </MuiPickersUtilsProvider>
           </Grid>
@@ -227,9 +251,9 @@ const removeData = (id) => {
                 type="text"
                 size="small"
                 autoOk={true}
-                // value={to_date}
+                value={to_date}
                 format="MMMM dd, yyyy"
-                // onChange={handleDateChange1}
+                onChange={handleDateChange1}
               />
             </MuiPickersUtilsProvider>
           </Grid>
@@ -238,7 +262,7 @@ const removeData = (id) => {
               color="primary"
               variant="outlined"
               type="submit"
-            //   onClick={handleSubmit}
+              onClick={handleSubmit}
             >
               <Icon>save</Icon> Save
             </Button>
@@ -248,17 +272,17 @@ const removeData = (id) => {
       
       <MUIDataTable
         title={"Sales Reports"}
-    //    data={userList.map((item, index) => {
+       data={sales_Report.map((item, index) => {
         
-    //     return [
-    //      ++index,
-    //       item.payment_account?item.payment_account.name:'',
-    //       moment(item.received_date).format('DD MMM YYYY'),
-    //       item.amount,
-    //        item.id
-    //    ]
+        return [
+         ++index,
+          item.ps_date,
+          item.party?item.party['firm_name']:'',
+          item.quotation_no,
+          item.net_amount
+       ]
         
-    //   })} 
+      })} 
          columns={columns}  
          options={{
            

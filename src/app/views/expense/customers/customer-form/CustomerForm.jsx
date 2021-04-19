@@ -887,7 +887,7 @@ file_upload
           alt: 'Golden Gate Bridge'
         }}
         
-        ></ImageZoom><Icon  style={{ position: 'relative' }} >delete</Icon></>}
+        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:200 }} onClick={e=>setref_billno('')}>delete</Icon></>}
 </div>
 </div>
 
