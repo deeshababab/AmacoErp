@@ -45,7 +45,7 @@ const columnStyleWithWidth1 = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "600px",
+  width: "400px",
   wordBreak: "break-all",
 }
 
@@ -65,6 +65,7 @@ useEffect(() => {
     
   // url.get("advance-payments").then(({ data }) => {
   //     setsales_Report(data)
+
       
 
   // })

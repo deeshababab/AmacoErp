@@ -104,7 +104,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                       type="textarea"
                       fullWidth
                       inputProps={{style: {textTransform: 'capitalize'}}}
-                      value={item.descriptionss?capitalize_arr(item.descriptionss) :""}
+                      value={item.descriptionss?item.descriptionss :""}
                       onChange={handleChange}
                       required
                     />

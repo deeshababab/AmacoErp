@@ -136,6 +136,13 @@ const columns = [
       options: {
          
           filter: true,
+          customHeadRender: ({index, ...column}) =>{
+            return (
+              <TableCell key={index} width={50}>  
+                <span style={{marginLeft:15}}>S.No.</span> 
+              </TableCell>
+            )
+         },
       },
   },
   {

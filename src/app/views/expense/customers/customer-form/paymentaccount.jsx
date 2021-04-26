@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Divider,
   Switch,
+  TableCell,
   IconButton,
 } from "@material-ui/core";
 import history from "history.js";
@@ -151,7 +152,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
       name: "id", // field name in the row object
       label: "S.No.", // column title that will be shown in table
       options: {
-        filter: true,
+        filter:true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} width={50}>  
+              <span style={{marginLeft:15}}>S.No.</span> 
+            </TableCell>
+          )
+       },
       },
     },
     {
@@ -159,6 +167,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
       label: "Name", // column title that will be shown in table
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} width={350}>  
+              <span style={{marginLeft:15}}>Name</span> 
+            </TableCell>
+          )
+       },
       },
     },
     
@@ -214,13 +229,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
             
           </Grid>
 
-          <div className="flex justify-between items-center">
-            <Button variant="outlined" color="primary" type="submit">
+          <div className="flex  items-center">
+            <Button variant="outlined" className="py-2 mr-4" color="primary" type="submit">
               <Icon>save</Icon>Save
             </Button>
-            <div className="flex justify-between items-center">
+            
             <Button
               variant="outlined"
+              className="py-2 mr-4"
               color="secondary"
               onClick={() => handleClose()}
             >
@@ -231,11 +247,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
             
               variant="outlined"
               color="primary"
+              className="py-2 mr-4"
               onClick={() => getrow()}
             >
               <Icon>remove_red_eye</Icon>view
             </Button>
-            </div>
+            
           </div>
         </ValidatorForm>
         <Divider className="mb-2" />

@@ -18,7 +18,7 @@ import { Icon } from "@material-ui/core";
 import { useParams,Link } from "react-router-dom";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories,getmanufacturer}from "../invoice/InvoiceService"
+import url, {getcategories,getmanufacturer,capitalize_arr}from "../invoice/InvoiceService"
 
 const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   const [state, setState] = useState({
@@ -61,7 +61,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     return () => setIsAlive(true);
   };
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("md");
+  const [maxWidth, setMaxWidth] = React.useState("sm");
 
 
 
@@ -69,8 +69,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     
     const frmdetails = {
 
-      name: cname,
-      description: cdescription
+      name: capitalize_arr(cname),
+      description: capitalize_arr(cdescription)
 
 
     }
@@ -97,7 +97,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
         
        
        
-        // handleClose()
+        handleClose()
 
       
     setcdescription('')
@@ -235,6 +235,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
                 autoComplete="none"
                 value={cname}
                 validators={["required"]}
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 errorMessages={["this field is required"]}
               />
               {/* <TextValidator
@@ -277,6 +278,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
                 label="Description"
                 onChange={e => setcdescription(e.target.value)
                 }
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 variant="outlined"
                 type="textarea"
                 name="cdescription"
@@ -307,17 +309,18 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
             </Grid>
           </Grid>
 
-          <div className="flex justify-between items-center">
-            <Button variant="contained" color="primary" type="submit">
-              Save
+          {/* <div className="flex justify-between items-center"> */}
+            <Button variant="outlined" className="mr-4 py-2" color="primary" type="submit">
+              <Icon>save</Icon>Save
             </Button>
-            <div className="flex justify-between items-center">
+            
             <Button
               variant="outlined"
               color="secondary"
+              className="mr-4 py-2"
               onClick={() => handleClose()}
             >
-              Cancel
+             <Icon>cancel</Icon> Cancel
             </Button>
             
             <Button
@@ -326,10 +329,10 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               color="primary"
               onClick={() => getrow()}
             >
-              view
+             <Icon>remove_red_eye</Icon> view
             </Button>
-            </div>
-          </div>
+          
+          {/* </div> */}
         </ValidatorForm>
         <Divider className="mb-2" />
         {!isAlive && (

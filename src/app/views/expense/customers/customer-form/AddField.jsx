@@ -7,6 +7,7 @@ import {
   RadioGroup,
   Grid,
   Dialog,
+  
   MenuItem,
   Table,
   TableHead,
@@ -47,6 +48,7 @@ import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
+import MUIDataTable from "mui-datatables";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -267,6 +269,59 @@ const MemberEditorDialog1= ({ uid, open, handleClose,accounttype,catid,catname,s
     
 
   }, [id, isAlive, generateRandomId]);
+  const columns = [
+    {
+      name: "id", // field name in the row object
+      label: "S.No.", // column title that will be shown in table
+      options: {
+        filter:true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} width={50}>  
+              <span style={{marginLeft:15}}>S.No.</span> 
+            </TableCell>
+          )
+       },
+      },
+    },
+    {
+    name: "name", // field name in the row object
+      label: "Name", // column title that will be shown in table
+      options: {
+        filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} width={350}>  
+              <span style={{marginLeft:15}}>Name</span> 
+            </TableCell>
+          )
+       },
+      },
+    },
+    
+    {
+      name: "id",
+      label: "Action",
+      options: {
+        filter: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+         
+          return (
+            <IconButton onClick={() => removeData(tableMeta.rowData[2])
+            }
+            >
+              <Icon color="error">delete</Icon>
+            </IconButton>
+
+
+
+          )
+
+        },
+      },
+    },
+  ];
+
 
   let subTotalCost = 0;
   let GTotal = 0;
@@ -389,33 +444,66 @@ const MemberEditorDialog1= ({ uid, open, handleClose,accounttype,catid,catname,s
             <Button className="mt-4"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>  Add Item</Button>
           </div>
         
-          <div className="flex justify-between ">
-            <Button variant="contained" color="primary" type="submit">
-              Save
+          <div className="flex">
+            <Button variant="outlined" color="primary" type="submit" className="py-2 mr-4">
+             <Icon>save</Icon> Save
             </Button>
-            <div className="flex justify-between items-center">
+            
             <Button
               variant="outlined"
               color="secondary"
+              className="py-2 mr-4"
               onClick={() => handleClose()}
             >
-              Cancel
+              <Icon>cancel</Icon>Cancel
             </Button>
             <Button
             
               variant="outlined"
               color="primary"
+              className="py-2 mr-4"
               onClick={() => getrow()}
             >
-              view
+              <Icon>remove_red_eye</Icon>view
             </Button>
-            </div>
+            
     </div>
       </ValidatorForm>
-      {!isAlive&&(
+
+      {!isAlive && (
+          <MUIDataTable
+            // title={catid &&("Subcategory List")|| (Category  Li)}
+            columns={columns}
+            data={
+                 
+             field.map((item, index) => {
+                
+               
+                  return [
+      
+                    ++index,
+                    item.name,
+                    item.type,
+                    item.id
+                    
+                  ]
+                
+              })
+              
+            }
+            options={{
+              filterType: "textField",
+              responsive: "simple",
+              selectableRows: "none", // set checkbox for each row
+              elevation: 0,
+              rowsPerPageOptions: [10, 20, 40, 80, 100],
+            }}
+          />
+        )}
+      {/* {!isAlive&&(
       <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
@@ -456,7 +544,7 @@ const MemberEditorDialog1= ({ uid, open, handleClose,accounttype,catid,catname,s
                   </TableBody>
 
         </Table>
-      )}
+      )} */}
       </div>
 
       

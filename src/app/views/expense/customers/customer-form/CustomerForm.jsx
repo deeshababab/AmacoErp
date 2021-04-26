@@ -329,6 +329,13 @@ const CustomerForm = () => {
 
 
 
+  const resetform=()=>{
+   
+    setpayment_account_name('')
+    setaccountstatus(false)
+    
+
+  }
 
   const handleSubmit = async (values, { isSubmitting, resetForm }) => {
     // const frmdetails = {
@@ -353,12 +360,12 @@ const CustomerForm = () => {
     }
     if(tax)
     {
-    formData.append("tax", taxamount)
+    formData.append("tax", parseFloat(taxamount).toFixed(2))
     formData.append("company_name",company)
     }
     formData.append("paid_date", paid_date)
     formData.append("referrence_bill_no", referrence_bill_no)
-    formData.append("amount", amount)
+    formData.append("amount", parseFloat(amount).toFixed(2))
     formData.append("paid_to", paid_to)
     formData.append("description",description)
     formData.append("created_by",created_by)
@@ -703,6 +710,7 @@ const CustomerForm = () => {
                   <TextField
                     className="mb-4 w-full"
                     label="Paid To"
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     name="firstName"
                     size="small"
                     variant="outlined"
@@ -772,16 +780,7 @@ const CustomerForm = () => {
                     select
                     onChange={e => setpaid_by(e.target.value)}
                   >
-                    {/* <MenuItem>
-                    {/* <Button
-                        
-                          onClick={() => {
-                            pushData();
-                          }}
-                        
-                    >
-                      <Icon>add</Icon>New
-                    </Button> */}
+                   
                    {payment_account.map((item, ind) => (
                       <MenuItem value={item.id} key={item}>
                         {item.name}
@@ -955,6 +954,7 @@ file_upload
                     size="small"
                     variant="outlined"
                     value={description}
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     autoComplete="Disabled"
                     onChange={e => setdescription(e.target.value)}
                   />
@@ -1039,9 +1039,18 @@ file_upload
 
 
               <div className="mt-6">
-                <Button color="primary" variant="outlined" type="submit">
+                <Button color="primary" variant="outlined" type="submit"  className="mr-4 py-2">
                   <Icon>save</Icon> Save
                 </Button>
+                <Button  className="mr-4 py-2" color="secondary" variant="outlined" type="submit" onClick={() => history.push("/expenseview")}>
+               <Icon>cancel</Icon>
+                  <span className="pl-2 capitalize">cancel</span>
+               </Button>
+      
+              <Button color=".bg-green" variant="outlined" type="reset" onClick={resetform} className="mr-4 py-2">
+              <Icon>loop</Icon>
+              <span className="pl-2 capitalize">reset</span>
+            </Button>
               </div>
             </form>
 

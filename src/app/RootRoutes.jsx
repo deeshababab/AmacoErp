@@ -32,7 +32,8 @@ import dataTableRoutes from "./views/data-table/dataTableRoutes";
 import invRoutes from "./views/inv/invRoutes";
 import ExpenseRoutes from "./views/expense/ExpenseRoutes";
 import userRoutes from "./views/user/userroutes";
-import statementRoutes from "./views/statements/StatementRoute"
+import statementRoutes from "./views/statements/StatementRoute";
+import TaxRoutes from "./views/Tax/TaxRoutes";
 
 const redirectRoute = [
   {
@@ -81,6 +82,7 @@ const routes = [
   ...pagesRoutes,
   ...dataTableRoutes,
   ...redirectRoute,
+  ...TaxRoutes
   // ...errorRoute,
 ];
 

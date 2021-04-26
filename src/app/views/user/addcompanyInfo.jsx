@@ -24,26 +24,32 @@ import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories}from "../invoice/InvoiceService"
+import url, {getcategories,capitalize_arr}from "../invoice/InvoiceService"
 
-const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
-  const [state, setState] = useState({
-    name: "abc",
-    email: "",
-    phone: "",
-    balance: "",
-    age: "",
-    company: "",
-    address: "",
-    isActive: false,
-    isAlive: true,
-  });
-  const [cname, setcname] = useState('');
-  const [cdescription, setcdescription] = useState('');
+const MemberEditorDialog = ({ cid, open, handleClose,catid,catList }) => {
+  
+  const [name, setname] = useState('');
+  const [email, setemail] = useState('');
+  const [cr_no, setcr_no] = useState('');
+  const [contact, setcontact] = useState('');
+  const [po_box, setpo_box] = useState('');
+  const [fax, setfax] = useState('');
+  const [website, setwebsite] = useState('');
+  const [address, setaddress] = useState('');
+  const [white_logo, setwhite_logo] = useState();
+  const [logo, setlogo] = useState();
+  const [black_logo, setblack_logo] = useState();
+  const [vat_no, setvat_no] = useState('');
   const [arr, setarr] = useState([]);
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
+  const [img1, setimg1] = useState("");
+  const [img2, setimg2] = useState("");
+  const [img3, setimg3] = useState("");
+  const [id, setid] = useState();
+  const formData = new FormData()
+  let logo_files=[];
   var found=null;
   const styles = {
     customMaxWidth: {
@@ -51,22 +57,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
     }
   };
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
   const columnStyleWithWidth = {
@@ -92,141 +83,107 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   }
 
 
-const capitalize_arr =(value) =>{
-  let wordsArray = value.split(' ')
-    let capsArray = []
 
-    wordsArray.forEach(word => {
-        capsArray.push(word[0].toUpperCase() + word.slice(1))
-    });
-
-    return capsArray.join(' ')
-}
 const resetform = () =>{
-  setcname('')
-  setcdescription('')
+  
+}
+const Delete_logo=(v)=>
+{
+  if(v==="w")
+  {
+    setimg1('')
+    setwhite_logo('')
+  }
+  else if(v==="b")
+  {
+    setimg2('')
+    setblack_logo('')
+  }
+  else if(v==="l"){
+    setimg3('')
+    setlogo('')
+  }
+}
+const handlefileSelect = (event,f) => {
+  let files = event.target.files[0]
+  let temp=arr
+    if(f==="w")
+    {
+      setwhite_logo(files)
+ 
+     
+  
+      
+          setimg1(URL.createObjectURL(files))
+       
+    }
+    else if(f==="b")
+    {
+      setblack_logo(files)
+      setimg2(URL.createObjectURL(files))
+      
+    }
+    else if(f==="l")
+    {
+      setlogo(files)
+      setimg3(URL.createObjectURL(files))
+     
+    }
+  
 }
   const handleFormSubmit = () => {
-    var arr=[]
-     getcategories().then(({ data }) => {
-       
-      for(const list in data)
-      {
-        
-        arr.push(
-         data[list].name
-        )
-
-      }
+    formData.append('name',capitalize_arr(name))
+    formData.append('email',email)
+    formData.append('address',capitalize_arr(address))
+    formData.append('contact',contact)
+    formData.append('cr_no',cr_no)
+    formData.append('po_box',po_box)
+    formData.append('fax',fax)
+    formData.append('vat_no',vat_no)
+    formData.append('website',website)
+    formData.append('img1',white_logo)
+    formData.append('img2',black_logo)
+    formData.append('img3',logo)
+    if(cid)
+    {
      
+     formData.append('id',cid) 
+    url.post(`update-company`,formData)
+    .then(function (response) {
       
+      Swal.fire({
+        title: 'Success',
+        icon:'success',
+        type: 'success',
+        text: 'Data Updated successfully.',
+      }).then((result) => {
+        handleClose()
+      })
 
-      if(arr.indexOf(cname)>-1) 
-      {
-        
-
-        setIsAlivecat(true)
-        catid=null
-      }
-       else
-       {
-        
-        const frmdetails = {
-
-          name: capitalize_arr(cname),
-          description:capitalize_arr(cdescription),
-          parent_id:catid
-    
-    
-        }
-      
-        url.post('categories', frmdetails)
-          .then(function (response) {
-            getcategories()
-            Swal.fire({
-              title: 'Success',
-              type: 'success',
-              icon:'success',
-              text: 'Data saved successfully.',
-            })
-            .then((result) => {
-            
-          
-           getcategories().then(({ data }) => {
-            catList(data)
-    
-            });
-            
-            })
-            handleClose()
-            // history.push('/product/viewsubcategory');
-          })
-          .catch(function (error) {
-           
-          })
-        setcdescription('')
-        setcname('')
-        catid=null
-       
-    
-       } 
-        
-  
-     })
-
+    })
+    }
+    else
+    {
+    url.post('company', formData)
+    .then(function (response) {
+      console.log(response.data)
+      Swal.fire({
+        title: 'Success',
+        icon:'success',
+        type: 'success',
+        text: 'Data saved successfully.',
+      })
+      .then((result) => {
+      handleClose()
+      })
+    })
+  }
+   
     
   
   
   };
-  const removeData = (id) => {
-    Swal.fire({
-      title: 'Are you sure you want to delete?',
-      text: 'Any products, services will be uncategorised.',
-      icon: 'warning',
-      showCancelButton: true,
-      customClass: {
-        zIndex: 1000
-      },
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`categories/${id}`)
-          .then(res => {
-            
-            getcategories().then(({ data }) => {
-              catList(data)
-      
-              });
-          })
-          handleClose()
-          Swal.fire({
-            customClass:{
-              zIndex: 1000
-            },
-             text:'Category Deleted Successfully',
-             icon: "success"
-            // 'Cancelled',
-            // 'Your imaginary file is safe :)',
-            // 'error',
-            
-          })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          customClass:{
-            zIndex: 1000
-          },
-           title:'Cancelled',
-           icon:'error'
-          // 'Cancelled',
-          // 'Your imaginary file is safe :)',
-          // 'error',
-          
-        })
-      }
-    })
-
-  }
+  
   const setcatid =()=>{
    
 
@@ -239,20 +196,45 @@ const resetform = () =>{
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return <Button
+        return <><Button
         variant="contained"
         component="label"
+
+        onChange={e=>handlefileSelect(e,"w")}
       >
-        Upload File
+        Upload White Logo
+        <input
+          type="file"
+          name="anv"
+          style={{ display: "none" }}
+        />
+      </Button>
+      
+      <img  src={img1} width={100} height={100}></img>{img1 && (<Tooltip title="Remove Logo"><Icon color="error" onClick={e=>Delete_logo("w")}>close</Icon></Tooltip>)}</>;
+      case 1:
+        return  <><Button
+        variant="contained"
+        component="label"
+        onChange={e=>handlefileSelect(e,"b")}
+      >
+        Upload Black Logo
         <input
           type="file"
           style={{ display: "none" }}
         />
-      </Button>;
-      case 1:
-        return <TextField label="Company Name"></TextField>;
+      </Button> <img  src={img2} width={100} height={100}></img>{img2 &&(<Tooltip title="Remove Logo"><Icon color="error" onClick={e=>Delete_logo("b")}>close</Icon></Tooltip>)}</>;
       case 2:
-        return <TextField label="Address"></TextField>;
+        return  <><Button
+        variant="contained"
+        component="label"
+        onChange={e=>handlefileSelect(e,"l")}
+      >
+        Upload Logo
+        <input
+          type="file"
+          style={{ display: "none" }}
+        />
+      </Button><img  src={img3} width={100} height={100}></img>{img3 &&(<Tooltip title="Remove Logo"><Icon color="error" onClick={e=>Delete_logo("l")}>close</Icon></Tooltip>)}</>;
       default:
         return "";
     }
@@ -264,10 +246,12 @@ const resetform = () =>{
   
     const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      console.log(arr)
     };
   
     const handleBack = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
+      console.log(arr)
     };
   
     const handleReset = () => {
@@ -276,78 +260,39 @@ const resetform = () =>{
   
   useEffect(() => {
     
-    // url.get(url+"categories").then(({ data }) => {
-    //   setUserList(data);
+    if(cid)
+    {
+    url.get("company/"+cid).then(({ data }) => {
+      console.log(data[0].name)
+      
+          setid(data[0].id)
+          setname(data[0].name)
+          setaddress(data[0].address)
+          setemail(data[0].email)
+          setcontact(data[0].contact)
+          setfax(data[0].fax)
+          setwebsite(data[0].website)
+          setcr_no(data[0].cr_no)
+          setvat_no(data[0].vat_no)
+          setpo_box(data[0].po_box)
+          setimg1(data[0].img1)
+          setimg2(data[0].img2)
+          setimg3(data[0].img3)
+        
+     
+     
+   
 
-    // });
-    // url.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
-    //   if (isAlive) setUserList(data);
     
-
-    // Object.keys(data).forEach(function(key) {
-
-    //   arr.push(data[key]);
-    //   setUserList(arr)
-    // });
+    });
+  }
 
 
     // });
    
   },[])
-  function getrow() {
-    if(!catid)
-    {
-    url.get("categories").then(({ data }) => {
-      setUserList(data);
-      setIsAlive(false)
-    });
-  }
-  else
-  {
-   
-    url.get(`sub-category/${catid}`).then(({ data }) => {
-      setUserList(data);
-      setIsAlive(false)
-     
-    });
-  }
-    // return () => setIsAlive(false);
-  }
-  const columns = [
-    {
-      name: "name", // field name in the row object
-      label: "Name", // column title that will be shown in table
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "description",
-      lable:"Descriptions"
-    },
-    {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-
   
-          return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
-            } style={{columnStyleWithWidth1}}
-            >
-              <Icon color="error">delete</Icon>
-            </IconButton>
-
-
-
-          )
-
-        },
-      },
-    },
-  ];
+  
 
 
   return (
@@ -367,61 +312,64 @@ const resetform = () =>{
                 className="w-full mb-4"
                 label="Name"
                 autoComplete="off"
+                size="small"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setname(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={name}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
                 label="Email"
+                size="small"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setemail(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
-                inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={email}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
+                small="small"
                 label="Contact Number"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setcontact(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={contact}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
+                size="small"
                 label="Address"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setaddress(e.target.value)
                   // .log(isAlive)
                 }
                 rows={5}
                 multiline
                 type="textarea"
                 inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={address}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -444,41 +392,43 @@ const resetform = () =>{
               <TextValidator
                 className="w-full mb-4"
                 label="Company Registration No"
-                inputProps={{style: {textTransform: 'capitalize'}}}
-                onChange={e => setcdescription(e.target.value)
+                size="small"
+                onChange={e => setcr_no(e.target.value)
                 }
                 variant="outlined"
                 type="textarea"
                 name="cdescription"
-                value={cdescription}
+                value={cr_no}
               />
               <TextValidator
                 className="w-full mb-4"
                 label="Vat Number"
+                size="small"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setvat_no(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={vat_no}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
                 label="P.O.Box No."
+                size="small"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setpo_box(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={po_box}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -487,13 +437,13 @@ const resetform = () =>{
                 label="Website"
                 autoComplete="off"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                size="small"
+                onChange={e => setwebsite(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
-                inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={website}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -501,14 +451,14 @@ const resetform = () =>{
                 className="w-full mb-4"
                 label="Fax"
                 autoComplete="off"
+                size="small"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setfax(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
-                inputProps={{style: {textTransform: 'capitalize'}}}
-                name="cname"
-                value={cname}
+                name="name"
+                value={fax}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -529,9 +479,7 @@ const resetform = () =>{
             <div className="flex items-center mb-4">
               <Icon>done</Icon> <span className="ml-2">Done</span>
             </div>
-            {/* <Button variant="contained" color="secondary" onClick={handleReset}>
-              Reset
-            </Button> */}
+           
             <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
              <Icon>save</Icon> Save
             </Button>
@@ -583,51 +531,11 @@ const resetform = () =>{
      
 
           
-          <div className="flex">
-            {/* <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
-             <Icon>save</Icon> Save
-            </Button>
-            <Button
-              className="mr-4 py-2"
-              variant="outlined"
-              color="secondary"
-              onClick={() => setcatid()}
-            >
-              <Icon>cancel</Icon>Cancel
-            </Button> */}
-            
-              
-          
-           
-            
-           
-            {/* <div style={{justifyContent: "flex-end",display:"flex"}}> */}
-            
-              
-              
-            {/* </Button> */}
-            
-            </div>
-           
+         
             
           
         </ValidatorForm>
-        {/* <Divider className="mb-2" /> */}
-        {!isAlive &&
-          <MUIDataTable
-            title={"Category"}
-            columns={columns}
-            data={userList}
-            options={{
-              filterType: "textField",
-              responsive: "simple",
-              selectableRows: "none", // set checkbox for each row
-              elevation: 0,
-              rowsPerPageOptions: [10, 20, 40, 80, 100],
-            }}
-          />
-          }
-     
+       
       </div>
     </Dialog>
     

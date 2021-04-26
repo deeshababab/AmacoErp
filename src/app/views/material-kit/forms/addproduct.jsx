@@ -296,8 +296,8 @@ const SimpleForm = ({open, handleClose}) => {
   const submitValue = () => {
     const frmdetails = {
       party_id:vendors,
-      name: product?capitalize_arr(product):'',
-      description: description?capitalize_arr(description):'',
+      name: capitalize_arr(product),
+      description:capitalize_arr(description),
       unit_price: unit_Price,
       unit_of_measure: unit_of_measue,
       category_id: id,
@@ -670,7 +670,7 @@ const SimpleForm = ({open, handleClose}) => {
           <Icon>cancel</Icon>
           <span className="pl-2 capitalize">cancel</span>
         </Button>
-        <Button color=".bg-green" variant="outlined" type="submit" onClick={resetform}>
+        <Button color=".bg-green" className="mr-4 py-2" variant="outlined" type="submit" onClick={resetform}>
           <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
         </Button>

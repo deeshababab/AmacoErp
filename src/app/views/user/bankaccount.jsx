@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Breadcrumb } from "matx";
+import { Breadcrumb,ConfirmationDialog } from "matx";
 import Axios from "axios";
 import MUIDataTable from "mui-datatables";
-import { Icon, Tooltip } from "@material-ui/core";
+import { Divider, Icon, Tooltip } from "@material-ui/core";
 import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../invoice/InvoiceService";
 import moment from "moment";
+import FormDialog from "./addbank"
+import MemberEditorDialog from "./addbank";
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,9 +25,50 @@ import {
 
 const Bank_Account = () => {
   const [isAlive, setIsAlive] = useState(true);
-  const [userList, setUserList] = useState([]);
+  const [BankList, setBankList] = useState([]);
   const [qdetails, setqdetails] = useState([]);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+  const [
+    shouldOpenConfirmationDialog,
+    setShouldOpenConfirmationDialog,
+  ] = useState(false);
+  const handleDialogClose = () => {
+    
+    setShouldOpenEditorDialog(false);
+    setIsAlive(true)
+  };
+
+  const deletebank = (id)=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this Bank details!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+    if (result.value) {
+    url.delete("company-bank/"+id).then(({ data }) => {
+      Swal.fire(
+        'Deleted!',
+        'Your Bank details has been deleted.',
+        'success'
+      )
+      setIsAlive(true)
+    })
+  }
+  else
+  {
+    Swal.fire(
+      'Cancelled',
+      'Your Bank Details is safe :)',
+      'error'
+    )
+  }
+
+    })
+
+  }
 
   const columnStyleWithWidth1 = {
     top: "0px",
@@ -48,19 +91,19 @@ const Bank_Account = () => {
     
   }
   useEffect(() => {
-    url.get("quotations-rejected-list ").then(({ data }) => {
-      // if (isAlive) setUserList(data);
+    url.get("company-bank").then(({ data }) => {
+      // if (isAlive) setBankList(data);
       // var myJSON = JSON.stringify(data.id);
       
       // if(data.length)
       // {
-        setUserList(data);
+        setBankList(data);
      
        setqdetails(data);
       // }
     });
-    return () => setIsAlive(false);
-  }, []);
+    return setIsAlive(false);
+  }, [isAlive]);
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
@@ -82,7 +125,7 @@ const Bank_Account = () => {
   }
   const [showInvoiceEditor, setShowInvoiceEditor] = useState(false);
   const [isNewInvoice, setIsNewInvoice] = useState(false);
-
+  const [bid, setbid] = useState();
   const [click, setClick] = useState([]);
 
   const addNumber = () => {
@@ -94,6 +137,10 @@ const Bank_Account = () => {
       }
     ]);
   };
+  const editbank=(id) =>{
+    setbid(id)
+    setShouldOpenEditorDialog(true)
+  }
   const removeData = (id) => {
     // alert(id)
     // let url = `https://jsonplaceholder.typicode.com/users/${id}`
@@ -272,49 +319,57 @@ const Bank_Account = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        {/* <Breadcrumb
-          routeSegments={[
-            // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Sales Quotation" },
-          ]}
-        />
-
-        <div className="text-right">
-          <Link to={"/Newquoteanalysis"}>
-            <Button
-              className="py-2"
-              variant="outlined"
-              color="primary"
-            >
-              <Icon>add</Icon> Add New 
-          </Button>
-          </Link>
-        </div> */}
-      </div>
-      
-            </div>
-          
+        </div>
+        </div>
+               
             <div className="mb-8">
+            {BankList.map((item,i)=>(
+              <>
+              <div>
+              <Button variant="text" className="w-full justify-start px-1 ml-0">
+              <Icon className="ml-2" color="primary">open_with</Icon>
+                <span className="ml-4">Bank Name: <strong>{item.name}</strong></span>
+              </Button>
+              <Button variant="text" className="w-full justify-start px-5">
+                <span className="ml-8">Account Number: <strong>{item.ac_no}</strong></span>
+              </Button>
+              <Button variant="text" className="w-full justify-start px-5">
+                <span className="ml-8">IBAN Number: <strong>{item.iban_no}</strong></span>
+              </Button>
+              <Button variant="text" className="w-full justify-start px-5">
+                <span className="ml-8">Bank Address: <strong>{item.bank_address}</strong></span>
+              </Button>
+              <span className="ml-12"><Tooltip title="Delete"><Icon color="error" onClick={e=>deletebank(item.id)}>delete</Icon></Tooltip><Tooltip title="Edit"><Icon color="secondary" onClick={e=>editbank(item.id)}>edit</Icon></Tooltip></span>
+              <Divider></Divider>
+              </div>
+              </>
+              ))}
               
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Bank Name</span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Account Number</span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">IBAN Number</span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Bank Address</span>
-              </Button>
-              
+              <div className="pb-6 pt-3">
+              <Button  onClick={e=>setShouldOpenEditorDialog(true)} className="mr-4 py-2" style={{position:'absolute',right:50}} variant="outlined" color="primary" type="submit" aignItem="right">
+          <Icon>add</Icon>
+          <span className="pl-2 capitalize">Add New</span>
+        </Button>
+        </div>
+        {shouldOpenEditorDialog && (
+        <MemberEditorDialog
+          handleClose={handleDialogClose}
+          open={shouldOpenEditorDialog}
+          bid={bid}
+         
 
+        />
+      )}
+      {shouldOpenConfirmationDialog && (
+        <ConfirmationDialog
+          open={shouldOpenConfirmationDialog}
+          onConfirmDialogClose={handleDialogClose}
+          text="Are you sure to delete?"
+        />
+      )}
     </div>
+         
+    
     </div>
   );
 }

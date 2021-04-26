@@ -44,8 +44,19 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "500px"
- }
+    width: "80px",
+    wordBreak: "break-all",
+  }
+  const columnStyleWithWidth1 = {
+    top: "0px",
+    left: "0px",
+    zIndex: "100",
+    position: "sticky",
+    backgroundColor: "#fff",
+    width: "400px",
+    wordBreak: "break-all",
+  }
+  
   const classes = useStyles();
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
@@ -78,7 +89,7 @@ const SimpleMuiTable = () => {
       
       url.get("products")
       .then(function (response) {
-       
+       console.log(response.data)
         setUserList(response.data)
         
       })
@@ -211,10 +222,16 @@ const SimpleMuiTable = () => {
 const columns = [
   {
       name: "id", // field name in the row object
-      label: "#", // column title that will be shown in table
+      label: "S.No.", // column title that will be shown in table
       options: {
          
-          filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth}>  
+              <span style={{marginLeft:18}}>S.No.</span> 
+            </TableCell>
+          )
+       }
       },
   },
   {
@@ -227,14 +244,14 @@ const columns = [
 },
   {
       name: "description",
-      label: "Description",
-      resizableColumns: true,
+     
+    
       options: {
           // setCellProps: () => ({ style: { minWidth: "800px", maxWidth: "800px" }}),
           customHeadRender: ({index, ...column}) =>{
             return (
-              <TableCell key={index} style={columnStyleWithWidth}>  
-                <TableHead>Description</TableHead> 
+              <TableCell key={index} style={columnStyleWithWidth1}>  
+                <span style={{marginLeft:18}}>Description</span> 
               </TableCell>
             )
          },
@@ -246,13 +263,8 @@ const columns = [
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
-            <TableCell key={index} style={{top: "0px",
-            left: "0px",
-            zIndex: "100",
-            position: "sticky",
-            backgroundColor: "#fff",
-            width: "60px"}} >  
-              <TableHead >UOM</TableHead> 
+            <TableCell key={index} style={columnStyleWithWidth}>  
+              <span style={{marginLeft:18}} >UOM</span> 
             </TableCell>
           )
        },
@@ -415,6 +427,18 @@ const columns = [
       <MUIDataTable
                 title={"Product List"}
                 data={userList}
+                data={userList.map((item,index)=>
+                {
+                  return [
+                    ++index,
+                     item.name,
+                     item.description,
+                     item.unit_of_measure,
+                     item.category_name,
+                     item.model_no
+                  ]
+                })}
+                  
                 columns={columns}
                 options={{
                     filterType: "textField",

@@ -133,4 +133,4 @@ const UserList4 = () => {
 };
 
 export default UserList4;
-const tabList = ["Company", "Account"];
+const tabList = ["Company", "Bank Account"];

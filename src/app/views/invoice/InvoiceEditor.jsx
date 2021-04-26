@@ -671,7 +671,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                         fullWidth
                         variant="outlined"
                         size="small"
-                        value={item.description?capitalize_arr(item.description) : null}
+                        value={item.description?item.description : null}
                         onChange={(event) => handleIvoiceListChange(event, index)}
 
                       />

@@ -27,8 +27,20 @@ const CompanyInfo = () => {
   const [isAlive, setIsAlive] = useState(true);
   const [userList, setUserList] = useState([]);
   const [qdetails, setqdetails] = useState([]);
-  
-
+  const [company, setcompany] = useState([]);
+  const [cid,setcid]=useState()
+  useEffect(() => {
+    
+    
+    url.get("company").then(({ data }) => {
+      if(data.length)
+      {
+        setcid(data[0].id)
+      }
+      
+    })
+    return setIsAlive(false)
+  },[isAlive])
   const columnStyleWithWidth1 = {
     top: "0px",
     left: "0px",
@@ -61,8 +73,15 @@ const CompanyInfo = () => {
        setqdetails(data);
       // }
     });
+    url.get("company").then(({ data }) => {
+      
+        setcompany(data);
+     
+     
+      
+    });
     return () => setIsAlive(false);
-  }, []);
+  }, [isAlive]);
   const [count, setCount] = useState(0);
   const history = useHistory();
   const handeViewClick = (invoiceId) => {
@@ -95,6 +114,7 @@ const CompanyInfo = () => {
   const handleDialogClose = () => {
     
     setShouldOpenEditorDialog(false);
+    setIsAlive(true)
 
   };
 
@@ -290,71 +310,59 @@ const CompanyInfo = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        {/* <Breadcrumb
-          routeSegments={[
-            // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Sales Quotation" },
-          ]}
-        />
-
-        <div className="text-right">
-          <Link to={"/Newquoteanalysis"}>
-            <Button
-              className="py-2"
-              variant="outlined"
-              color="primary"
-            >
-              <Icon>add</Icon> Add New 
-          </Button>
-          </Link>
-        </div> */}
-      </div>
+          </div>
       
             </div>
           
             <div className="mb-8">
-              
+            
+              {company.map((item,i)=>
+             (
+               <>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Name</span>
+                <span className="ml-8">Name: <strong>{item.name}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Email</span>
+                <span className="ml-8">Email: <strong>{item.email}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">C.R. No.</span>
+                <span className="ml-8">C.R. No.: <strong>{item.cr_no}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Contact No</span>
+                <span className="ml-8">Contact No: <strong>{item.contact}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">P.O.Box</span>
+                <span className="ml-8">P.O.Box: <strong>{item.po_box}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Fax</span>
+                <span className="ml-8">Fax: <strong>{item.fax}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Website</span>
+                <span className="ml-8">Website: <strong>{item.website}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Address</span>
+                <span className="ml-8">Address: <strong>{item.address}</strong></span>
               </Button>
-              <div className="pb-4">
+              </>
+                ) )}
+              <div className="pb-6">
           <Button  onClick={e=>setShouldOpenEditorDialog(true)} className="mr-4 py-2" style={{position:'absolute',right:50}} variant="outlined" color="primary" type="submit" aignItem="right">
           <Icon>edit</Icon>
-          <span className="pl-2 capitalize">Edit</span>
+          <span className="pl-2 capitalize">Update Profile</span>
         </Button>
         {shouldOpenEditorDialog && (
         <MemberEditorDialog
           handleClose={handleDialogClose}
           open={shouldOpenEditorDialog}
+          cid={cid}
          
 
         />
@@ -367,7 +375,8 @@ const CompanyInfo = () => {
         />
       )}
         </div>
-
+      
+      
     </div>
     </div>
   );

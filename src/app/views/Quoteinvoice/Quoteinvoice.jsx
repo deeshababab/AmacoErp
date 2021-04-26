@@ -582,6 +582,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
                       variant="outlined"
                       size="small"
+                      inputProps={{style: {textTransform: 'capitalize'}}}
                       value={item? item.description: null}
                       validators={["required"]}
                       errorMessages={["this field is required"]}

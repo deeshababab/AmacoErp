@@ -20,7 +20,7 @@ import { Icon,TextField} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories,getCustomerList}from "../invoice/InvoiceService"
+import url, {getcategories,getCustomerList,capitalize_arr}from "../invoice/InvoiceService"
 
 const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [state, setState] = useState({
@@ -39,10 +39,17 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [code, setcode] = useState('');
   const [contact, setcontact] = useState('');
   const [password, setpassword] = useState('');
+  const [designation, setdesignation] = useState('');
+  const [prefix, setprefix] = useState('');
   const [Roles, setRoles] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
   const [role_id, setrole_id] = useState('');
+  const prefixs = [
+    { value: 'Mr', label: 'Mr' },
+    { value: 'Mrs', label: 'Mrs' },
+    { value: 'Ms', label: 'Ms' }
+  ];
   const option =[
       {
           name:'Cash',
@@ -106,6 +113,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
         url.get(`users/${userid}`).then(({ data }) => {
             setname(data.name)
             setemail(data.email)
+            setprefix(data.prefix)
+            setdesignation(data.designation)
             var res =data.contact.slice(0, 4);
             
             setcode(res)
@@ -122,11 +131,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
 if(userid)
 {
     const formdata={
-        name:name,
+        name:capitalize_arr(name),
         password:password,
         contact:code+contact,
         role_id:role_id,
-        email:email
+        email:email,
+        designation:capitalize_arr(designation),
+        prefix:prefix
     }
     url.put(`users/${userid}`, formdata)
     .then(function (data) {
@@ -151,11 +162,13 @@ if(userid)
    else
    {
         const formdata={
-        name:name,
+        name:capitalize_arr(name),
         password:password,
         contact:code+contact,
         role_id:role_id,
-        email:email
+        email:email,
+        designation:capitalize_arr(designation),
+        prefix:prefix
     }
     
     url.post('users', formdata)
@@ -193,11 +206,31 @@ if(userid)
          {!userid ?(<h4 className="mb-5">Add User</h4>):<h4 className="mb-5">Edit User</h4>}   
        
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
-      
+        <div className="flex">
+                             <TextField
+                                className="mr-2"
+                                autoComplete="none"
+                                label="Prefix"
+                                onChange={e => setprefix(e.target.value)}
+                                name="mobno"
+                                type="text"
+                                size="small"
+                                style={{width:'250px'}}
+                                variant="outlined"
+                                value={prefix}
+                                // fullWidth
+                                select
+                              >
+                                {prefixs.map((item,id)=>
+                                (<MenuItem value={item.value}>
+                                {item.label}
+                                </MenuItem>))}
+                            </TextField>
         <TextField
                 className="w-full mb-4"
                 label="Name"
                 variant="outlined"
+                inputProps={{style: {textTransform: 'capitalize'}}}
                 onChange={e => setname(e.target.value)
                   // .log(isAlive)
                 }
@@ -208,6 +241,7 @@ if(userid)
                
                 
               />
+              </div>
            
               
               <TextField
@@ -221,6 +255,21 @@ if(userid)
                 name="cname"
                 size="small"
                 value={email}
+               
+                
+              />
+              <TextField
+                className="w-full mb-4"
+                label="Designation"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                variant="outlined"
+                onChange={e => setdesignation(e.target.value)
+                  // .log(isAlive)
+                }
+                type="textarea"
+                name="name"
+                size="small"
+                value={designation}
                
                 
               />
@@ -260,7 +309,7 @@ if(userid)
                                                               
                             />
                             </div>
-                            <TextField
+                            {/* <TextField
                                className="w-full mb-4"
                                 label="Password"
                                 autoComplete="none"
@@ -272,7 +321,7 @@ if(userid)
                                 value={password}
                                 fullWidth
                                                               
-                            />
+                            /> */}
                             
               <TextValidator
                 className="w-full mb-4"
@@ -298,28 +347,21 @@ if(userid)
 
               
           
-          <div className="flex justify-between items-center">
-            <Button variant="outlined" color="primary" type="submit">
+          <div className="flex  items-center">
+            <Button variant="outlined" color="primary" type="submit" className="py-2">
              <Icon>save</Icon> Save
             </Button>
-            <div className="flex justify-between items-center">
+            
             <Button
               variant="outlined"
               color="secondary"
               onClick={handleClose}
+              className="py-2 ml-2"
             >
               <Icon>cancel</Icon>Cancel
             </Button>
             
-            {/* <Button
             
-              variant="outlined"
-              color="primary"
-              onClick={() => getrow()}
-            >
-              <Icon color="primary">remove_red_eye</Icon>view
-            </Button> */}
-            </div>
           </div>
           
         </ValidatorForm>

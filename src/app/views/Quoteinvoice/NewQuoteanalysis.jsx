@@ -282,7 +282,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
        
         // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
         // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
-        element[event.target.name] = capitalize_arr(event.target.value);
+        element[event.target.name] = event.target.value;
         
       
 

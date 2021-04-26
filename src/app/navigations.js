@@ -102,14 +102,35 @@ export const navigations = [
 {
   name: "Report",
   icon: "assignment",
+  
   children: [
     {
-      name: "Product",
-      path: "/product/producthistory",
       
+      name: "Tax",
+      path: "/product/producthistory",
+      icon:"monetization_on",
+      children: [
+        {
+          name: "Purchase",
+          path: "/purchasetax",
+      
+        },
+        {
+          name: "Sales",
+          path: "/salestax",
+      
+        }
+      ]
     },
+    // {
+      
+    //   name: "Product",
+    //   path: "/product/producthistory",
+      
+    // },
     {
       name: "Sales",
+      icon:"graphic_eq",
       path: "/salesreport",
       
     },

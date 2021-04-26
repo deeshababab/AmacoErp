@@ -76,7 +76,7 @@ const CustomerInfo = () => {
     url.get("expense/"+id).then(({ data }) => {
           
          setExpenseList(data[0]);
-         setaccountname(data[0].payment_account[0].name)
+         setaccountname(data[0].payment_account.name)
          setcolumndata(data[0].column_data)
          setimg(data.img)
          setref_img(data.referrenceImgUrl)

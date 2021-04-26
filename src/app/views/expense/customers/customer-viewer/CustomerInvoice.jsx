@@ -308,12 +308,12 @@ const columns = [
       <MUIDataTable
         title={"New Expenses List"}
         data={expenseList.map((item, index) => {
-        
+             
           return [
             ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),
 
-             item.payment_account[0].name,
+            item?.payment_account.name,
             
             // item.referrence_bill_no,
             item.referrence_bill_no,

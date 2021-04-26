@@ -46,7 +46,9 @@ import { ToWords } from 'to-words';
 import { useReactToPrint } from 'react-to-print';
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
+import useAuth from "app/hooks/useAuth";
 const locale = navigator.language;
+
 
 
 // import Image from 'react-image-resizer';
@@ -220,6 +222,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor,list = [],
   const [columnTitle, setColumnTitle] = useState("");
   const [prefix, setprefix] = useState("");
   const [srcfile, setsrcfile] = useState("");
+  const {user}=useAuth();
   const [message, setmessage] = useState(false);
   const [state, setState] = React.useState({
     
@@ -1187,13 +1190,13 @@ function PrintMe(DivID) {
             <br></br>
             <h5>Best Regards,</h5>
             <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
-            <td style={{ height: 'auto !important',fontWeight:1000 }}>Mr. Abbas Ahamed Shazli</td>
+            <td style={{ height: 'auto !important',fontWeight:1000 }}>{user.prefix}.{user.name}</td>
             </tr>
             <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
-            <td >Business Development Manager - ISD Division</td>
+            <td >{user.designation}-ISD Division</td>
             </tr>
             <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
-            <td>abbas@amaco.com.sa | +966 535515212 </td>
+            <td>{user.email} | {user.contact} </td>
             </tr>
             <tr style={{ height: 5, fontSize: 16, textAlign: 'left'}}>
             <td>Amaco Arabia Contracting Company</td>
