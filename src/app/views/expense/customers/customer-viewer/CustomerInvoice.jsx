@@ -41,11 +41,26 @@ const columnStyleWithWidth1 = {
 const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
-    url.get("expense").then(({ data }) => {
+    // url.get("expense").then(({ data }) => {
       
-       setexpenseList(data);
+    //    setexpenseList(data);
        
-    });
+    // });
+    Axios.get(`/amaco_test/php_file/controller/bulkexpense.php`, {
+      method: 'GET',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+        const arr = data.sort(
+          (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
+        );
+        console.log(data)
+        setexpenseList(arr);
+      })
  
 }, []);
 const setstatus=(id)=>{
@@ -71,11 +86,26 @@ const setstatus=(id)=>{
           icon:'success',
           text: 'Updated successfully.',
         });
-        url.get("expense").then(({ data }) => {
+        // url.get("expense").then(({ data }) => {
           
-           setexpenseList(data);
+        //    setexpenseList(data);
            
-        });
+        // });
+        Axios.get(`/amaco_test/php_file/controller/bulkexpense.php`, {
+          method: 'GET',
+          headers: { 
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+    "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+    "Access-Control-Max-Age": 86400
+          },
+        })
+          .then(({ data }) => {
+            const arr = data.sort(
+              (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
+            );
+            setexpenseList(arr);
+          })
+     
       
      
     })
@@ -196,11 +226,20 @@ const columns = [
     },
   },
   {
+    name: "",
+    label: " ",
+    options: {
+      filter: true,
+      display:false
+    },
+  },
+  {
     name: "id",
     label: "Action",
     options: {
       filter: true,
       customBodyRender: (value, tableMeta, updateValue) => {
+        console.log(tableMeta.rowData)
         return (
           <span>
           {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
@@ -212,7 +251,7 @@ const columns = [
                <Icon color="error" onClick={() => removeData(tableMeta.rowData[7])} style={{cursor:'pointer'}}>close</Icon>
             </Tooltip>
             <Tooltip title="Edit">
-                 <Icon color="secondary" onClick={() =>history.push(`/editexpense/${tableMeta.rowData[7]}`)
+                 <Icon color="secondary" onClick={() =>history.push(`/editexpense/${tableMeta.rowData[7]}/`+tableMeta.rowData[8])
          } style={{cursor:'pointer'}}>edit</Icon>
         </Tooltip>
             <Tooltip title="view more">
@@ -308,7 +347,7 @@ const columns = [
       <MUIDataTable
         title={"New Expenses List"}
         data={expenseList.map((item, index) => {
-             
+            console.log(item) 
           return [
             ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),
@@ -321,7 +360,8 @@ const columns = [
             item.paid_to,
             parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),
             item.tax!==null?parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}):('0.00'),
-            item.id
+            item.id,
+            item?.account_category_id
           ]
         
       })} 

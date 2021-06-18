@@ -8,6 +8,7 @@ import FormDialog from "./partycontact"
 import MemberEditorDialog from "./partycontact"
 import Tooltip from '@material-ui/core/Tooltip';
 import url from "../invoice/InvoiceService";
+import { googleTranslate} from "../../../googleTranslate";
 import {
     Table,
     TableHead,
@@ -38,6 +39,7 @@ const columnStyleWithWidthSno = {
   width: "50px",
 }
 
+
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
@@ -53,6 +55,8 @@ const SimpleMuiTable = () => {
    
   };
 
+
+  
     useEffect(() => {
       // get the party Information
         url.get("parties").then(({ data }) => {
@@ -60,11 +64,15 @@ const SimpleMuiTable = () => {
            
         });
         
+
+        
        
         return () => setIsAlive(false);
     }, [isAlive]);
     
-    
+  
+      
+     
    // get the party Information
     function getrow(e) {
       url.get("parties").then(({ data }) => {

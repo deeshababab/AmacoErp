@@ -69,8 +69,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     
     const frmdetails = {
 
-      name: capitalize_arr(cname),
-      description: capitalize_arr(cdescription)
+      name: cname?capitalize_arr(cname):'',
+      description:cdescription?capitalize_arr(cdescription):""
 
 
     }

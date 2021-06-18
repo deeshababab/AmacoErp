@@ -460,7 +460,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             <TableRow className="bg-default">
               <TableCell className="pl-2" width={80}>S.No.</TableCell>
               <TableCell className="px-0">Item Name</TableCell>
-              <TableCell className="px-0">Rfq description</TableCell> 
+              <TableCell className="px-0">RFQ Description</TableCell> 
               <TableCell className="px-0" width={100}>UOM</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Unit Price</TableCell>

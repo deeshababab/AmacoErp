@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import NestedMenuItem from "material-ui-nested-menu-item";
 import moment from "moment";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
+import ImageZoom from 'react-medium-image-zoom'
 
 import history from "history.js";
 import {
@@ -28,6 +29,7 @@ import OtherDetailsForm from "./OtherDetailsForm";
 import AddressForm from "./AddressForm";
 import ContactPersonForm from "./ContactPersonForm";
 import { Breadcrumb, ConfirmationDialog } from "matx";
+import { Link, useParams } from "react-router-dom";
 import FormDialog from "./paymentaccount"
 import MemberEditorDialog from "./paymentaccount";
 import FormDialog1 from "./AddField"
@@ -41,9 +43,21 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import url,{ getpaymentaccount } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
-import { now } from "lodash";
+import { now, size } from "lodash";
+import { useDropzone } from "react-dropzone";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 const role=localStorage.getItem('role')
 
+const usestyles = makeStyles(({ palette, ...theme }) => ({
+  dropZone: {
+    transition: "all 350ms ease-in-out",
+    border: "2px dashed rgba(var(--body),0.3)",
+    "&:hover": {
+      background: "rgba(var(--body), 0.2) !important",
+    },
+  },
+}));
 const CustomerForm = () => {
   const options = [
     { value: '1', label: 'Ahamad Shazil' },
@@ -60,6 +74,7 @@ const CustomerForm = () => {
   const [created_by, setcreated_by] = useState(1);
   const [state, setState] = useState(initialValues);
   const [paid_date, setpaid_date] = useState(new Date());
+  const {id} =useParams();
   
   const [paid_by, setpaid_by] = useState('');
   const [paid_to, setpaid_to] = useState('');
@@ -91,7 +106,18 @@ const CustomerForm = () => {
   const [company_name, setcompany_name] = useState('');
   const [isAlive, setisAlive] = useState(false);
   const [message, setmessage] = useState('');
- 
+  const {eid} = useParams();
+  
+  const [demo,setdemo]=useState('');
+  const [ref_billno, setref_billno] = useState();
+  let arr;
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles,
+  } = useDropzone({ accept: "image/*" });
+  const classes = usestyles();
   const handlebankSelect = (event,f) => {
    
     let files = event.target.files;
@@ -110,7 +136,8 @@ const CustomerForm = () => {
     
     const src = URL.createObjectURL(event.target.files[0]);
     
-    setfile_path(event.target.files[0])
+    setfile_path(event.target.files[0]);
+    setref_billno(src);
   
     
     
@@ -219,10 +246,10 @@ const CustomerForm = () => {
       url.get(`columns/${i}`).then(({ data }) => {
         
          setfield(data[0].column)
-         
+        
        })
       
-    
+    console.log(i)
       setaccountstatus(true);
       setpayment_account_id(i)
       setpayment_account_name(name)
@@ -279,10 +306,13 @@ const CustomerForm = () => {
   };
 
   useEffect(() => {
+    
+     
     getpaymentaccount().then(({ data }) => {
       setaccounttype(data)
 
     });
+    
     if(localStorage.getItem('role')!=='SA')
     {
       setpaid_by(localStorage.getItem('user_id'))
@@ -290,11 +320,64 @@ const CustomerForm = () => {
     url.get("account-categories").then(({ data }) => {
      
       setcat(data)
+      
     });
     url.get("payment-account").then(({ data }) => {
      
       setpayment_account(data)
     });
+    url.get(`expense/${id}`).then(({ data }) => {
+      setcompany(data[0].company_name)
+      setpaid_to(data[0]?.paid_to)
+      setamount(parseInt(data[0]?.amount))
+      setpaid_date(data[0]?.paid_date)
+      setpaid_by(data[0]?.payment_account_id)
+      setreferrence_bill_no(data[0]?.referrence_bill_no)
+      setdescription(data[0]?.description)
+      if(data[0]?.tax)
+      {
+        settax(true)
+        settaxamount(data[0]?.tax)
+        
+      }
+     
+      if(data[0].payment_account?.name)
+      {
+        setaccountstatus(true)
+       
+        setref_billno(data?.referrenceImgUrl)
+      }
+     setdemo(data[0]?.account_category_id)
+     console.log(data[0]?.account_category_id)
+     
+    });
+    Axios.get(`/amaco_test/php_file/controller/fetchexpenseId.php?id=${eid}&eid=${id}`, {
+      method: 'GET',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      arr=data;
+      // setfield(data);
+      
+      url.get(`columns/${eid}`).then(({ data }) => {
+        
+        setpayment_account_name(data[0]?.name)
+        setpayment_account_id(eid);
+        let result=data[0].column;
+       
+        const sum =result.map((item, index) => ({...item, date:arr[index].value,text:arr[index].value,value:arr[index].value}));
+        console.log(sum);
+       
+       
+
+        setfield(sum);
+       })  
+    })
+  
     return setisAlive(true)
     
 
@@ -320,6 +403,7 @@ const CustomerForm = () => {
     //   bank_slip:formData.append('bank_slip',bank_slip),
     //   bank_ref_no:bank_ref_no
     // }
+    console.log(field)
     const newItem = new FormData();
     for (const key of Object.keys(files)) {
       newItem.append('item', files[key].file)
@@ -336,8 +420,8 @@ const CustomerForm = () => {
     formData.append("description",description)
     formData.append("created_by",created_by)
     formData.append("account_category_id",payment_account_id)
-    
-    formData.append("payment_account_id",paid_by)
+    formData.append("paid_by",paid_by)
+    formData.append("payment_account_id",payment_account_id)
     formData.append("created_by",created_by)
     
     formData.append("status", "new")
@@ -345,6 +429,7 @@ const CustomerForm = () => {
     formData.append("bank_ref_no",bank_ref_no)
     formData.append("bank_slip",bank_slip)
     formData.append("file_path",file_path)
+    formData.append("id",id)
     
     files.map((answer, i) => {  
       // formData.append(`quotation_detail${i}`,JSON.stringify(answer))
@@ -355,29 +440,36 @@ const CustomerForm = () => {
     
   
 
-    url.post('expense', formData)
-      .then(function (response) {
+    // url.post('expense', formData)
+    //   .then(function (response) {
          
        
-        Swal.fire({
-          title: 'Success',
-          type: 'success',
-          icon: 'success',
-          text: 'Data saved successfully.',
+    //     Swal.fire({
+    //       title: 'Success',
+    //       type: 'success',
+    //       icon: 'success',
+    //       text: 'Data saved successfully.',
          
-        });
-      history.push(`/expenseview`)
-      })
-      .catch(function (error) {
+    //     });
+    //   history.push(`/expenseview`)
+    //   })
+    //   .catch(function (error) {
 
-      })
-
-    // setpaid_to('')
-    // setpaid_by('')
-    // setreferrence_bill_no('')
-    // setamount('')
-    // setcreated_by('')
-    // setdescription('')
+    //   })
+    Axios.post(`/amaco_test/php_file/controller/expenseupdate.php`,formData, {
+      method: 'post',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400,
+'Content-Type': 'multipart/form-data'
+      },
+      
+    }).then(({ data }) => {
+       
+     console.log(data);
+    })
+    
 
 
   };
@@ -439,6 +531,7 @@ const CustomerForm = () => {
     result = result.map((el) => {  // map array to replace the old comment with the new one
       if (el.name === item.name) 
       {
+        el.value=e.target.value
         el.text = e.target.value;
         el.column_id = i;
       }
@@ -634,7 +727,7 @@ const CustomerForm = () => {
                     size="small"
                     variant="outlined"
                     name={item.name}
-                    value={item.text}
+                    value={item.value}
                     autoComplete="none"
                     onChange={(e) => {
                       handleComment(e, item,item.id); 
@@ -692,7 +785,7 @@ const CustomerForm = () => {
                     name="Amount"
                     size="small"
                     variant="outlined"
-                    value={values.amount}
+                    value={amount}
                     currencySymbol="SAR"
                     autoComplete="none"
                     onChange={(event, value)=> setamount(value)}
@@ -789,8 +882,8 @@ const CustomerForm = () => {
                   >
                     </TextField>)
                   }
-                  <label for="myfile">Upload Reference Bill :</label>
-                  <TextField
+                  {/* <label for="myfile">Upload Reference Bill :</label> */}
+                  {/* <TextField
                   className="mb-4 w-full"
                    onChange={e=> handlebillSelect(e)}
                    id="upload-multiple-file"
@@ -801,7 +894,45 @@ const CustomerForm = () => {
                    size="small"
                   
                    
-                 />
+                 /> */}
+                 <label for="myfile">Upload Reference Bill :</label>
+                  
+                  <div
+                    className={clsx({
+                      "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
+                      [classes.dropZone]: true,
+                      "bg-light-gray": !isDragActive,
+                      "bg-gray": isDragActive,
+                    })}
+                    {...getRootProps()}
+                    onChange={(e)=> handlebillSelect(e)}
+                  >
+                  <div className="flex-column items-center" >
+                  {!ref_billno?(<Icon
+  variant="contained"
+  component="label"
+  onChange={(event) => handlebillSelect(event)}
+>
+file_upload
+  <input
+    type="file"
+    hidden
+  />
+</Icon>):<><ImageZoom
+        image={{
+          src: `${ref_billno}`,
+          alt: 'Golden Gate Bridge',
+          className: 'img',
+          style: { width: '50em' }
+        }}
+        zoomImage={{
+          src: `${ref_billno}`,
+          alt: 'Golden Gate Bridge'
+        }}
+        
+        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:200 }} onClick={e=>setref_billno('')}>delete</Icon></>}
+</div>
+</div>
                  <TextField
                     className="mb-4 w-full"
                     label="Referrence Bill No"
@@ -883,7 +1014,7 @@ const CustomerForm = () => {
                   >
 
                     <FormControlLabel
-                      value="yes"
+                      value={tax}
                       control={<Radio color="secondary" />}
                       label="Yes"
                       onChange={() => settax(true)
@@ -891,7 +1022,7 @@ const CustomerForm = () => {
                       labelPlacement="end"
                     />
                     <FormControlLabel
-                      value="no"
+                      value={tax}
                       control={<Radio color="secondary" />}
                       label="No"
                       onChange={() => settax(false)

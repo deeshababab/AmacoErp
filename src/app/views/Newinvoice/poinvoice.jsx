@@ -266,10 +266,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       setinco_terms(data[0].inco_terms)
       setpayment_terms(data[0].payment_terms)
       setdelivery_time(data[0].delivery_time)
-      setcontactperson(data[0].contact.fname)
-      setcontactpersonemail(data[0].contact.email)
+      setcontactperson(data[0].contact?.fname)
+      setcontactpersonemail(data[0].contact?.email)
       setcontactpersoncontact(data[0].party.contact)
-      setdesignation(data[0].contact.designation)
+      setdesignation(data[0].contact?.designation)
       setvendor_id(data[0].party.vendor_id)
       let words = toWords.convert(parseFloat(data[0].net_amount));
         let riyal = words.replace("Rupees", "Riyals");

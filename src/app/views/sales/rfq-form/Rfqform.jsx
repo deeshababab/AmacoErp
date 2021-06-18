@@ -198,6 +198,8 @@ const InvoiceForm = ({ }) => {
       
 
     });
+    
+
   }, []);
   const calculateSubTotal = (itemList = []) => {
     let subTotal = 0;
@@ -283,6 +285,7 @@ const InvoiceForm = ({ }) => {
     if (values.rfq_details) {
 
     // url.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php',formData)
+
       
     url.post('rfq', formData)
         .then(function (response) {

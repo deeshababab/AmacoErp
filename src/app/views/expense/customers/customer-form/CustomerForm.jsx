@@ -9,6 +9,7 @@ import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import history from "history.js";
 import { useDropzone } from "react-dropzone";
 import clsx from "clsx";
+import axios from "axios";
 // import InnerImageZoom from 'react-inner-image-zoom';
 import ImageZoom from 'react-medium-image-zoom'
 
@@ -137,6 +138,7 @@ const CustomerForm = () => {
     const src = URL.createObjectURL(event.target.files[0]);
     
     setfile_path(event.target.files[0])
+    console.log(event.target.files[0])
     setref_billno(src)
   
     
@@ -310,6 +312,13 @@ const CustomerForm = () => {
       setaccounttype(data)
 
     });
+    axios.get("http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php")
+    .then(({ data }) => {
+      console.log(data);
+      
+
+    })
+    
     if(localStorage.getItem('role')!=='SA')
     {
       setpaid_by(localStorage.getItem('user_id'))
@@ -392,7 +401,7 @@ const CustomerForm = () => {
     url.post('expense', formData)
       .then(function (response) {
          
-       
+       console.log(response)
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -479,6 +488,7 @@ const CustomerForm = () => {
       return el;
     });
     setfield(result);
+    
      // set state with new comment
   };
   const handleCommentdate = (e, item,i) => {
@@ -498,7 +508,7 @@ const CustomerForm = () => {
       return el;
     });
     setfield(result);
-  
+    console.log(field)
      // set state with new comment
   };
   
@@ -816,43 +826,7 @@ const CustomerForm = () => {
                     </TextField>)
                   }
                   <label for="myfile">Upload Reference Bill :</label>
-                  {/* <TextField
-                  className="mb-4 w-full"
-                   onChange={e=> handlebillSelect(e)}
-                   id="upload-multiple-file"
-                   type="file"
-                   label=""
-                   variant="outlined"
-                   autoComplete="none"
-                   size="small"
                   
-                   
-                 /> */}
-                 {/* <div
-                    className={clsx({
-                      "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
-                      [classes.dropZone]: true,
-                      "bg-light-gray": !isDragActive,
-                      "bg-gray": isDragActive,
-                    })}
-                    {...getRootProps()}
-                    onChange={(e)=> handlebillSelect(e)}
-                  >
-                     <input type="file" hidden/>
-                    <div className="flex-column items-center" >
-                   
-                      <Icon >
-                      file_upload
-                      
-                      </Icon>
-                      <img src={ref_billno} ></img>
-                      {/* {imageList.length ? (
-                        <span>{imageList.length} images were selected</span>
-                      ) : (
-                        <span>Drop product images</span>
-                      )} */}
-                    {/* </div>
-                  </div> */}
                   <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,

@@ -34,6 +34,11 @@ import ExpenseRoutes from "./views/expense/ExpenseRoutes";
 import userRoutes from "./views/user/userroutes";
 import statementRoutes from "./views/statements/StatementRoute";
 import TaxRoutes from "./views/Tax/TaxRoutes";
+import PrintQuoteRoutes from "./views/PrintingDiv/Sales/salesRoutes";
+import PrintPartyRoutes from "./views/PrintingDiv/Party/PartyRoutes";
+import PrintProductRoutes from "./views/PrintingDiv/Product/ProductRoutes";
+import PrintReportRoutes from "./views/PrintingDiv/Report/ReportRoutes";
+import PrintPurRoutes from "./views/PrintingDiv/Purchase/PurRoutes";
 
 const redirectRoute = [
   {
@@ -82,7 +87,13 @@ const routes = [
   ...pagesRoutes,
   ...dataTableRoutes,
   ...redirectRoute,
-  ...TaxRoutes
+  ...TaxRoutes,
+  ...PrintQuoteRoutes,
+  ...PrintPartyRoutes,
+  ...PrintProductRoutes,
+  ...PrintReportRoutes,
+  ...PrintPurRoutes,
+  
   // ...errorRoute,
 ];
 

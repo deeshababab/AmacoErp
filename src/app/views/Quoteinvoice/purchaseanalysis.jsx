@@ -417,7 +417,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get("rfq/"+ id).then(({ data }) => {
      
       setcname(data[0].party[0].firm_name)
-      setcontactid(data[0].contact.id)
+      setcontactid(data[0].contact?.id)
       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
       setparty_id(data[0].party_id)
@@ -567,8 +567,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <TableHead>
             <TableRow className="bg-default">
               <TableCell className="pl-2" style={{width:50}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'250px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'250px'}}>Our Description</TableCell>
+              <TableCell className="px-0" style={{width:'300px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'350px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'200px'}}>Price</TableCell>
               <TableCell className="px-0"style={{width:'150px'}}>Total</TableCell>
@@ -608,7 +608,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                  
                   
 
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'300px'}}>
                     <TextValidator
                       label="description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -623,7 +623,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'350px'}}>
                     <TextValidator
                       label="Our description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}

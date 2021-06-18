@@ -269,10 +269,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       setpo(data[0].party[0].post_box_no)
       setvatno(data[0].party[0].vat_no)
       setregno(data[0].party[0].registration_no)
-      setcontactperson(data[0].contact.fname)
-      setcontactpersonemail(data[0].contact.email)
-      setcontactpersoncontact(data[0].contact.mobno)
-      setdesignation(data[0].contact.designation)
+      setcontactperson(data[0].contact?.fname)
+      setcontactpersonemail(data[0].contact?.email)
+      setcontactpersoncontact(data[0].contact?.mobno)
+      setdesignation(data[0].contact?.designation)
      
       setrfqdetails(data[0].rfq_details)
      

@@ -79,6 +79,7 @@ const CustomerBillings = () => {
     url.get("parties/" + foo).then(({ data }) => {
       setcustomercontact(data[0].contacts);
       setbankdetails(data)
+      console.log(data)
      
     });
 

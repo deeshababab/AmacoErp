@@ -278,6 +278,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
                 value={cname}
                 errorMessages={["This field is required"]}
                 select
+                required
                 
               >
                {customerList.filter(x=>x.id===cname).map((item, ind) => (
@@ -313,6 +314,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
                 fullWidth
 			          currencySymbol="SAR"
 			          onChange={(event, value)=> setcprice(value)}
+                required
               />
               
             </Grid>

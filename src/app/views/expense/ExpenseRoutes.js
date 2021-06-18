@@ -27,7 +27,7 @@ const ExpenseRoutes = [
     ),
   },
   {
-    path: "/editexpense/:id",
+    path: "/editexpense/:id/:eid",
     component: React.lazy(() =>
       import("./customers/customer-form/EditExpense")
     ),

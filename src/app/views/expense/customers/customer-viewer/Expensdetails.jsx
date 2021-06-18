@@ -152,7 +152,7 @@ const CustomerInfo = () => {
                 <a href={item.file} target="_blank">
               <img src={filetype(item.file.split('.')[3],item.file,index)} width="100px" height="100px"></img>
                
-                </a></Tooltip></TableCell>:<TableCell>{item.value}
+                </a></Tooltip></TableCell>:<TableCell>{item.column.type==="date"?moment(item.value).format('DD  MMM, YYYY '):item.value}
                 </TableCell>}
                 
                 

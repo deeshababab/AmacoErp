@@ -4,10 +4,8 @@ import {
   Radio,
   FormControl,
   FormControlLabel,
-  Select,
   Divider,
   RadioGroup,
-  InputLabel,
   Grid,
   Card,
   MenuItem,
@@ -19,7 +17,9 @@ import {
   Link,
   Icon,
   TextField,
-  Tooltip
+  Tooltip,
+  InputLabel,
+  Select
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -43,10 +43,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import IconButton from '@material-ui/core/IconButton';
+// import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "../product/productprice";
+import FormDialog from "./../product/productprice";
 import MemberEditorDialog from "../product/productprice";
 import moment from "moment";
 import { sortedLastIndex } from "lodash";
@@ -92,15 +93,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [pprice, setpprice] = useState(0);
   const [marginprice, setmarginprice] = useState(0);
   const [productid, setproductid] = useState('1');
+  const [productprice,setproductprice]= useState([])
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
   const [CustomerList, setCustomerList] = useState([]);
   const [customercontact, setcustomercontact] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
   const [ProductList1, setProductList1] = useState([]);
+  const[quotation_no,setquotation_no]=useState('');
   const [catid,setcatid]=useState()
   const [indexvalue,setindexvalue]=useState()
-  const [productprice,setproductprice]=useState([])
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -472,6 +474,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
   
   };
+  const setproductids=(id,index)=>{
+    setcatid(id)
+    setindexvalue(index)
+    setShouldOpenEditorDialog(true)
+  }
   const handleSubmit = () => {
     
     // setState({ ...state, ['subTotalCost']: subTotalCost });
@@ -519,6 +526,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
     formData.append('id',id)
+    formData.append('parent_id',id)
+    formData.append('quotation_no',quotation_no)
     // JSON.stringify(values.rfq_details)
    
     
@@ -528,10 +537,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     })
     
 
-    url.post(`sale-quotation-update`,formData)
+    url.post(`sale-quotation`,formData)
       .then(function (response) {
         
-        
+       
         Swal.fire({
           title: 'Success',
           type: 'success',
@@ -553,6 +562,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
+    
     url.get("products/" + catid).then(({ data }) => {
       let tempItemList = [...state.item];
       data.prices.map((element, i) => {
@@ -560,10 +570,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       })
       setProductList1(data.prices)
       tempItemList.map((element, i) => {
+        
         let sum=0;
       
         if(indexvalue===i)
         {
+
           
           element['product_id']= catid;
           element['descriptionss']= data.product[0].description;
@@ -596,12 +608,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   })
 
+  
     setshouldOpenEditorDialogproduct(false);
-    url.get("products").then(({ data }) => {
-      setproList(data)
-      
-   
-    });
+    setIsAlive(true)
    
   };
   const setcontact= (event) => {
@@ -621,7 +630,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   useEffect(() => {
     getCustomerList().then(({ data }) => {
       setCustomerList(data);
-      
+     
 
     });
     url.get("products").then(({ data }) => {
@@ -633,8 +642,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
     
     url.get(`sale-quotation/${id}`).then(({ data }) => {
-      
+     
       setQuote_date(data[0].ps_date)
+      setquotation_no(data[0].quotation_no)
      
       setProductList1(data[0].quotation_details[0].product_price_list)
       if(data[0].contact!==null)
@@ -673,7 +683,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       let tempItemList = [...state.item];
      
       // setProductList1(data.prices)
-      
+     
        
     
     tempItemList.map((element, i) => {
@@ -740,12 +750,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }
 
   }
-
-  const setproductids=(id,index)=>{
-    setcatid(id)
-    setindexvalue(index)
-    setShouldOpenEditorDialog(true)
-  }
   let subTotalCost = 0;
   let GTotal = 0;
   let dis_per = 0;
@@ -775,7 +779,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-        <h3 align="left"> Revise Sales Quotation</h3>
+          <h3 align="left"> Revise Sales Quotation</h3>
           </div>
           <div className="mb-6">
          
@@ -903,22 +907,21 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             <TableRow className="bg-default">
               <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Item Name</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Our Description</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Rfq description</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
               <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'120px'}}>Price</TableCell>
-              <TableCell className="px-0" style={{width:'70px'}}>Margin %</TableCell>
+              <TableCell className="pr-0" style={{width:'120px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
               <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
               <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'120px'}}>Remark</TableCell>
-               <TableCell className="px-0" style={{width:'40px'}}><Icon>delete</Icon></TableCell> 
+              <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
+               <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -959,7 +962,7 @@ file_upload
   />
 </Icon>)
             
-:(<span><Tooltip title="delete"><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon></Tooltip><img className="w-48" src={item.src} alt="" ></img></span>)}
+:(<span><Icon color="error" onClick={(event) => deleteFileSelect(event,index)}>close</Icon><img className="w-48" src={item.src} alt="" ></img></span>)}
                   </TableCell>
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
@@ -1030,11 +1033,12 @@ file_upload
                       size="small"
                       fullWidth
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
+            
                       name="quantity"
                       value={item.quantity}
                     />
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
+                  <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                   {/* <TextField
                       label="Unit Price"
                       variant="outlined"
@@ -1072,7 +1076,7 @@ file_upload
             name: 'purchase_price',
             id: 'outlined-age-native-simple',
           }}
-          style={{width:80,height:40}}
+          style={{width:70,height:40}}
         >
           <option   />
           {item.product_price_list.map((item, id) => (
@@ -1095,11 +1099,12 @@ file_upload
                       // onBlur={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
+                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       size="small"
                       name="margin"
+                      // style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.margin}
-                      inputProps={{min: 0, style: { textAlign: 'center' }}}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
               
@@ -1139,9 +1144,9 @@ file_upload
                       size="small"
                      
                       name="total_amount"
+                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                      
                       value={item.total_amount}
-                      inputProps={{min: 0, style: { textAlign: 'right' }}}
                       
                     />
                   </TableCell>
@@ -1177,13 +1182,13 @@ file_upload
           
         </Table>
         <div className="flex justify-end px-4 mb-4">
-            <Button className="mt-4 py-2"
+            <Button className="mt-4"
               color="primary"
               variant="contained"
-              size="small" onClick={addItemToInvoiceList}><Icon>add</Icon>Add Item</Button>
+              size="small" onClick={addItemToInvoiceList}>Add Item</Button>
           </div>
         
-        <h6 className="pl-4"><strong>Terms</strong></h6>
+        <h6><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
         
@@ -1294,7 +1299,6 @@ file_upload
                 style={{width:'90px'}}
                 onChange={(event) => handleChange(event, "discount")}
                 value={discount}
-                inputProps={{min: 0, style: { textAlign: 'center' }}}
                 // style={{width:50}}
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
@@ -1309,7 +1313,6 @@ file_upload
                 size="small"
                 name="dis_per"
                 style={{width:'90px'}}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 // onChange={(event) => handleChange(event, "discount")}
                 value={discount?dis_per:0.00}
                 // validators={["required"]}
@@ -1326,7 +1329,6 @@ file_upload
                 size="small"
                 name="vat"
                 value={subTotalCost?vat:0}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1339,7 +1341,6 @@ file_upload
                 size="small"
                 name="net_amount"
                 value={subTotalCost?GTotal:0.00}
-                inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
@@ -1351,15 +1352,13 @@ file_upload
         </div>
       </ValidatorForm>
       </div>
-      
       {shouldOpenEditorDialog && (
           <MemberEditorDialog
             handleClose={handleDialogClose}
             contactid={status}
             open={shouldOpenEditorDialog}
             catid={catid}
-            productprice={setproductprice}
-            
+            prouctprice={setproductprice}
           />
         )}
         {shouldOpenConfirmationDialog && (
@@ -1369,6 +1368,28 @@ file_upload
             text="Are you sure to delete?"
           />
         )}
+      
+      {/* {shouldOpenEditorDialog && (
+          <MemberEditorDialog
+            handleClose={handleDialogClose}
+            open={shouldOpenEditorDialog}
+            productid={productid}
+            margin={margin}
+            marginprice={setmarginprice}
+            pprice={setpprice}
+            calcualteprice={calcualteprice}
+            productname={productname}
+            
+          />
+        )}
+        {shouldOpenConfirmationDialog && (
+          <ConfirmationDialog
+            open={shouldOpenConfirmationDialog}
+            onConfirmDialogClose={handleDialogClose}
+            
+            text="Are you sure to delete?"
+          />
+        )} */}
         {shouldOpenEditorDialogproduct && (
           <MemberEditorDialog_product
             handleClose={handleDialogClose}
