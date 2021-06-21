@@ -14,7 +14,7 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import MUIDataTable from "mui-datatables";
 import React, { useState, useEffect } from "react";
-import url from "../../../../views/invoice/InvoiceService";
+import url,{urlphp} from "../../../../views/invoice/InvoiceService";
 import Axios from "axios";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -46,7 +46,7 @@ const CustomerInvoice = () => {
     //    setexpenseList(data);
        
     // });
-    Axios.get(`/amaco_test/php_file/controller/bulkexpense.php`, {
+    Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
       method: 'GET',
       headers: { 
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -55,11 +55,14 @@ const CustomerInvoice = () => {
       },
     })
       .then(({ data }) => {
+        if(data)
+        {
         const arr = data.sort(
           (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
         );
         console.log(data)
         setexpenseList(arr);
+        }
       })
  
 }, []);
@@ -91,7 +94,7 @@ const setstatus=(id)=>{
         //    setexpenseList(data);
            
         // });
-        Axios.get(`/amaco_test/php_file/controller/bulkexpense.php`, {
+        Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
           method: 'GET',
           headers: { 
             "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",

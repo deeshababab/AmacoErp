@@ -12,6 +12,7 @@ import moment from "moment";
 import history from "history.js";
 // import translate from 'google-translate-api';
 import {Translator, Translate} from 'react-auto-translate';
+import {toArabic} from 'arabic-digits';
 import {
   Icon,
   Divider,
@@ -26,7 +27,7 @@ import {
   Button
 } from "@material-ui/core";
 import { Link, useParams } from "react-router-dom";
-import { getInvoiceById } from "../invoice/InvoiceService";
+import { ApiKey, getInvoiceById } from "../invoice/InvoiceService";
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -41,6 +42,7 @@ import useSettings from '../../hooks/useSettings';
 import { setCORS } from "google-translate-api-browser";
 import { ToWords } from 'to-words';
 import translate from 'translate-google-api';
+import Axios from 'axios';
 
 
 // import translate from 'google-translate-api'
@@ -205,6 +207,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [pono, setpo] = useState("");
   const [zipcode, setzipcode] = useState("");
   const [vatno, setvatno] = useState("");
+  const [vatno_ar, setvatno_ar] = useState("");
   const [podetails, setpodetails] = useState([]);
   const [quoteno, setquoteno] = useState("");
   const [vat_in_value, setvat_in_value] = useState("");
@@ -222,6 +225,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   const [arcompany, setarcompany] = useState("");
   const [araddress, setaraddress] = useState("");
   const [quoteid, setquoteid] = useState("");
+  const [companyaddress, setcompanyaddress] = useState("");
   const componentRef = useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   function handleClick(event) {
@@ -309,6 +313,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         setzipcode(data[0].quotation.party.zip_code)
         setpo(data[0].quotation.quotation_no)
         setvatno(data[0].quotation.party.vat_no)
+        setvatno_ar(toArabic(2020))
         setinvoiceno(data[0].invoice_no)
         setissue_date(data[0].issue_date)
         setvat_in_value(data[0].vat_in_value)
@@ -320,22 +325,20 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         let halala =  riyal.replace("Paise", "Halala")
          
         setress(halala);
-        // url.get(`https://api.mymemory.translated.net/get?q=${data[0].quotation.party.firm_name}!&langpair=en|ar`).then(({ data }) => {
-        // setarcompany(data)
-        // })
-        // let city1=data[0].quotation.party.city;
-        // let street1=data[0].quotation.party.street;
-        // let zipcode1=data[0].quotation.party.zipcode;
-        // let res1=city1.concat(street1,zipcode1);
-       
-        // url.get(`https://api.mymemory.translated.net/get?q=${res1}!&langpair=en|ar`).then(({ data }) => {
-        // setaraddress(data.responseData.translatedText)
-        // })
-      
         
-
+        Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].quotation.party.street-data[0].quotation.party.city,data[0].quotation.party.zip_code}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+          setcompanyaddress(data.data.translations[0].translatedText)
       
-      }
+      })
+    }
 
     })
     
@@ -775,7 +778,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             <span  style={{fontWeight:1000,fontSize:18}} >
             رقم ضريبة القيمة المضافة                
             </span><br></br>
-            {vatno}
+            {vatno_ar}
            
             </div>
             </div>
@@ -806,8 +809,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
               </span><br></br>
               <span>{cname_ar}</span><br></br>
-              <span>{street}-{city}, {zipcode}</span>
-          
+              <span>{companyaddress}</span>
+              {/* <span>{street}-{city}, {zipcode}</span> */}
 
 
             

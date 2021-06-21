@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
-import url, {getparties,capitalize_arr} from "../../invoice/InvoiceService"
+import url, {getparties,capitalize_arr,  ApiKey} from "../../invoice/InvoiceService"
 import InputMask from 'react-input-mask';
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -105,6 +105,20 @@ const Addparty = ({open, handleClose}) => {
 
   const handleSubmit = () => {
    
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${Firm_Name}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      
+          setcompany_name_ar(data.data.translations[0].translatedText)
+      
+    if(data.data.translations[0].translatedText)
+    {
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -136,9 +150,9 @@ const Addparty = ({open, handleClose}) => {
       address:address?capitalize_arr(address):"",
       party_code:partycode,
       prefix:prefix?capitalize_arr(prefix):"",
-      company_name_ar:company_name_ar
+      company_name_ar:data.data.translations[0].translatedText
     }
-  
+    
      
     
     url.post('parties',frmdetails)
@@ -161,9 +175,11 @@ const Addparty = ({open, handleClose}) => {
       }) 
      
     resetform()
-    
+    }
+  })
 }
 const resetform = () => {
+  
   setfname('');
     setlname('');
     setFirm_name('');
@@ -453,7 +469,7 @@ const resetform = () => {
                                 value={Firm_Name}
                                 
                             />
-                  <TextValidator
+                  {/* <TextValidator
                     className="mb-4 w-full"
                     label="اسم الشركة"
                     autoComplete="none"
@@ -464,7 +480,7 @@ const resetform = () => {
                                 size="small"
                                 value={company_name_ar}
                                 
-                            />
+                            /> */}
                             <div className="flex mb-4">
                             <TextField
                                 className="mr-2"

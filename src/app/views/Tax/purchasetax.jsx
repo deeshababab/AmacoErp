@@ -91,7 +91,7 @@ url
 .then(({ data }) => {
     var net_tax=0;
   data.map((item,i)=>{
-    net_tax+=parseFloat(item.tax)
+    net_tax+=parseFloat(item.tax?item.tax:0.00)
   })
   const myArr = Object.values(data).sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)

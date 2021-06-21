@@ -41,7 +41,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import url,{ getpaymentaccount } from "../../../../views/invoice/InvoiceService";
+import url,{ getpaymentaccount,urlphp } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
 import { now, size } from "lodash";
 import { useDropzone } from "react-dropzone";
@@ -144,7 +144,7 @@ const CustomerForm = () => {
   };
   
   const handleFileSelect = (event,f) => {
- 
+
     let files = event.target.files;
     
     const src = URL.createObjectURL(event.target.files[0]);
@@ -341,17 +341,17 @@ const CustomerForm = () => {
         
       }
      
-      if(data[0].payment_account?.name)
-      {
+      // if(data[0].payment_account?.name)
+      // {
         setaccountstatus(true)
        
-        setref_billno(data?.referrenceImgUrl)
-      }
+        // setref_billno(data[0]?.file_path)
+      // }
      setdemo(data[0]?.account_category_id)
      console.log(data[0]?.account_category_id)
      
     });
-    Axios.get(`/amaco_test/php_file/controller/fetchexpenseId.php?id=${eid}&eid=${id}`, {
+    Axios.get(`${urlphp}/php_file/controller/fetchexpenseId.php?id=${eid}&eid=${id}`, {
       method: 'GET',
       headers: { 
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -370,9 +370,7 @@ const CustomerForm = () => {
         let result=data[0].column;
        
         const sum =result.map((item, index) => ({...item, date:arr[index].value,text:arr[index].value,value:arr[index].value}));
-        console.log(sum);
-       
-       
+        
 
         setfield(sum);
        })  
@@ -430,7 +428,7 @@ const CustomerForm = () => {
     formData.append("bank_slip",bank_slip)
     formData.append("file_path",file_path)
     formData.append("id",id)
-    
+    console.log(file_path)
     files.map((answer, i) => {  
       // formData.append(`quotation_detail${i}`,JSON.stringify(answer))
       formData.append(`file${answer.column_id}`,answer.file)
@@ -456,7 +454,7 @@ const CustomerForm = () => {
     //   .catch(function (error) {
 
     //   })
-    Axios.post(`/amaco_test/php_file/controller/expenseupdate.php`,formData, {
+    Axios.post(`${urlphp}/php_file/controller/expenseupdate.php`,formData, {
       method: 'post',
       headers: { 
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -466,8 +464,17 @@ const CustomerForm = () => {
       },
       
     }).then(({ data }) => {
+       console.log(data)
+      Swal.fire({
+        title: 'Success',
+        type: 'success',
+        icon: 'success',
+        text: 'Data updated successfully.',
        
-     console.log(data);
+      });
+    // history.push(`/expenseview`)
+  
+     
     })
     
 
@@ -675,7 +682,7 @@ const CustomerForm = () => {
                     // onChange={e => setpayment_account_id(e.target.value)}
                   />
                 {field.map((item, index) => {
-                    
+                    console.log(item.type)
                 return (
                   <span>
                  {item.type==="file" &&(
@@ -930,7 +937,7 @@ file_upload
           alt: 'Golden Gate Bridge'
         }}
         
-        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:200 }} onClick={e=>setref_billno('')}>delete</Icon></>}
+        ></ImageZoom><Icon color="error" style={{ position: 'absolute',margin:350 }} onClick={e=>setref_billno('')}>delete</Icon></>}
 </div>
 </div>
                  <TextField

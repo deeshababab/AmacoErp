@@ -91,7 +91,7 @@ url
 .then(({ data }) => {
   var net_tax =0;
   data.map((item,i)=>{
-    net_tax+=parseFloat((item.vat_in_value))
+    net_tax+=parseFloat((item.vat_in_value?item.vat_in_value:0.00))
   })
  
   const myArr = Object.values(data).sort(

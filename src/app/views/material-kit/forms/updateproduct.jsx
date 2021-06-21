@@ -29,7 +29,7 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
 import { useParams, matchPath } from "react-router-dom";
 import { database } from "firebase/app";
-import url,{capitalize_arr} from "../../invoice/InvoiceService"
+import url,{ApiKey, capitalize_arr} from "../../invoice/InvoiceService"
 
 
 
@@ -275,6 +275,21 @@ const SimpleForm = () => {
   }, []);
 
   const submitValue = () => {
+
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${product}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      
+          
+      
+    if(data.data.translations[0].translatedText)
+    {
     const frmdetails = {
       name: product?capitalize_arr(product):'',
       description: description?capitalize_arr(description):'',
@@ -289,7 +304,7 @@ const SimpleForm = () => {
       // party_id: vendors,
       model_no:modelno,
       manufacturer_id:manid,
-      name_in_ar:name_in_ar
+      name_in_ar:data.data.translations[0].translatedText
 
     }
 
@@ -311,7 +326,8 @@ const SimpleForm = () => {
 
       })
 
-
+    }
+  })
 
   }
 
@@ -381,7 +397,7 @@ const SimpleForm = () => {
               inputProps={{style: {textTransform: 'capitalize'}}}
 
             />
-            <TextValidator
+            {/* <TextValidator
               className="mb-4 w-full"
               label="اسم المنتج"
               variant="outlined"
@@ -396,7 +412,7 @@ const SimpleForm = () => {
               ]}
               errorMessages={["this field is required"]}
 
-            />
+            /> */}
             <TextValidator
               className="mb-4 w-full"
               label="description"
@@ -424,7 +440,7 @@ const SimpleForm = () => {
               /> */}
 
         <div className="flex mb-4">
-        <div style={{ width: '280px' }} className="mr-2">
+        <div style={{ width: '300px' }} className="mr-2">
         <InputLabel htmlFor="UOM" style={{fontSize:10}}>UOM</InputLabel>
             <Select
               menuPortalTarget={document.body}
@@ -440,7 +456,7 @@ const SimpleForm = () => {
               }
             />
             </div>
-            <div style={{ width: '270px' }} className="ml-2">
+            <div style={{ width: '350px' }} className="ml-2">
             <InputLabel  style={{fontSize:10}}>Manufacture</InputLabel>
                 <Select
                   

@@ -136,7 +136,7 @@ const columns = [
   
   {
     name: "paid_date",
-    label: "Account Type",
+    label: "Account",
     options : {
       filter: true,
     }
@@ -323,7 +323,7 @@ const columns = [
         return [
           ++index,
           moment(item.paid_date).format('DD  MMM, YYYY '),
-          item.payment_account.name,
+          item.payment_account[0].name,
           item.referrence_bill_no,
           item.paid_to,
           parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),

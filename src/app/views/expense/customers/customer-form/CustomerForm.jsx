@@ -395,7 +395,7 @@ const CustomerForm = () => {
      
       // answer.files&& (formData.append(`file${i}`,answer.files))
     })
-    
+    console.log(files)
   
 
     url.post('expense', formData)
@@ -860,7 +860,7 @@ file_upload
           alt: 'Golden Gate Bridge'
         }}
         
-        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:200 }} onClick={e=>setref_billno('')}>delete</Icon></>}
+        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:350 }} onClick={e=>setref_billno('')}>delete</Icon></>}
 </div>
 </div>
 

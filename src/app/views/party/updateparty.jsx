@@ -13,6 +13,7 @@ import {
   TextField,
   MenuItem,
 } from "@material-ui/core";
+import Axios from 'axios'
 // import {
 //   MuiPickersUtilsProvider,
 //   KeyboardDatePicker,
@@ -24,7 +25,7 @@ import "date-fns";
 // import Select from 'react-select';
 // import Axios from "axios";
 import Swal from "sweetalert2";
-import url,{getparties,capitalize_arr} from "../invoice/InvoiceService";
+import url,{getparties,capitalize_arr, ApiKey} from "../invoice/InvoiceService";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 // const optionss = [
 //     { value: 'Vendor', label: 'vendor' },
@@ -156,7 +157,19 @@ const SimpleForm = () => {
     }, [isAlive]);
 
   const handleSubmit = () => {
-  
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${Firm_Name}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      
+          setcompany_name_ar(data.data.translations[0].translatedText)
+      if(data.data.translations[0].translatedText)
+      {
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -180,7 +193,7 @@ const SimpleForm = () => {
       account_no:account_no,
       vendor_id:vendor_id,
       party_code:partycode,
-      company_name_ar:company_name_ar
+      company_name_ar:data.data.translations[0].translatedText
       
     }
    
@@ -203,7 +216,8 @@ const SimpleForm = () => {
         
       }) 
    
-   
+    }
+  })
 }
 
 
@@ -371,7 +385,7 @@ const SimpleForm = () => {
                                 value={Firm_Name}
                                 
                             />
-                             <TextValidator
+                             {/* <TextValidator
                     className="mb-4 w-full"
                     label="اسم الشركة"
                     autoComplete="none"
@@ -382,7 +396,7 @@ const SimpleForm = () => {
                                 size="small"
                                 value={company_name_ar}
                                 
-                            />
+                            /> */}
                             <div className="flex mb-4">
                             <TextValidator
                                 className="mr-2"

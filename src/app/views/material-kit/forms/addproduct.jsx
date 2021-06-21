@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import MemberEditorDialog from "../../product/Addcategory";
 import history from "history.js";
-import {getVendorList,getcategories,getmanufacturer} from "../../invoice/InvoiceService"
+import {getVendorList,getcategories,getmanufacturer, ApiKey} from "../../invoice/InvoiceService"
 import FormDialog1 from "../../../views/product/manufacture";
 import MemberEditorDialog1 from "../../../views/product/manufacture";
 
@@ -294,6 +294,20 @@ const SimpleForm = ({open, handleClose}) => {
   },[]);
 
   const submitValue = () => {
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${product}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      
+          
+      
+    if(data.data.translations[0].translatedText)
+    {
     const frmdetails = {
       party_id:vendors,
       name: capitalize_arr(product),
@@ -308,9 +322,11 @@ const SimpleForm = ({open, handleClose}) => {
       minimum_quantity: mq,
       manufacturer_id:manid,
       model_no:modelno,
-      name_in_ar:name_in_ar
+      name_in_ar:data.data.translations[0].translatedText
 
     }
+  
+    
  
     
     url.post('products', frmdetails)
@@ -332,7 +348,8 @@ const SimpleForm = ({open, handleClose}) => {
       })
     resetform()
     
-
+    }
+    })
   }
   function cancelform() {
     // window.location.href="./Viewproduct"
@@ -406,7 +423,7 @@ const SimpleForm = ({open, handleClose}) => {
               errorMessages={["this field is required"]}
 
             />
-             <TextValidator
+             {/* <TextValidator
               className="mb-4 w-full"
               label="اسم المنتج"
               variant="outlined"
@@ -421,7 +438,7 @@ const SimpleForm = ({open, handleClose}) => {
               ]}
               errorMessages={["this field is required"]}
 
-            />
+            /> */}
             <TextValidator
               className="mb-4 w-full"
               label="Description"

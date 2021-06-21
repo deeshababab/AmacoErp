@@ -359,7 +359,7 @@ const Customer = ({
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(a[0].date) - new Date(b[0].date)
         );
-
+          console.log(data)
         setstatements(myArr);
         setarr_length(Object.keys(myArr).length);
       
@@ -374,9 +374,9 @@ const Customer = ({
             sum1 += parseFloat(item[0].credit.split(",").join(""));
           }
         });
-        setfrom_date(new Date())
-        setto_date(new Date())
-        setpayment_account_id('')
+        // setfrom_date(new Date())
+        // setto_date(new Date())
+        // setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
         setfdate(data[0].from_date);

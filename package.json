@@ -15,6 +15,7 @@
     "@material-ui/pickers": "^3.2.2",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "apexcharts": "^3.20.0",
+    "arabic-digits": "^1.1.0",
     "autosuggest-highlight": "^3.1.1",
     "axios": "^0.19.0",
     "babel-polyfill": "^6.26.0",

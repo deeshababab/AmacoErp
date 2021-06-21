@@ -19,7 +19,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 
-import url from "../../../invoice/InvoiceService"
+import url,{urlphp} from "../../../invoice/InvoiceService"
 import pdf from "../../pdf.png";
 import excel from "../../excel.png";
 import doc from "../../doc.jpg";
@@ -76,11 +76,22 @@ const CustomerInfo = () => {
     url.get("expense/"+id).then(({ data }) => {
           
          setExpenseList(data[0]);
-         setaccountname(data[0].payment_account.name)
+        
          setcolumndata(data[0].column_data)
          setimg(data.img)
          setref_img(data.referrenceImgUrl)
-         
+         Axios.get(`${urlphp}/php_file/controller/accountname.php?id=${data[0].account_category_id}`, {
+          method: 'GET',
+          headers: { 
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+    "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+    "Access-Control-Max-Age": 86400
+          },
+        })
+          .then(({ data }) => {
+            setaccountname(data[0].name)
+          })
+
       });
 
   }, []);

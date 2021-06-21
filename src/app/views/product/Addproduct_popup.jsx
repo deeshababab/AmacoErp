@@ -537,7 +537,25 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               />
           </div>
  
-              
+          {shouldOpenEditorDialog1 && (
+           
+           <MemberEditorDialog1
+             handleClose={handleDialogClose1}
+             open={shouldOpenEditorDialog1}
+             setid={setproductcatid}
+             manufacture={setmanufacture}
+           />
+           
+         )}
+         {shouldOpenConfirmationDialog1 && (
+           
+           <ConfirmationDialog
+             open={shouldOpenConfirmationDialog1}
+             onConfirmDialogClose={handleDialogClose1}
+             text="Are you sure to delete?"
+ 
+           />
+         )}  
              
             </Grid>
             
@@ -751,10 +769,12 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
 
         
     </Dialog>
+    
   
 
 
   );
+  
               }
 
 
