@@ -302,31 +302,38 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
    
     url.get("invoice/" + id).then(({ data }) => {
       if (data) {
-        
-        setquoteid(data[0].quotation_id)
+        console.log(data[0].po_number)
+        // setquoteid(data[0].quotation_id)
         setdis_per(data[0].discount_in_percentage)
         setpodetails(data[0].invoice_detail)
-        setcompany(data[0].quotation.party.firm_name)
-        setcname_ar(data[0].quotation.party.firm_name_in_ar)
-        setcity(data[0].quotation.party.city)
-        setstreet(data[0].quotation.party.street)
-        setzipcode(data[0].quotation.party.zip_code)
-        setpo(data[0].quotation.quotation_no)
-        setvatno(data[0].quotation.party.vat_no)
-        setvatno_ar(toArabic(2020))
+        setcompany(data[0].party?.firm_name)
+        setcname_ar(data[0].party?.firm_name_in_ar)
+        setcity(data[0].party?.city)
+        setstreet(data[0].party?.street)
+        setzipcode(data[0].party?.zip_code)
+        setpo(data[0].quotation?data[0].quotation.po_number:data[0].po_number)
+        setvatno(data[0].party?.vat_no)
+        setvatno_ar(toArabic(data[0].party?.vat_no))
         setinvoiceno(data[0].invoice_no)
         setissue_date(data[0].issue_date)
         setvat_in_value(data[0].vat_in_value)
         setnet_amount(data[0].grand_total)
         settotal_value(data[0].total_value)
-        setfirm_name_in_ar(data[0].quotation.party.firm_name_in_ar)
+        setfirm_name_in_ar(data[0].party?.firm_name_in_ar)
         let words = toWords.convert(parseFloat(data[0].grand_total));
         let riyal = words.replace("Rupees", "Riyals");
-        let halala =  riyal.replace("Paise", "Halala")
+        let halala ;
+        if(parseFloat(data[0].grand_total)%1===0)
+        {
+          halala =  riyal.replace("Paise", "Halala");
+        }
+        else{
+          halala =  riyal.replace("Paise", "Halalas");
+        }
          
         setress(halala);
         
-        Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].quotation.party.street-data[0].quotation.party.city,data[0].quotation.party.zip_code}&target=ar`, {
+        Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].party.street}+${data[0].party.city}+${data[0].party.zip_code}&target=ar`, {
       method: 'POST',
       headers: { 
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -335,7 +342,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       },
     })
       .then(({ data }) => {
-          setcompanyaddress(data.data.translations[0].translatedText)
+          setcompanyaddress(data.data.translations[0].translatedText);
+          console.log(data.data.translations[0].translatedText);
       
       })
     }
@@ -887,13 +895,15 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                      <div>
   <span style={{textAlign:"left"}}>
   {item.product.description}
+  </span>
+  </div>
     <span style={{float:"right"}}>
     {item.product.name_in_ar?item.product.name_in_ar:''}
     </span>
-</span>
+
 
                         
-                        </div>
+                        
 
                       </TableCell>
 
@@ -902,24 +912,24 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                         {item.product.unit_of_measure}
                       </TableCell>
                       <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} colspan={2} >
-                        {parseInt(item.quotation_detail.quantity).toLocaleString()}
+                        {parseInt(item.quantity).toLocaleString()}
 
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
 
-                        {parseFloat(item.quotation_detail.sell_price).toLocaleString(undefined, {minimumFractionDigits:2})}
+                        {parseFloat(item.sell_price).toLocaleString(undefined, {minimumFractionDigits:2})}
       
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
                        
-                        {parseFloat(item.quotation_detail.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
+                        {parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
                         {/* {item.total_amount} */}
-                        {parseFloat((item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
+                        {parseFloat((item.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
                       <TableCell className="pl-0 capitalize" style={{ textAlign: "right", border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} >
-                     {(parseFloat(item.quotation_detail.total_amount)+(item.quotation_detail.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
+                     {(parseFloat(item.total_amount)+(item.total_amount * 15) / 100).toLocaleString(undefined, {minimumFractionDigits:2})}
                       </TableCell>
 
 
@@ -957,7 +967,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri"}} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16 }} >
                     االمجموع الفرعي        
                     <br></br>
                  SUB TOTAL
@@ -967,7 +977,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",fontSize: 18 }} colspan={2}>
                 {parseFloat(total_value).toLocaleString(undefined, {minimumFractionDigits:2})}  SAR
           
     
@@ -985,7 +995,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   </TableCell>
                 </TableRow> */}
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pr-0 pl-1 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} >
+                  <TableCell className="pr-0 pl-1 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} >
                     القيمة الضريبية
                   <br></br>
                   TOTAL VAT AMOUNT (15%)
@@ -994,7 +1004,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",fontSize: 18 }} colspan={2}>
                 {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
           
     
@@ -1011,7 +1021,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word" }} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word",fontSize:16 }} >
                   المجموع الكلي <br></br>
                   GRAND TOTAL
                   </TableCell>
@@ -1019,8 +1029,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
-                {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",fontSize: 18 }} colspan={2}>
+                <strong>{parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR</strong>
           
     
                 </TableCell>

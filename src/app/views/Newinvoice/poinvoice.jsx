@@ -772,11 +772,11 @@ const deletepo = ()=>{
               <TableRow style={{border: "1px solid #ccc"}}>
               <TableCell className="pl-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
               </TableCell>
-            <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} colspan={2}>SUB TOTAL</TableCell>
+            <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} colspan={2}>SUB TOTAL</TableCell>
             {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-              <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} colspan={2}
+              <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} colspan={2}
                 >
                    
                    {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word',fontFamily: "Calibri"}}>
@@ -793,11 +793,11 @@ const deletepo = ()=>{
               <TableCell className="pr-0 capitalize" colspan={11} style={{ border: "1px solid #ccc",fontFamily: "Calibri",width:200 }}>
                 </TableCell>
       
-                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px" colspan={2}>TOTAL VAT AMOUNT (15%)</TableCell>
+                  <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} width="130px" colspan={2}>TOTAL VAT AMOUNT (15%)</TableCell>
                   {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}} width="130px" colspan={2}
+                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }} width="130px" colspan={2}
                 
                  >
 
@@ -819,7 +819,7 @@ const deletepo = ()=>{
                       </div>
                     </div>
                   </TableCell>
-                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri"}}
+                 <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}
                  colspan={2}
                  >
                      <span>GRAND TOTAL</span> 
@@ -828,7 +828,7 @@ const deletepo = ()=>{
                 {/* <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",borderRight:"1px solid #fff"}}>
                 SAR
                 </TableCell> */}
-                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px"}} colspan={2}>
+                <TableCell style={{textAlign: "right",border: "1px solid #ccc",fontFamily: "Calibri",width:"130px",fontSize: 16 }} colspan={2}>
                 {parseFloat(net_amount).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
           
     

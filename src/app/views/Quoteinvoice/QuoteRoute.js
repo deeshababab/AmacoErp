@@ -39,6 +39,10 @@ const QuoteRoutes = [
     path: "/printdemo",
     component: React.lazy(() => import("./printdemo"))
   },
+  {
+    path: "/InvoiceCreate",
+    component: React.lazy(() => import("./InvoiceCreate"))
+  },
   
 ];
 

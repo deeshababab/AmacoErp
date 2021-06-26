@@ -135,7 +135,7 @@ const CustomerForm = () => {
     let files = event.target.files;
     
     const src = URL.createObjectURL(event.target.files[0]);
-    
+    console.log(files)
     setfile_path(event.target.files[0]);
     setref_billno(src);
   
@@ -171,6 +171,7 @@ const CustomerForm = () => {
       }
 
     })
+    
 
     setFiles(list);
    
@@ -334,6 +335,7 @@ const CustomerForm = () => {
       setpaid_by(data[0]?.payment_account_id)
       setreferrence_bill_no(data[0]?.referrence_bill_no)
       setdescription(data[0]?.description)
+      setFiles(data[0].column_data)
       if(data[0]?.tax)
       {
         settax(true)
@@ -345,7 +347,7 @@ const CustomerForm = () => {
       // {
         setaccountstatus(true)
        
-        // setref_billno(data[0]?.file_path)
+        setref_billno(data.referrenceImgUrl!=="No file Uploaded"?data.referrenceImgUrl:data[0].file_path)
       // }
      setdemo(data[0]?.account_category_id)
      console.log(data[0]?.account_category_id)
@@ -428,10 +430,11 @@ const CustomerForm = () => {
     formData.append("bank_slip",bank_slip)
     formData.append("file_path",file_path)
     formData.append("id",id)
-    console.log(file_path)
+    console.log(field)
     files.map((answer, i) => {  
       // formData.append(`quotation_detail${i}`,JSON.stringify(answer))
       formData.append(`file${answer.column_id}`,answer.file)
+      console.log(answer.file)
       
       // answer.files&& (formData.append(`file${i}`,answer.files))
     })
@@ -715,9 +718,11 @@ const CustomerForm = () => {
                 {items.progress=== item.id &&
                 (
                   <span>
-                <img src={items.src} width="50px" height="50px"/>
+                {item.src?(<><img src={items.src} width="50px" height="50px"/>
                  <Icon className="bg-error"
-                        onClick={() => handleField_Fileremove(index)}>cancel</Icon>
+                        onClick={() => handleField_Fileremove(index)}>cancel</Icon></>):(<><img src={items.file} width="50px" height="50px"/>
+                        <Icon className="bg-error"
+                               onClick={() => handleField_Fileremove(index)}>cancel</Icon></>)}
                   </span>
                 )}
                         </span>
@@ -937,7 +942,7 @@ file_upload
           alt: 'Golden Gate Bridge'
         }}
         
-        ></ImageZoom><Icon color="error" style={{ position: 'absolute',margin:350 }} onClick={e=>setref_billno('')}>delete</Icon></>}
+        ></ImageZoom><Icon color="error" style={{ position: 'absolute',marginTop:200 }} onClick={e=>setref_billno(null)}>delete</Icon></>}
 </div>
 </div>
                  <TextField

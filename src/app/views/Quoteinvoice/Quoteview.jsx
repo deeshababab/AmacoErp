@@ -1057,7 +1057,7 @@ function PrintMe(DivID) {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} colspan={2}>
                    
                     SUB TOTAL 
 
@@ -1065,7 +1065,7 @@ function PrintMe(DivID) {
                   {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff"}}>
                     SAR
                   </TableCell> */}
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} colspan={2}>
                   {/* <IntlProvider locale='en-US'>
                   <FormattedNumber value={total_value} currency={"SAR"} style="currency" />
                   </IntlProvider> */}
@@ -1075,14 +1075,14 @@ function PrintMe(DivID) {
                 </TableRow>
                 
                 <TableRow style={{ border: "1px solid #ccc",pageBreakInside:'avoid' }}>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} colspan={2}>
                   
                  TOTAL VAT AMOUNT (15%)
                   </TableCell>
                   {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
                   </TableCell> */}
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16  }} colspan={2}>
                   {parseFloat(vat_in_value).toLocaleString(undefined, {minimumFractionDigits:2})} SAR
                   </TableCell>
                 </TableRow>
@@ -1099,7 +1099,7 @@ function PrintMe(DivID) {
                     </div>
                   </TableCell>
                   
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:'break-word' }} colspan={2}>
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:'break-word',fontSize: 16 }} colspan={2}>
                   
                  
                    GRAND TOTAL
@@ -1107,7 +1107,7 @@ function PrintMe(DivID) {
                   {/* <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",width: "50px",fontFamily: "Calibri",borderRight:"1px solid #fff" }}>
                     SAR
                   </TableCell> */}
-                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri" }} colspan={2}>
+                  <TableCell className="pl-0 capitalize" align="right" style={{ border: "1px solid #ccc",width: "500px",fontFamily: "Calibri",fontSize: 16  }} colspan={2}>
                    
                     {/* <IntlProvider locale='en-US' style={{wordBreak:'break-word'}}>
                     <FormattedNumber value={net_amount} currency={"SAR"} style="currency" />
