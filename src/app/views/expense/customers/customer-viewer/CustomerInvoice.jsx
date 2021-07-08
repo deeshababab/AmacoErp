@@ -1,17 +1,8 @@
 import {
-  Card,
-  Fade,
   Icon,
-  IconButton,
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
-  TableRow,
   Tooltip
 } from "@material-ui/core";
-import clsx from "clsx";
-import { format } from "date-fns";
 import MUIDataTable from "mui-datatables";
 import React, { useState, useEffect } from "react";
 import url,{urlphp} from "../../../../views/invoice/InvoiceService";
@@ -28,15 +19,7 @@ const columnStyleWithWidth = {
   width: "80px",
   wordBreak: "break-all",
 }
-const columnStyleWithWidth1 = {
-  top: "0px",
-  left: "0px",
-  zIndex: "100",
-  position: "sticky",
-  backgroundColor: "#fff",
-  width: "600px",
-  wordBreak: "break-all",
-}
+
 
 const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
@@ -46,30 +29,12 @@ const CustomerInvoice = () => {
        setexpenseList(data);
        
     });
-//     Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
-//       method: 'GET',
-//       headers: { 
-//         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-// "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-// "Access-Control-Max-Age": 86400
-//       },
-//     })
-//       .then(({ data }) => {
-//         if(data)
-//         {
-//         const arr = data.sort(
-//           (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
-//         );
-//         console.log(data)
-//         setexpenseList(arr);
-//         }
-//       })
+
  
 }, []);
 const setstatus=(id)=>{
   Swal.fire({
     text: 'Are you sure you want to Verify?',
-    // text: 'Any products, services, or categories in it will be uncategorised.',
     icon: 'warning',
     showCancelButton: true,
     customClass: {
@@ -89,11 +54,7 @@ const setstatus=(id)=>{
           icon:'success',
           text: 'Updated successfully.',
         });
-        // url.get("expense").then(({ data }) => {
-          
-        //    setexpenseList(data);
-           
-        // });
+        
         Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
           method: 'GET',
           headers: { 
@@ -119,9 +80,7 @@ const setstatus=(id)=>{
         zIndex: 1000
       },
        title:'Cancelled'
-      // 'Cancelled',
-      // 'Your imaginary file is safe :)',
-      // 'error',
+      
       
     })
   }
@@ -131,7 +90,6 @@ const setstatus=(id)=>{
 const removeData = (id) => {
   Swal.fire({
     text: 'Are you sure you want to delete?',
-    // text: 'Any products, services, or categories in it will be uncategorised.',
     icon: 'warning',
     showCancelButton: true,
     customClass: {
@@ -161,9 +119,6 @@ const removeData = (id) => {
           zIndex: 1000
         },
          title:'Cancelled'
-        // 'Cancelled',
-        // 'Your imaginary file is safe :)',
-        // 'error',
         
       })
     }
@@ -245,7 +200,6 @@ const columns = [
         console.log(tableMeta.rowData)
         return (
           <span>
-          {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
           <Tooltip title="Verify">
             <Icon style={{color:'#00FF00',cursor:'pointer'}} onClick={e => setstatus(tableMeta.rowData[7])} >check</Icon>
           </Tooltip>
@@ -272,80 +226,6 @@ const columns = [
  
 ];
   return (
-    // <Fade in timeout={300}>
-    //   <Card elevation={3} className="w-full overflow-auto">
-    //     <h5 className="p-4 mt-0 mb-2">New Expenses List</h5>
-
-    //     <Table className="min-w-1050">
-    //       <TableHead>
-    //         <TableRow>
-    //           <TableCell className="pl-4" colSpan={1}>
-    //             No.
-    //           </TableCell>
-    //           <TableCell colSpan={2}>Date</TableCell>
-    //           <TableCell colSpan={1}>Account</TableCell>
-    //           <TableCell colSpan={2}>Referrence Bill Number</TableCell>
-    //           <TableCell colSpan={1}>Paid To</TableCell>
-    //           <TableCell colSpan={1}>Amount</TableCell>
-    //           <TableCell colSpan={1}>Tax Amount</TableCell>
-    //           <TableCell colSpan={1}>Action</TableCell>
-    //         </TableRow>
-    //       </TableHead>
-    //       <TableBody>
-    //         {expenseList.map((invoice, index) => (
-              
-    //           <TableRow key={invoice.id}>
-    //             <TableCell
-    //               className="pl-4 py-2 capitalize"
-    //               align="left"
-      
-    //             >
-                 
-    //               {index+1}
-    //             </TableCell>
-                
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={2}>
-    //             {moment(invoice.paid_date).format('DD  MMM, YYYY ')}
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={1}>
-    //               {invoice.payment_account[0].name}
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={2}>
-    //               {invoice.referrence_bill_no}
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={1}>
-    //               {invoice.paid_to}
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={1}>
-    //             {parseFloat(invoice.amount).toLocaleString(undefined, {minimumFractionDigits:2})}
-         
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" align="left" colSpan={1}>
-    //             {parseFloat(invoice.tax).toLocaleString(undefined, {minimumFractionDigits:2})}
-         
-    //             </TableCell>
-    //             <TableCell className="py-2 capitalize" colSpan={1}>
-                 
-    //              <Tooltip title="Verify">
-    //               <Icon style={{color:'#00FF00',cursor:'pointer'}} onClick={e => setstatus(invoice.id)} >check</Icon>
-    //               </Tooltip>
-    //               <Tooltip title="delete">
-    //               <Icon color="error" onClick={() => removeData(invoice.id)
-    //         } style={{cursor:'pointer'}}>close</Icon>
-    //         </Tooltip>
-    //         <Tooltip title="view more">
-    //               <Icon color="primary" onClick={() =>history.push(`/expensedetails/${invoice.id}`)
-    //         } style={{cursor:'pointer'}}>arrow_forward</Icon>
-    //         </Tooltip>
-         
-    //             </TableCell>
-               
-    //           </TableRow>
-    //         ))}
-    //       </TableBody>
-    //     </Table>
-    //   </Card>
-    // </Fade>
     <div>
       <MUIDataTable
         title={"New Expenses List"}
@@ -356,8 +236,6 @@ const columns = [
             moment(item.paid_date).format('DD  MMM, YYYY '),
 
             item?.payment_account.name,
-            
-            // item.referrence_bill_no,
             item.referrence_bill_no,
 
             item.paid_to,
