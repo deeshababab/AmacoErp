@@ -1,47 +1,23 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Radio,
-  FormControl,
-  FormControlLabel,
   Divider,
-  RadioGroup,
-  Grid,
-  MenuItem,
   Card,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Link,
   Icon,
   TextField
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import axios from "axios";
 import url from "../invoice/InvoiceService";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // expandable table
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
-import Axios from "axios";
 import Swal from "sweetalert2";
 import moment from "moment";
 
@@ -650,6 +626,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
                       name="delivering_quantity"
                       fullWidth
+                      required
                       variant="outlined"
                       size="small"
                       value={item? item.delivering_quantity: item.delivering_quantity}

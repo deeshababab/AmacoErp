@@ -357,9 +357,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       .then((result) => {
       
         history.push(`/invoice/${id}`)
-       
-      })
         getrfq()
+      })
+       
     })
       .catch(function (error) {
         

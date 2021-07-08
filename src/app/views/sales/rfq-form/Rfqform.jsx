@@ -296,11 +296,13 @@ const InvoiceForm = ({ }) => {
             type: 'success',
             icon: 'success',
             text: 'Data saved successfully.',
+          }).then((result)=>{
+            getrfq()
+                // window.location.href = "/sales/rfq-form/rfqview"
+                history.push("/sales/rfq-form/rfqview")
           })
           
-          getrfq()
-          // window.location.href = "/sales/rfq-form/rfqview"
-          history.push("/sales/rfq-form/rfqview")
+          
         })
 
         .catch(function (error) {

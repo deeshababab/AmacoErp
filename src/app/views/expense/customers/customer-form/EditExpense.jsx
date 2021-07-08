@@ -248,6 +248,7 @@ const CustomerForm = () => {
       setreferrence_bill_no(data[0]?.referrence_bill_no);
       setdescription(data[0]?.description);
       setFiles(data[0].column_data);
+      settax(false)
       if (data[0]?.tax) {
         settax(true);
         settaxamount(data[0]?.tax);
@@ -344,8 +345,11 @@ const CustomerForm = () => {
         type: "success",
         icon: "success",
         text: "Data updated successfully.",
+      }).then((result) => {
+        history.push(`/expenseview`);
       });
     });
+   
   };
 
   const handleField_Fileremove = (index) => {
@@ -804,14 +808,14 @@ const CustomerForm = () => {
                     row
                   >
                     <FormControlLabel
-                      value={tax}
+                      value="yes"
                       control={<Radio color="secondary" />}
                       label="Yes"
                       onChange={() => settax(true)}
                       labelPlacement="end"
                     />
                     <FormControlLabel
-                      value={tax}
+                      value="no"
                       control={<Radio color="secondary" />}
                       label="No"
                       onChange={() => settax(false)}

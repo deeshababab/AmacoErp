@@ -247,6 +247,15 @@ const CustomerForm = () => {
 
   const resetform = () => {
     setpayment_account_name("");
+    setreferrence_bill_no('')
+    setpaid_by('')
+    setpaid_date(new Date())
+    setpaid_to('')
+    setdescription('')
+    settax(false)
+    settaxamount('')
+    setcompany(false)
+    setref_billno('')
     setaccountstatus(false);
   };
 
@@ -290,8 +299,10 @@ const CustomerForm = () => {
           type: "success",
           icon: "success",
           text: "Data saved successfully.",
+        }).then((result)=>{
+          history.push(`/expenseview`);
         });
-        history.push(`/expenseview`);
+        
       })
       .catch(function (error) {});
   };
@@ -450,6 +461,7 @@ const CustomerForm = () => {
                         variant="outlined"
                         autoComplete="none"
                         value={payment_account_name}
+                        required
                         // onChange={e => setpayment_account_id(e.target.value)}
                       />
                       {field.map((item, index) => {
@@ -558,6 +570,7 @@ const CustomerForm = () => {
                     variant="outlined"
                     autoComplete="none"
                     value={paid_to}
+                    required
                     onChange={(e) => setpaid_to(e.target.value)}
                   />
 
@@ -570,6 +583,7 @@ const CustomerForm = () => {
                     value={values.amount}
                     currencySymbol="SAR"
                     autoComplete="none"
+                    required
                     onChange={(event, value) => setamount(value)}
                   />
 
@@ -614,6 +628,7 @@ const CustomerForm = () => {
                       value={paid_by}
                       autoComplete="off"
                       select
+                      required
                       onChange={(e) => setpaid_by(e.target.value)}
                     >
                       {payment_account.map((item, ind) => (
