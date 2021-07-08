@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
 import url, {getparties,capitalize_arr,  ApiKey} from "../../invoice/InvoiceService"
-import InputMask from 'react-input-mask';
 import {
   Icon,
   Grid,
@@ -184,34 +183,6 @@ const resetform = () => {
 
 };
 
-
-  const handleChange = (event) => {
-    event.persist();
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-  };
-  
-  const handleChange1 = selectedOption => {
-    this.setState({ selectedOption });
-  };
-
-  const handleDateChange = (date) => {
-    setState({ ...state, date });
-  };
-
-  const {
-    username,
-    firstName,
-    creditCard,
-    mobile,
-    password,
-    confirmPassword,
-    gender,
-    date,
-    selectedOption,
-  } = state;
 
   return (
     <div>
@@ -713,9 +684,6 @@ const resetform = () => {
                                 fullWidth
                                 
                             />
-                            
-                            
-                    
                     </div>
 
           </Grid>

@@ -6,35 +6,14 @@ import {
   Icon,
   Grid,
   Card,
-  // Radio,
-  // RadioGroup,
-  // FormControlLabel,
-  // Checkbox,
   TextField,
   MenuItem,
 } from "@material-ui/core";
-import Axios from 'axios'
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardDatePicker,
-// } from "@material-ui/pickers";
 import { Breadcrumb } from "matx";
 import "date-fns";
-// import DateFnsUtils from "@date-io/date-fns";
-// import ReactSelectMaterialUi from "react-select-material-ui";
-// import Select from 'react-select';
-// import Axios from "axios";
 import Swal from "sweetalert2";
-import url,{getparties,capitalize_arr, ApiKey} from "../invoice/InvoiceService";
+import url,{getparties,capitalize_arr} from "../invoice/InvoiceService";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
-// const optionss = [
-//     { value: 'Vendor', label: 'vendor' },
-//     { value: 'customer', label: 'customer' },
-//   ];
-  // const data = [
-  //   { value: 'vendor', label: 'vendor' },
-  //   { value: 'customer', label: 'customer' },
-  // ];
   const customerList = [
      'Vendor', 
      'Customer', 
@@ -44,38 +23,8 @@ const SimpleForm = () => {
   const [state, setState] = useState({
     date: new Date(),
   });
-  // const data = [
-  //   {
-  //     value: 1,
-  //     label: "cerulean"
-  //   },
-  //   {
-  //     value: 2,
-  //     label: "fuchsia rose"
-  //   },
-  //   {
-  //     value: 3,
-  //     label: "true red"
-  //   },
-  //   {
-  //     value: 4,
-  //     label: "aqua sky"
-  //   },
-  //   {
-  //     value: 5,
-  //     label: "tigerlily"
-  //   },
-  //   {
-  //     value: 6,
-  //     label: "blue turquoise"
-  //   }
-  // ];
-
-  // const [selectedValue, setSelectedValue] = useState('');
+  
   const [Firm_Name, setFirm_name] = useState('');
-  // const [email, setemail] = useState('');
-  // const [contact1, setcontact1] = useState('');
-  // const [contact2, setcontact2] = useState('');
   const [vat_no, setvat_no] = useState('');
   const [post_box_no, setpost_box_no] = useState('');
   const [country, setcountry] = useState('');
@@ -83,9 +32,6 @@ const SimpleForm = () => {
   const [zip_code, setzip_code] = useState('');
   const [proviance, setproviance] = useState('');
   const [website, setwebsite] = useState('');
-  // const [fname, setfname] = useState('');
-  // const [lname, setlname] = useState('');
-  // const [suffix, setsuffix] = useState('');
   const [regno, setregno] = useState('');
   const [ob, setob] = useState('');
   const [fax, setfax] = useState('');
@@ -101,7 +47,7 @@ const SimpleForm = () => {
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
   const [company_name_ar, setcompany_name_ar] = useState('');
-  // const [address, setaddress] = useState('');
+ 
   
   // get the id value
   let search = window.location.search;
@@ -109,9 +55,7 @@ const SimpleForm = () => {
   const foo =parseInt(params.get('id'));
   const [isAlive, setIsAlive] = useState(true);
   const [userList, setUserList] = useState([]);
-  // /const handleChangee = e => {
-  //   setpartytype(e.value);
-  // }
+  
  
   useEffect(() => {
 
@@ -131,12 +75,6 @@ const SimpleForm = () => {
           setcountry(data[0].country)
           setzip_code(data[0].zip_code)
           setcompany_name_ar(data[0].firm_name_in_ar)
-          // setfname(data[0].contacts[0].fname)
-          // setlname(data[0].contacts[0].lname)
-          // setsuffix(data[0].contacts[0].designation)
-          // setcontact1(data[0].contacts[0].phone1)
-          // setcontact2(data[0].contacts[0].phone2)
-          // setemail(data[0].contacts[0].email)
           setfax(data[0].fax)
           setwebsite(data[0].website)
           setob(data[0].opening_balance)
@@ -208,34 +146,9 @@ const SimpleForm = () => {
 }
 
 
-  // const handleChange = (event) => {
-  //   event.persist();
-  //   setState({
-  //     ...state,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
-  // const handleChange1 = selectedOption => {
-  //   this.setState({ selectedOption });
-  // };
-
-  // const handleDateChange = (date) => {
-  //   setState({ ...state, date });
-  // };
-  // function cancelform() {
-  //   window.location.href="./Viewproduct"
-  // }
+  
 
   const {
-    // username,
-    // firstName,
-    // creditCard,
-    // mobile,
-    // password,
-    // confirmPassword,
-    // gender,
-    // date,
-    // selectedOption,
   } = state;
 
   return (
@@ -254,111 +167,7 @@ const SimpleForm = () => {
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
-          {/* <ReactSelectMaterialUi
-                className="mb-4 w-full"
-                label="Party type"
-                name="selectedOption"
-                value={selectedOption}
-              onChange={handleChange1}
-              options={optionss}
-              /> */}
-              {/* <Select
-        placeholder="Select Option"
-        variant="outlined"
-        value={data.find(obj => obj.value === selectedOption)} // set selected value
-        options={data} // set list of the data
-        onChange={handleChange1} // assign onChange function
-      /> */}
-      {/* {/* <h6>Contact Person Details</h6>
-      <TextValidator
-                    className="mb-4 w-full"
-                    label="First Name"
-                    onChange={e => setfname(e.target.value)}
-                                type="text"
-                                name="fname"
-                                variant="outlined"
-                                size="small"
-                                value={fname}
-                                validators={[
-                                    "required",
-                                    
-                                ]}
-                                errorMessages={["this field is required"]}
-                            />
-      <div className="flex mb-4">
-          <TextField
-            className="mr-2"
-            label="Last Name"
-            variant="outlined"
-            onChange={e => setlname(e.target.value)}
-            value={lname}
-            size="small"
-            fullWidth
-          />
-          <TextField
-            className="ml-2"
-            label="Designation"
-            variant="outlined"
-            value={suffix}
-            name="suffix"
-            size="small"
-            onChange={e => setsuffix(e.target.value)}
-            fullWidth
-          />
-        </div>
-
-               <TextField
-                                className="mb-4 w-full"
-                                label="Email Address"
-                                onChange={e => setemail(e.target.value)}
-                                type="text"
-                                name="email"
-                                size="small"
-                                variant="outlined"
-                                value={email}
-                             
-                             />
-                              <div className="flex mb-4">
-                            <TextField
-                                className="mr-2"
-                                label="Mobile Number"
-                                onChange={e => setcontact1(e.target.value)}
-                                name="contact1"
-                                type="mobile"
-                                size="small"
-                                variant="outlined"
-                                value={contact1}
-                              
-                            />
-                            
-                            
-                            <TextField
-                                className="ml-2"
-                                label="Landline Number"
-                                onChange={e => setcontact2(e.target.value)}
-                                name="contact2"
-                                size="small"
-                                variant="outlined"
-                                value={contact2}
-                                type="mobile"
-                                fullWidth
-                                
-                            />
-                            </div>
-                            <TextField
-                                className="mb-4 w-full"
-                                label="Address"
-                                onChange={e => setaddress(e.target.value)}
-                                name="address"
-                                size="small"
-                                variant="outlined"
-                                value={address}
-                                type="mobile"
-                                fullWidth
-                                
-                            />
-                             <br></br>
-                            <br></br> */}
+          
                             <h6>Company Details</h6>
           <TextValidator
                     className="mb-4 w-full"
@@ -545,19 +354,7 @@ const SimpleForm = () => {
                             />
                             </div>
                             <div className="flex mb-4">
-                              {/* <div style={{width:"560px"}}>
-                            <Select
-                            
-                            className="select-custom-class"
-        placeholder="Select Option"
-        value={customerList.find(obj => obj.value === partytype)} // set selected value
-        options={customerList
-         
-         } 
-         onChange={e => setpartytype(e.value)
-         } 
-      />
-      </div> */}
+                             
       <TextField
                 className="mr-0"
                 variant="outlined"
@@ -575,17 +372,7 @@ const SimpleForm = () => {
                   </MenuItem>
                 ))}
               </TextField>
-                  {/* <TextField
-                                className="ml-5"
-                                label="Party Code"
-                                onChange={e => setpartycode(e.target.value)}
-                                name="party_code"
-                                size="small"
-                                type="text"
-                                variant="outlined"
-                                value={partycode}
-                                fullWidth
-                            /> */}
+                  
                               </div>
                       <div className="flex mb-4">
                       <TextField
@@ -622,89 +409,7 @@ const SimpleForm = () => {
            
                             
                              
-                            {/* <TextField
-                    className="mb-4 w-full"
-                    label="party type"
-                    name="selectedvalue"
-                    size="small"
-                    variant="outlined"
-                    select
-                    value={selectedValue || ""}
-                    onChange={e => setSelectedValue(e.target.value)
-                    }
-                  >
-                    {customerList.map((item, ind) => (
-                      <MenuItem value={item.value} key={item}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                  </TextField> */}
-            {/* <TextValidator
-              className="mb-4 w-full"
-              label="Username (Min length 4, Max length 9)"
-              onChange={handleChange}
-              type="text"
-              variant="outlined"
-              name="username"
-              value={username || ""}
-              validators={[
-                "required",
-                "minStringLength: 4",
-                "maxStringLength: 9",
-              ]}
-              errorMessages={["this field is required"]}
-            /> */}
-            {/* <TextValidator
-              className="mb-4 w-full"
-              label="First Name"
-              onChange={handleChange}
-              type="text"
-              name="firstName"
-              value={firstName || ""}
-              validators={["required"]}
-              errorMessages={["this field is required"]}
-            /> */}
-            {/* <TextValidator
-              className="mb-4 w-full"
-              label="Email"
-              onChange={handleChange}
-              type="email"
-              name="email"
-              value={email || ""}
-              validators={["required", "isEmail"]}
-              errorMessages={["this field is required", "email is not valid"]}
-            /> */}
-
-            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                className="mb-4 w-full"
-                margin="none"
-                id="mui-pickers-date"
-                label="Date picker"
-                inputVariant="standard"
-                type="text"
-                autoOk={true}
-                value={date}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              /> */}
-            {/* </MuiPickersUtilsProvider> */}
-            {/* <TextValidator
-              className="mb-8 w-full"
-              label="Credit Card"
-              onChange={handleChange}
-              type="number"
-              name="creditCard"
-              value={creditCard || ""}
-              validators={[
-                "required",
-                "minStringLength:16",
-                "maxStringLength: 16",
-              ]}
-              errorMessages={["this field is required"]}
-            /> */}
+                            
           </Grid>
 
           <Grid item lg={6} md={6} sm={12} xs={12}>

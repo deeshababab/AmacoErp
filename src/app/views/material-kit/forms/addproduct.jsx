@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Breadcrumb, ConfirmationDialog } from "matx";
-import Select from 'react-select';
+import {  ConfirmationDialog } from "matx";
 import { useParams } from "react-router-dom";
-import { MDBSelect } from "mdbreact";
 import Swal from "sweetalert2";
 import FormDialog from "../../product/Addcategory"
-import {
-  Dialog,
-  Divider,
-  Switch,
-  IconButton,
-} from "@material-ui/core";
 import MemberEditorDialog from "../../product/Addcategory";
 import history from "history.js";
-import {getVendorList,getcategories,getmanufacturer, ApiKey} from "../../invoice/InvoiceService"
+import {getVendorList,getmanufacturer, ApiKey} from "../../invoice/InvoiceService"
 import FormDialog1 from "../../../views/product/manufacture";
 import MemberEditorDialog1 from "../../../views/product/manufacture";
 
@@ -23,46 +15,17 @@ import MemberEditorDialog1 from "../../../views/product/manufacture";
 import {
   Icon,
   Grid,
-  Radio,
-  RadioGroup,
   TextField,
-  FormControlLabel,
-  Checkbox,
   MenuItem,
-  Link,
   Button
 } from "@material-ui/core";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
 import Addparty from "./addparty"
 import url,{capitalize_arr} from "../../invoice/InvoiceService"
-const ooptions = [
-  {
-    id: 3,
-    name: "lucy brown",
-    date: "1 january, 2019",
 
-  },
-  {
-    id: 4,
-    name: "lucy brown",
-    date: "1 january, 2019",
 
-  },
 
-];
-
-const options = [
-  { value: '1', label: 'Chocolate' },
-  { value: '2', label: 'Strawberry' },
-  { value: '3', label: 'Vanilla' },
-];
 
 const SimpleForm = ({open, handleClose}) => {
   const [state, setState] = useState({
@@ -174,14 +137,13 @@ const SimpleForm = ({open, handleClose}) => {
     
   ];
 
-  // const [selectedOption, setSelectedOption] = useState(data);
+  
 
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const [
     shouldOpenConfirmationDialog,
     setShouldOpenConfirmationDialog,
   ] = useState(false);
-  // manufacture
   const [shouldOpenEditorDialog1, setShouldOpenEditorDialog1] = useState(false);
   const [
     shouldOpenConfirmationDialog1,

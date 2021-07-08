@@ -2,26 +2,15 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
   IconButton,
   MenuItem,
   TextField
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import { getInvoice} from "../../../app/views/invoice/InvoiceService";
-import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { Link, useParams} from "react-router-dom";
-import Axios from "axios";
+import {useParams} from "react-router-dom";
 import Swal from "sweetalert2";
-import CustomerBillings from "./customers/customer-viewer/CustomerBillings"
-import url,{getparties} from "../invoice/InvoiceService"
+import url,{capitalize_arr} from "../invoice/InvoiceService"
 const prefixs = [
   { value: 'Mr', label: 'Mr' },
   { value: 'Mrs', label: 'Mrs' },
@@ -45,11 +34,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   
 
   const [isAlive, setIsAlive] = useState(true);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
@@ -83,8 +68,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   
   
       }
-      // setcdescription('')
-      // setcname('')
+     
       
       
       url.put("contact/"+contactid, frmdetails)
@@ -116,19 +100,18 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     {
     const frmdetails = {
         party_id:foo,
-        fname: fname.charAt(0). toUpperCase() + fname. slice(1),
-        lname: lname.charAt(0). toUpperCase() + lname. slice(1),
-        designation:designation.charAt(0). toUpperCase() + designation. slice(1),
+        fname: capitalize_arr(fname),
+        lname: capitalize_arr(lname),
+        designation:capitalize_arr(designation),
         mobno:contact1,
         landline:contact2,
         email:email,
-        address:address.charAt(0). toUpperCase() + address. slice(1),
-        prefix:prefix.charAt(0). toUpperCase() + prefix. slice(1)
+        address:capitalize_arr(address),
+        prefix:prefix
 
 
     }
-    // setcdescription('')
-    // setcname('')
+    
     
     
     url.post('contact', frmdetails)
@@ -182,9 +165,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             zIndex: 1000
           },
            title:'Cancelled'
-          // 'Cancelled',
-          // 'Your imaginary file is safe :)',
-          // 'error',
+          
           
         })
       }
@@ -211,56 +192,16 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
 
     });
     }
-    // getInvoice().then((res) => {
     
-    // });
-    // return () => setIsAlive(false);
   },[contactid])
   function getrow(e) {
     url.get("products-in-category").then(({ data }) => {
       if (isAlive) setUserList(data);
 
     });
-    // return () => setIsAlive(true);
+    
   }
-  const columns = [
-    {
-      name: "name", // field name in the row object
-      label: "Name", // column title that will be shown in table
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-
   
-          return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
-            }
-            >
-              <Icon color="error">delete</Icon>
-            </IconButton>
-
-
-
-          )
-
-        },
-      },
-    },
-  ];
 
 
   return (
@@ -295,13 +236,11 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 variant="outlined"
                 value={fname}
                 onChange={e => setfname(e.target.value)
-                  // .log(isAlive)
+                  
                 }
                 type="text"
                 name="fname"
                 style={{width:724}}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
               />
             
               </div>
@@ -312,13 +251,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 size="small"
                 variant="outlined"
                 onChange={e => setlname(e.target.value)
-                  // .log(isAlive)
+                
                 }
                 type="text"
                 name="lname"
                 value={lname}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+                
               />
               <TextValidator
                 className="w-full mb-4"
@@ -326,13 +264,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 size="small"
                 variant="outlined"
                 onChange={e => setemail(e.target.value)
-                  // .log(isAlive)
+                
                 }
                 type="text"
                 name="email"
                 value={email}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+                
               />
               <TextValidator
                 className="w-full mb-4"
@@ -341,13 +278,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 size="small"
                 variant="outlined"
                 onChange={e => setdesignation(e.target.value)
-                  // .log(isAlive)
+                  
                 }
                 type="text"
                 name="designation"
                 value={designation}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+                
               />
               <TextValidator
                 className="w-full mb-4"
@@ -357,13 +293,11 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
                 errorMessages={["Number is not valid"]}
                 onChange={e => setcontact1(e.target.value)
-                  // .log(isAlive)
+                 
                 }
                 type="text"
                 name="contact1"
                 value={contact1}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
@@ -372,15 +306,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 variant="outlined"
                 onChange={e => setcontact2(e.target.value)
                   
-                  // .log(isAlive)
                 }
                 validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
                 errorMessages={["Number is not valid"]}
                 type="text"
                 name="contact2"
                 value={contact2}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+ 
               />
               <TextValidator
                 className="w-full mb-4"
@@ -389,13 +321,11 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 size="small"
                 variant="outlined"
                 onChange={e => setaddress(e.target.value)
-                  // .log(isAlive)
+                 
                 }
                 type="text"
                 name="contact2"
                 value={address}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
               />
              
 
@@ -412,7 +342,6 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
               variant="outlined"
               className="mr-4 py-2"
               color="secondary"
-              // onClick={() => resetform()}
               onClick={() => handleClose()}
             >
              <Icon>cancel</Icon> Cancel
@@ -423,15 +352,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             </Button>)}
             <div className="flex justify-between items-center">
             
-            {/* <Button
-              variant="outlined"
-              className="mr-4 py-2"
-              color="secondary"
-              onClick={() => resetform()}
-              
-            >
-             <Icon>cancel</Icon> Cancel
-            </Button> */}
+            
             </div>
           </div>
         </ValidatorForm>

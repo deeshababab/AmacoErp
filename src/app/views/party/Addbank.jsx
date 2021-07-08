@@ -2,37 +2,20 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
   IconButton,
-  MenuItem,
   TextField
 } from "@material-ui/core";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import { getInvoice} from "../../../app/views/invoice/InvoiceService";
-import MUIDataTable from "mui-datatables";
+import { ValidatorForm } from "react-material-ui-form-validator";
 import { Icon } from "@material-ui/core";
-import { Link, useParams} from "react-router-dom";
-import Axios from "axios";
+import { useParams} from "react-router-dom";
 import Swal from "sweetalert2";
-import CustomerBillings from "./customers/customer-viewer/CustomerBillings"
-import url,{getparties,capitalize_arr} from "../invoice/InvoiceService"
-const prefixs = [
-  { value: 'Mr', label: 'Mr' },
-  { value: 'Mrs', label: 'Mrs' },
-  { value: 'Ms', label: 'Ms' }
-];
+import url,{capitalize_arr} from "../invoice/InvoiceService"
+
 const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact}) => {
   let search = window.location.search;
   let params = new URLSearchParams(search);
   const foo =parseInt(params.get('id'));
   const [account_no, setaccount_no] = useState('');
-  const [vendor_id, setvendor_id] = useState('');
   const [bank_address, setbank_address] = useState('');
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
@@ -42,11 +25,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   
 
   const [isAlive, setIsAlive] = useState(true);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
@@ -74,8 +53,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   
   
       }
-      // setcdescription('')
-      // setcname('')
+      
       
       
       url.put("party-bank/"+contactid, frmdetails)
@@ -119,19 +97,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
    
     url.post('party-bank',frmdetails)
       .then(function (response) {
-        // url.get("parties/" + foo).then(({ data }) => {
-        //   customercontact(data[0].contacts);
+        
           Swal.fire({
             title: 'Success',
             icon:'success',
             type: 'success',
             text: 'Data saved successfully.',
           })
-        //   .then((result) => {
-
-        //   })
-          
-        // });
+        
         
         resetform();
         handleClose();
@@ -169,9 +142,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             zIndex: 1000
           },
            title:'Cancelled'
-          // 'Cancelled',
-          // 'Your imaginary file is safe :)',
-          // 'error',
+          
           
         })
       }
@@ -193,10 +164,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
 
     });
     }
-    // getInvoice().then((res) => {
     
-    // });
-    // return () => setIsAlive(false);
   },[])
     
  
@@ -205,7 +173,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
       if (isAlive) setUserList(data);
 
     });
-    // return () => setIsAlive(true);
+    
   }
   const columns = [
     {
@@ -327,18 +295,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             <Icon>loop</Icon>
           <span className="pl-2 capitalize">reset</span>
             </Button>)}
-            {/* <div className="flex justify-between items-center">
             
-            <Button
-              variant="outlined"
-              className="mr-0 py-2"
-              color="secondary"
-              onClick={() => resetform()}
-              onClick={() => handleClose()}
-            >
-             <Icon>cancel</Icon> Cancel
-            </Button>
-            </div> */}
           </div>
         </ValidatorForm>
         
