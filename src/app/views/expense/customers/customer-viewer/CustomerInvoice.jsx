@@ -41,29 +41,29 @@ const columnStyleWithWidth1 = {
 const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
-    // url.get("expense").then(({ data }) => {
+    url.get("expense").then(({ data }) => {
       
-    //    setexpenseList(data);
+       setexpenseList(data);
        
-    // });
-    Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
-      method: 'GET',
-      headers: { 
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-"Access-Control-Max-Age": 86400
-      },
-    })
-      .then(({ data }) => {
-        if(data)
-        {
-        const arr = data.sort(
-          (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
-        );
-        console.log(data)
-        setexpenseList(arr);
-        }
-      })
+    });
+//     Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
+//       method: 'GET',
+//       headers: { 
+//         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+// "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+// "Access-Control-Max-Age": 86400
+//       },
+//     })
+//       .then(({ data }) => {
+//         if(data)
+//         {
+//         const arr = data.sort(
+//           (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
+//         );
+//         console.log(data)
+//         setexpenseList(arr);
+//         }
+//       })
  
 }, []);
 const setstatus=(id)=>{

@@ -157,19 +157,7 @@ const SimpleForm = () => {
     }, [isAlive]);
 
   const handleSubmit = () => {
-    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${Firm_Name}&target=ar`, {
-      method: 'POST',
-      headers: { 
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-"Access-Control-Max-Age": 86400
-      },
-    })
-      .then(({ data }) => {
-      
-          setcompany_name_ar(data.data.translations[0].translatedText)
-      if(data.data.translations[0].translatedText)
-      {
+    
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -193,7 +181,7 @@ const SimpleForm = () => {
       account_no:account_no,
       vendor_id:vendor_id,
       party_code:partycode,
-      company_name_ar:data.data.translations[0].translatedText
+      company_name_ar:company_name_ar
       
     }
    
@@ -215,9 +203,8 @@ const SimpleForm = () => {
       .catch(function (error) {
         
       }) 
-   
-    }
-  })
+  
+  
 }
 
 
@@ -385,7 +372,7 @@ const SimpleForm = () => {
                                 value={Firm_Name}
                                 
                             />
-                             {/* <TextValidator
+                             <TextValidator
                     className="mb-4 w-full"
                     label="اسم الشركة"
                     autoComplete="none"
@@ -396,7 +383,7 @@ const SimpleForm = () => {
                                 size="small"
                                 value={company_name_ar}
                                 
-                            /> */}
+                            />
                             <div className="flex mb-4">
                             <TextValidator
                                 className="mr-2"
@@ -504,9 +491,10 @@ const SimpleForm = () => {
                                 size="small"
                                 variant="outlined"
                                 value={fax}
+                                fullWidth
                                 
                             />
-                            <TextField
+                            <TextValidator
                                 className="ml-2"
                                 label="Contact"
                                 onChange={e => setcontact(e.target.value)}
@@ -514,8 +502,10 @@ const SimpleForm = () => {
                                 type="text"
                                 size="small"
                                 variant="outlined"
+                                inputProps={{style: {width:300,paddingRight:50}}}
                                 value={contact}
-                                fullWidth
+                                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                errorMessages={["Number is not valid"]}
                                 
                             />
                             </div>

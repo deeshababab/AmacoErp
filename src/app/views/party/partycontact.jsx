@@ -72,14 +72,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     {
       const frmdetails = {
         party_id:foo,
-        fname: fname.charAt(0). toUpperCase() + fname. slice(1),
-        lname: lname.charAt(0). toUpperCase() + lname. slice(1),
-        designation:designation.charAt(0). toUpperCase() + designation. slice(1),
+        fname: fname,
+        lname: lname,
+        designation:designation,
         mobno:contact1,
         landline:contact2,
         email:email,
-        address:address.charAt(0). toUpperCase() + address. slice(1),
-        prefix:prefix.charAt(0). toUpperCase() + prefix. slice(1)
+        address:address,
+        prefix:prefix
   
   
       }
@@ -346,22 +346,24 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 type="text"
                 name="designation"
                 value={designation}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
                 label="Mobile Number"
                 size="small"
                 variant="outlined"
+                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                errorMessages={["Number is not valid"]}
                 onChange={e => setcontact1(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
                 name="contact1"
                 value={contact1}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
@@ -369,13 +371,16 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 size="small"
                 variant="outlined"
                 onChange={e => setcontact2(e.target.value)
+                  
                   // .log(isAlive)
                 }
+                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                errorMessages={["Number is not valid"]}
                 type="text"
                 name="contact2"
                 value={contact2}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
               <TextValidator
                 className="w-full mb-4"
@@ -389,8 +394,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
                 type="text"
                 name="contact2"
                 value={address}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                // validators={["required"]}
+                // errorMessages={["this field is required"]}
               />
              
 

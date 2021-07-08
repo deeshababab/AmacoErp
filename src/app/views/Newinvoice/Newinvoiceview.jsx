@@ -332,8 +332,9 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         }
          
         setress(halala);
-        
-        Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].party.street}+${data[0].party.city}+${data[0].party.zip_code}&target=ar`, {
+        const arr=data[0].party.street+data[0].party.city+data[0].party.zip_code;
+        console.log(arr)
+        Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].party.street}&target=ar`, {
       method: 'POST',
       headers: { 
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -342,11 +343,27 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
       },
     })
       .then(({ data }) => {
-          setcompanyaddress(data.data.translations[0].translatedText);
+          setstreet(data.data.translations[0].translatedText);
           console.log(data.data.translations[0].translatedText);
       
       })
     }
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${data[0].party.city}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+          setcity(data.data.translations[0].translatedText);
+          console.log(data.data.translations[0].translatedText);
+      
+      })
+     
+  
+
 
     })
     
@@ -817,8 +834,8 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
 
               </span><br></br>
               <span>{cname_ar}</span><br></br>
-              <span>{companyaddress}</span>
-              {/* <span>{street}-{city}, {zipcode}</span> */}
+              {/* <span>{companyaddress}</span> */}
+              <span>{street}-{city}, {toArabic(zipcode)}</span>
 
 
             

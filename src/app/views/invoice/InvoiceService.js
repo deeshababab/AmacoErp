@@ -29,7 +29,7 @@ export const getInvoice = () => {
     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
   });
 //   const url = axios.create({
-//     baseURL: 'http://www.amacoerp.com/amaco_test/public/api/',
+//     baseURL: 'http://www.amacoerp.com/amaco/public/api/',
     
 //     // timeout: 1000,
     
@@ -77,7 +77,7 @@ export const capitalize_arr =(value) =>{
       let capsArray = []
   
       wordsArray.forEach(word => {
-          capsArray.push(word[0].toUpperCase() + word.slice(1))
+          capsArray.push(word[0].toUpperCase() + word.slice(1).toLowerCase())
       });
   
       return capsArray.join(' ')

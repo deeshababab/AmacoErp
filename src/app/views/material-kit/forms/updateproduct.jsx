@@ -276,20 +276,7 @@ const SimpleForm = () => {
 
   const submitValue = () => {
 
-    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${product}&target=ar`, {
-      method: 'POST',
-      headers: { 
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-"Access-Control-Max-Age": 86400
-      },
-    })
-      .then(({ data }) => {
-      
-          
-      
-    if(data.data.translations[0].translatedText)
-    {
+   
     const frmdetails = {
       name: product?capitalize_arr(product):'',
       description: description?capitalize_arr(description):'',
@@ -304,7 +291,7 @@ const SimpleForm = () => {
       // party_id: vendors,
       model_no:modelno,
       manufacturer_id:manid,
-      name_in_ar:data.data.translations[0].translatedText
+      name_in_ar:name_in_ar
 
     }
 
@@ -326,8 +313,6 @@ const SimpleForm = () => {
 
       })
 
-    }
-  })
 
   }
 
@@ -397,7 +382,7 @@ const SimpleForm = () => {
               inputProps={{style: {textTransform: 'capitalize'}}}
 
             />
-            {/* <TextValidator
+            <TextValidator
               className="mb-4 w-full"
               label="اسم المنتج"
               variant="outlined"
@@ -412,7 +397,7 @@ const SimpleForm = () => {
               ]}
               errorMessages={["this field is required"]}
 
-            /> */}
+            />
             <TextValidator
               className="mb-4 w-full"
               label="description"

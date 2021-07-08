@@ -1,37 +1,20 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
 import url, {getparties,capitalize_arr,  ApiKey} from "../../invoice/InvoiceService"
 import InputMask from 'react-input-mask';
-// import { Button } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Icon,
   Grid,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Checkbox,
   TextField,
   MenuItem,
   Button
 } from "@material-ui/core";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import ReactSelectMaterialUi from "react-select-material-ui";
-import Select from 'react-select';
 import Axios from "axios";
 import Swal from "sweetalert2";
-// import CurrencyInput from 'react-currency-input-field';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
-const optionss = [
-    { value: 'Vendor', label: 'Vendor' },
-    { value: 'Customer', label: 'Customer' },
-  ];
+
   const telcode = [
     { value: 973, label: "+973" },
     { value: 965, label: "+965" },
@@ -42,10 +25,7 @@ const optionss = [
     { value: 971, label:"+971"},
     { value: 967, label:"+967"},
   ];
-  const data = [
-    { value: 'Vendor', label: 'Vendor' },
-    { value: 'Customer', label: 'Customer' },
-  ];
+ 
   const prefixs = [
     { value: 'Mr', label: 'Mr' },
     { value: 'Mrs', label: 'Mrs' },
@@ -117,8 +97,7 @@ const Addparty = ({open, handleClose}) => {
       
           setcompany_name_ar(data.data.translations[0].translatedText)
       
-    if(data.data.translations[0].translatedText)
-    {
+   
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -175,7 +154,6 @@ const Addparty = ({open, handleClose}) => {
       }) 
      
     resetform()
-    }
   })
 }
 const resetform = () => {
@@ -312,8 +290,8 @@ const resetform = () => {
                                 name="email"
                                 size="small"
                                 variant="outlined"
-                                validators={["required", "isEmail"]}
-                                errorMessages={["this field is required", "email is not valid"]}
+                                validators={[ "isEmail"]}
+                                errorMessages={["email is not valid"]}
                                 value={email}
                                                        />
                              <div className="flex mb-4">
@@ -325,7 +303,7 @@ const resetform = () => {
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'250px'}}
+                                style={{width:'150px'}}
                                 variant="outlined"
                                 value={mobnocode}
                                 // fullWidth
@@ -337,17 +315,20 @@ const resetform = () => {
                       </MenuItem>
                     ))}
                               </TextField>
-                            <TextField
+                            <TextValidator
                                 className="mr-2"
                                 label="Mobile Number"
                                 autoComplete="none"
                                 onChange={e => setmobno(e.target.value)}
                                 name="mobno"
                                 type="text"
+                                inputProps={{style: {width:200,marginRight:10}}}
                                 size="small"
                                 variant="outlined"
                                 value={mobno||""}
-                                fullWidth
+                                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                errorMessages={["Number is not valid"]}
+                                
                                                               
                             />
                             <TextField
@@ -358,7 +339,7 @@ const resetform = () => {
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'250px'}}
+                                style={{width:'150px'}}
                                 variant="outlined"
                                 value={landlinecode||""}
                                 fullWidth
@@ -377,11 +358,13 @@ const resetform = () => {
                                 autoComplete="none"
                                 onChange={e => setlandline(e.target.value)}
                                 name="landline"
+                                inputProps={{style: {width:200}}}
                                 size="small"
                                 variant="outlined"
                                 value={landline}
                                 type="mobile"
-                                fullWidth
+                                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                errorMessages={["Number is not valid"]}
                                 
                             />
                             </div>
@@ -466,22 +449,11 @@ const resetform = () => {
                                 name="Firm_Name"
                                 variant="outlined"
                                 size="small"
+                                required
                                 value={Firm_Name}
                                 
                             />
-                  {/* <TextValidator
-                    className="mb-4 w-full"
-                    label="اسم الشركة"
-                    autoComplete="none"
-                    onChange={e => setcompany_name_ar(e.target.value)}
-                                type="text"
-                                name="company_name_ar"
-                                variant="outlined"
-                                size="small"
-                                value={company_name_ar}
-                                
-                            /> */}
-                            <div className="flex mb-4">
+                      <div className="flex mb-4">
                             <TextField
                                 className="mr-2"
                                 label="Commercial Registration Number"
@@ -493,7 +465,6 @@ const resetform = () => {
                                 variant="outlined"
                                 value={regno}
                                 fullWidth
-                                required
                               
                             />
                         
@@ -636,43 +607,29 @@ const resetform = () => {
                       </MenuItem>
                     ))}
                                 </TextField>
-                            <TextField
+                            <TextValidator
                                 className="ml-2"
                                 label="Contact"
                                 autoComplete="none"
                                 onChange={e => setcontact(e.target.value)}
                                 name="contact"
                                 type="text"
+                                inputProps={{style: {width:100,marginRight:10}}}
                                 size="small"
                                 variant="outlined"
                                 value={contact}
-                                fullWidth
-                                validators={[
-                                  "required",
-                                  "minStringLength:10",
-                                  "maxStringLength:10",
-                                ]}
-                                errorMessages={["this field is required"]}
+                                 validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                 errorMessages={["Number is not valid"]}
                                 
+
+                                   
                             />
                             
                             </div>
                             <div className="flex mb-4">
-                            {/* <TextField
-                                className="mr-2"
-                                label="Opening Balance"
-                                onChange={e => setob(e.target.value)}
-                                name="ob"
-                                type="text"
-                                size="small"
-                                variant="outlined"
-                                value={ob}
-                                
-                                fullWidth
-                                
-                            > */}
+                            
                               
-                              {/* </TextField> */}
+                              
                               <CurrencyTextField
 			                          label="Opening Balance"
 			                          variant="outlined"
@@ -715,14 +672,10 @@ const resetform = () => {
                     name="selectedvalue"
                     size="small"
                     variant="outlined"
+                    required
                     select
                     fullWidth
                     value={selectedValue}
-                    
-                    // validators={[
-                    //   "required",
-                    // ]}
-                    // errorMessages={["this field is required"]}
                     onChange={e => setSelectedValue(e.target.value)
                     }
                   >
@@ -732,18 +685,8 @@ const resetform = () => {
                       </MenuItem>
                     ))}
                   </TextField>
-                  {/* <TextField
-                                className="ml-2"
-                                label="Party Code"
-                                onChange={e => setpartycode(e.target.value)}
-                                name="party_code"
-                                size="small"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                value={partycode}
-                            /> */}
-                              </div>
+                 
+                  </div>
                       <div className="flex mb-4">
                       <TextField
                                 className="mr-2"
