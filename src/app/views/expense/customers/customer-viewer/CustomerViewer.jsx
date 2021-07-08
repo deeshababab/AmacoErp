@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Divider, Tab, Tabs,Button,Icon } from "@material-ui/core";
 import { Breadcrumb } from "matx";
-import CustomerDetails from "./CustomerDetails";
 import CustomerInvoice from "./CustomerInvoice";
 import CustomerLogs from "./CustomerLogs";
 import { Link } from "react-router-dom";
@@ -51,8 +50,7 @@ const CustomerViewer = () => {
         ))}
       </Tabs>
       <Divider className="mb-6" />
-{/* 
-      {tabIndex === 0 && <CustomerDetails />} */}
+
       {tabIndex === 0 && <CustomerInvoice />}
       {tabIndex === 1 && <CustomerLogs />}
     </div>
