@@ -44,8 +44,8 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
               <TableCell colSpan={2}>S.No.</TableCell>
                 <TableCell colSpan={3}>Item Details</TableCell>
                 <TableCell colSpan={2}>Quantity </TableCell>
-                <TableCell colSpan={5}>Description</TableCell>
-                <TableCell colSpan={1} className="p-0" align="center" />
+                <TableCell colSpan={4}>Description</TableCell>
+                <TableCell colSpan={1} className="p-0" align="center">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody> 

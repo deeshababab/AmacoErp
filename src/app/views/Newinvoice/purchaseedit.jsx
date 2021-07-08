@@ -396,15 +396,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get("purchase-quotation/"+ id).then(({ data }) => {
     
       // setcname(data[0].party[0].firm_name)
-      setpo_number(data[0].po_number)
+      setpo_number(data[0]?.po_number)
       // setpricelist(data[0].product_price_list)
-      setcontactid(data[0].contact.id)
-      setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
-      setddate(moment(data[0].require_date).format('DD MMM YYYY'))
-      setparty_id(data[0].party_id)
+      setcontactid(data[0].contact?.id)
+      setrdate(moment(data[0]?.created_at).format('DD MMM YYYY'))
+      setddate(moment(data[0]?.require_date).format('DD MMM YYYY'))
+      setparty_id(data[0]?.party_id)
      setState({
       ...state,
-      item: data[0].quotation_details,
+      item: data[0]?.quotation_details,
     });
    });
   }, [id, isNewInvoice, isAlive, generateRandomId]);

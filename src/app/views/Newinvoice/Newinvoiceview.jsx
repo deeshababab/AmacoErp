@@ -303,7 +303,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
     url.get("invoice/" + id).then(({ data }) => {
       if (data) {
         console.log(data[0].po_number)
-        // setquoteid(data[0].quotation_id)
+        setquoteid(data[0].quotation_id?data[0].quotation_id:id)
         setdis_per(data[0].discount_in_percentage)
         setpodetails(data[0].invoice_detail)
         setcompany(data[0].party?.firm_name)
@@ -408,7 +408,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
   }
   const dnotegenrate= (sidebarSettings) => {
   
- 
+    
     history.push(`/dnote/${quoteid}`)
   
   }

@@ -203,6 +203,7 @@ const SimpleMuiTable = () => {
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
+       
           return (
             <span>
             <Link to={"/invview/" + tableMeta.rowData[4]}>
