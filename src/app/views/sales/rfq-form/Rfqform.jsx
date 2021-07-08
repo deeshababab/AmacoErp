@@ -97,7 +97,9 @@ const InvoiceForm = ({ }) => {
   var count=1;
   var sum=0;
   let listrfq = [];
-
+  let {
+    loading
+  }=state
 
   let isEmpty = !!!files.length;
   const handleSingleRemove = (index) => {
@@ -282,6 +284,7 @@ const InvoiceForm = ({ }) => {
     //     "Access-Control-Allow-Origin": "*",
     //   },
     // };
+    setState({ ...state, loading: true });
     if (values.rfq_details) {
 
     // url.post('http://www.dataqueuesystems.com/amaco/amaco/php_file/controller/post.php',formData)
@@ -359,7 +362,7 @@ const InvoiceForm = ({ }) => {
           <h4 className="m-0">New RFQ</h4>
         </div>
         <div className="">
-                <Button color="primary" className="mt-2 py-2" variant="outlined" type="submit" fullWidth>
+                <Button color="primary" className="mt-2 py-2" variant="outlined" type="submit" disabled={loading} fullWidth>
                   <Icon>save</Icon> Save
                                 </Button>
 
