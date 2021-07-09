@@ -47,6 +47,7 @@ const SimpleForm = () => {
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
   const [company_name_ar, setcompany_name_ar] = useState('');
+  const [loading,setloading]=useState(false);
  
   
   // get the id value
@@ -95,7 +96,7 @@ const SimpleForm = () => {
     }, [isAlive]);
 
   const handleSubmit = () => {
-    
+    setloading(true);
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -466,6 +467,7 @@ const SimpleForm = () => {
           </Grid>
         </Grid>
         <Button  className="mr-4 py-2" color="primary" variant="outlined" type="submit" 
+        disabled={loading}
         >
           <Icon>save</Icon>
           <span className="pl-2 capitalize">Save</span>

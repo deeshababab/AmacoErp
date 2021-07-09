@@ -40,6 +40,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
+  const [loading, setloading] = useState(false);
   var found=null;
   const styles = {
     customMaxWidth: {
@@ -103,6 +104,7 @@ const resetform = () =>{
   setcdescription('')
 }
   const handleFormSubmit = () => {
+    setloading(true)
     var arr=[]
      getcategories().then(({ data }) => {
        
@@ -365,7 +367,7 @@ const resetform = () =>{
           </Grid>
           
           <div className="flex">
-            <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2">
+            <Button variant="outlined" color="primary" type="submit" className="mr-4 py-2" disabled={loading}>
              <Icon>save</Icon> Save
             </Button>
             <Button

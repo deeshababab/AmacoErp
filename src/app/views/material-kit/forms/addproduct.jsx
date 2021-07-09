@@ -180,6 +180,7 @@ const SimpleForm = ({open, handleClose}) => {
   const [customerList, setCustomerList] = useState([]);
   const { id } = useParams();
   const [productcatid, setproductcatid] = useState(id);
+  const [loading, setloading] = useState(false);
   const [, updateData] = useState([
     { id: 1, name: "Pankaj 1" },
     { id: 2, name: "Pankaj 2" },
@@ -256,6 +257,7 @@ const SimpleForm = ({open, handleClose}) => {
   },[]);
 
   const submitValue = () => {
+    setloading(true)
     Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${product}&target=ar`, {
       method: 'POST',
       headers: { 
@@ -273,7 +275,7 @@ const SimpleForm = ({open, handleClose}) => {
     const frmdetails = {
       party_id:vendors,
       name: capitalize_arr(product),
-      description:capitalize_arr(description),
+      description:description?capitalize_arr(description):'',
       unit_price: unit_Price,
       unit_of_measure: unit_of_measue,
       category_id: id,
@@ -379,10 +381,7 @@ const SimpleForm = ({open, handleClose}) => {
               onChange={e => setproduct(e.target.value)}
               type="text"
               name="product"
-              validators={[
-                "required",
-              ]}
-              errorMessages={["this field is required"]}
+              required
 
             />
              {/* <TextValidator
@@ -561,10 +560,6 @@ const SimpleForm = ({open, handleClose}) => {
               fullWidth
               variant="outlined"
               select
-              validators={[
-                "required",
-              ]}
-              errorMessages={["this field is required"]}
             
               value={ptype}
               onChange={e => setptype(e.target.value)
@@ -640,7 +635,7 @@ const SimpleForm = ({open, handleClose}) => {
           </Grid>
         </Grid>
         
-        <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit">
+        <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit" disabled={loading}>
            <Icon>save</Icon> 
           <span className="pl-2 capitalize">Save</span>
         </Button>

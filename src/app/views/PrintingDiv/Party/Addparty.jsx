@@ -102,9 +102,12 @@ const Addparty = ({open, handleClose}) => {
   const [iban_no, setiban_no] = useState('');
   const [address, setaddress] = useState('');
   const [prefix, setprefix] = useState('');
+  let {
+    loading
+  }=state;
 
   const handleSubmit = () => {
-   
+    setState({ ...state, loading: true });
     const frmdetails = {
       firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
       registration_no:regno,
@@ -771,7 +774,7 @@ const resetform = () => {
           </Grid>
         </Grid>
         <div>
-        <Button   className="mr-4 py-2" color="primary" variant="outlined" type="submit" >
+        <Button   className="mr-4 py-2" color="primary" variant="outlined" type="submit" disabled={loading}>
           <Icon>save</Icon>
           <span className="pl-2 capitalize">Save</span>
         </Button>
