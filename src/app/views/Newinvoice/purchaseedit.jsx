@@ -356,6 +356,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.contact_id=contactid
     arr.transaction_type="purchase"
     arr.ps_date=Quote_date
+    arr.id=id
     const json = Object.assign({}, arr);
     
     url.put(`purchase-quotation/${id}`, json)
@@ -368,8 +369,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           icon:'success',
           text: 'Data saved successfully.',
         });
-        // history.push("/product/viewproduct")
-        window.location.href="../Newinvoiceview"
+        history.push("../Newinvoiceview")
+        // window.location.href="../Newinvoiceview"
       })
       .catch(function (error) {
         

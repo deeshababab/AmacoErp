@@ -372,8 +372,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     arr.payment_terms=payment_terms
     arr.contact_id=contactid
     arr.transaction_type="purchase"
+    arr.status="New"
     arr.ps_date=Quote_date
     const json = Object.assign({}, arr);
+    console.log(json)
     url.post('purchase-quotation', json)
       .then(function (response) {
         
@@ -385,8 +387,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           text: 'Data saved successfully.',
         })
         .then((result) => {
-
-        history.push("../Newinvoiceview")
+          console.log(response)
+          history.push("../Newinvoiceview")
       })
       
       })

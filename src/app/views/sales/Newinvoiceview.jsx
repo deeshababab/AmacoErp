@@ -54,7 +54,7 @@ const SimpleMuiTable = () => {
       if (data.length){
       
      
-      setpoid(data[0].id)
+      setpoid(data[0]?.id)
       setpodetails(data);
       }
     });

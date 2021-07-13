@@ -25,7 +25,7 @@ const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
   useEffect(() => {
     url.get("expense").then(({ data }) => {
-      
+      console.log(data)
        setexpenseList(data);
        
     });
@@ -64,10 +64,8 @@ const setstatus=(id)=>{
           },
         })
           .then(({ data }) => {
-            const arr = data.sort(
-              (a, b) => new Date(b.paid_date) - new Date(a.paid_date),
-            );
-            setexpenseList(arr);
+            
+            setexpenseList(data);
           })
      
       

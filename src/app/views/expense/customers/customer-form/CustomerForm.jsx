@@ -7,6 +7,7 @@ import history from "history.js";
 import { useDropzone } from "react-dropzone";
 import clsx from "clsx";
 import axios from "axios";
+import moment from "moment";
 import ImageZoom from "react-medium-image-zoom";
 import {
   Grid,
@@ -137,6 +138,7 @@ const CustomerForm = () => {
               label={m.category.name}
               parentMenuOpen={handleItem}
               value="1"
+              disableGutters={true}
               onClick={(e) =>
                 searchcat(
                   m.sub_categories.length > 0,
@@ -144,7 +146,10 @@ const CustomerForm = () => {
                   m.category.id
                 )
               }
+              style={{justifyContent: 'space-around'}}
+              
             >
+              
               <MenuItem
                 onClick={(e) => Addnewsubcat(m.category.id, m.category.name)}
               >
@@ -268,7 +273,7 @@ const CustomerForm = () => {
       formData.append("tax", parseFloat(taxamount).toFixed(2));
       formData.append("company_name", company);
     }
-    formData.append("paid_date", paid_date);
+    formData.append("paid_date", paid_date?moment(paid_date).format('Y-MM-DD'):'');
     formData.append("referrence_bill_no", referrence_bill_no);
     formData.append("amount", parseFloat(amount).toFixed(2));
     formData.append("paid_to", paid_to);
@@ -446,7 +451,8 @@ const CustomerForm = () => {
                         <MenuItem onClick={(e) => Addnewsubcat(null)}>
                           <Icon align="left">add</Icon>Add Expenses Category
                         </MenuItem>
-                        <Menu1 data={cat}></Menu1>
+                        <Menu1 data={cat} inputProps={{ style: { marginLeft:5 ,justifyContent: 'space-around'} }}
+                        style={{justifyContent: 'space-around'}}></Menu1>
                       </Menu>
                     </span>
                   </Button>

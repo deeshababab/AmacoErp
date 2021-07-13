@@ -26,6 +26,7 @@ const CustomerLogs = () => {
     url.get("expense-paid").then(({ data }) => {
      
        setexpenseList(data);
+       console.log(data);
        
     });
  
@@ -189,7 +190,7 @@ const columns = [
         return [
           ++index,
           moment(item.paid_date).format('DD  MMM, YYYY '),
-          item.payment_account[0]?.name,
+          item.payment_account?.name,
           item.referrence_bill_no,
           item.paid_to,
           parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),

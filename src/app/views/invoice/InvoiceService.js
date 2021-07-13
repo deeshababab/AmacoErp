@@ -24,7 +24,7 @@ export const getInvoice = () => {
 
  const url = axios.create({
     baseURL: 'http://www.amacoerp.com/amaco_test/public/api/',
-    // timeout: 1000,
+    //  timeout: 1000,
     
     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
   });
@@ -36,7 +36,7 @@ export const getInvoice = () => {
 //     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
 //   });
   export const urlphp="/amaco_test";
-export const ApiKey="";
+export const ApiKey="AIzaSyD7P8GLA-mfgOZkhg-BPAuM_iQ7UVEwVcs";
 // export const ApiKey="";
   const role =localStorage.getItem('role')
 
