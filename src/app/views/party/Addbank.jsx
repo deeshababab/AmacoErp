@@ -25,6 +25,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   
 
   const [isAlive, setIsAlive] = useState(true);
+  const [loading,setloading]=useState(false);
   
 
   
@@ -40,7 +41,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   };
 
  const handleFormSubmit = () => {
-
+      setloading(true)
     if(contactid)
     {
       const frmdetails = {
@@ -62,7 +63,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             customercontact(data[0].contacts);
             
           });
-        handleClose();
+       
           Swal.fire({
             title: 'Success',
             type: 'success',
@@ -70,7 +71,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             text: 'Data saved successfully.',
           })
           .then((result) => {
-            
+            handleClose();
           })
           
         })
@@ -103,11 +104,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
             icon:'success',
             type: 'success',
             text: 'Data saved successfully.',
+          }).then((result)=>{
+            resetform();
+            handleClose();
           })
         
         
-        resetform();
-        handleClose();
+        
         
       })
       .catch(function (error) {
@@ -279,7 +282,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
          
           
           <div className="flex  items-center">
-            <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit">
+            <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit" disabled={loading}>
               <Icon>save</Icon>Save
             </Button>
             <Button

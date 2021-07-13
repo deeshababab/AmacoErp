@@ -28,6 +28,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   const [address, setaddress] = useState('');
   const [designation, setdesignation] = useState('');
   const [prefix, setprefix] = useState('');
+  const [loading, setloading] = useState(false);
   const [userList, setUserList] = useState([]);
   const { ids } = useParams();
   
@@ -52,7 +53,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   };
 
   const handleFormSubmit = () => {
-
+    setloading(true)
     if(contactid)
     {
       const frmdetails = {
@@ -335,7 +336,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
          
           
           <div className="flex  items-center">
-            <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit">
+            <Button variant="outlined"  className="mr-4 py-2" color="primary"  type="submit" disabled={loading}>
               <Icon>save</Icon>Save
             </Button>
             <Button
