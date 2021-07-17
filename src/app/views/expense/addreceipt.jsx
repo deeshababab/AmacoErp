@@ -146,7 +146,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
                 name="cname"
                 size="small"
                 // value={cname}
-              
+                required
                 select
               >
                {userList1.map((item, ind) => (
@@ -181,6 +181,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
                 label="Amount"
                 size="small"
                 variant="outlined"
+                required
                 onChange={e => setpaid_amount(e.target.value)}
                 type="text"
                 name="paid_amount"
@@ -203,6 +204,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
                 name="cdescription"
                 size="small"
                 value={payment_mode}
+                required
                 select
               >
                   {option.map((item, ind) => (

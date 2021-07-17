@@ -36,7 +36,7 @@ export const getInvoice = () => {
 //     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
 //   });
   export const urlphp="/amaco_test";
-export const ApiKey="AIzaSyD7P8GLA-mfgOZkhg-BPAuM_iQ7UVEwVcs";
+export const ApiKey="";
 // export const ApiKey="";
   const role =localStorage.getItem('role')
 

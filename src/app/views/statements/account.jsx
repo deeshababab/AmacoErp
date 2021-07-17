@@ -53,6 +53,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from "@material-ui/icons/Close";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import { ValidatorForm } from "react-material-ui-form-validator";
+import { red } from "@material-ui/core/colors";
 const locale = navigator.language;
 
 // import Image from 'react-image-resizer';
@@ -178,6 +179,7 @@ const Customer = ({
   let [csum, setcsum] = useState(0.0);
   const [current_bal, setcurrent_bal] = useState([]);
   const [arr_length, setarr_length] = useState();
+  const [balance, setbalance] = useState();
   const [arr_length_status, setarr_length_status] = useState(false);
   const [state, setState] = React.useState({
     open: false,
@@ -187,6 +189,7 @@ const Customer = ({
 
   const { vertical, horizontal, open } = state;
   const classes = useStyles();
+  let finalbal=0.00;
 
   const formData = new FormData();
   useEffect(() => {
@@ -218,10 +221,10 @@ const Customer = ({
         var sum1 = 0.0;
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
+            sum += parseFloat(item[0].debit);
           }
           if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
+            sum1 += parseFloat(item[0].credit);
           }
         });
         setfrom_date(new Date())
@@ -235,7 +238,9 @@ const Customer = ({
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].firm_name);
-        setopening_balance(data[0].opening_balance);
+        setopening_balance((data[0].opening_balance));
+        setbalance((data[0].balance));
+       
         setthstatus(true);
       });
     
@@ -265,23 +270,29 @@ const Customer = ({
  
  
   
-  
     
     
-    cBalance = parseFloat(cBalance?.split(",").join(""));
-    let tempAmt = parseFloat(amount?.split(",").join(""));
+    let temp=amount;
+    
+    cBalance = parseFloat(cBalance);
+    let tempAmt = parseFloat(amount);
 
-    sign === "+" && (cBalance += tempAmt);
     sign === "-" && (cBalance -= tempAmt);
+    sign === "+" && (cBalance += tempAmt);
+
+    sign === "+" && (temp += amount);
+    sign === "-" && (temp -= amount);
 
     // return cBalance.toFixed(2)
+    sign === "+" && (finalbal+= amount);
+    sign === "-" && (finalbal-= amount);
     
-    currentBalance=cBalance
+    currentBalance=cBalance;
    
     current_bal.push(cBalance.toLocaleString(undefined, {
       minimumFractionDigits: 2,
     }))
-    return parseFloat(cBalance).toLocaleString(undefined, {
+    return parseFloat((cBalance)).toLocaleString(undefined, {
       minimumFractionDigits: 2,
     });
   };
@@ -293,7 +304,8 @@ const Customer = ({
       from_date: "2021-01-03",
       to_date: "2021-03-22",
     };
-
+    var sumdebit=0.0;
+    var sumcredit=0.0;
     // formData.append('payment_account_id',payment_account_id)
     // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
     // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
@@ -322,12 +334,23 @@ const Customer = ({
         var sum1 = 0.0;
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
+            sum += parseFloat(item[0].debit);
+            sumdebit+=parseFloat(item[0].amount)
           }
           if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
+            sum1 += parseFloat(item[0].credit);
+            sumdebit+=parseFloat(item[0].amount)
           }
         });
+        if(data[0].opening_balance<=0.00)
+        {
+          setbalance(sum-(sum1+data[0].opening_balance*(-1)))
+        }
+        else
+        {
+          setbalance((sum+data[0].opening_balance*(-1))-sum1)
+        }
+        console.log(sum1)
         setfrom_date(new Date())
         setto_date(new Date())
         setpayment_account_id('')
@@ -338,8 +361,8 @@ const Customer = ({
         settdate(data[0].to_date);
 
         setcredit_days(data[0].credit_days);
-        setcname(data[0].firm_name);
-        setopening_balance(data[0].opening_balance);
+        setcname(data[0].name);
+        setopening_balance((data[0].opening_balance));
         setthstatus(true);
       });
     }
@@ -366,26 +389,40 @@ const Customer = ({
 
         var sum = parseFloat(data[0].opening_balance);
         var sum1 = 0.0;
+      
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
+            sum += parseFloat(item[0].debit);
+            sumdebit+=parseFloat(item[0].amount)
+            
+           
           }
           if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
+            sum1 += parseFloat(item[0].credit);
+            sumcredit+=parseFloat(item[0].amount)
+            
           }
+          
         });
+        if(data[0].opening_balance<0.00)
+        {
+          setbalance(sumdebit-(sumcredit+data[0].opening_balance*(-1)))
+        }
+        else
+        {
+          setbalance((sumdebit+data[0].opening_balance*(-1))-sumcredit)
+        }
         // setfrom_date(new Date())
         // setto_date(new Date())
         // setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
         setfdate(data[0].from_date);
-
         settdate(data[0].to_date);
 
         setcredit_days(data[0].credit_days);
-        setcname(data[0].firm_name);
-        setopening_balance(data[0].opening_balance);
+        setcname(data[0].name);
+        setopening_balance((data[0].opening_balance));
         setthstatus(true);
       });
     }
@@ -402,6 +439,9 @@ const Customer = ({
   let arr=[];
   let curbal = 0.0;
   let osum = parseFloat(opening_balance).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+  });
+  let calin_sum = parseFloat(opening_balance).toLocaleString(undefined, {
     minimumFractionDigits: 2,
   });
   let {
@@ -725,7 +765,7 @@ const Customer = ({
                             }}
                           >
                             {/* 45,99999999.00 */}
-                            {parseFloat(opening_balance).toLocaleString(
+                            {parseFloat(Math.abs(opening_balance)).toLocaleString(
                               undefined,
                               {
                                 minimumFractionDigits: 2,
@@ -753,7 +793,7 @@ const Customer = ({
                               fontSize: 16,
                             }}
                           >
-                            {current_bal.slice(current_bal.length-1)}
+                            {(current_bal.slice(current_bal.length-1))}
                           </TableCell>
                           <TableCell
                             className="pl-2 capitalize"
@@ -853,20 +893,7 @@ const Customer = ({
                             >
                               PARTICULARS
                             </TableCell>
-                            <TableCell
-                              className="px-0"
-                              style={{
-                                border: "1px solid #ccc",
-                                fontFamily: "Calibri",
-                                width: 130,
-                                color: "#fff",
-                                fontWeight: 1000,
-                                fontSize: 16,
-                              }}
-                              align="center"
-                            >
-                              DEBIT
-                            </TableCell>
+                            
                             <TableCell
                               className="px-0"
                               style={{
@@ -881,7 +908,20 @@ const Customer = ({
                             >
                               CREDIT
                             </TableCell>
-
+                            <TableCell
+                              className="px-0"
+                              style={{
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                width: 130,
+                                color: "#fff",
+                                fontWeight: 1000,
+                                fontSize: 16,
+                              }}
+                              align="center"
+                            >
+                              DEBIT
+                            </TableCell>
                             <TableCell
                               className="px-0"
                               style={{
@@ -959,7 +999,7 @@ const Customer = ({
                                   width:150
                                 }}
                               >
-                                {parseFloat(opening_balance).toLocaleString(
+                                {parseFloat(Math.abs(opening_balance)).toLocaleString(
                                   undefined,
                                   {
                                     minimumFractionDigits: 2,
@@ -987,7 +1027,12 @@ const Customer = ({
                                   fontSize: 16,
                                 }}
                               >
-                                {opening_balance}
+                               {parseFloat(Math.abs(opening_balance)).toLocaleString(
+                                  undefined,
+                                  {
+                                    minimumFractionDigits: 2,
+                                  }
+                                )}
                               </TableCell>
                             ) : (
                               <TableCell
@@ -998,7 +1043,7 @@ const Customer = ({
                                   fontFamily: "Calibri",
                                   fontSize: 16,
                                 }}
-                              ></TableCell>
+                              > </TableCell>
                             )}
                             <TableCell
                               className="pl-0 capitalize"
@@ -1009,7 +1054,7 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                              {parseFloat(opening_balance).toLocaleString(
+                              {parseFloat(Math.abs(opening_balance)).toLocaleString(
                                 undefined,
                                 {
                                   minimumFractionDigits: 2,
@@ -1067,7 +1112,7 @@ const Customer = ({
                                   }}
                                 >
                                   {item[0].description === null
-                                    ? ""
+                                    ? "Advance Payment"
                                     : item[0].description}
                                 </TableCell>
                                 <TableCell
@@ -1079,7 +1124,7 @@ const Customer = ({
                                     fontSize: 16,
                                   }}
                                 >
-                                  {item[0].debit === null ? "" : item[0].debit}
+                                  {item[0].debit === null ? "" : Math.abs(item[0].debit)}
                                 </TableCell>
                                 <TableCell
                                   className="capitalize"
@@ -1092,18 +1137,25 @@ const Customer = ({
                                 >
                                   {item[0].credit === null
                                     ? ""
-                                    : item[0].credit}
+                                    : Math.abs(item[0].credit)}
                                 </TableCell>
-                                <TableCell
+                                {item[0].debit&&(<TableCell
                                   className="pl-0 capitalize"
                                   style={{
                                     textAlign: "right",
                                     border: "1px solid #ccc",
                                     fontFamily: "Calibri",
+
                                     fontSize: 16,
                                   }}
                                 >
-                                  {item[0].debit
+                                  {osum = calBalance(
+                                        osum,
+                                        item[0].debit,
+                                        "+",
+                                        index,
+                                      )}
+                                  {/* {item[0].debit
                                     ? (osum = calBalance(
                                         osum,
                                         item[0].debit,
@@ -1115,8 +1167,26 @@ const Customer = ({
                                         item[0].credit,
                                         "-",
                                         index
-                                      ))}
-                                </TableCell>
+                                      ))} */}
+                                </TableCell>)}
+                                {item[0].credit&&(<TableCell
+                                  className="pl-0 capitalize"
+                                  style={{
+                                    textAlign: "right",
+                                    border: "1px solid #ccc",
+                                    fontFamily: "Calibri",
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  {osum = calBalance(
+                                        osum,
+                                        item[0].credit,
+                                        "-",
+                                        index,
+                                      )}
+                                 
+                                </TableCell>)}
+                                
                                 
                                 
                                 
@@ -1208,9 +1278,7 @@ const Customer = ({
                               }}
                             >
                              
-                              {currentBalance.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                              })}
+                              {finalbal}
                             </TableCell>
                            
                              
@@ -1291,6 +1359,7 @@ const Customer = ({
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
                               fontSize: 16,
+                              
                             }}
                           >
                             IBAN NO.

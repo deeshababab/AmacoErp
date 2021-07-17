@@ -90,7 +90,7 @@ const CustomerForm = () => {
   const [company_name, setcompany_name] = useState("");
   const [isAlive, setisAlive] = useState(false);
   const [message, setmessage] = useState("");
-
+  const [billtype, setbilltype] = useState(false);
   const handlebankSelect = (event, f) => {
     setclose(true);
     setindex1(f);
@@ -100,8 +100,14 @@ const CustomerForm = () => {
     const src = URL.createObjectURL(event.target.files[0]);
 
     setfile_path(event.target.files[0]);
-    console.log(event.target.files[0]);
+    event.target.files[0].type.split('/')[1]!=='pdf'&&setbilltype(true)
+    console.log(event.target.files[0].type.split('/')[1]);
     setref_billno(src);
+  };
+  const deletebillSelect = (event, f) => {
+    setbilltype(false)
+    console.log(null);
+    setref_billno(null);
   };
 
   const handleFileSelect = (event, f) => {
@@ -675,8 +681,36 @@ const CustomerForm = () => {
                     ></TextField>
                   )}
                   <label for="myfile">Upload Reference Bill :</label>
-
-                  <div
+                  <TextField
+                                  //  className="hidden"
+                                  className="mb-4 w-full"
+                                  id="upload-multiple-file"
+                                  type="file"
+                                  variant="outlined"
+                                  size="small"
+                                  autoComplete="none"
+                                  onChange={(event) => handlebillSelect(event)}
+                                  required
+                                  
+                                />
+                                
+                                           {billtype&&(<span>
+                                              <img
+                                                src={ref_billno}
+                                                width="50px"
+                                                height="50px"
+                                              />
+                                              <Icon
+                                                className="bg-error"
+                                                onClick={() =>
+                                                  deletebillSelect()
+                                                }
+                                              >
+                                                cancel
+                                              </Icon>
+                                            </span>)}
+                                      
+                  {/* <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
                       [classes.dropZone]: true,
@@ -712,7 +746,7 @@ const CustomerForm = () => {
                           ></ImageZoom>
                           <Icon
                             color="error"
-                            style={{ position: "absolute", marginTop: 350 }}
+                            style={{ position: "absolute", marginTop: 200 }}
                             onClick={(e) => setref_billno("")}
                           >
                             delete
@@ -720,7 +754,7 @@ const CustomerForm = () => {
                         </>
                       )}
                     </div>
-                  </div>
+                  </div> */}
 
                   <TextField
                     className="mb-4 w-full"

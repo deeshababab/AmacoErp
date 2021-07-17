@@ -230,6 +230,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 validators={["required"]}
                 errorMessages={["this field is required"]}
                 select
+                required
               >
                   {paymentaccount.map((item, ind) => (
                 <MenuItem value={item.id} key={item}>
@@ -248,8 +249,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 type="text"
                 name="cname"
                 size="small"
-                validators={["required"]}
-                errorMessages={["this field is required"]}
+                required
               >
                   </CurrencyTextField>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -261,9 +261,10 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                       type="text"
                       size="small"
                       autoOk={true}
-                     value={received_date}
+                      value={received_date}
                       format="MMMM dd, yyyy"
                       onChange={handleDateChange}
+                      required
                     />
                   </MuiPickersUtilsProvider>
               <TextField
@@ -279,8 +280,6 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 multiline
                 rows={6}
                 value={narration}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
                 
               ></TextField>
               

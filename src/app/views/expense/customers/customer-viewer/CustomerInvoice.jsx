@@ -23,15 +23,17 @@ const columnStyleWithWidth = {
 
 const CustomerInvoice = () => {
   const [expenseList, setexpenseList] = useState([]);
+  const [isAlive,setisAlive] = useState(false);
   useEffect(() => {
     url.get("expense").then(({ data }) => {
       console.log(data)
        setexpenseList(data);
        
     });
+    return setisAlive(true)
 
  
-}, []);
+}, [isAlive]);
 const setstatus=(id)=>{
   Swal.fire({
     text: 'Are you sure you want to Verify?',
@@ -55,19 +57,19 @@ const setstatus=(id)=>{
           text: 'Updated successfully.',
         });
         
-        Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
-          method: 'GET',
-          headers: { 
-            "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-    "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-    "Access-Control-Max-Age": 86400
-          },
-        })
-          .then(({ data }) => {
+    //     Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
+    //       method: 'GET',
+    //       headers: { 
+    //         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+    // "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+    // "Access-Control-Max-Age": 86400
+    //       },
+    //     })
+    //       .then(({ data }) => {
             
-            setexpenseList(data);
-          })
-     
+    //         setexpenseList(data);
+    //       })
+      setisAlive(false)
       
      
     })

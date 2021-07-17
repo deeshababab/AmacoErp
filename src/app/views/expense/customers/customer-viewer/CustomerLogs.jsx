@@ -194,7 +194,7 @@ const columns = [
           item.referrence_bill_no,
           item.paid_to,
           parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),
-          parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}),
+          item.tax!==null?parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}):'0.00',
           item.is_paid==="0"?(item.id):null
         
         ]

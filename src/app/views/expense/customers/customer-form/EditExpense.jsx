@@ -89,6 +89,7 @@ const CustomerForm = () => {
   const { eid } = useParams();
   const [demo, setdemo] = useState("");
   const [ref_billno, setref_billno] = useState();
+  const [billtype, setbilltype] = useState(false);
   let arr;
   const { getRootProps, isDragActive } = useDropzone({ accept: "image/*" });
   const classes = usestyles();
@@ -101,9 +102,13 @@ const CustomerForm = () => {
     let files = event.target.files;
 
     const src = URL.createObjectURL(event.target.files[0]);
-    console.log(files);
     setfile_path(event.target.files[0]);
     setref_billno(src);
+  };
+  const deletehandlebillSelect = (event) => {
+    setbilltype(false)
+    setfile_path(null);
+    setref_billno(null);
   };
 
   const handleFileSelect = (event, f) => {
@@ -253,9 +258,13 @@ const CustomerForm = () => {
         settax(true);
         settaxamount(data[0]?.tax);
       }
+      else
+      {
+        settax(true);
+        settaxamount('0.00')
+      }
 
       setaccountstatus(true);
-
       setref_billno(
         data.referrenceImgUrl !== "No file Uploaded"
           ? data.referrenceImgUrl
@@ -324,7 +333,7 @@ const CustomerForm = () => {
     formData.append("bank_slip", bank_slip);
     formData.append("file_path", file_path);
     formData.append("id", id);
-    console.log(field);
+    console.log(file_path);
     files.map((answer, i) => {
       formData.append(`file${answer.column_id}`, answer.file);
       console.log(answer.file);
@@ -523,7 +532,7 @@ const CustomerForm = () => {
                                   variant="outlined"
                                   size="small"
                                   autoComplete="none"
-                                  required
+                                  
                                 />
 
                                 {close && (
@@ -713,8 +722,36 @@ const CustomerForm = () => {
                   )}
 
                   <label for="myfile">Upload Reference Bill :</label>
-
-                  <div
+                  <TextField
+                                  //  className="hidden"
+                                  className="mb-4 w-full"
+                                  id="upload-multiple-file"
+                                  type="file"
+                                  variant="outlined"
+                                  size="small"
+                                  autoComplete="none"
+                                  onChange={(event) => handlebillSelect(event)}
+                                 
+                                  
+                                />
+                                
+                                           {billtype&&(<span>
+                                              <img
+                                                src={ref_billno}
+                                                width="50px"
+                                                height="50px"
+                                              />
+                                              <Icon
+                                                className="bg-error"
+                                                onClick={() =>
+                                                  deletehandlebillSelect ()
+                                                }
+                                              >
+                                                cancel
+                                              </Icon>
+                                            </span>)}
+ 
+                  {/* <div
                     className={clsx({
                       "border-radius-4 h-160 w-full flex justify-center items-center cursor-pointer mb-4": true,
                       [classes.dropZone]: true,
@@ -750,15 +787,15 @@ const CustomerForm = () => {
                           ></ImageZoom>
                           <Icon
                             color="error"
-                            style={{ position: "absolute", marginTop: 200 }}
-                            onClick={(e) => setref_billno(null)}
+                            style={{ position: "absolute", marginTop: 250 }}
+                            onClick={(e) => deletehandlebillSelect()}
                           >
                             delete
                           </Icon>
                         </>
                       )}
                     </div>
-                  </div>
+                  </div> */}
                   <TextField
                     className="mb-4 w-full"
                     label="Referrence Bill No"
