@@ -419,6 +419,7 @@ const InvoiceForm = ({ }) => {
                       inputVariant="outlined"
                       type="text"
                       size="small"
+                      format="dd MMMM yyyy"
                       selected={values.requested_date}
                       value={values.requested_date}
                       onChange={(date) => {
@@ -441,6 +442,7 @@ const InvoiceForm = ({ }) => {
                       margin="none"
                       label="Bid Closing Date"
                       inputVariant="outlined"
+                      format="dd MMMM yyyy"
                       type="text"
                       size="small"
                       autoOk={true}

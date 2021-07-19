@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Breadcrumb, ConfirmationDialog } from "matx";
-import Select from 'react-select';
+import { ConfirmationDialog } from "matx";
 import { useParams } from "react-router-dom";
-import { MDBSelect } from "mdbreact";
 import Swal from "sweetalert2";
-import FormDialog from "../product/Addcategory";
-import Alert from '@material-ui/lab/Alert';
-import CloseIcon from '@material-ui/icons/Close';
+import Axios from 'axios';
+import { ApiKey } from "../invoice/InvoiceService";
 
 import {
   Dialog,
-  Collapse,
-  Divider,
-  Switch,
-  IconButton,
   Menu,
-  ListSubheader
-
 } from "@material-ui/core";
-import MemberEditorDialog from "../product/Addcategory";
+
 import history from "history.js";
 import {getVendorList,getcategories,getmanufacturer} from "../invoice/InvoiceService"
-import FormDialog1 from "../../views/product/manufacture";
 import MemberEditorDialog1 from "../../views/product/manufacture";
 import NestedMenuItem from "material-ui-nested-menu-item";
 
@@ -31,48 +21,20 @@ import NestedMenuItem from "material-ui-nested-menu-item";
 import {
   Icon,
   Grid,
-  Radio,
-  RadioGroup,
   TextField,
-  FormControlLabel,
-  Checkbox,
   MenuItem,
-  Link,
   Button
 } from "@material-ui/core";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import ReactSelectMaterialUi from "react-select-material-ui";
-import Axios from "axios";
+
 // import Addparty from "./addparty"
 import url,{capitalize_arr} from "../invoice/InvoiceService"
-import { identity } from "lodash";
 
-const ooptions = [
-  {
-    id: 3,
-    name: "lucy brown",
-    date: "1 january, 2019",
 
-  },
-  {
-    id: 4,
-    name: "lucy brown",
-    date: "1 january, 2019",
 
-  },
 
-];
 
-const options = [
-  { value: '1', label: 'Chocolate' },
-  { value: '2', label: 'Strawberry' },
-  { value: '3', label: 'Vanilla' },
-];
 
 const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,pprice,marginprice,calcualteprice,productname }) => {
   const [state, setState] = useState({
@@ -209,12 +171,8 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const [description, setdescription] = useState('');
   const [unit_of_measue, setunit_of_measue] = useState('');
   const [unit_Price, setunit_Price] = useState('');
-  const [selectedOption, setselectedOption] = useState('');
   const [selectedOption1, setselectedOption1] = useState('');
-  const [mrp, setmrp] = useState('');
   const [real_price, setreal_price] = useState('');
-  const [category_id, setcategory_id] = useState('');
-  const [subcategory, setsubcategory] = useState('');
   const [ptype, setptype] = useState('');
   const [hsn, sethsn] = useState('');
   const [iq, setiq] = useState(0);
@@ -224,69 +182,31 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const [ooptions1, setooptions] = useState([]);
   const [vendors, setvendors] = useState([]);
   const [manufacture, setmanufacture] = useState([]);
-  const [manufactureid, setmanufactureid] = useState();
   const [customerList, setCustomerList] = useState([]);
   const [category_list, setcategory_list] = useState([]);
-  const [subcatList, setsubcatList] = useState([]);
   const { id } = useParams();
   const [productcatid, setproductcatid] = useState(id);
   const [menuPosition, setMenuPosition] = useState(null);
   const [cat, setcat] = useState([]);
   const [message, setmessage] = useState(false);
   const [catid, setcatid] = useState('');
-  const [
-    shouldOpenConfirmationDialogproduct,
-    setshouldOpenConfirmationDialogproduct,
-  ] = useState(false);
-  const [, updateData] = useState([
-    { id: 1, name: "Pankaj 1" },
-    { id: 2, name: "Pankaj 2" },
-    { id: 3, name: "Pankaj 3" },
-    { id: 4, name: "Pankaj 4" }
-  ]);
-  const [division_id, setdivision_id] = useState([
-    { value: '1', label: 'Chocolate' },
-    { value: '2', label: 'Strawberry' },
-    { value: '3', label: 'Vanilla' },
-  ]);
+
+  
+  
   const product_type = [
     "Non inventory",
     "Inventory",
     "Service"
   ];
-  const styles = {
-    fontSize: 14,
-    color: 'blue',
-    width: 200
-  }
-  const handleChange = e => {
-    setSelectedValue(e.value);
-    
-  }
-  const handleChange1 = e => {
-    setSelectedValue1(e.value);
-   
-  }
-  const handleDialogClose = () => {
-    setShouldOpenEditorDialog(false);
-    
-
-  };
-  const pushData = () => {
-    history.push("/party/addparty")
-  }
-  const pushData1 = () => {
-    setShouldOpenEditorDialog1(true);
-  }
+  
+ 
+  
   const setcat_id=(id)=>{
    setcatid(id);
    setMenuPosition(null)
   }
 
-  const handleDeleteUser = (user) => {
-
-    setShouldOpenConfirmationDialog(true);
-  };
+  
 
   useEffect(() => {
     getVendorList().then(({ data }) => {
@@ -337,6 +257,19 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
  
 
   const submitValue = () => {
+    Axios.post(`https://translation.googleapis.com/language/translate/v2?key=${ApiKey}&q=${product}&target=ar`, {
+      method: 'POST',
+      headers: { 
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+"Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+"Access-Control-Max-Age": 86400
+      },
+    })
+      .then(({ data }) => {
+      
+          
+      
+    
     const frmdetails = {
       party_id:vendors,
       name: product?capitalize_arr(product):'',
@@ -351,9 +284,10 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
       minimum_quantity: mq,
       manufacturer_id:manid,
       model_no:modelno,
-      name_in_ar:name_in_ar
+      name_in_ar:data.data.translations[0].translatedText
 
-    }
+    
+  }
  
    if(catid)
    {
@@ -380,7 +314,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
    {
      setmessage(true)
    }
-    
+  })
 
   }
   function cancelform() {
@@ -419,19 +353,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const [maxWidth, setMaxWidth] = React.useState("md");
 
 
-  const {
-    username,
-    firstName,
-    creditCard,
-    mobile,
-    password,
-    confirmPassword,
-    gender,
-    date,
-    email,
-    Firm_Name,
-    optionss,
-  } = state;
+  
 
   return (
       <Dialog onClose={handleClose} open={open} className="px-6 pt-2 pb-4" style={{zIndex:1000}} fullWidth={fullWidth}
@@ -456,13 +378,10 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               onChange={e => setproduct(e.target.value)}
               type="text"
               name="product"
-              validators={[
-                "required",
-              ]}
-              errorMessages={["this field is required"]}
+              required
 
             />
-             <TextValidator
+             {/* <TextValidator
               className="mb-4 w-full"
               label="اسم المنتج"
               variant="outlined"
@@ -477,7 +396,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               ]}
               errorMessages={["this field is required"]}
 
-            />
+            /> */}
             <TextValidator
               className="mb-4 w-full"
               label="Description"
@@ -488,10 +407,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               size="small"
               name="description"
               variant="outlined"
-              validators={[
-                "required",
-              ]}
-              errorMessages={["this field is required"]}
+              
 
             // validators={["required"]}
             // errorMessages={["this field is required"]}

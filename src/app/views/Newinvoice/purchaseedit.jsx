@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Radio,
-  FormControl,
-  FormControlLabel,
   Divider,
-  RadioGroup,
-  Grid,
   MenuItem,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Link,
   Icon,
-  TextField,
-  Tooltip,
   Card
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -25,28 +17,16 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import axios from "axios";
 import url from "../invoice/InvoiceService";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-// expandable table
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
-import Axios from "axios";
+
 import Swal from "sweetalert2";
-import { Breadcrumb, ConfirmationDialog } from "matx";
 import moment from "moment";
-import { sortedLastIndex } from "lodash";
+
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -66,12 +46,10 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [isAlive, setIsAlive] = useState(true);
   const [state, setState] = useState(initialValues);
-  const [rfq, setrfq] = useState([]);
   const [rdate, setrdate] = useState([]);
   const [ddate, setddate] = useState([]);
   const [cname, setcname] = useState('abcd');
   const [party_id, setparty_id] = useState('');
-  const [rfq_details, setrfqdetails] = useState([]);
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
@@ -83,27 +61,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [discount,setdiscount] =useState('0')
   const [contactid,setcontactid] =useState('')
   const [dstatus, setdstatus] = useState(false);
-  const [price, setprice] = useState(0);
-  const [pprice, setpprice] = useState(0);
-  const [marginprice, setmarginprice] = useState(0);
   const [productid, setproductid] = useState('1');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
   const [po_number, setpo_number] = useState('');
-  const [pricelist, setpricelist] = useState([]);
-  
-  let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
 
-  const [
-    shouldOpenConfirmationDialog,
-    setShouldOpenConfirmationDialog,
-  ] = useState(false);
+
 
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
@@ -112,39 +80,20 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }, []);
 
   const handleChange = (event,fieldName) => {
-    // setState({ ...state, ['discount']:event.target.value });
     event.persist();
-   
-    // discount=subTotalCost-parseFloat(event.target.value * subTotalCost/100);
-    // vat= ((discount * 15) / 100).toFixed(2);
-    // GTotal=discount + vat;
-   
-    
-    // setState({ ...state, ['fieldname']:event.target.value });
     let tempItemList = [...state.item];
     setdstatus(true)
     setdiscount(event.target.value)
     setdiscounts(event.target.value)
  
-    // setState({ ...state, ['vat']: vat });
-    // setState({ ...state, ['net_amount']: GTotal });
-    // setdstatus(true)
+    
     
    
 
   };
   
 
-  const handleSellerBuyerChange = (event, fieldName) => {
-    event.persist();
-    setState({
-      ...state,
-      [fieldName]: {
-        ...state[fieldName],
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
+ 
   const setremark = (event, index) => {
     event.persist()
     let tempItemList = [...state.item];
@@ -181,8 +130,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       if (index === i) 
       {
         
-        // element['purchase_price']=price;
-        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
+        
         element['total_amount']=((event.target.value)*element.quantity).toFixed(2);
         element[event.target.name] = event.target.value;
         element.margin="";
@@ -204,24 +152,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
   };
 
-  const addItemToInvoiceList = () => {
-    let tempItemList = [...state.item];
-    
-    tempItemList.push({
-      name: "",
-      unit: "",
-      price: "",
-      quotedescription: "",
-      qtotal:"",
-      qprice:"",
-      margin:"",
-      remark:""
-    });
-    setState({
-      ...state,
-      item: tempItemList,
-    });
-  };
+  
 
   const deleteItemFromInvoiceList = (index) => {
     Swal.fire({
@@ -252,11 +183,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   })
   };
 
-  const handleDateChange = (rdate) => {
-    setState({
-      rdate: date
-    });
-  };
+ 
   const calcualteprice = (event,index) => {
     event.persist()
     let tempItemList = [...state.item];
@@ -268,7 +195,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       {
         
        
-        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element['purchase_price'])).toFixed(2);
+        
         element['total_amount']=((event.target.value)*element.purchase_price).toFixed(2);
         element[event.target.name] = event.target.value;
         
@@ -285,50 +212,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       ...state,
       item: tempItemList,
     });
-    // setprice(parseInt(event.target.value))
+    
   }
-  const priceset = (a,b,c) => {
-    url.get("parties/" + c).then(({ data }) => {
-      setproList(data[0].contacts);
-      
-    });
-    alert(c)
-  };
-  const expandData= (id) => {
-   
-    var filtered = proList.filter(a => a.id == id);
-    
-    setProductList(filtered)
-   
-  };
-  const calcualtep = (event,index) => {
-    let tempItemList = [...state.item];
-    
-    tempItemList.map((element, i) => {
-      let sum=0;
-    
-      if (index === i) 
-      {
-        
-        
-        element['quantity']= event.target.value;
-        
-      
-
-      }
-      return element;
-      
-    });
-
-    setState({
-      ...state,
-      item: tempItemList,
-    }); 
-  }
-
+  
+  
+  
   const handleSubmit = () => {
     
-    // setState({ ...state, ['subTotalCost']: subTotalCost });
     setState({ ...state, loading: true });
     
     let tempState = { ...state };
@@ -337,9 +227,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempItemList =[...state.item];
     
 
-    // arr.push({
-    // Quotedetails:tempItemList,
-    // });
+    
     arr.quotation_details=tempItemList
     arr.discount_in_p=0
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
@@ -370,7 +258,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           text: 'Data saved successfully.',
         });
         history.push("../Newinvoiceview")
-        // window.location.href="../Newinvoiceview"
       })
       .catch(function (error) {
         
@@ -380,25 +267,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     history.push(`/poinvoice/${id}`)
   }
   
-  const handleDialogClose = () => {
-    setShouldOpenEditorDialog(false);
-   
-  };
+ 
 
   useEffect(() => {
    
     url.get("products").then(({ data }) => {
       setproList(data)
-    // setState({
-    //     ...state,
-    //     item: data,
-    //   }); 
+     
     });
     url.get("purchase-quotation/"+ id).then(({ data }) => {
     
-      // setcname(data[0].party[0].firm_name)
+      
       setpo_number(data[0]?.po_number)
-      // setpricelist(data[0].product_price_list)
       setcontactid(data[0].contact?.id)
       setrdate(moment(data[0]?.created_at).format('DD MMM YYYY'))
       setddate(moment(data[0]?.require_date).format('DD MMM YYYY'))
@@ -423,19 +303,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   let GTotal = 0;
   let dis_per = 0;
   let {
-    orderNo,
-    net_amount,
-    buyer,
-    seller,
+    
     item: invoiceItemList = [],
     quote:quoteList = [],
-    status,
     vat,
-    date,
-    currency,
     loading,
-    margin,
-    remark
     
   } = state;
   
@@ -567,12 +439,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 
                 subTotalCost += parseFloat(item.total_amount)
                 dis_per=parseFloat(discounts * subTotalCost/100).toFixed(2)
-                // discount=subTotalCost-parseFloat(discounts * subTotalCost/100);
                 vat= (((subTotalCost-parseFloat(discounts * subTotalCost/100)) * 15) / 100).toFixed(2)
                 GTotal=((subTotalCost-parseFloat(discounts * subTotalCost/100))+ parseFloat(vat)).toFixed(2);
               }
-              // vat= (discount * 15) / 100
-              // GTotal=item.discount + item.vat;
+             
               
               return (
                 <TableRow key={index}>
@@ -588,7 +458,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="description"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       name="description"
                       fullWidth
@@ -603,7 +472,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
                     <TextValidator
                       label="Our description"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       
                       variant="outlined"
@@ -659,10 +527,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}} >
-                    <TextValidator
+                    {/* <TextValidator
                       label="QTotal"
                       
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
                       size="small"
@@ -672,13 +539,22 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                      
                       value={item.total_amount ? item.total_amount: ""}
                       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full "
+                label="Total"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="total_amount"
+                value={item.total_amount ? item.total_amount: ""}
+              />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
                     <TextValidator
                       label="Remark"
                       onChange={(event) => setremark(event, index)}
-                      // onBlur={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
                       size="small"
@@ -804,43 +680,15 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
-              {/* <div>
-              <TextField
-                className="mb-4 mr-2"
-                label="Discount %"
-                type="text"
-                variant="outlined"
-                size="small"
-                style={{width:'90px'}}
-                onChange={(event) => handleChange(event, "discount")}
-                value={discount}
-                // style={{width:50}}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
-              />
+              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toLocaleString(undefined,{
+                minimumFractionDigits:2
+              }):'0.00'}</p>
               
-            
-              <TextField
-                className="mb-4 ml-2"
-                label="Discount"
-                type="text"
-                variant="outlined"
-                size="small"
-                name="dis_per"
-                style={{width:'90px'}}
-                // onChange={(event) => handleChange(event, "discount")}
-                value={discount?dis_per:0.00}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
-              />
-             </div> */}
               
-              <TextValidator
+              {/* <TextValidator
                 className="mb-4 "
                 label="Vat"
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
-                // onChange={handleChange}
                 type="text"
                 variant="outlined"
                 size="small"
@@ -848,8 +696,18 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 value={subTotalCost?vat:0}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
+              /> */}
+              <CurrencyTextField
+                className="w-full mb-4"
+                label="Vat"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="vat"
+                value={subTotalCost?vat:0}
               />
-              <TextValidator
+              {/* <TextValidator
                 label="Grand Total"
                 onChange={handleChange}
                 type="text"
@@ -861,7 +719,19 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 value={subTotalCost?GTotal:0.00}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
+              /> */}
+              <div>
+              <CurrencyTextField
+                className="w-full mb-4"
+                label="Grand Total"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="net_amount"
+                value={subTotalCost?GTotal:0.00}
               />
+              </div>
               
                
             </div>

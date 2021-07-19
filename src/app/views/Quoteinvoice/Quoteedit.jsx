@@ -878,6 +878,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       className="ml-2"
                       margin="none"
                       label="Quote Date"
+                      format="dd MMMM yyyy"
                       inputVariant="outlined"
                       type="text"
                       size="small"

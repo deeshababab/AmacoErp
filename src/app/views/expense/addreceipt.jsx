@@ -49,8 +49,8 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
           value:'cash'
       },
       {
-        name:'Check',
-        value:'check'
+        name:'Cheque',
+        value:'cheque'
     },
     {
         name:'Bank Transfer',
@@ -213,9 +213,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
                 </MenuItem>
               ))}
                   </TextValidator>
-           {payment_mode==='check' &&(<TextValidator
+           {payment_mode==='cheque' &&(<TextValidator
                 className="w-full mb-4"
-                label="Check Number"
+                label="Cheque Number"
                 onChange={e => setcheck_no(e.target.value)
                 }
                 variant="outlined"

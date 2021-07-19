@@ -54,6 +54,7 @@ import moment from "moment";
 import { sortedLastIndex } from "lodash";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Autocomplete } from "@material-ui/lab";
+import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -317,9 +318,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       ],
       purchase_price:0.00,
       margin:0,
-      sell_price:0.00,
+      sell_price:parseFloat(0.00).toLocaleString(undefined,{
+        minimumFractionDigits:2
+      }),
       remark:"",
-      total_amount:0.00
+      total_amount:parseFloat(0.00).toLocaleString(undefined,{
+        minimumFractionDigits:2
+      })
       
     });
     setState({
@@ -753,8 +758,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     ]
   
   let subTotalCost = 0;
-  let GTotal = 0;
-  let dis_per = 0;
+  let GTotal =parseFloat(0.00).toLocaleString(undefined,{
+    minimumFractionDigits:2
+  });
+  let dis_per = parseFloat(0.00).toLocaleString(undefined,{
+    minimumFractionDigits:2
+  });
   let {
     orderNo,
     net_amount,
@@ -886,6 +895,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       className="m-2"
                       margin="none"
                       label="Date"
+                      format="dd MMMM yyyy"
                       inputVariant="outlined"
                       type="text"
                       size="small"
@@ -924,6 +934,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" style={{width:'90px'}}>Item Name</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Quantity</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Price</TableCell>
+              <TableCell className="px-0" style={{width:'30px'}}>Margin %</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}>Price</TableCell>
               <TableCell className="px-0"style={{width:'50px'}}>Total</TableCell>
               <TableCell className="px-0"style={{width:'20px'}}>Action</TableCell>
@@ -1091,8 +1102,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   </TableCell> 
 
                   
-{/*                   
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
+                  <TableCell className="pl-0 capitalize" align="left">
                     <TextValidator
                       label="Margin"
                       onChange={(event) => calcualtep(event, index)}
@@ -1102,18 +1112,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
                       size="small"
                       name="margin"
-                      style={{width:'75%',float:'left'}}
                       fullWidth
                       value={item.margin}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
               
                     />
-                    
+                    {/* <Tooltip title="Reference">
+                  <Icon aria-label="expand row" size="small" style={{width:'25%',float:'left',cursor:'pointer'}} onClick={() => {
+                        setMargin(item.product_id,index,item.name);
+                      }}>
+                   {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </Icon>
+                </Tooltip> */}
   
-                  </TableCell> */}
+                  </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
-                    <TextValidator
+                    {/* <TextValidator
                       label="price"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
@@ -1126,10 +1141,20 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       
                       value={item.sell_price}
       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full"
+                label="Sell Price"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="sell_price"
+                value={item.sell_price}
+              />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
-                    <TextValidator
+                    {/* <TextValidator
                       label="QTotal"
                       
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -1140,9 +1165,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="total_amount"
                       inputProps={{min: 0, style: { textAlign: 'right' }}}
                      
-                      value={item.total_amount}
+                      value={item.total_amount.toLocaleString(undefined,{
+                        minimumFractionDigits:2
+                      })}
                       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full"
+                label="QTotal"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="total_amount"
+                value={item.total_amount.toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
+              />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'5px'}}>
                
@@ -1194,7 +1233,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
+              <p className="mb-4">{subTotalCost?subTotalCost.toLocaleString(undefined,{
+                minimumFractionDigits:2
+              }):'0.00'}</p>
               <div>
               <TextField
                 className="mb-4 mr-2"
@@ -1212,7 +1253,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               />
               
             
-              <TextField
+              {/* <TextField
                 className="mb-4 ml-2"
                 label="Discount"
                 type="text"
@@ -1225,10 +1266,21 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 value={discount?dis_per:0.00}
                 // validators={["required"]}
                 // errorMessages={["this field is required"]}
+              /> */}
+               <CurrencyTextField
+                className="w-full"
+                label="Discount"
+                style={{width:'150px'}}
+                name="dis_per"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                value={discount?dis_per:0.00}
               />
              </div>
               
-              <TextValidator
+              {/* <TextValidator
                 className="mb-4 "
                 label="Vat"
                 // onChange={handleChange}
@@ -1236,12 +1288,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 variant="outlined"
                 size="small"
                 name="vat"
-                value={subTotalCost?vat:0}
+                value={subTotalCost?vat:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
-              />
-              <TextValidator
+              /> */}
+              {/* <TextValidator
                 label="Grand Total"
                 onChange={handleChange}
                 type="text"
@@ -1249,11 +1303,42 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 variant="outlined"
                 size="small"
                 name="net_amount"
-                value={subTotalCost?GTotal:0.00}
+                value={subTotalCost?GTotal:parseFloat(0.00).toLocaleString(undefined,{
+        minimumFractionDigits:2
+      })}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
+              /> */}
+              <CurrencyTextField
+                className="w-full mb-4"
+                label="Vat"
+                style={{width:'250px'}}
+                name="vat"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                value={subTotalCost?vat:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
               />
+              <div>
+              <CurrencyTextField
+                className="w-full"
+                label="Grand Total"
+                style={{width:'250px'}}
+                name="net_amount"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                value={subTotalCost?GTotal:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
+              />
+              </div>
+              
               
                
             </div>

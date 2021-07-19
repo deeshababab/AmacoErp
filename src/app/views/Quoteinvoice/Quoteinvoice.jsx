@@ -1,49 +1,25 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Radio,
-  FormControl,
-  FormControlLabel,
   Divider,
-  RadioGroup,
-  Grid,
-  MenuItem,
   Card,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
-  Link,
   Icon,
-  TextField
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice } from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import axios from "axios";
 import url from "../invoice/InvoiceService";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 // expandable table
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import IconButton from '@material-ui/core/IconButton';
-import Select from 'react-select';
-import Axios from "axios";
 import Swal from "sweetalert2";
 import moment from "moment";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield/dist/CurrencyTextField";
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -64,31 +40,19 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [isAlive, setIsAlive] = useState(true);
   const [state, setState] = useState(initialValues);
-  const [rfq, setrfq] = useState([]);
-  const [rdate, setrdate] = useState([]);
-  const [ddate, setddate] = useState('')
   const [cname, setcname] = useState('');
   var tempDate = new Date();
   const [qno, setqno] = useState('');
   const[pono,setpono]=useState('');
   const [party_id, setparty_id] = useState('');
-  const [rfq_details, setrfqdetails] = useState([]);
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
-  const [validity,setvalidity] =useState('3 Days')
-  const [payment_terms,setpayment_terms] =useState('100 %Advance')
-  const [warranty,setwarranty] =useState('NA')
-  const [delivery_time,setdelivery_time] =useState('Within 2-3 Days from the Date of PO')
-  const [inco_terms,setinco_terms] =useState('DDP-Delivery Duty Paid To CATCO Office')
   const [discount,setdiscount] =useState('0')
-  const [ponum,setponum] =useState('')
   const [dstatus, setdstatus] = useState(false);
-  let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
 
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
@@ -96,40 +60,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setState((state) => ({ ...state, id }));
   }, []);
 
-  const handleChange = (event,fieldName) => {
-    // setState({ ...state, ['discount']:event.target.value });
-    event.persist();
-   
-    // discount=subTotalCost-parseFloat(event.target.value * subTotalCost/100);
-    // vat= ((discount * 15) / 100).toFixed(2);
-    // GTotal=discount + vat;
-   
-    
-    // setState({ ...state, ['fieldname']:event.target.value });
-    let tempItemList = [...state.item];
-    setdstatus(true)
-    setdiscount(event.target.value)
-    setdiscounts(event.target.value)
-    
-    // setState({ ...state, ['vat']: vat });
-    // setState({ ...state, ['net_amount']: GTotal });
-    // setdstatus(true)
-    
-   
-
-  };
+ 
   
 
-  const handleSellerBuyerChange = (event, fieldName) => {
-    event.persist();
-    setState({
-      ...state,
-      [fieldName]: {
-        ...state[fieldName],
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
+  
 
   const handleIvoiceListChange = (event, index) => {
     event.persist()
@@ -160,46 +94,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
   };
 
-  const addItemToInvoiceList = () => {
-    let tempItemList = [...state.item];
-    
-    tempItemList.push({
-      name: "",
-      unit: "",
-      price: "",
-      quotedescription: "",
-      qtotal:"",
-      qprice:"",
-      margin:""
-    });
-    setState({
-      ...state,
-      item: tempItemList,
-    });
-  };
+  
 
-  const deleteItemFromInvoiceList = (index) => {
-    let tempItemList = [...state.item];
-    tempItemList.splice(index, 1);
+  
 
-    setState({
-      ...state,
-      quote: tempItemList,
-    });
-  };
-
-  const handleDateChange = (rdate) => {
-    setState({
-      rdate: date
-    });
-  };
-  const expandData= (id) => {
-   
-    var filtered = proList.filter(a => a.id == id);
-    
-    setProductList(filtered)
-   
-  };
+  
+  
 
   const handleSubmit = () => {
     
@@ -225,12 +125,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     const json = Object.assign({}, arr);
   
     
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
+    
     url.post('invoice',json)
       .then(function (response) {
         
@@ -292,18 +187,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   let GTotal = 0;
   let discount1=0;
   let {
-    orderNo,
-    net_amount,
-    buyer,
-    seller,
+    
     item: invoiceItemList = [],
     quote:quoteList = [],
-    status,
     vat,
-    date,
-    currency,
     loading,
-    margin,
   } = state;
 
   return (
@@ -621,7 +509,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   </TableCell>
                   
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'80px'}}>
-                    <TextValidator
+                    {/* <TextValidator
                       label="Unit_Price"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
@@ -633,14 +521,24 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       inputProps={{min: 0, style: { textAlign: 'right' }}}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full"
+                label="Unit Price"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="sell_price"
+                value={item? item.sell_price: null}
+              />
                   </TableCell>
 
                   
                   
                   
                   <TableCell className="pl-0 capitalize" align="left">
-                    <TextValidator
+                    {/* <TextValidator
                       label="QTotal"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
@@ -651,7 +549,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
                       value={item.total_amount}
                       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full"
+                label="Total"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="total_amount"
+                value={item.total_amount}
+              />
                   </TableCell>
                   
 
@@ -696,20 +604,30 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
             </div>
             <div>
               
-              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toFixed(2):'0.00'}</p>
-              <TextValidator
+              <p className="mb-4" align="right">{subTotalCost?subTotalCost.toLocaleString(undefined,{
+                minimumFractionDigits:2
+              }):'0.00'}</p>
+              {/* <TextValidator
                 className="mb-4"
                 label="Discount"
                 type="text"
                 variant="outlined"
                 size="small"
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
-                // onChange={(event) => handleChange(event, "discount")}
                 value={discount}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+              /> */}
+              <CurrencyTextField
+                className="w-full mb-4"
+                label="Discount"
+                style={{width:'250px'}}
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="vat"
+                value={discount}
               />
-              <TextValidator
+              {/* <TextValidator
                 className="mb-4"
                 label="Vat"
                 // onChange={handleChange}
@@ -721,8 +639,23 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
+              /> */}
+              <div>
+
+             
+               <CurrencyTextField
+                className="w-full mb-4"
+                label="Vat"
+			          variant="outlined"
+                fullWidth
+                size="small"
+                style={{width:'250px'}}
+			          currencySymbol="SAR"
+                name="vat"
+                value={subTotalCost?vat:0}
               />
-              <TextValidator
+              </div>
+              {/* <TextValidator
                 label="Grand Total"
                 // onChange={handleChange}
                 type="text"
@@ -734,17 +667,20 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
-              />
-              {/* <TextField
-                    value={discounts}
-                    hidden
               /> */}
-              {/* <p className="mt-4">
-                <strong>
-                  {/* {subTotalCost} */}
-                   {/* {GTotal}
-                </strong>
-              </p> */} 
+              <div>
+              <CurrencyTextField
+                className="w-full"
+                label="Grand Total"
+			          variant="outlined"
+                style={{width:'250px'}}
+                size="small"
+			          currencySymbol="SAR"
+                name="net_amount"
+                value={subTotalCost?GTotal:0.00}
+              />
+              </div>
+              
             </div>
           </div>
           </div>

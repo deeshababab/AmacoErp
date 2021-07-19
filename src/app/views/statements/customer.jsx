@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { borders } from "@material-ui/system";
-import Box from "@material-ui/core/Box";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -9,51 +7,35 @@ import DateFnsUtils from "@date-io/date-fns";
 
 import {
   Icon,
-  Divider,
   Grid,
-  Avatar,
   Table,
   TextField,
-  ClickAwayListener,
-  InputAdornment,
   TableHead,
-  TableFooter,
   TableRow,
   TableCell,
   TableBody,
-  IconButton,
-  Card,
   Button,
 } from "@material-ui/core";
-import { Link, useParams } from "react-router-dom";
-import { getInvoiceById } from "../invoice/InvoiceService";
-import { format } from "date-fns";
+
+
+
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import axios from "axios";
-import { cond, split } from "lodash";
 import logo from "./../invoice/amaco-logo.png";
-import logos from "./../invoice/vision2030.png";
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import useSettings from "../../hooks/useSettings";
-import apiurl from "../../../config";
+
 import url, { getCustomerList } from "../invoice/InvoiceService";
-import Arabic from "../../../lang/ar.json";
-import { IntlProvider, FormattedNumber } from "react-intl";
-import { FormattedMessage } from "react-intl";
-import Swal from "sweetalert2";
-import Axios from "axios";
-import history from "history.js";
+
+
+
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import moment from "moment";
-import { ToWords } from "to-words";
 import { useReactToPrint } from "react-to-print";
-import Snackbar from "@material-ui/core/Snackbar";
-import CloseIcon from "@material-ui/icons/Close";
-import { Breadcrumb, ConfirmationDialog } from "matx";
+
+import { Breadcrumb } from "matx";
 import { ValidatorForm } from "react-material-ui-form-validator";
-const locale = navigator.language;
+
 
 // import Image from 'react-image-resizer';
 
@@ -185,10 +167,9 @@ const Customer = ({
     horizontal: "center",
   });
 
-  const { vertical, horizontal, open } = state;
   const classes = useStyles();
 
-  const formData = new FormData();
+ 
   useEffect(() => {
     // updateSidebarMode({ mode: "close" })
     document.title = "Request for quoatation - Amaco";
@@ -223,9 +204,9 @@ const Customer = ({
 
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
 
-        settdate(data[0].to_date);
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         // setcname(data[0].firm_name);
@@ -234,9 +215,7 @@ const Customer = ({
       });  
   }, []);
 
-  const handlePrint = () => {
-    window.print();
-  };
+ 
   window.onafterprint = function () {
     window.close();
     window.location.href = ``;
@@ -246,15 +225,9 @@ const Customer = ({
     header: () => componentRef.current,
   });
 
-  //  const  calcualte_bal=(curbal,cBalance)=>{
-  //     let tmp=curbal +cBalance
-  //     setcurrent_bal(tmp)
-  //     return tmp
-
-  //   }
+  
   const calBalance = (cBalance, amount, sign,i) => {
-    // cBalance=parseFloat(cBalance)
- 
+    
  
   
   
@@ -280,20 +253,11 @@ const Customer = ({
   
 
   const handleSubmit = () => {
-    const formData1 = {
-      party_id: party_id,
-      from_date: "2021-01-03",
-      to_date: "2021-03-22",
-    };
-
-    // formData.append('party_id',party_id)
-    // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
-    // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
-    
+   
 
     if(party_id==="All")
     {
-      alert('hi')
+      
       url
       .post(
         "all-account-statement?"+
@@ -326,9 +290,9 @@ const Customer = ({
 
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
 
-        settdate(data[0].to_date);
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].firm_name);
@@ -372,9 +336,9 @@ const Customer = ({
 
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
 
-        settdate(data[0].to_date);
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].firm_name);
@@ -392,20 +356,11 @@ const Customer = ({
   };
 
   let currentBalance = 0;
-  let arr=[];
-  let curbal = 0.0;
+  
   let osum = parseFloat(opening_balance).toLocaleString(undefined, {
     minimumFractionDigits: 2,
   });
-  let {
-    orderNo,
-    buyer,
-    seller,
-    item: invoiceItemList = [],
-    status,
-    vat,
-    date,
-  } = state;
+  
 
   return (
     <div className="m-sm-30">
@@ -466,7 +421,7 @@ const Customer = ({
                 size="small"
                 autoOk={true}
                 value={from_date}
-                format="MMMM dd, yyyy"
+                format="dd MMMM yyyy"
                 onChange={handleDateChange}
               />
             </MuiPickersUtilsProvider>
@@ -483,7 +438,7 @@ const Customer = ({
                 size="small"
                 autoOk={true}
                 value={to_date}
-                format="MMMM dd, yyyy"
+                format="dd MMMM yyyy"
                 onChange={handleDateChange1}
               />
             </MuiPickersUtilsProvider>
@@ -600,7 +555,7 @@ const Customer = ({
                           <TableCell
                             className="pl-2"
                             align="left"
-                            colSpan={4}
+                            colSpan={3}
                             style={{
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
@@ -678,7 +633,7 @@ const Customer = ({
                           >
                             {tdate}
                           </TableCell>
-                          <TableCell
+                          {/* <TableCell
                             className="pl-2 capitalize"
                             align="left"
                             style={{
@@ -687,7 +642,7 @@ const Customer = ({
                               fontFamily: "Calibri",
                               fontSize: 16,
                             }}
-                          ></TableCell>
+                          ></TableCell> */}
                         </TableRow>
                         <TableRow
                           style={{
@@ -748,7 +703,7 @@ const Customer = ({
                           >
                             {current_bal.slice(current_bal.length-1)}
                           </TableCell>
-                          <TableCell
+                          {/* <TableCell
                             className="pl-2 capitalize"
                             align="left"
                             style={{
@@ -757,7 +712,7 @@ const Customer = ({
                               fontFamily: "Calibri",
                               fontSize: 16,
                             }}
-                          ></TableCell>
+                          ></TableCell> */}
                           <TableCell
                             className="pl-2 capitalize"
                             align="left"
@@ -843,29 +798,31 @@ const Customer = ({
                               }}
                               align="center"
                             >
-                              PARTICULARS
+                              DOCUMENT#
                             </TableCell>
                             <TableCell
                               className="px-0"
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 130,
                                 color: "#fff",
+                                fontColor: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
+                                width:200
                               }}
                               align="center"
                             >
-                              DEBIT
+                              PARTICULARS
+                             
                             </TableCell>
                             <TableCell
                               className="px-0"
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
+                                width: 90,
                                 color: "#fff",
-                                width: 130,
                                 fontWeight: 1000,
                                 fontSize: 16,
                               }}
@@ -873,13 +830,27 @@ const Customer = ({
                             >
                               CREDIT
                             </TableCell>
+                            <TableCell
+                              className="px-0"
+                              style={{
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                color: "#fff",
+                                width: 90,
+                                fontWeight: 1000,
+                                fontSize: 16,
+                              }}
+                              align="center"
+                            >
+                              DEBIT
+                            </TableCell>
 
                             <TableCell
                               className="px-0"
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 110,
+                                width: 90,
                                 color: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
@@ -914,7 +885,7 @@ const Customer = ({
                               }}
                               align="center"
                             >
-                              INV.STATUS
+                              INV. STATUS
                             </TableCell>
                           </TableRow>
                         </TableHead>
@@ -950,6 +921,18 @@ const Customer = ({
                             >
                               --
                             </TableCell>
+                            <TableCell
+                                  className="pl-2 capitalize"
+                                  align="left"
+                                  style={{
+                                    border: "1px solid #ccc",
+                                    wordBreak: "break-word",
+                                    fontFamily: "Calibri",
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  
+                                </TableCell>
                             
                             <TableCell
                               className="pl-2 capitalize"
@@ -1073,7 +1056,7 @@ const Customer = ({
                                     fontSize: 16,
                                   }}
                                 >
-                                  {moment(item[0].date).format("YYYY-MM-DD")}
+                                  {moment(item[0].date).format("DD-MMM-YYYY")}
                                 </TableCell>
 
                                 <TableCell
@@ -1091,6 +1074,20 @@ const Customer = ({
                                     : item[0].code_no}
                                 </TableCell>
                                 
+                                <TableCell
+                                  className="pl-2 capitalize"
+                                  align="center"
+                                  style={{
+                                    border: "1px solid #ccc",
+                                    wordBreak: "break-word",
+                                    fontFamily: "Calibri",
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  {item[0].po_number === null
+                                    ? ""
+                                    : item[0].po_number}
+                                </TableCell>
                                 <TableCell
                                   className="pl-2 capitalize"
                                   align="left"
@@ -1114,7 +1111,9 @@ const Customer = ({
                                     fontSize: 16,
                                   }}
                                 >
-                                  {item[0].debit === null ? "" : item[0].debit}
+                                  {item[0].debit === null ? "" : parseFloat(item[0].debit).toLocaleString(undefined,{
+                                    minimumFractionDigits:2
+                                  })}
                                 </TableCell>
                                 <TableCell
                                   className="capitalize"
@@ -1127,7 +1126,9 @@ const Customer = ({
                                 >
                                   {item[0].credit === null
                                     ? ""
-                                    : item[0].credit}
+                                    : parseFloat(item[0].credit).toLocaleString(undefined,{
+                                      minimumFractionDigits:2
+                                    })}
                                 </TableCell>
                                 <TableCell
                                   className="pl-0 capitalize"
@@ -1155,7 +1156,7 @@ const Customer = ({
                                 <TableCell
                                   className="pl-0 capitalize"
                                   style={{
-                                    textAlign: "right",
+                                    textAlign: "center",
                                     border: "1px solid #ccc",
                                     fontFamily: "Calibri",
                                     fontSize: 16,
@@ -1252,6 +1253,18 @@ const Customer = ({
                               }}
                               colSpan={2}
                             ></TableCell>
+                            <TableCell
+                                  className="pl-2 capitalize"
+                                  align="left"
+                                  style={{
+                                    border: "1px solid #ccc",
+                                    wordBreak: "break-word",
+                                    fontFamily: "Calibri",
+                                    fontSize: 16,
+                                  }}
+                                >
+                                  
+                                </TableCell>
                             <TableCell
                               className="pl-2 capitalize"
                               align="left"

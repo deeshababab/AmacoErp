@@ -54,6 +54,7 @@ import moment from "moment";
 import { sortedLastIndex } from "lodash";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Autocomplete } from "@material-ui/lab";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield/dist/CurrencyTextField";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
   invoiceEditor: {
@@ -316,9 +317,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       ],
       purchase_price:0.00,
       margin:0,
-      sell_price:0.00,
+      sell_price:parseFloat(0.00).toLocaleString(undefined,{
+        minimumFractionDigits:2
+      }),
       remark:"",
-      total_amount:0.00
+      total_amount:parseFloat(0.00).toLocaleString(undefined,{
+        minimumFractionDigits:2
+      })
       
     });
     setState({
@@ -882,6 +887,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       className="m-2"
                       margin="none"
                       label="Quote Date"
+                      format="dd MMMM yyyy"
                       inputVariant="outlined"
                       type="text"
                       size="small"
@@ -935,8 +941,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 subTotalCost += parseFloat(item.total_amount)
                 dis_per=parseFloat(discounts * subTotalCost/100).toFixed(2)
                 // discount=subTotalCost-parseFloat(discounts * subTotalCost/100);
-                vat= (((subTotalCost-parseFloat(discounts * subTotalCost/100)) * 15) / 100).toFixed(2)
-                GTotal=((subTotalCost-parseFloat(discounts * subTotalCost/100))+ parseFloat(vat)).toFixed(2);
+                vat= (((subTotalCost-parseFloat(discounts * subTotalCost/100)) * 15) / 100).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })
+                GTotal=((subTotalCost-parseFloat(discounts * subTotalCost/100))+ parseFloat(vat)).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                });
               }
               // vat= (discount * 15) / 100
               // GTotal=item.discount + item.vat;
@@ -1025,8 +1035,7 @@ file_upload
                       
                       size="small"
                       value={item? item.description: null}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
+                      
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
@@ -1155,7 +1164,7 @@ file_upload
   
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                    <TextValidator
+                    {/* <TextValidator
                       label="price"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
@@ -1168,10 +1177,20 @@ file_upload
                       
                       value={item.sell_price}
       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full "
+                label="Price"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="sell_price"
+                value={item.sell_price}
+              />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'100px'}}>
-                    <TextValidator
+                    {/* <TextValidator
                       label="QTotal"
                       
                       // onChange={(event) => handleIvoiceListChange(event, index)}
@@ -1184,7 +1203,17 @@ file_upload
                      
                       value={item.total_amount}
                       
-                    />
+                    /> */}
+                    <CurrencyTextField
+                className="w-full "
+                label="Total"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="total_amount"
+                value={item.total_amount}
+              />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'140px'}}>
                     <TextValidator
@@ -1336,13 +1365,11 @@ file_upload
                 onChange={(event) => handleChange(event, "discount")}
                 inputProps={{min: 0, style: { textAlign: 'center' }}}
                 value={discount}
-                // style={{width:50}}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+                
               />
               
             
-              <TextField
+              {/* <TextField
                 className="mb-4 ml-2"
                 label="Discount"
                 type="text"
@@ -1351,14 +1378,24 @@ file_upload
                 name="dis_per"
                 style={{width:'90px'}}
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
-                // onChange={(event) => handleChange(event, "discount")}
+               
                 value={discount?dis_per:0.00}
-                // validators={["required"]}
-                // errorMessages={["this field is required"]}
+               
+              /> */}
+              <CurrencyTextField
+                className="w-full "
+                label="Discount"
+			          variant="outlined"
+                fullWidth
+                size="small"
+                style={{width:'150px'}}
+			          currencySymbol="SAR"
+                name="dis_per"
+                value={discount?dis_per:0.00}
               />
              </div>
               
-              <TextValidator
+              {/* <TextValidator
                 className="mb-4 "
                 label="Vat"
                 // onChange={handleChange}
@@ -1366,12 +1403,26 @@ file_upload
                 variant="outlined"
                 size="small"
                 name="vat"
-                value={subTotalCost?vat:0}
+                value={subTotalCost?vat:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
-              />
-              <TextValidator
+              /> */}
+              <CurrencyTextField
+                className="w-full mb-4 "
+                label="Vat"
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="vat"
+                value={subTotalCost?vat:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}              />
+              
+              {/* <TextValidator
                 label="Grand Total"
                 onChange={handleChange}
                 type="text"
@@ -1379,11 +1430,28 @@ file_upload
                 variant="outlined"
                 size="small"
                 name="net_amount"
-                value={subTotalCost?GTotal:0.00}
+                value={subTotalCost?GTotal:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
                 inputProps={{min: 0, style: { textAlign: 'right' }}}
-              />
+              /> */}
+              <div>
+              <CurrencyTextField
+                className="w-full mb-4 "
+                label="Vat"
+                onChange={handleChange}
+			          variant="outlined"
+                fullWidth
+                size="small"
+			          currencySymbol="SAR"
+                name="net_amount"
+                value={subTotalCost?GTotal:parseFloat(0.00).toLocaleString(undefined,{
+                  minimumFractionDigits:2
+                })}           />
+              
+              </div>
               
                
             </div>

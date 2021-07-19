@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { borders } from "@material-ui/system";
-import Box from "@material-ui/core/Box";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -9,52 +7,29 @@ import DateFnsUtils from "@date-io/date-fns";
 
 import {
   Icon,
-  Divider,
   Grid,
-  Avatar,
   Table,
   TextField,
-  ClickAwayListener,
-  InputAdornment,
   TableHead,
-  TableFooter,
   TableRow,
   TableCell,
   TableBody,
-  IconButton,
-  Card,
   Button,
 } from "@material-ui/core";
-import { Link, useParams } from "react-router-dom";
-import { getInvoiceById } from "../invoice/InvoiceService";
+
 import { format } from "date-fns";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import axios from "axios";
-import { cond, split } from "lodash";
 import logo from "./../invoice/amaco-logo.png";
-import logos from "./../invoice/vision2030.png";
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import useSettings from "../../hooks/useSettings";
-import apiurl from "../../../config";
-import url, { getCustomerList, getpaymentaccount } from "../invoice/InvoiceService";
-import Arabic from "../../../lang/ar.json";
-import { IntlProvider, FormattedNumber } from "react-intl";
-import { FormattedMessage } from "react-intl";
-import Swal from "sweetalert2";
-import Axios from "axios";
-import history from "history.js";
+import url, {  getpaymentaccount } from "../invoice/InvoiceService";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import moment from "moment";
-import { ToWords } from "to-words";
 import { useReactToPrint } from "react-to-print";
-import Snackbar from "@material-ui/core/Snackbar";
-import CloseIcon from "@material-ui/icons/Close";
-import { Breadcrumb, ConfirmationDialog } from "matx";
+import { Breadcrumb } from "matx";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import { red } from "@material-ui/core/colors";
-const locale = navigator.language;
+
 
 // import Image from 'react-image-resizer';
 
@@ -232,9 +207,9 @@ const Customer = ({
         setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
 
-        settdate(data[0].to_date);
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].firm_name);
@@ -247,9 +222,7 @@ const Customer = ({
   
   }, []);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  
   window.onafterprint = function () {
     window.close();
     window.location.href = ``;
@@ -259,14 +232,9 @@ const Customer = ({
     header: () => componentRef.current,
   });
 
-  //  const  calcualte_bal=(curbal,cBalance)=>{
-  //     let tmp=curbal +cBalance
-  //     setcurrent_bal(tmp)
-  //     return tmp
-
-  //   }
+  
   const calBalance = (cBalance, amount, sign,i) => {
-    // cBalance=parseFloat(cBalance)
+  
  
  
   
@@ -274,20 +242,20 @@ const Customer = ({
     
     let temp=amount;
     
-    cBalance = parseFloat(cBalance);
+    cBalance = parseFloat(cBalance?.split(",").join(""));
     let tempAmt = parseFloat(amount);
 
     sign === "-" && (cBalance -= tempAmt);
     sign === "+" && (cBalance += tempAmt);
 
-    sign === "+" && (temp += amount);
-    sign === "-" && (temp -= amount);
+    
 
     // return cBalance.toFixed(2)
-    sign === "+" && (finalbal+= amount);
-    sign === "-" && (finalbal-= amount);
     
-    currentBalance=cBalance;
+    
+    currentBalance=parseFloat(cBalance).toLocaleString(undefined,{
+      minimumFractionDigits:2
+    });
    
     current_bal.push(cBalance.toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -299,16 +267,8 @@ const Customer = ({
   
 
   const handleSubmit = () => {
-    const formData1 = {
-      payment_account_id: payment_account_id,
-      from_date: "2021-01-03",
-      to_date: "2021-03-22",
-    };
-    var sumdebit=0.0;
-    var sumcredit=0.0;
-    // formData.append('payment_account_id',payment_account_id)
-    // formData.append('from_date',moment(from_date).format('YYYY-MM-DD'))
-    // formData.append('to_date',moment(to_date).format('YYYY-MM-DD'))
+    
+   
     
     if(payment_account_id==="All")
     {
@@ -335,30 +295,24 @@ const Customer = ({
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
             sum += parseFloat(item[0].debit);
-            sumdebit+=parseFloat(item[0].amount)
+            
           }
           if (item[0].credit) {
             sum1 += parseFloat(item[0].credit);
-            sumdebit+=parseFloat(item[0].amount)
+            
           }
         });
-        if(data[0].opening_balance<=0.00)
-        {
-          setbalance(sum-(sum1+data[0].opening_balance*(-1)))
-        }
-        else
-        {
-          setbalance((sum+data[0].opening_balance*(-1))-sum1)
-        }
-        console.log(sum1)
+       
+       
+        
         setfrom_date(new Date())
         setto_date(new Date())
         setpayment_account_id('')
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
 
-        settdate(data[0].to_date);
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].name);
@@ -382,7 +336,7 @@ const Customer = ({
         const myArr = Object.values(data[0].data).sort(
           (a, b) => new Date(a[0].date) - new Date(b[0].date)
         );
-          console.log(data)
+         
         setstatements(myArr);
         setarr_length(Object.keys(myArr).length);
       
@@ -393,32 +347,23 @@ const Customer = ({
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
             sum += parseFloat(item[0].debit);
-            sumdebit+=parseFloat(item[0].amount)
+           
             
            
           }
           if (item[0].credit) {
             sum1 += parseFloat(item[0].credit);
-            sumcredit+=parseFloat(item[0].amount)
+            
             
           }
           
         });
-        if(data[0].opening_balance<0.00)
-        {
-          setbalance(sumdebit-(sumcredit+data[0].opening_balance*(-1)))
-        }
-        else
-        {
-          setbalance((sumdebit+data[0].opening_balance*(-1))-sumcredit)
-        }
-        // setfrom_date(new Date())
-        // setto_date(new Date())
-        // setpayment_account_id('')
+        
+        
         setdsum(sum);
         setcsum(sum1);
-        setfdate(data[0].from_date);
-        settdate(data[0].to_date);
+        setfdate(moment(data[0].from_date).format('DD-MMM-YYYY'));
+        settdate(moment(data[0].to_date).format('DD-MMM-YYYY'));
 
         setcredit_days(data[0].credit_days);
         setcname(data[0].name);
@@ -436,23 +381,11 @@ const Customer = ({
   };
 
   let currentBalance = 0;
-  let arr=[];
-  let curbal = 0.0;
   let osum = parseFloat(opening_balance).toLocaleString(undefined, {
     minimumFractionDigits: 2,
   });
-  let calin_sum = parseFloat(opening_balance).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-  });
-  let {
-    orderNo,
-    buyer,
-    seller,
-    item: invoiceItemList = [],
-    status,
-    vat,
-    date,
-  } = state;
+  
+  
 
   return (
     <div className="m-sm-30">
@@ -513,7 +446,7 @@ const Customer = ({
                 size="small"
                 autoOk={true}
                 value={from_date}
-                format="MMMM dd, yyyy"
+                format="dd MMMM yyyy"
                 onChange={handleDateChange}
               />
             </MuiPickersUtilsProvider>
@@ -530,7 +463,7 @@ const Customer = ({
                 size="small"
                 autoOk={true}
                 value={to_date}
-                format="MMMM dd, yyyy"
+                format="dd MMMM yyyy"
                 onChange={handleDateChange1}
               />
             </MuiPickersUtilsProvider>
@@ -647,7 +580,7 @@ const Customer = ({
                           <TableCell
                             className="pl-2"
                             align="left"
-                            colSpan={4}
+                            colSpan={3}
                             style={{
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
@@ -661,7 +594,7 @@ const Customer = ({
                           <TableCell
                             className="pr-0 capitalize"
                             align="center"
-                            rowSpan={2}
+                            rowSpan={3}
                             colSpan={2}
                             style={{
                               border: "1px solid #ccc",
@@ -725,16 +658,7 @@ const Customer = ({
                           >
                             {tdate}
                           </TableCell>
-                          <TableCell
-                            className="pl-2 capitalize"
-                            align="left"
-                            style={{
-                              border: "1px solid #ccc",
-                              wordBreak: "break-word",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          ></TableCell>
+                          
                         </TableRow>
                         <TableRow
                           style={{
@@ -795,17 +719,8 @@ const Customer = ({
                           >
                             {(current_bal.slice(current_bal.length-1))}
                           </TableCell>
-                          <TableCell
-                            className="pl-2 capitalize"
-                            align="left"
-                            style={{
-                              border: "1px solid #ccc",
-                              wordBreak: "break-word",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          ></TableCell>
-                          <TableCell
+                         
+                          {/* <TableCell
                             className="pl-2 capitalize"
                             align="left"
                             style={{
@@ -816,10 +731,11 @@ const Customer = ({
                             }}
                           >
                             
-                          </TableCell>
-                          <TableCell
+                          </TableCell> */}
+                          {/* <TableCell
                             className="pr-0 capitalize"
                             align="center"
+                            colspan={2}
                             style={{
                               border: "1px solid #ccc",
                               wordBreak: "break-word",
@@ -828,7 +744,7 @@ const Customer = ({
                             }}
                           >
                           
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       </Table>
                     </div>
@@ -887,7 +803,7 @@ const Customer = ({
                                 fontColor: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
-                                width:300
+                                width:200
                               }}
                               align="center"
                             >
@@ -900,7 +816,7 @@ const Customer = ({
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
                                 color: "#fff",
-                                width: 130,
+                                width: 80,
                                 fontWeight: 1000,
                                 fontSize: 16,
                               }}
@@ -913,7 +829,7 @@ const Customer = ({
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 130,
+                                width: 80,
                                 color: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
@@ -927,7 +843,7 @@ const Customer = ({
                               style={{
                                 border: "1px solid #ccc",
                                 fontFamily: "Calibri",
-                                width: 110,
+                                width: 80,
                                 color: "#fff",
                                 fontWeight: 1000,
                                 fontSize: 16,
@@ -963,7 +879,7 @@ const Customer = ({
                             
                             <TableCell
                               className="pl-2 capitalize"
-                              align="left"
+                              align="center"
                               style={{
                                 border: "1px solid #ccc",
                                 wordBreak: "break-word",
@@ -972,7 +888,7 @@ const Customer = ({
                               }}
                               colspan={3}
                             >
-                              --
+                              ---
                             </TableCell>
                             <TableCell
                               className="pl-2 capitalize"
@@ -1084,13 +1000,13 @@ const Customer = ({
                                     fontSize: 16,
                                   }}
                                 >
-                                  {moment(item[0].date).format("YYYY-MM-DD")}
+                                  {moment(item[0].date).format("DD-MMM-YYYY")}
                                 </TableCell>
 
                                 
                                 <TableCell
                                   className="pl-2 capitalize"
-                                  align="left"
+                                  align="center"
                                   style={{
                                     border: "1px solid #ccc",
                                     wordBreak: "break-word",
@@ -1099,7 +1015,7 @@ const Customer = ({
                                   }}
                                   colspan={3}
                                 >
-                                  --
+                                  ---
                                 </TableCell>
                                 <TableCell
                                   className="pl-2 capitalize"
@@ -1124,7 +1040,10 @@ const Customer = ({
                                     fontSize: 16,
                                   }}
                                 >
-                                  {item[0].debit === null ? "" : Math.abs(item[0].debit)}
+                                  {item[0].debit === null ? "" : parseFloat(item[0].debit).toLocaleString(undefined,{
+                                    minimumFractionDigits:2
+                                  })}
+                                  
                                 </TableCell>
                                 <TableCell
                                   className="capitalize"
@@ -1137,7 +1056,9 @@ const Customer = ({
                                 >
                                   {item[0].credit === null
                                     ? ""
-                                    : Math.abs(item[0].credit)}
+                                    : parseFloat(item[0].credit).toLocaleString(undefined,{
+                                      minimumFractionDigits:2
+                                    })}
                                 </TableCell>
                                 {item[0].debit&&(<TableCell
                                   className="pl-0 capitalize"
@@ -1278,7 +1199,7 @@ const Customer = ({
                               }}
                             >
                              
-                              {finalbal}
+                              {currentBalance}
                             </TableCell>
                            
                              
@@ -1297,76 +1218,14 @@ const Customer = ({
                             pageBreakInside: "avoid",
                           }}
                         >
-                          <td
-                            className="pr-0 capitalize"
-                            align="left"
-                            style={{ fontFamily: "Calibri", fontSize: 16 }}
-                          >
-                            Accounts Dept.
-                          </td>
+                         
 
-                          <td
-                            className="pr-0 capitalize"
-                            align="left"
-                            style={{ fontFamily: "Calibri", fontSize: 16 }}
-                          >
-                            Finance Dept.
-                          </td>
+                          
                         </tr>
                       </Table>
                     </div>
 
-                    <div className="px-4 mb-2 pl-4 pt-8 flex justify-between">
-                      <Table
-                        style={{ width: "100%", fontSize: 12, border: "none" }}
-                        className="pl-4"
-                      >
-                        <TableRow
-                          style={{
-                            border: "1px solid #ccc",
-                            pageBreakInside: "avoid",
-                          }}
-                        >
-                          <TableCell
-                            className="pr-0"
-                            align="center"
-                            colSpan={1}
-                            style={{
-                              border: "1px solid #ccc",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          >
-                            Bank Name
-                          </TableCell>
-                          <TableCell
-                            className="pr-0"
-                            align="center"
-                            colSpan={1}
-                            style={{
-                              border: "1px solid #ccc",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                            }}
-                          >
-                            Account No.
-                          </TableCell>
-                          <TableCell
-                            className="pr-0"
-                            align="center"
-                            colSpan={1}
-                            style={{
-                              border: "1px solid #ccc",
-                              fontFamily: "Calibri",
-                              fontSize: 16,
-                              
-                            }}
-                          >
-                            IBAN NO.
-                          </TableCell>
-                        </TableRow>
-                      </Table>
-                    </div>
+                   
                     <br></br>
 
                     <div className="viewer__order-info px-4 mb-4 flex justify-between">
