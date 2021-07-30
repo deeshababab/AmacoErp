@@ -3,22 +3,13 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
   Divider,
-  Switch,
-  IconButton,
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { getVendorList } from "./Rfqformservice";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
-import { Icon, MenuItem } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+
+import {  MenuItem } from "@material-ui/core";
 import Swal from "sweetalert2";
-import { resetWarningCache } from "prop-types";
-import { makeStyles } from '@material-ui/core/styles';
 import url from "../../invoice/InvoiceService"
 
 const AnalysisForm = ({ uid, open, handleClose }) => {
@@ -40,11 +31,7 @@ const AnalysisForm = ({ uid, open, handleClose }) => {
     setanalysisInfo(temp);
   };
   const [customerList, setCustomerList] = useState([]);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "none" // arbitrary value
-    }
-  };
+ 
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
 

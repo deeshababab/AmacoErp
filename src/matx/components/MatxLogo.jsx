@@ -3,8 +3,8 @@ import useSettings from 'app/hooks/useSettings';
 import logo from "./logo.png";
 
 const MatxLogo = ({className}) => {
-  const { settings } = useSettings();  
-  const theme = settings.themes[settings.activeTheme];
+  // const { settings } = useSettings();  
+  // const theme = settings.themes[settings.activeTheme];
   
   return (
     <img src={logo} style={{width: "150px"}}></img>

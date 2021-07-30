@@ -44,7 +44,7 @@ const SimpleMuiTable = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "350px",
+    width: "500px",
  }
  const columnStyleWithWidth1 = {
   top: "0px",
@@ -224,8 +224,15 @@ const columns = [
       options: {
          
           filter: true,
+          customHeadRender: ({index, ...column}) =>{
+            return (
+              <TableCell key={index} style={{width:50}}>  
+                <span style={{paddingLeft:15}}>S.NO.</span>
+              </TableCell>
+            )
+         },
+        },
       },
-  },
   {
     name: "name", // field name in the row object
     label: "Name",
@@ -234,8 +241,8 @@ const columns = [
        
       customHeadRender: ({index, ...column}) =>{
         return (
-          <TableCell key={index} style={columnStyleWithWidth}>  
-            <span style={{paddingLeft:15}}>Name</span>
+          <TableCell key={index} style={{width:200,wordBreak: "break-word",}}>  
+            <span style={{paddingLeft:15}}>NAME</span>
           </TableCell>
         )
      },
@@ -250,7 +257,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} style={columnStyleWithWidth}>  
-                <span style={{paddingLeft:15}}>Description</span>
+                <span style={{paddingLeft:15}}>DESCRIPTION</span>
               </TableCell>
             )
          },
@@ -284,7 +291,7 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth1}>  
-            <span style={{paddingLeft:15}}>Category</span>
+            <span style={{paddingLeft:15}}>CATEGORY</span>
           </TableCell>
         )
      },
@@ -294,12 +301,24 @@ const columns = [
  
   {
     name: "id",
-    label: "Action",
+    label: "ACTION",
     options: {
-        filter: true,
+       
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-8">  
+              <span style={{paddingLeft:15}}>ACTION</span>
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
             return (
-              <span>
+              <div
+            style={{
+              textAlign: "right"
+            }}
+            className="pr-8"
+          >
             {/* <IconButton onClick={() => removeData(tableMeta.rowData[5])}>
                     <Icon color="error">delete</Icon>
             </IconButton>
@@ -311,10 +330,11 @@ const columns = [
             </Link> */}
             <Link to={"/singleproduct?id=" +tableMeta.rowData[5] }>
               <Tooltip title="View Product">
-                <Icon color="primary">arrow_forward</Icon>
+                <Icon color="primary" style={{transform: "rotate(270deg)",
+  transition: "all 0.25s ease-in-out"}}>arrow_drop_down_circle</Icon>
               </Tooltip>
             </Link>
-            </span>
+            </div>
             
             )
             
@@ -350,8 +370,8 @@ const columns = [
       <div className="viewer_actions px-4 flex justify-between">
           <Breadcrumb
             routeSegments={[
-              { name: "Product Category", path: "/product/viewsubcategory" },
-              { name: "Products" }
+              { name: "PRODUCT CATEGORY", path: "/product/viewsubcategory" },
+              { name: "PRODUCTS" }
             ]}
           />
           
@@ -363,7 +383,7 @@ const columns = [
            color="primary"
            variant="outlined">
           <Icon>add</Icon>
-          Add New
+          ADD NEW
         </Button>
         </Link>
         </div>
@@ -391,7 +411,7 @@ const columns = [
       
     
       <MUIDataTable
-                title={"Products"}
+                title={"PRODUCTS"}
                 data={
                  
                   userList.map((item, index) => {

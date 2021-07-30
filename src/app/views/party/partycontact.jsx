@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  IconButton,
   MenuItem,
   TextField
 } from "@material-ui/core";
@@ -30,7 +29,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
   const [prefix, setprefix] = useState('');
   const [loading, setloading] = useState(false);
   const [userList, setUserList] = useState([]);
-  const { ids } = useParams();
+
   
   
 
@@ -142,38 +141,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     
 
   };
-  const removeData = (id) => {
-    Swal.fire({
-      title: 'Are you sure you want to delete this category?',
-      text: 'Any products, services, or categories in it will be uncategorised.',
-      icon: 'danger',
-      showCancelButton: true,
-      customClass: {
-        zIndex: 1000
-      },
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`categories/${id}`)
-          .then(res => {
-            
-
-          })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          customClass:{
-            zIndex: 1000
-          },
-           title:'Cancelled'
-          
-          
-        })
-      }
-    })
   
-
-  }
 
   useEffect(() => {
     

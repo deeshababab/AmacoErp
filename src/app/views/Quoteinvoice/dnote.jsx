@@ -40,34 +40,20 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [isAlive, setIsAlive] = useState(true);
   const [state, setState] = useState(initialValues);
-  const [rfq, setrfq] = useState([]);
-  const [rdate, setrdate] = useState([]);
-  const [ddate, setddate] = useState('')
   const [cname, setcname] = useState('');
   var tempDate = new Date();
   const [qno, setqno] = useState('');
   const[pono,setpono]=useState('');
-  const [party_id, setparty_id] = useState('');
-  const [rfq_details, setrfqdetails] = useState([]);
   const [discounts, setdiscounts] = useState('0');
   const [proList, setproList] = useState([]);
   const [ProductList, setProductList] = useState([]);
-  const [validity,setvalidity] =useState('3 Days')
-  const [payment_terms,setpayment_terms] =useState('100 %Advance')
-  const [warranty,setwarranty] =useState('NA')
-  const [delivery_time,setdelivery_time] =useState('Within 2-3 Days from the Date of PO')
-  const [inco_terms,setinco_terms] =useState('DDP-Delivery Duty Paid To CATCO Office')
   const [discount,setdiscount] =useState('0')
-  const [ponum,setponum] =useState('')
   const [dstatus, setdstatus] = useState(false);
   const [is_partial, setis_partial] = useState(false);
-  const [is_complted, setis_complted] = useState(false);
-  let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  let arr=[];
+ 
 
   const generateRandomId = useCallback(() => {
     let tempId = Math.random().toString();
@@ -75,47 +61,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setState((state) => ({ ...state, id }));
   }, []);
 
-  const handleChange = (event,fieldName) => {
-    // setState({ ...state, ['discount']:event.target.value });
-    event.persist();
-   
-    // discount=subTotalCost-parseFloat(event.target.value * subTotalCost/100);
-    // vat= ((discount * 15) / 100).toFixed(2);
-    // GTotal=discount + vat;
-   
-    
-    // setState({ ...state, ['fieldname']:event.target.value });
-    let tempItemList = [...state.item];
-    setdstatus(true)
-    setdiscount(event.target.value)
-    setdiscounts(event.target.value)
-    
-    // setState({ ...state, ['vat']: vat });
-    // setState({ ...state, ['net_amount']: GTotal });
-    // setdstatus(true)
-    
-   
-
-  };
+  
   
 
-  const handleSellerBuyerChange = (event, fieldName) => {
-    event.persist();
-    setState({
-      ...state,
-      [fieldName]: {
-        ...state[fieldName],
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
+  
 
   const handleIvoiceListChange = (event, index) => {
     event.persist()
     let tempItemList = [...state.item];
     
     tempItemList.map((element, i) => {
-      let sum=0;
+    
       
       
       if (index === i) 
@@ -160,50 +116,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
   };
 
-  const addItemToInvoiceList = () => {
-    let tempItemList = [...state.item];
-    
-    tempItemList.push({
-      name: "",
-      unit: "",
-      price: "",
-      quotedescription: "",
-      qtotal:"",
-      qprice:"",
-      margin:""
-    });
-    setState({
-      ...state,
-      item: tempItemList,
-    });
-  };
+  
+  
 
-  const deleteItemFromInvoiceList = (index) => {
-    let tempItemList = [...state.item];
-    tempItemList.splice(index, 1);
-
-    setState({
-      ...state,
-      quote: tempItemList,
-    });
-  };
-
-  const handleDateChange = (rdate) => {
-    setState({
-      rdate: date
-    });
-  };
-  const expandData= (id) => {
-   
-    var filtered = proList.filter(a => a.id == id);
-    
-    setProductList(filtered)
-   
-  };
+  
+  
 
   const handleSubmit = () => {
     
-    // setState({ ...state, ['subTotalCost']: subTotalCost });
     setState({ ...state, loading: true });
     
     let tempState = { ...state };
@@ -211,9 +131,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     delete tempState.loading;
     let tempItemList =[...state.item];
 
-    // arr.push({
-    //   invoice_details:tempItemList,
-    // });
+    
     
     if(total_balance>0)
    {
@@ -237,12 +155,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
    
   
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
+    
     url.post('delivery-notes',json)
       .then(function (response) {
         
@@ -254,7 +167,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           text: 'Data saved successfully.',
         });
         history.push("/dnoteview")
-      //  window.location.href="../quoateview"
+     
       })
       .catch(function (error) {
         
@@ -270,10 +183,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
    
     url.get("products").then(({ data }) => {
       setproList(data)
-    // setState({
-    //     ...state,
-    //     item: data,
-    //   }); 
+    
     });
     
     url.get("sale-quotation/"+ id).then(({ data }) => {
@@ -281,7 +191,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setcname(data[0].party.firm_name)
       setqno(data[0].quotation_no)
       setpono(data[0].po_number)
-      // setrdate(data[0].requested_date)
+     
       
       setdiscount(data[0].discount_in_p)
      
@@ -304,35 +214,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   }, [id, isNewInvoice, isAlive, generateRandomId]);
 
   
-  // handleChange(evt) {
-  //   this.setState({
-  //     [evt.target.name]: evt.target.value,
-  //   });
-  // }
-
-  // useEffect(() => {
-  //   return () => setIsAlive(false);
-  // }, []);
+  
 
   let subTotalCost = 0;
   let GTotal = 0;
-  let discount1=0;
   let total_balance=0;
   let {
-    orderNo,
-    net_amount,
-    buyer,
-    seller,
+    
     item: invoiceItemList = [],
     quote:quoteList = [],
-    status,
     vat,
-    date,
-    currency,
     loading,
-    margin,
-    delivery_quantity,
-    balance
   } = state;
 
   return (
@@ -377,19 +269,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 {qno}
               </span>
             </h5>
-            {/* <p className="mb-4">Order Number</p> */}
-            {/* <TextValidator
-              label="Customer Name."
-              type="text"
-              size="small"
-              variant="outlined"
-              fullWidth
-              name="cname"
-              value={cname}
-              onChange={handleChange}
-              validators={["required"]}
-              errorMessages={["this field is required"]}
-            /> */}
+            
            <h5 className="font-normal capitalize">
               <strong>Company Name: </strong>{" "}
               <span>
@@ -397,37 +277,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               </span>
             </h5>
             
-            {/* <TextValidator
-                label="Buyer Address"
-                onChange={(event) => handleSellerBuyerChange(event, "buyer")}
-                type="text"
-                name="address"
-                size="small"
-                fullWidth
-                multiline={true}
-                rowsMax={4}
-                variant="outlined"
-                value={buyer ? buyer.address : null}
-                validators={["required"]}
-                errorMessages={["this field is required"]}
-              /> */}
+            
           </div>
           <div>
            
-            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                // id="mui-pickers-date"
-                label="Requested Date"
-                inputVariant="outlined"
-                type="text"
-                name="rdate"
-                value={rdate}
-                size="small"
-                fullWidth
-                onChange={rdate => setrdate(rdate)} 
-                
-              /> */}
-            {/* </MuiPickersUtilsProvider> */}
+            
             <div className="text-right">
               <h5 className="font-normal">
                 <strong>Due date: </strong>
@@ -445,25 +299,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               </h5>
 
             </div>
-            {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                margin="none"
-                // id="mui-pickers-date"
-                label="Due Date"
-                inputVariant="outlined"
-                type="text"
-                autoOk={true}
-                variant="outlined"
-                value={date}
-                size="small"
-                fullWidth
-                format="MMMM dd, yyyy"
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider> */}
+            
           </div>
         </div>
 
@@ -479,7 +315,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               <TableCell className="px-0" style={{width:'150px'}}>Delivered Qty</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Delivering Qty</TableCell>
               <TableCell className="px-0" style={{width:'150px'}}>Balance Qty</TableCell>
-              {/* <TableCell className="px-0">Action</TableCell> */}
             </TableRow>
           </TableHead>
 
@@ -491,7 +326,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               if(!dstatus)
               {
                 
-              // subTotalCost=parseInt(subTotalCost)+(parseInt(item.product[0].unit_price) * parseInt(item.quantity_required))
+              
   
               subTotalCost += parseFloat(item.total_amount) 
             
@@ -502,49 +337,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               {
                 
                 subTotalCost += parseFloat(item.total_amount)
-                // discount=subTotalCost-parseFloat(discounts * subTotalCost/100);
                 vat= (((subTotalCost-parseFloat(discounts * subTotalCost/100)) * 15) / 100).toFixed(2)
                 GTotal=((subTotalCost-parseFloat(discounts * subTotalCost/100))+ parseFloat(vat)).toFixed(2);
               }
-              // vat= (discount * 15) / 100
-              // GTotal=item.discount + item.vat;
               
               return (
                 <TableRow key={index}>
                   
-                  {/* <div className={classes.root}> */}
-                  
-      {/* <ExpansionPanel>
-     
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-          onClick={() => expandData(item.product_id)}
-        >
-          <Typography className={classes.heading}></Typography>
-        </ExpansionPanelSummary>
-     
-        <ExpansionPanelDetails
-         <TableRow>
-            <span>
-            {ProductList.map((item, index) => {
-              return (
-                <span>
-                <h6>{item.name}</h6>
-                <h6>{item.name}</h6>
-                <h6>{item.name}</h6>
-                <h6>{item.name}</h6>
-                </span>
-              )
-            })}
-            </span>
-          </TableRow>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-     */}
-      
-    {/* </div> */}
+                 
                 
                   <TableCell className="pl-sm-24 capitalize" align="left" style={{width:50}}>
                     {index + 1}
@@ -556,7 +356,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       label="description"
                      
                     
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       name="description"
                       variant="outlined"
@@ -570,7 +369,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="left" style={{width:70}}>
                     <TextValidator
                       label="UOM"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -583,7 +381,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize"  align="center" style={{width:'150px'}}>
                     <TextValidator
                       label="Quantity"
-                    //   onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
                       variant="outlined"
                       inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -602,7 +399,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="center" style={{width:'150px'}}>
                     <TextValidator
                       label="delivered quantity"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="number"
                       name="delivered_quantity"
                       align="center"
@@ -640,7 +436,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   <TableCell className="pl-0 capitalize" align="left">
                     <TextField
                       label="Balance Qty"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       variant="outlined"
                       size="small"
@@ -652,28 +447,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                   </TableCell>
                   
 
-                  {/* <TableCell className="pl-0 capitalize" align="left">
-                    {item.unit * item.price}
-                  </TableCell> */}
-       
-                  {/* <TableCell className="pl-0 capitalize" align="left">
-                    <Button onClick={() => deleteItemFromInvoiceList(index)}>
-                    <Icon color="error" fontSize="small">
-                        delete
-                      </Icon>
-                    </Button>
-                  </TableCell> */}
+                 
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
-        {/* <div className="flex justify-end px-4 mb-4">
-          <Button  className="mt-4"
-            color="primary"
-            variant="contained"
-            size="small" onClick={addItemToInvoiceList}>Add Item</Button>
-        </div> */}
+        
      
      <div className="flex justify-end px-4 mb-4">
     

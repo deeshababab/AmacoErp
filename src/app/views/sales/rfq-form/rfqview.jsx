@@ -36,7 +36,7 @@ const columnStyleWithWidth1 = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "400px",
+  width: "500px",
   wordBreak: "break-all",
 }
 
@@ -131,13 +131,13 @@ const SimpleMuiTable = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", // column title that will be shown in table
+      label: "S.NO.", // column title that will be shown in table
       options: {
        
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth}>  
-              <p style={{marginLeft:18}}>S.No.</p> 
+              <p style={{marginLeft:18}}>S.NO.</p> 
             </TableCell>
           )
        }
@@ -145,12 +145,12 @@ const SimpleMuiTable = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Company Name", // column title that will be shown in table
+      label: "COMPANY NAME", // column title that will be shown in table
       options : {
 				customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>Company Name</p> 
+              <p style={{marginLeft:18}}>COMPANY NAME</p> 
             </TableCell>
           )
        }
@@ -158,7 +158,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "name",
-      label: "RFQ Date",
+      label: "RFQ DATE",
       options : {
 				customBodyRender : (value, tableMeta, updateValue) => {
 					return (
@@ -171,19 +171,26 @@ const SimpleMuiTable = () => {
     },
     {
       name: "require_date",
-      label: "Bid Closing Date",
+      label: "BID CLOSING DATE",
       options: {
         filter: true,
       },
     },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:'right'}} className="pr-8">  
+              <p style={{marginLeft:18}}>ACTION</p> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <span>
+           <div style={{textAlign:'right'}} className="pr-8">
             <Link to={"/invoice/" + tableMeta.rowData[4]}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
@@ -194,7 +201,7 @@ const SimpleMuiTable = () => {
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+          </div>
 
           )
 
@@ -230,7 +237,7 @@ const SimpleMuiTable = () => {
       <div className="flex flex-wrap justify-between">
         <Breadcrumb
           routeSegments={[
-            { name: "Add new", path: "/sales/rfq-form/Rfqform" },
+            { name: "ADD NEW", path: "/sales/rfq-form/Rfqform" },
             { name: "RFQ" },
           ]}
         />
@@ -242,7 +249,7 @@ const SimpleMuiTable = () => {
               variant="outlined"
               color="primary"
             >
-              <Icon>add</Icon> Add New 
+              <Icon>add</Icon> ADD NEW 
           </Button>
           </Link>
         </div>

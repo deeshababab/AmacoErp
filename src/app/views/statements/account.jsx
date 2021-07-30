@@ -1097,7 +1097,12 @@ const Customer = ({
                                     border: "1px solid #ccc",
                                     fontFamily: "Calibri",
                                     fontSize: 16,
+                                    
+                                    
+                                   
+                                    
                                   }}
+                                 
                                 >
                                   {osum = calBalance(
                                         osum,

@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
-  Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  IconButton,
-  Fab,
   Tooltip
 } from "@material-ui/core";
 import history from "history.js";
 
 
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
+import { ValidatorForm } from "react-material-ui-form-validator";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
 import Swal from "sweetalert2";
 import url, {getcategories}from "../invoice/InvoiceService"
 
@@ -41,28 +29,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
   const [arr, setarr] = useState([]);
   const [marginList, setmarginList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("md");
 
@@ -77,9 +46,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
 
 
     }
-    // setcdescription('')
-    // setcname('')
-   
+    
 
     url.post('categories', frmdetails)
       .then(function (response) {
@@ -101,46 +68,12 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
 
   };
   const setmargin = (m,p,s) => {
-    // marginprice(m)
-    // pprice(p)
+    
     calcualteprice(p,m)
     handleClose()
       
   }
-  const removeData = (id) => {
-    Swal.fire({
-      title: 'Are you sure you want to delete this category?',
-      text: 'Any products, services, or categories in it will be uncategorised.',
-      icon: 'danger',
-      showCancelButton: true,
-      customClass: {
-        zIndex: 1000
-      },
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`categories/${id}`)
-          .then(res => {
-            
-
-          })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          customClass:{
-            zIndex: 1000
-          },
-           title:'Cancelled'
-          // 'Cancelled',
-          // 'Your imaginary file is safe :)',
-          // 'error',
-          
-        })
-      }
-    })
-
-  }
-
+  
   useEffect(() => {
     
     url.get(`product-quotation-detail/${productid}`).then(({ data }) => {
@@ -150,13 +83,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,productid,margin,pprice,mar
     });
     
   },[])
-  function getrow(e) {
-    url.get("products-in-category").then(({ data }) => {
-      if (isAlive) setmarginList(data);
-
-    });
-    // return () => setIsAlive(true);
-  }
+  
   const columns = [
     {
       name: "firm_name", // field name in the row object

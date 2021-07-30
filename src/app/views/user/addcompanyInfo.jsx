@@ -3,28 +3,17 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  TableCell,
-  IconButton,
   Tooltip,
-  TextField,
   StepLabel,
   Step,
   Stepper,
 } from "@material-ui/core";
-import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
+
 import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+
 import Swal from "sweetalert2";
-import url, {getcategories,capitalize_arr}from "../invoice/InvoiceService"
+import url, {capitalize_arr}from "../invoice/InvoiceService"
 
 const MemberEditorDialog = ({ cid, open, handleClose,catid,catList }) => {
   
@@ -41,52 +30,21 @@ const MemberEditorDialog = ({ cid, open, handleClose,catid,catList }) => {
   const [black_logo, setblack_logo] = useState();
   const [vat_no, setvat_no] = useState('');
   const [arr, setarr] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
   const [img1, setimg1] = useState("");
   const [img2, setimg2] = useState("");
   const [img3, setimg3] = useState("");
   const [id, setid] = useState();
   const formData = new FormData()
-  let logo_files=[];
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
-  const columnStyleWithWidth = {
-    top: "0px",
-    left: "0px",
-    zIndex: "100",
-    position: "sticky",
-    backgroundColor: "#fff",
-    width: "600px",
-    
-  }
-  const columnStyleWithWidth1 = {
-    top: "0px",
-    left: "0px",
-    zIndex: "100",
-    position: "sticky",
-    backgroundColor: "#fff",
-    width: "50px",
-    wordBreak: "break-word",
-    wordWrap: "break-word",
-    overflowWrap:"break-word",
-    hyphens:"auto"
-  }
+ 
 
 
 
-const resetform = () =>{
-  
-}
 const Delete_logo=(v)=>
 {
   if(v==="w")
@@ -254,9 +212,7 @@ const handlefileSelect = (event,f) => {
       console.log(arr)
     };
   
-    const handleReset = () => {
-      setActiveStep(0);
-    };
+    
   
   useEffect(() => {
     

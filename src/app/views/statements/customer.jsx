@@ -195,10 +195,10 @@ const Customer = ({
         var sum1 = 0.0;
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
+            sum += parseFloat(item[0].debit);
           }
           if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
+            sum1 += parseFloat(item[0].credit);
           }
         });
 
@@ -234,7 +234,7 @@ const Customer = ({
     
     
     cBalance = parseFloat(cBalance?.split(",").join(""));
-    let tempAmt = parseFloat(amount?.split(",").join(""));
+    let tempAmt = parseFloat(amount);
 
     sign === "+" && (cBalance += tempAmt);
     sign === "-" && (cBalance -= tempAmt);
@@ -281,10 +281,10 @@ const Customer = ({
         var sum1 = 0.0;
         Object.values(data[0].data).map((item, i) => {
           if (item[0].debit) {
-            sum += parseFloat(item[0].debit.split(",").join(""));
+            sum += parseFloat(item[0].debit);
           }
           if (item[0].credit) {
-            sum1 += parseFloat(item[0].credit.split(",").join(""));
+            sum1 += parseFloat(item[0].credit);
           }
         });
 
@@ -735,7 +735,7 @@ const Customer = ({
                               fontSize: 16,
                             }}
                           >
-                            45 Days
+                            {credit_days}Days
                           </TableCell>
                         </TableRow>
                       </Table>
@@ -1190,14 +1190,27 @@ const Customer = ({
                                   color:'blue'
                                 }}
                               >
-                               <small
+                               {moment(new Date(), "YYYY-MM-DD").diff(
+                                        moment(`${item[0].date}`, "YYYY-MM-DD"),
+                                        "days"
+                                      )>=item[0].credit_days?<small
                     className={clsx({
                       "border-radius-4  text-white px-2 py-2px bg-error": true,
                       
                     })}
                   >
                    OVERDUE
-                  </small>
+                  </small>:moment(new Date(), "YYYY-MM-DD").diff(
+                                        moment(`${item[0].date}`, "YYYY-MM-DD"),
+                                        "days"
+                                      )>(item[0].credit_days-5)&&<small
+                    className={clsx({
+                      "border-radius-4  text-white px-2 py-2px bg-secondary": true,
+                      
+                    })}
+                  >
+                   OVERDUE SOON
+                  </small>}
                               </TableCell>):
                               (<TableCell
                                 className="pl-0 capitalize"
@@ -1418,6 +1431,49 @@ const Customer = ({
                             }}
                           >
                             IBAN NO.
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          style={{
+                            border: "1px solid #ccc",
+                            pageBreakInside: "avoid",
+                          }}
+                        >
+                          <TableCell
+                            className="pr-0"
+                            align="center"
+                            colSpan={1}
+                            style={{
+                              border: "1px solid #ccc",
+                              fontFamily: "Calibri",
+                              fontSize: 16,
+                            }}
+                          >
+                            National Commercial Bank
+                          </TableCell>
+                          <TableCell
+                            className="pr-0"
+                            align="center"
+                            colSpan={1}
+                            style={{
+                              border: "1px solid #ccc",
+                              fontFamily: "Calibri",
+                              fontSize: 16,
+                            }}
+                          >
+                            6000000242200
+                          </TableCell>
+                          <TableCell
+                            className="pr-0"
+                            align="center"
+                            colSpan={1}
+                            style={{
+                              border: "1px solid #ccc",
+                              fontFamily: "Calibri",
+                              fontSize: 16,
+                            }}
+                          >
+                           SA3610000006000000242200
                           </TableCell>
                         </TableRow>
                       </Table>

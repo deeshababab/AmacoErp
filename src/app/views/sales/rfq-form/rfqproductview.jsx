@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Breadcrumb,ConfirmationDialog } from "matx";
-import Axios from "axios";
 import MUIDataTable from "mui-datatables";
 import { Icon,Card } from "@material-ui/core";
-import { Link,useParams } from "react-router-dom";
-import Swal from "sweetalert2";
-import history from "history.js";
+import { Link } from "react-router-dom";
+
 import url from "../../invoice/InvoiceService"
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import AnalysisForm from "./analysisform";
 import {
-    Table,
-    TableHead,
-    TableCell,
-    TableBody,
     IconButton,
-    TableRow,
     Button
 } from "@material-ui/core";
 
@@ -38,10 +31,7 @@ const SimpleMuiTable = () => {
    
   };
 
-  const handleDeleteUser = (user) => {
-    
-    setShouldOpenConfirmationDialog(true);
-  };
+ 
 
     useEffect(() => {
      
@@ -60,64 +50,15 @@ const SimpleMuiTable = () => {
       
         return () => setIsAlive(false);
     }, [isAlive]);
-    const [count, setCount] = useState(0);
-  
-    function getrow(e) {
-      url.get("parties").then(({ data }) => {
-        if (isAlive) setproductList(data);
-       
-    });
-    return () => setIsAlive(false);
-    }
-  function Increment(e) {
-    alert('3')
-  }
-  function Decrement() {
-    setCount(count - 1);
-  }
-   
-  const [click, setClick] = useState([]); 
     
-  const addNumber = () => { 
-    setClick([ 
-      ...click, 
-      { 
-        id: click.length, 
-        value: Math.random() * 10 
-      } 
-    ]); 
-  }; 
-  const removeData = (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this imaginary file!',
-      icon: 'danger',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`parties/${id}`)
-    .then(res => {
-        
-        getrow()
-        Swal.fire(
-          'Deleted!',
-          'Your imaginary file has been deleted.',
-          'success'
-        )
-        
-    })      
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Cancelled',
-          'Your imaginary file is safe :)',
-          'error'
-        )
-      }
-    })
+  
+    
+  
    
-}
+ 
+    
+ 
+  
 const columns = [
   {
       name: "id", // field name in the row object
@@ -147,24 +88,7 @@ const columns = [
         filter: true,
     },
 },
-  // {
-  //   name: "",
-  //   label: "Action",
-  //   options: {
-  //     filter: true,
-  //     customBodyRender: (value, tableMeta, updateValue) => {
-  //       return (
-  //         <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
-  //           <IconButton>
-  //             <Icon>search</Icon>
-  //           </IconButton>
-  //         </Link>
-
-  //       )
-
-  //     },
-  //   },
-// },
+  
 
 ];
 

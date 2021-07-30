@@ -663,7 +663,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       />
                     </TableCell>
                     <TableCell className="pl-0 capitalize" align="left" width={700}>
-                      <TextValidator
+                      <TextField
                         label="Description"
                         inputProps={{style: {textTransform: 'capitalize'}}}
                         type="text"
@@ -671,6 +671,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                         fullWidth
                         variant="outlined"
                         size="small"
+                        multiline
                         value={item.description?item.description : null}
                         onChange={(event) => handleIvoiceListChange(event, index)}
 

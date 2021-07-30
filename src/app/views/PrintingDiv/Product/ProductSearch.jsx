@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Icon, IconButton, Tooltip} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Axios from "axios";
-import Swal from "sweetalert2";
 import url, {getcategories}from "../../invoice/InvoiceService"
 import history from "history.js";
 
@@ -33,7 +31,6 @@ const useStyles = makeStyles(({ palette, ...theme }) => ({
 
 const MatxSearchBox = () => {
   const [open, setOpen] = useState(false);
-  const [search, setsearch] = useState('');
   const [catList, setcatList] = useState([]);
   const classes = useStyles();
 

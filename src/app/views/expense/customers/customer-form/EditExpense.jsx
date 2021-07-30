@@ -4,7 +4,7 @@ import Axios from "axios";
 import Swal from "sweetalert2";
 import NestedMenuItem from "material-ui-nested-menu-item";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
-import ImageZoom from "react-medium-image-zoom";
+// import ImageZoom from "react-medium-image-zoom";
 
 import history from "history.js";
 import {
@@ -22,9 +22,9 @@ import {
 } from "@material-ui/core";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import { useParams } from "react-router-dom";
-import FormDialog from "./paymentaccount";
+// import FormDialog from "./paymentaccount";
 import MemberEditorDialog from "./paymentaccount";
-import FormDialog1 from "./AddField";
+// import FormDialog1 from "./AddField";
 import MemberEditorDialog1 from "./AddField";
 import Checkbox from "@material-ui/core/Checkbox";
 import {
@@ -39,7 +39,7 @@ import url, {
 import FormLabel from "@material-ui/core/FormLabel";
 import { useDropzone } from "react-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
+
 const role = localStorage.getItem("role");
 
 const usestyles = makeStyles(({ palette, ...theme }) => ({
@@ -53,9 +53,7 @@ const usestyles = makeStyles(({ palette, ...theme }) => ({
 }));
 const CustomerForm = () => {
   let formData = new FormData();
-  const [tabIndex, setTabIndex] = useState(0);
   const [created_by, setcreated_by] = useState(1);
-  const [state, setState] = useState(initialValues);
   const [paid_date, setpaid_date] = useState(new Date());
   const { id } = useParams();
   const [paid_by, setpaid_by] = useState("");
@@ -91,8 +89,8 @@ const CustomerForm = () => {
   const [ref_billno, setref_billno] = useState();
   const [billtype, setbilltype] = useState(false);
   let arr;
-  const { getRootProps, isDragActive } = useDropzone({ accept: "image/*" });
-  const classes = usestyles();
+  // const { getRootProps, isDragActive } = useDropzone({ accept: "image/*" });
+  // const classes = usestyles();
   const handlebankSelect = (event, f) => {
     setclose(true);
     setindex1(f);
@@ -194,7 +192,6 @@ const CustomerForm = () => {
         setfield(data[0].column);
       });
 
-      console.log(i);
       setaccountstatus(true);
       setpayment_account_id(i);
       setpayment_account_name(name);
@@ -272,7 +269,7 @@ const CustomerForm = () => {
       );
 
       setdemo(data[0]?.account_category_id);
-      console.log(data[0]?.account_category_id);
+     
     });
     Axios.get(
       `${urlphp}/php_file/controller/fetchexpenseId.php?id=${eid}&eid=${id}`,
@@ -294,20 +291,25 @@ const CustomerForm = () => {
 
         const sum = result.map((item, index) => ({
           ...item,
-          date: arr[index].value,
-          text: arr[index].value,
-          value: arr[index].value,
+          date: arr[index]?.value,
+          text: arr[index]?.value,
+          value: arr[index]?.value,
         }));
-
-        setfield(sum);
+        console.log(sum);
+       
+        
       });
     });
+    // url.get(`singleExpenses/${id}`).then(( {data} ) => {
+    //  console.log(data)
+    // })
+   
 
     return setisAlive(true);
   }, [isAlive]);
 
   const handleSubmit = async (values, { isSubmitting, resetForm }) => {
-    console.log(field);
+   
     const newItem = new FormData();
     for (const key of Object.keys(files)) {
       newItem.append("item", files[key].file);
@@ -324,7 +326,7 @@ const CustomerForm = () => {
     formData.append("created_by", created_by);
     formData.append("account_category_id", payment_account_id);
     formData.append("paid_by", paid_by);
-    formData.append("payment_account_id", payment_account_id);
+    formData.append("payment_account_id", paid_by);
     formData.append("created_by", created_by);
 
     formData.append("status", "new");
@@ -333,22 +335,23 @@ const CustomerForm = () => {
     formData.append("bank_slip", bank_slip);
     formData.append("file_path", file_path);
     formData.append("id", id);
-    console.log(file_path);
+  
     files.map((answer, i) => {
       formData.append(`file${answer.column_id}`, answer.file);
       console.log(answer.file);
     });
 
-    Axios.post(`${urlphp}/php_file/controller/expenseupdate.php`, formData, {
-      method: "post",
-      headers: {
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-        "Access-Control-Max-Age": 86400,
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(({ data }) => {
-      console.log(data);
+    // Axios.post(`${urlphp}/php_file/controller/expenseupdate.php`, formData, {
+    //   method: "post",
+    //   headers: {
+    //     "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
+    //     "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
+    //     "Access-Control-Max-Age": 86400,
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // })
+    url.post('expenseUpdate',formData).then(({data}) => {
+    
       Swal.fire({
         title: "Success",
         type: "success",
@@ -516,7 +519,7 @@ const CustomerForm = () => {
                         value={payment_account_name}
                       />
                       {field.map((item, index) => {
-                        console.log(item.type);
+                       
                         return (
                           <span>
                             {item.type === "file" && (
@@ -845,14 +848,14 @@ const CustomerForm = () => {
                     row
                   >
                     <FormControlLabel
-                      value="yes"
+                      value="true"
                       control={<Radio color="secondary" />}
                       label="Yes"
                       onChange={() => settax(true)}
                       labelPlacement="end"
                     />
                     <FormControlLabel
-                      value="no"
+                      value="false"
                       control={<Radio color="secondary" />}
                       label="No"
                       onChange={() => settax(false)}

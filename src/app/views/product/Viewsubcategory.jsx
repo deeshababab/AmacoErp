@@ -402,7 +402,7 @@ const SimpleMuiTable = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "./Addproduct" },
-            { name: "Product Category" }
+            { name: "PRODUCT CATEGORY" }
           ]}
         />
       <div className="flex justify-end pr-4" >
@@ -426,7 +426,7 @@ const SimpleMuiTable = () => {
             setShouldOpenEditorDialog(true);
           }} >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
         </Button>
       </div>
       </div>
@@ -481,8 +481,9 @@ const SimpleMuiTable = () => {
                       <Icon align="left">add</Icon> Add Sub Category
                       </MenuItem>
                         {subcatList.map((item) => (
-                          <MenuItem value={item.id} key={item.id} onClick={() => selectcategory(item.id)}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.name}
+                          <MenuItem value={item.id} key={item.id} onClick={() => selectcategory(item.id)} style={{textAlign:"center"}} className="pl-4">
+                            {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+                            {item.name}
                           </MenuItem>
                         ))}
                       </Menu>

@@ -3,24 +3,14 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  IconButton,
 } from "@material-ui/core";
 import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
 import MenuItem from "@material-ui/core/MenuItem";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
 import { Icon,TextField} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories,getCustomerList}from "../invoice/InvoiceService"
+import url, {getCustomerList}from "../invoice/InvoiceService"
 
 const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
   const [state, setState] = useState({
@@ -41,7 +31,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
   const [paid_amount, setpaid_amount] = useState('');
   const [userList1, setUserList1] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
-  const [isAlivecat, setIsAlivecat] = useState('');
+ 
   
   const option =[
       {
@@ -57,29 +47,9 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid ,userList}) => {
         value:'bank transfer'
     }
   ]
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
 

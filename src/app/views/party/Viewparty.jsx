@@ -3,7 +3,6 @@ import { Breadcrumb,ConfirmationDialog } from "matx";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import FormDialog from "./partycontact"
 import MemberEditorDialog from "./partycontact"
 import Tooltip from '@material-ui/core/Tooltip';
 import url from "../invoice/InvoiceService";
@@ -17,7 +16,7 @@ const columnStyleWithWidth = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "300px",
+  width: "600px",
   wordBreak: "break-word",
   wordWrap: "break-word",
   overflowWrap:"break-word",
@@ -36,8 +35,7 @@ const columnStyleWithWidthSno = {
 const SimpleMuiTable = () => {
     const [isAlive, setIsAlive] = useState(true);
     const [userList, setUserList] = useState([]);
-    const [count, setCount] = useState(0);
-    const [click, setClick] = useState([]); 
+   
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
     const [
     shouldOpenConfirmationDialog,
@@ -67,12 +65,7 @@ const SimpleMuiTable = () => {
       
      
    // get the party Information
-    function getrow(e) {
-      url.get("parties").then(({ data }) => {
-        if (isAlive) setUserList(data);
-    });
-    return () => setIsAlive(false);
-    }
+    
   
    
   
@@ -86,12 +79,12 @@ const SimpleMuiTable = () => {
 const columns = [
   {
     name: "id",
-    label: "S.No.",
+    label: "S.NO.",
     options: {
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidthSno}>  
-          <span style={{marginLeft:15}}>S.No.</span> 
+          <span style={{marginLeft:15}}>S.NO.</span> 
         </TableCell>
       )
    },
@@ -99,44 +92,28 @@ const columns = [
 },
   {
     name: "firm_name",
-    label: "Company Name",
+    label: "COMPANY NAME",
     options: {
       
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <span style={{paddingLeft:15}}>Company Name</span>
+            <span style={{paddingLeft:15}}>COMPANY NAME</span>
           </TableCell>
         )
      },
   },
 },
 {
-  name: "address",
-  label: "",
-  options: {
-    customHeadRender: ({index, ...column}) =>{
-      return (
-        <TableCell key={index} style={columnStyleWithWidth}>  
-          <span style={{paddingLeft:15}}>Address</span>
-        </TableCell>
-      )
-   },
-},
-},
- 
-  
-
-{
   name: "vat_no",
-  label: "VAT No",
+  label: "VAT NO",
   options: {
       filter: true,
   },
 },
 {
-  name: "contact",
-  label: "Contact",
+  name: "vendor code",
+  label: "VENDOR CODE",
   options: {
       filter: true,
   },
@@ -146,22 +123,40 @@ const columns = [
  
   {
     name: "id",
-    label: "Action",
+    label: "ACTION",
     options: {
         
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}}  className="pr-8">  
+              <span >ACTION</span>
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
            
             return (
-              <span>
-              <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }>
+              
+              <div
+            style={{
+              textAlign: "end",
+              
+            }}
+            className="pr-8"
+          >
+              
+              <Link style={{textAlign:"right",paadingRight:20}} to={"/pages/view-customer?id=" +tableMeta.rowData[4] }>
             
                 <Tooltip title="Party contact details">
-                <Icon color="primary">arrow_forward</Icon>
+                <Icon color="primary" style={{transform: "rotate(270deg)",
+  transition: "all 0.25s ease-in-out",textAlign:"right"}}>arrow_drop_down_circle</Icon>
+                
                 </Tooltip>
             
             </Link>
-            </span>
+           </div>
+         
             
             
             )
@@ -181,7 +176,7 @@ const columns = [
           <Breadcrumb
             routeSegments={[
               // { name: "", path: "./Addparty" },
-              { name: "Party" }
+              { name: "PARTY" }
             ]}
           />
            {shouldOpenEditorDialog && (
@@ -207,7 +202,7 @@ const columns = [
             variant="outlined"
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
           </Link>
           
@@ -215,18 +210,18 @@ const columns = [
           </div>
           </div>
       <MUIDataTable
-                title={"Party"}
+                title={"PARTY"}
                 data={
                   userList.map((item, index) => {
-                 
+                    console.log(item)
                    
                       return [
           
                         ++index,
                         item.firm_name,
-                        (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+", \n":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
+                        // (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+", \n":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
                         item.vat_no,
-                        item.contact,
+                        item.party_code,
                         item.id,
                       ]
                     

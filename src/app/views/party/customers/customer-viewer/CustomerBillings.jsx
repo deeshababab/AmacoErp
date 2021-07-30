@@ -140,7 +140,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} width={50}>  
-                <span style={{marginLeft:15}}>S.No.</span> 
+                <span style={{marginLeft:15}}>S.NO.</span> 
               </TableCell>
             )
          },
@@ -148,7 +148,7 @@ const columns = [
   },
   {
     name: "id", // field name in the row object
-    label: "Name", // column title that will be shown in table
+    label: "NAME", // column title that will be shown in table
     options: {
        
         filter: true,
@@ -156,7 +156,23 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "Designation", // column title that will be shown in table
+  label: "DESIGNATION", // column title that will be shown in table
+  options: {
+     
+      filter: true,
+  },
+},
+// {
+//   name: "id", // field name in the row object
+//   label: "ADDRESS", // column title that will be shown in table
+//   options: {
+     
+//       filter: true,
+//   },
+// },
+{
+  name: "id", // field name in the row object
+  label: "CONTACT", // column title that will be shown in table
   options: {
      
       filter: true,
@@ -164,40 +180,38 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "Address", // column title that will be shown in table
+  label: "EMAIL", // column title that will be shown in table
   options: {
      
       filter: true,
-  },
-},
-{
-  name: "id", // field name in the row object
-  label: "Contact", // column title that will be shown in table
-  options: {
-     
-      filter: true,
-  },
-},
-{
-  name: "id", // field name in the row object
-  label: "Email", // column title that will be shown in table
-  options: {
-     
-      filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} width={300}>  
+            <span style={{marginLeft:15}}>EMAIL</span> 
+          </TableCell>
+        )
+     },
   },
 },
 {
   name: "id",
-  label: "Action",
+  label: "ACTION",
   options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:'right'}} className="pr-10">  
+            <span style={{marginLeft:15}}>ACTION</span> 
+          </TableCell>
+        )
+     },
       customBodyRender: (value, tableMeta, updateValue) => {
        
           return (
-            <span>
+           <div className="pr-8" style={{textAlign:'right'}}>
           <Tooltip title="Edit contact details">
                     <Icon color="secondary" onClick={() => {
-                    setcontacts(tableMeta.rowData[6]);
+                    setcontacts(tableMeta.rowData[5]);
                   }}>edit</Icon>
                     
                     </Tooltip>
@@ -205,9 +219,9 @@ const columns = [
                  
                  
                   <Tooltip title="Delete contact details">
-                    <Icon color="error" onClick={() => removeData(tableMeta.rowData[6])}>delete</Icon>
+                    <Icon color="error" onClick={() => removeData(tableMeta.rowData[5])}>delete</Icon>
                   </Tooltip>
-          </span>
+          </div>
           
           )
           
@@ -218,8 +232,8 @@ const columns = [
   return (
     <div>
     <Card elevation={3}>
-    <div className="flex flex-wrap justify-between mb-6"> 
-    <h5 className="p-4">Contact</h5>
+    <div className="flex flex-wrap justify-between mb-0"> 
+    <h5 className="p-4 pt-8">CONTACT</h5>
       <div className="text-right">
                 
                 <Button
@@ -232,7 +246,7 @@ const columns = [
             }}
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
          
           </div>
@@ -305,7 +319,7 @@ data={
         ++index,
         item.fname,
         item.designation,
-        item.address,
+        // item.address,
         item.mobno,
         item.email,
         item.id,

@@ -3,22 +3,15 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
   IconButton,
 } from "@material-ui/core";
-import history from "history.js";
+
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import { Icon,MenuItem } from "@material-ui/core";
-import { Link,useParams } from "react-router-dom";
-import Axios from "axios";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import url, {getcategories,getProductList,getVendorList}from "../invoice/InvoiceService"
+import url, {getcategories}from "../invoice/InvoiceService"
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,partyids }) => {
   const [state, setState] = useState({
@@ -34,36 +27,15 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
   });
   const [cname, setcname] = useState('');
   const [cprice, setcprice] = useState('');
-  const [arr, setarr] = useState([]);
   const [userList, setUserList] = useState([]);
   const [customerList, setcustomerList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
   
-  const { id } = useParams();
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  
+
+  
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
 
@@ -175,23 +147,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
     })
    
   },[])
-  function getrow() {
-    if(!catid)
-    {
-    
   
-  }
-  else
-  {
-   
-    url.get(`product-price/${catid}`).then(({ data }) => {
-    //   setcname(data.name)
-      setcprice(data.price)
-      
-    });
-  }
-    // return () => setIsAlive(false);
-  }
   const columns = [
     {
       name: "name", // field name in the row object
@@ -238,7 +194,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
       <div className="p-6"  >
         
        
-         <h4 className="mb-5">Product Price</h4>   
+         <h5 className="mb-5">PRODUCT PRICE</h5>   
     
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>

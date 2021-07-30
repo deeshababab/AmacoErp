@@ -41,11 +41,11 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
           <Table className="whitespace-pre min-w-750">
             <TableHead>
               <TableRow>
-              <TableCell colSpan={2}>S.No.</TableCell>
-                <TableCell colSpan={3}>Item Details</TableCell>
-                <TableCell colSpan={2}>Quantity </TableCell>
-                <TableCell colSpan={4}>Description</TableCell>
-                <TableCell colSpan={1} className="p-0" align="center">Action</TableCell>
+              <TableCell colSpan={2}>S.NO.</TableCell>
+                <TableCell colSpan={3}>ITEM DETAILS</TableCell>
+                <TableCell colSpan={2}>QUANTITY </TableCell>
+                <TableCell colSpan={4}>DESCRIPTION</TableCell>
+                <TableCell colSpan={1} className="p-0" align="center">ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody> 
@@ -106,6 +106,7 @@ const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) 
                       inputProps={{style: {textTransform: 'capitalize'}}}
                       value={item.descriptionss?item.descriptionss :""}
                       onChange={handleChange}
+                      multiline
                       required
                     />
                   </TableCell>

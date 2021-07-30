@@ -2,25 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  IconButton,
 } from "@material-ui/core";
 import history from "history.js";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm  } from "react-material-ui-form-validator";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import MenuItem from "@material-ui/core/MenuItem";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
 import { Icon,TextField} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories, getCustomerList,getpaymentaccount}from "../invoice/InvoiceService";
+import url, {getpaymentaccount}from "../invoice/InvoiceService";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -45,12 +34,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
   const [payment_account_id, setpayment_account_id] = useState('');
   const [paymentaccount, setpaymentaccount] = useState([]);
 
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+
+  
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
@@ -87,54 +72,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
 
     })
   }
-  const removeData = (id) => {
-    Swal.fire({
-      title: 'Are you sure you want to delete?',
-      text: 'Any products, services will be uncategorised.',
-      icon: 'warning',
-      showCancelButton: true,
-      customClass: {
-        zIndex: 1000
-      },
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it',
-    }).then((result) => {
-      if (result.value) {
-        url.delete(`categories/${id}`)
-          .then(res => {
-            
-            getcategories().then(({ data }) => {
-              catList(data)
-      
-              });
-          })
-          handleClose()
-          Swal.fire({
-            customClass:{
-              zIndex: 1000
-            },
-             text:'Category Deleted Successfully',
-             icon: "success"
-            // 'Cancelled',
-            // 'Your imaginary file is safe :)',
-            // 'error',
-            
-          })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          customClass:{
-            zIndex: 1000
-          },
-           title:'Cancelled'
-          // 'Cancelled',
-          // 'Your imaginary file is safe :)',
-          // 'error',
-          
-        })
-      }
-    })
-
-  }
+ 
   const setcatid =()=>{
    
 
@@ -148,61 +86,12 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
        
 
     });
-    // url.get("http://dataqueuesystems.com/amaco/amaco/public/api/products-in-category").then(({ data }) => {
-    //   if (isAlive) setUserList(data);
     
-
-    // Object.keys(data).forEach(function(key) {
-
-    //   arr.push(data[key]);
-    //   setUserList(arr)
-    // });
-
-
-    // });
    
   },[])
   
   
-  const columns = [
-    {
-      name: "name", // field name in the row object
-      label: "Name", // column title that will be shown in table
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
-    },
-    {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-
   
-          return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
-            }
-            >
-              <Icon color="error">delete</Icon>
-            </IconButton>
-
-
-
-          )
-
-        },
-      },
-    },
-  ];
-
 
   return (
     <Dialog onClose={handleClose} open={open} className="px-6 pt-2 pb-4" style={{zIndex:1000}} fullWidth={fullWidth}

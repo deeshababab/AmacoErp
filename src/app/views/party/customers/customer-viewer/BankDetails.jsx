@@ -142,7 +142,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} width={50}>  
-                <span style={{marginLeft:15}}>S.No.</span> 
+                <span style={{marginLeft:15}}>S.NO.</span> 
               </TableCell>
             )
          },
@@ -150,7 +150,7 @@ const columns = [
   },
   {
     name: "id", // field name in the row object
-    label: "Bank Name", // column title that will be shown in table
+    label: "BANK NAME", // column title that will be shown in table
     options: {
        
         filter: true,
@@ -158,7 +158,7 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "Account Number", // column title that will be shown in table
+  label: "ACCOUNT NUMBER", // column title that will be shown in table
   options: {
      
       filter: true,
@@ -166,7 +166,7 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "IBAN Number", // column title that will be shown in table
+  label: "IBAN NUMBER", // column title that will be shown in table
   options: {
      
       filter: true,
@@ -174,7 +174,7 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "Bank Address", // column title that will be shown in table
+  label: "BANK ADDRESS", // column title that will be shown in table
   options: {
      
       filter: true,
@@ -182,13 +182,20 @@ const columns = [
 },
 {
   name: "id",
-  label: "Action",
+  label: "ACTION",
   options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} className="pr-10" style={{textAlign:'right'}}>  
+            <span style={{marginLeft:15}}>ACTION</span> 
+          </TableCell>
+        )
+     },
       customBodyRender: (value, tableMeta, updateValue) => {
        
           return (
-            <span>
+            <div className="pr-8" style={{textAlign:'right'}}>
           <Tooltip title="Edit Bank details">
                     <Icon color="secondary" onClick={() => {
                     setcontacts(tableMeta.rowData[5]);
@@ -200,7 +207,7 @@ const columns = [
                   <Tooltip title="Delete Bank details">
                     <Icon color="error" onClick={() => removeData(tableMeta.rowData[5])}>delete</Icon>
                   </Tooltip>
-          </span>
+          </div>
           
           )
           
@@ -212,8 +219,8 @@ const columns = [
     <div>
     
       <Card className="mt-6" elevation={3}>
-      <div className="flex flex-wrap justify-between mb-6"> 
-      <h5 className="p-2">Bank Details</h5>
+      <div className="flex flex-wrap justify-between mb-0"> 
+      <h5 className="p-4 pt-8">BANK DETAILS</h5>
       <div className="text-right">
                 
                 <Button
@@ -226,7 +233,7 @@ const columns = [
             }}
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
          
           </div>
@@ -280,6 +287,7 @@ const columns = [
       }
             </TableBody>
             </Table> */}
+               <Divider />
             <MUIDataTable
 
                 data={

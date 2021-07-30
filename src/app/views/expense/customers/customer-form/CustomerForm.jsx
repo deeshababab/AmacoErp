@@ -4,11 +4,11 @@ import Swal from "sweetalert2";
 import NestedMenuItem from "material-ui-nested-menu-item";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import history from "history.js";
-import { useDropzone } from "react-dropzone";
-import clsx from "clsx";
+// import { useDropzone } from "react-dropzone";
+// import clsx from "clsx";
 import axios from "axios";
 import moment from "moment";
-import ImageZoom from "react-medium-image-zoom";
+// import ImageZoom from "react-medium-image-zoom";
 import {
   Grid,
   RadioGroup,
@@ -23,9 +23,9 @@ import {
   Menu,
 } from "@material-ui/core";
 import { Breadcrumb, ConfirmationDialog } from "matx";
-import FormDialog from "./paymentaccount";
+
 import MemberEditorDialog from "./paymentaccount";
-import FormDialog1 from "./AddField";
+
 import MemberEditorDialog1 from "./AddField";
 import Checkbox from "@material-ui/core/Checkbox";
 import {
@@ -37,26 +37,25 @@ import url, {
   getpaymentaccount,
 } from "../../../../views/invoice/InvoiceService";
 import FormLabel from "@material-ui/core/FormLabel";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 
-const usestyles = makeStyles(({ palette, ...theme }) => ({
-  dropZone: {
-    transition: "all 350ms ease-in-out",
-    border: "2px dashed rgba(var(--body),0.3)",
-    "&:hover": {
-      background: "rgba(var(--body), 0.2) !important",
-    },
-  },
-}));
+// const usestyles = makeStyles(({ palette, ...theme }) => ({
+//   dropZone: {
+//     transition: "all 350ms ease-in-out",
+//     border: "2px dashed rgba(var(--body),0.3)",
+//     "&:hover": {
+//       background: "rgba(var(--body), 0.2) !important",
+//     },
+//   },
+// }));
 const role = localStorage.getItem("role");
 
 const CustomerForm = () => {
-  const { getRootProps, isDragActive } = useDropzone({ accept: "image/*" });
-  const classes = usestyles();
+ 
+  
   let formData = new FormData();
-  const [tabIndex, setTabIndex] = useState(0);
+
   const [created_by, setcreated_by] = useState(1);
-  const [state, setState] = useState(initialValues);
   const [paid_date, setpaid_date] = useState(new Date());
 
   const [paid_by, setpaid_by] = useState("");
@@ -87,10 +86,10 @@ const CustomerForm = () => {
   const [bank_slip, setbank_slip] = useState();
   const [ref_billno, setref_billno] = useState();
   const [company, setcompany] = useState(false);
-  const [company_name, setcompany_name] = useState("");
   const [isAlive, setisAlive] = useState(false);
-  const [message, setmessage] = useState("");
   const [billtype, setbilltype] = useState(false);
+  const [payee, setpayee] = useState(false);
+  const [payeename, setpayeename] = useState(null);
   const handlebankSelect = (event, f) => {
     setclose(true);
     setindex1(f);
@@ -253,6 +252,7 @@ const CustomerForm = () => {
     url.get("payment-account").then(({ data }) => {
       setpayment_account(data);
     });
+   
     return setisAlive(true);
   }, [isAlive]);
 
@@ -289,7 +289,7 @@ const CustomerForm = () => {
 
     formData.append("payment_account_id", paid_by);
     formData.append("created_by", created_by);
-
+    formData.append("payeename",payeename)
     formData.append("status", "new");
     formData.append("data", JSON.stringify(field));
     formData.append("bank_ref_no", bank_ref_no);
@@ -457,8 +457,8 @@ const CustomerForm = () => {
                         <MenuItem onClick={(e) => Addnewsubcat(null)}>
                           <Icon align="left">add</Icon>Add Expenses Category
                         </MenuItem>
-                        <Menu1 data={cat} inputProps={{ style: { marginLeft:5 ,justifyContent: 'space-around'} }}
-                        style={{justifyContent: 'space-around'}}></Menu1>
+                        <Menu1 data={cat} inputProps={{ style: {justifyContent: 'space-between'} }}
+                        style={{justifyContent: 'space-between'}}></Menu1>
                       </Menu>
                     </span>
                   </Button>
@@ -643,10 +643,16 @@ const CustomerForm = () => {
                       required
                       onChange={(e) => setpaid_by(e.target.value)}
                     >
+                      <MenuItem value="other" onClick={()=>setpayee(true)}>
+                          Other
+                      </MenuItem>
                       {payment_account.map((item, ind) => (
+                       
                         <MenuItem value={item.id} key={item}>
                           {item.name}
                         </MenuItem>
+                        
+                    
                       ))}
                       {/* </MenuItem> */}
                     </TextField>
@@ -661,6 +667,9 @@ const CustomerForm = () => {
                       autoComplete="off"
                       selected
                     >
+                      <Button variant="outlined" color="primary" type="submit" className="py-2">
+                    <Icon>save</Icon> Save
+                  </Button>
                       {payment_account.map((item, ind) => (
                         <MenuItem value={item.id} key={item}>
                           {item.name}
@@ -668,6 +677,16 @@ const CustomerForm = () => {
                       ))}
                     </TextField>
                   )}
+                  {payee&&(<TextField
+                      className="mb-4 w-full"
+                      label="Name"
+                      name="payeename"
+                      size="small"
+                      variant="outlined"
+                      value={payeename}
+                      autoComplete="none"
+                      onChange={(e) => setpayeename(e.target.value)}
+                    ></TextField>)}
                   {(paid_by === 11 || paid_by === 12) && (
                     <TextField
                       className="mb-4 w-full"

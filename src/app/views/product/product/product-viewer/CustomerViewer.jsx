@@ -43,8 +43,8 @@ const CustomerViewer = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Product View", path: `/product/viewproduct/${foo}` },
-            { name: "Category", path: "/product/viewsubcategory" },
-            { name: "Product Details" },
+            { name: "CATEGORY", path: "/product/viewsubcategory" },
+            { name: "PRODUCT DETAILS" },
           ]}
         />
       </div>
@@ -84,6 +84,6 @@ const CustomerViewer = () => {
   );
 };
 
-const tabList = ["Details", "", ""];
+const tabList = ["DETAILS", "", ""];
 
 export default CustomerViewer;

@@ -46,7 +46,8 @@ const setstatus=(id)=>{
   }).then((result) => {
     if (result.value) {
       const arr={
-        is_paid:true
+        is_paid:true,
+        id:id
       }
       url.put(`expense/${id}`,arr).then(({ data }) => {
         Swal.fire({
@@ -55,6 +56,8 @@ const setstatus=(id)=>{
           icon:'success',
           text: 'Updated successfully.',
         });
+
+        
         url.get("expense-paid").then(({ data }) => {
           
            setexpenseList(data);
@@ -190,7 +193,7 @@ const columns = [
         return [
           ++index,
           moment(item.paid_date).format('DD  MMM, YYYY '),
-          item.payment_account?.name,
+          item.payment_account[0]?.name,
           item.referrence_bill_no,
           item.paid_to,
           parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),

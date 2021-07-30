@@ -3,11 +3,9 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {  ConfirmationDialog } from "matx";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import FormDialog from "../../product/Addcategory"
 import MemberEditorDialog from "../../product/Addcategory";
 import history from "history.js";
 import {getVendorList,getmanufacturer, ApiKey} from "../../invoice/InvoiceService"
-import FormDialog1 from "../../../views/product/manufacture";
 import MemberEditorDialog1 from "../../../views/product/manufacture";
 
 // import { Button } from 'react-bootstrap';
@@ -21,7 +19,6 @@ import {
 } from "@material-ui/core";
 import "date-fns";
 import Axios from "axios";
-import Addparty from "./addparty"
 import url,{capitalize_arr} from "../../invoice/InvoiceService"
 
 
@@ -33,105 +30,102 @@ const SimpleForm = ({open, handleClose}) => {
   });
   const data = [
     {
-      value: "TON",
+      value: "TONNES",
       label: "TON-TONNES"
     },
     {
-      value: "TUB",
+      value: "TUBES",
       label: "TUB-TUBES"
     },
     {
-      value: "UNT",
+      value: "UNITS",
       label: "UNT-UNITS"
     },
     
     {
-      value: "YDS",
+      value: "YARDS",
       label: "YDS-YARDS"
     },
     {
-      value: "SET",
+      value: "SETS",
       label: "SET-SETS"
     },
     {
-      value: "SQF",
+      value: "SQUARE FEET",
       label: "SQF-SQUARE FEET"
     },
     {
-      value: "SQY",
+      value: "SQUAREYARDS",
       label: "SQY-SQUAREYARDS"
     },
     {
-      value: "THD",
+      value: "THOUSANDS",
       label: "THD-THOUSANDS"
     },
     
     {
-      value: "KLR",
+      value: "KILOLITER",
       label: "KLR-KILOLITER"
     },
     {
-      value: "KME",
+      value: "KILOMETRE",
       label: "KME-KILOMETRE"
     },
     {
-      value: "MLT",
+      value: "MILLILITRE",
       label: "MLT-MILLILITRE"
     },
     {
-      value: "MTR",
+      value: "METERS",
       label: "MTR-METERS"
     },
     {
-      value: "NOS",
+      value: "NUMBERS",
       label: "NOS-NUMBERS"
     },
     {
-      value: "PAC",
+      value: "PACKS",
       label: "PAC-PACKS"
     },
     {
-      value: "PCS",
-      label: "PCS-PACKS"
+      value: "PECIES",
+      label: "PCS-PECIES"
     },
     {
-      value: "PRS",
+      value: "PAIRS",
       label: "PAIRS"
     },
     {
-      value: "QTL",
+      value: "QUINTAL",
       label: "QTL-QUINTAL"
     },
     {
-      value: "ROL",
+      value: "ROLLS",
       label: "ROLLS"
     },
     {
-      value: "CMS",
+      value: "CENTIMETER",
       label: "CENTIMETER"
     },
     {
-      value: "CTN",
+      value: "CARTONS",
       label: "CTN-CARTONS"
     },
     {
-      value: "DOZ",
+      value: "DOZEN",
       label: "DOZ-DOZEN"
     },
     {
-      value: "DRM",
+      value: "DRUM",
       label: "DRM-DRUM"
     },
     {
-      value: "GMS",
+      value: "GRAMS",
       label: "GRAMS"
     },
+    
     {
-      value: "GMS",
-      label: "GRAMS"
-    },
-    {
-      value: "GRS",
+      value: "GROSS",
       label: "GRS-GROSS"
     },
     
@@ -161,11 +155,8 @@ const SimpleForm = ({open, handleClose}) => {
   const [description, setdescription] = useState('');
   const [unit_of_measue, setunit_of_measue] = useState('');
   const [unit_Price, setunit_Price] = useState('');
-  const [selectedOption, setselectedOption] = useState('');
-  const [selectedOption1, setselectedOption1] = useState('');
-  const [mrp, setmrp] = useState('');
-  const [real_price, setreal_price] = useState('');
-  const [category_id, setcategory_id] = useState('');
+   const [selectedOption1, setselectedOption1] = useState('');
+   const [real_price, setreal_price] = useState('');
   const [subcategory, setsubcategory] = useState('');
   const [ptype, setptype] = useState('');
   const [hsn, sethsn] = useState('');
@@ -176,56 +167,25 @@ const SimpleForm = ({open, handleClose}) => {
   const [ooptions1, setooptions] = useState([]);
   const [vendors, setvendors] = useState([]);
   const [manufacture, setmanufacture] = useState([]);
-  const [manufactureid, setmanufactureid] = useState();
-  const [customerList, setCustomerList] = useState([]);
+   const [customerList, setCustomerList] = useState([]);
   const { id } = useParams();
   const [productcatid, setproductcatid] = useState(id);
   const [loading, setloading] = useState(false);
-  const [, updateData] = useState([
-    { id: 1, name: "Pankaj 1" },
-    { id: 2, name: "Pankaj 2" },
-    { id: 3, name: "Pankaj 3" },
-    { id: 4, name: "Pankaj 4" }
-  ]);
-  const [division_id, setdivision_id] = useState([
-    { value: '1', label: 'Chocolate' },
-    { value: '2', label: 'Strawberry' },
-    { value: '3', label: 'Vanilla' },
-  ]);
+  
+  
   const product_type = [
     "Non inventory",
     "Inventory",
     "Service"
   ];
-  const styles = {
-    fontSize: 14,
-    color: 'blue',
-    width: 200
-  }
-  const handleChange = e => {
-    setSelectedValue(e.value);
-    
-  }
-  const handleChange1 = e => {
-    setSelectedValue1(e.value);
-   
-  }
+  
+  
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
     
 
   };
-  const pushData = () => {
-    history.push("/party/addparty")
-  }
-  const pushData1 = () => {
-    setShouldOpenEditorDialog1(true);
-  }
-
-  const handleDeleteUser = (user) => {
-
-    setShouldOpenConfirmationDialog(true);
-  };
+  
 
   useEffect(() => {
     getVendorList().then(({ data }) => {
@@ -315,14 +275,7 @@ const SimpleForm = ({open, handleClose}) => {
     }
     })
   }
-  function cancelform() {
-    // window.location.href="./Viewproduct"
-    // getcategories().then(({ data }) => {
-            
-    
-    // });
-    // history.push(`/product/Viewproduct/${id}`)
-  }
+  
 
   function getcategory(e) {
     url.get("products-in-category").then(({ data }) => {
@@ -330,9 +283,7 @@ const SimpleForm = ({open, handleClose}) => {
     });
   }
 
-  const handleDateChange = (date) => {
-    setState({ ...state, date });
-  };
+  
   const resetform = () => {
     setunit_Price('');
     setunit_of_measue('');
@@ -349,19 +300,7 @@ const SimpleForm = ({open, handleClose}) => {
 
 
 
-  const {
-    username,
-    firstName,
-    creditCard,
-    mobile,
-    password,
-    confirmPassword,
-    gender,
-    date,
-    email,
-    Firm_Name,
-    optionss,
-  } = state;
+  
 
   return (
     
@@ -370,7 +309,7 @@ const SimpleForm = ({open, handleClose}) => {
         <Grid container spacing={6}>
         
           <Grid item lg={6} md={6} sm={12} xs={12}>
-          <h6>Product Details</h6>
+          <h6>PRODUCT DETAILS</h6>
             <TextValidator
               className="mb-4 w-full"
               label="Product Name"

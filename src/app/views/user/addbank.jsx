@@ -2,30 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  IconButton,
-  MenuItem,
   TextField
 } from "@material-ui/core";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import { getInvoice} from "../../../app/views/invoice/InvoiceService";
-import MUIDataTable from "mui-datatables";
+import { ValidatorForm, } from "react-material-ui-form-validator";
+
 import { Icon } from "@material-ui/core";
-import { Link, useParams} from "react-router-dom";
-import Axios from "axios";
 import Swal from "sweetalert2";
-import url,{getparties,capitalize_arr} from "../invoice/InvoiceService"
-const prefixs = [
-  { value: 'Mr', label: 'Mr' },
-  { value: 'Mrs', label: 'Mrs' },
-  { value: 'Ms', label: 'Ms' }
-];
+import url,{capitalize_arr} from "../invoice/InvoiceService"
+
 const MemberEditorDialog = ({ bid, open, handleClose,contactid,customercontact}) => {
  
   const [account_no, setaccount_no] = useState('');
@@ -33,11 +17,7 @@ const MemberEditorDialog = ({ bid, open, handleClose,contactid,customercontact})
   const [bank_name, setbank_name] = useState('');
   const [iban_no, setiban_no] = useState('');
   const [isAlive, setIsAlive] = useState(true);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
   
   const [fullWidth, setFullWidth] = React.useState(true);

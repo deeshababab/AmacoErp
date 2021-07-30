@@ -11,8 +11,8 @@ class BasicForm extends Component {
         <div  className="mb-sm-30">
           <Breadcrumb
             routeSegments={[
-              { name: "Party", path: "./Viewparty" },
-              { name: "Party Entry" }
+              { name: "PARTY", path: "./Viewparty" },
+              { name: "PARTY ENTRY" }
             ]}
           />
         </div>

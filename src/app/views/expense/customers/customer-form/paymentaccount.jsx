@@ -3,23 +3,16 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
   Divider,
-  Switch,
   TableCell,
   IconButton,
 } from "@material-ui/core";
-import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 // import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
 import Swal from "sweetalert2";
-import url, {getcategories,getpaymentaccount,getpaymentaccountcategory}from "../../../../views/invoice/InvoiceService"
+import url, {getpaymentaccount,getpaymentaccountcategory}from "../../../../views/invoice/InvoiceService"
 
 const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,setcat}) => {
   
@@ -27,12 +20,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,accounttype,catid,catname,s
   const [cdescription, setcdescription] = useState('');
   const [catList, setcatList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
-
+ 
   
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");

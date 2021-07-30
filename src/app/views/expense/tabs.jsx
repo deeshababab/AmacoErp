@@ -5,23 +5,18 @@ import { Breadcrumb,ConfirmationDialog } from "matx";
 // import CustomerInvoice from "./CustomerInvoice";
 import SimpleMuiTable from "./receiptview";
 import Paymentview from "./paymentview";
-import { Link } from "react-router-dom";
-import FormDialog from "./addreceipt"
 import MemberEditorDialog from "./addreceipt";
-import FormDialog1 from "./addpayment";
 import MemberEditorDialog1 from "./addpayment";
 import url from "../../views/invoice/InvoiceService";
-import history from "history.js";
+
 
 const TabViewer = () => {
   
   const [tabIndex, setTabIndex] = useState(0);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const [shouldOpenEditorDialog1, setShouldOpenEditorDialog1] = useState(false);
-  const [receipt, setreceipt] = useState([]);
   // const [UserList, setUserList] = useState([]); 
-  const [userList, setUserList] = useState([]); 
-  const [IsAlive, setIsAlive] = useState(false);
+
   const [data1, setdata1] = useState([]); 
 
   const [
@@ -43,10 +38,7 @@ const TabViewer = () => {
 
   };
 
-  const handleDeleteUser1 = (user) => {
-
-    setShouldOpenConfirmationDialog1(true);
-  };
+  
   const handleDialogClose = () => {
     
     setShouldOpenEditorDialog(false);
@@ -74,10 +66,7 @@ const TabViewer = () => {
   },[])
   
 
-  const handleDeleteUser = (user) => {
-
-    setShouldOpenConfirmationDialog(true);
-  };
+  
 
   const handleTabChange = (e, value) => {
     setTabIndex(value);

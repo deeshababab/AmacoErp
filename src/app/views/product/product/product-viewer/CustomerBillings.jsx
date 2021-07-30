@@ -127,7 +127,7 @@ const columns = [
           customHeadRender: ({index, ...column}) =>{
             return (
               <TableCell key={index} width={50}>  
-                <span style={{marginLeft:15}}>S.No.</span> 
+                <span style={{marginLeft:15}}>S.NO.</span> 
               </TableCell>
             )
          },
@@ -135,7 +135,7 @@ const columns = [
   },
   {
     name: "id", // field name in the row object
-    label: "Party Name", // column title that will be shown in table
+    label: "PARTY NAME", // column title that will be shown in table
     options: {
        
         filter: true,
@@ -143,7 +143,7 @@ const columns = [
 },
 {
   name: "id", // field name in the row object
-  label: "Price", // column title that will be shown in table
+  label: "PRICE", // column title that will be shown in table
   options: {
      
       filter: true,
@@ -154,9 +154,19 @@ const columns = [
   label: "Action", // column title that will be shown in table
   options: {
     filter: true,
+    customHeadRender: ({index, ...column}) =>{
+      return (
+        <TableCell key={index} style={{textAlign:"right"}}
+        className="pr-8">  
+          <span style={{marginLeft:15}}>ACTION</span> 
+        </TableCell>
+      )
+   },
     customBodyRender: (value, tableMeta, updateValue) => {
         return (
-          <span>
+         <div style={{textAlign:"right"}}
+         className="pr-8"
+         >
         
         <IconButton>
                   <Tooltip title="Delete contact details">
@@ -165,7 +175,7 @@ const columns = [
                     >delete</Icon>
                   </Tooltip>
                   </IconButton>
-        </span>
+        </div>
         
         )
         
@@ -185,7 +195,7 @@ const columns = [
 
 
           <div className="flex flex-wrap justify-between pt-2 m-2"> 
-    <h5 className="pt-2">Price List</h5>
+    <h5 className="pt-2">PRICE LIST</h5>
       <div className="text-right">
                 
       <Button
@@ -197,7 +207,7 @@ const columns = [
             }}
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
          
           </div>

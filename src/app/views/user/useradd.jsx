@@ -2,25 +2,14 @@ import React, { useState, useEffect } from "react";
 import {
   Dialog,
   Button,
-  Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  IconButton,
 } from "@material-ui/core";
-import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import CurrencyTextField from '@unicef/material-ui-currency-textfield'
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
 import MenuItem from "@material-ui/core/MenuItem";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
-import { Icon,TextField} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+import { Icon,TextField,Radio, RadioGroup,
+  FormControlLabel,} from "@material-ui/core";
+import FormLabel from "@material-ui/core/FormLabel";
 import Swal from "sweetalert2";
-import url, {getcategories,getCustomerList,capitalize_arr}from "../invoice/InvoiceService"
+import url, {capitalize_arr}from "../invoice/InvoiceService"
 
 const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [state, setState] = useState({
@@ -41,52 +30,20 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [password, setpassword] = useState('');
   const [designation, setdesignation] = useState('');
   const [prefix, setprefix] = useState('');
+  const [usertype, setusertype] = useState(true);
   const [Roles, setRoles] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
-  const [isAlivecat, setIsAlivecat] = useState('');
   const [role_id, setrole_id] = useState('');
   const prefixs = [
     { value: 'Mr', label: 'Mr' },
     { value: 'Mrs', label: 'Mrs' },
     { value: 'Ms', label: 'Ms' }
   ];
-  const option =[
-      {
-          name:'Cash',
-          value:'cash'
-      },
-      {
-        name:'Check',
-        value:'check'
-    },
-    {
-        name:'Bank Transfer',
-        value:'bank transfer'
-    }
-  ]
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+  
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+  
+
+ 
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
   const telcode = [
@@ -206,6 +163,8 @@ if(userid)
          {!userid ?(<h4 className="mb-5">Add User</h4>):<h4 className="mb-5">Edit User</h4>}   
        
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
+       
+      
         <div className="flex">
                              <TextField
                                 className="mr-2"
@@ -296,7 +255,7 @@ if(userid)
                     ))}
                               </TextField>
                             <TextField
-                                className="mr-2"
+                                className="w-full mb-4"
                                 label="Contact Number"
                                 autoComplete="none"
                                 onChange={e => setcontact(e.target.value)}
@@ -363,6 +322,7 @@ if(userid)
             
             
           </div>
+         
           
         </ValidatorForm>
        

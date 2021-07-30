@@ -56,7 +56,7 @@ const CustomerActions = () => {
 }
   return (
     <Card elevation={3}>
-      <h5 className="p-4 m-0">Actions</h5>
+      <h5 className="p-4 m-0">ACTIONS</h5>
 
       <Divider className="mb-4" />
 

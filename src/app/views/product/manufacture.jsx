@@ -3,22 +3,15 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
   Divider,
-  Switch,
   IconButton,
 } from "@material-ui/core";
-import history from "history.js";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { useParams,Link } from "react-router-dom";
-import Axios from "axios";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import url, {getcategories,getmanufacturer,capitalize_arr}from "../invoice/InvoiceService"
+import url, {getmanufacturer,capitalize_arr}from "../invoice/InvoiceService"
 
 const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   const [state, setState] = useState({
@@ -34,32 +27,11 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   });
   const [cname, setcname] = useState('');
   const [cdescription, setcdescription] = useState('');
-  const [arr, setarr] = useState([]);
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
-  const { id } = useParams();
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
+ 
 
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+ 
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
 

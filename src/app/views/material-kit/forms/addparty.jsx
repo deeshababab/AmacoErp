@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 
   const telcode = [
+    { value: 973, label: "+91" },
     { value: 973, label: "+973" },
     { value: 965, label: "+965" },
     { value: 961, label:"+961"},
@@ -194,7 +195,7 @@ const resetform = () => {
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12}>
           
-            <h6>Contact Person Details</h6>
+            <h6>CONTACT PERSON DETAILS</h6>
             <div className="flex">
           <TextField
             className="mr-2"
@@ -300,7 +301,7 @@ const resetform = () => {
                                 size="small"
                                 variant="outlined"
                                 value={mobno||""}
-                                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                validators={['matchRegexp:^(0|[0-9][0-9]*)$']}
                                 errorMessages={["Number is not valid"]}
                                 
                                                               
@@ -337,7 +338,7 @@ const resetform = () => {
                                 variant="outlined"
                                 value={landline}
                                 type="mobile"
-                                validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                validators={['matchRegexp:^(0|[0-9][0-9]*)$']}
                                 errorMessages={["Number is not valid"]}
                                 
                             />
@@ -353,12 +354,13 @@ const resetform = () => {
                                 variant="outlined"
                                 value={address}
                                 type="mobile"
+                                multiline
                                 fullWidth
                                 
                             />
                             <br></br>
                             <br></br>
-                            <h6>Bank Details</h6>
+                            <h6>BANK DETAILS</h6>
                             <TextField
                                 className="mb-4 w-full"
                                 label="Bank Account Number"
@@ -412,7 +414,7 @@ const resetform = () => {
           </Grid>
 
           <Grid item lg={6} md={6} sm={12} xs={12}>
-          <h6>Company Details</h6>
+          <h6>COMPANY DETAILS</h6>
           <TextValidator
                     className="mb-4 w-full"
                     label="Company Name"
@@ -592,7 +594,7 @@ const resetform = () => {
                                 size="small"
                                 variant="outlined"
                                 value={contact}
-                                 validators={['matchRegexp:^(0|[1-9][0-9]*)$']}
+                                 validators={['matchRegexp:^(0|[0-9][0-9]*)$']}
                                  errorMessages={["Number is not valid"]}
                                 
 

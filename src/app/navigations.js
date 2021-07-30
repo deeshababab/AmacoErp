@@ -3,26 +3,26 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const navigations = [
   {
-    name: "Dashboard",
+    name: "DASHBOARD",
     path: "/dashboard/default",
     icon: "dashboard",
     
   },
   {
-    name: "Party",
+    name: "PARTY",
     path: "/party/viewparty",
     icon: "people",
     
   },
   {
-    name: "Product",
+    name: "PRODUCT",
     path: "/product/viewsubcategory",
     icon: "queue",
   },
   
   {
    
-        name: "Purchase",
+        name: "PURCHASE",
         icon: "monetization_on",
         children: [
           {
@@ -31,7 +31,7 @@ export const navigations = [
            
           },
           {
-            name: "Purchase Order",
+            name: "PURCHASE ORDER",
             path: "/Newinvoiceview",
             
           },
@@ -39,23 +39,23 @@ export const navigations = [
       ],
     },
     {
-        name: "Sales",
+        name: "SALES",
         icon:"trending_up",
         children: [
           {
-            name: "Quotation",
+            name: "QUOTATION",
             path: "/quoateview",
             // path: "/Newquoteanalysis",
             // icon:"folder",
           },
           {
-            name: "Delivery Note",
+            name: "DELIVERY NOTE",
             path: "/dnoteview",
             // path: "/Newquoteanalysis",
             // icon:"folder",
           },
           {
-            name: "Invoice",
+            name: "INVOICE",
             path: "/inv",
             // icon:"folder",
           },
@@ -64,30 +64,30 @@ export const navigations = [
   // ]
 },
 {
-  name: "Account",
+  name: "ACCOUNT",
   icon: "developer_board",
   children: [
     {
-  name: "Expenses",
+  name: "EXPENSES",
   icon: "attach_money",
   path: "/expenseview",
     },
     {
-      name: "Transaction",
+      name: "TRANSACTION",
       icon: "account_balance_wallet",
       path: "/transaction",
     },
     {
-      name: "Statements",
+      name: "STATEMENTS",
       icon: "book",
       children: [
         {
-      name: "Customer",
+      name: "CUSTOMER",
       icon: "people",
       path: "/customeraccount",
         },
         {
-          name: "Account",
+          name: "ACCOUNT",
           icon: "account_balance",
           path: "/account",
         },
@@ -100,23 +100,23 @@ export const navigations = [
   
 },
 {
-  name: "Report",
+  name: "REPORT",
   icon: "assignment",
   
   children: [
     {
       
-      name: "Tax",
+      name: "TAX",
       path: "/product/producthistory",
       icon:"monetization_on",
       children: [
         {
-          name: "Purchase",
+          name: "PURCHASE",
           path: "/purchasetax",
       
         },
         {
-          name: "Sales",
+          name: "SALES",
           path: "/salestax",
       
         }
@@ -129,7 +129,7 @@ export const navigations = [
       
     // },
     {
-      name: "Sales",
+      name: "SALES",
       icon:"graphic_eq",
       path: "/salesreport",
       
@@ -137,7 +137,7 @@ export const navigations = [
   ]
 },
 {
-  name: "Users",
+  name: "USERS",
   icon: "people",
   path: "/user",
 

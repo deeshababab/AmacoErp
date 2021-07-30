@@ -3,22 +3,19 @@ import {
   Dialog,
   Button,
   Grid,
-  FormControlLabel,
-  Divider,
-  Switch,
-  TableCell,
   IconButton,
   Tooltip,
+  TableCell,
+  TableHead
 } from "@material-ui/core";
-import history from "history.js";
+
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { getUserById, updateUser, addNewUser } from "../CRUD/TableService";
-import { generateRandomId } from "utils";
-import { withStyles } from "@material-ui/core";
+
+
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import Axios from "axios";
+
+
 import Swal from "sweetalert2";
 import url, {getcategories}from "../invoice/InvoiceService"
 
@@ -36,45 +33,15 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
   });
   const [cname, setcname] = useState('');
   const [cdescription, setcdescription] = useState('');
-  const [arr, setarr] = useState([]);
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [isAlivecat, setIsAlivecat] = useState('');
   const [loading, setloading] = useState(false);
-  var found=null;
-  const styles = {
-    customMaxWidth: {
-      maxWidth: "900px" // arbitrary value
-    }
-  };
-
-  const handleChange = (event, source) => {
-    event.persist();
-    if (source === "switch") {
-      setState({
-        ...state,
-        isActive: event.target.checked,
-      });
-      
-    }
-   
-    setState({
-      ...state,
-      [event.target.name]: event.target.value,
-    });
-    return () => setIsAlive(true);
-  };
+ 
+  
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState("sm");
-  const columnStyleWithWidth = {
-    top: "0px",
-    left: "0px",
-    zIndex: "100",
-    position: "sticky",
-    backgroundColor: "#fff",
-    width: "600px",
-    
-  }
+ 
   const columnStyleWithWidth1 = {
     top: "0px",
     left: "0px",
@@ -131,8 +98,8 @@ const resetform = () =>{
         
         const frmdetails = {
 
-          name: capitalize_arr(cname),
-          description:capitalize_arr(cdescription),
+          name: cname ?capitalize_arr(cname):null,
+          description:cdescription?capitalize_arr(cdescription):null,
           parent_id:catid
     
     
@@ -273,30 +240,59 @@ const resetform = () =>{
   const columns = [
     {
       name: "name", // field name in the row object
-      label: "Name", // column title that will be shown in table
+      label: "NAME", // column title that will be shown in table
       options: {
         filter: true,
       },
     },
     {
       name: "description",
-      lable:"Descriptions"
+      lable:"DESCRIPTIONS",
+      options: {
+        filter: true,
+        customHeadRender: ({ index, ...column }) => {
+          return (
+            
+            <TableCell key={index} >
+              <TableHead>DESCRIPTIONS</TableHead>
+            </TableCell>
+          
+          )
+
+        },
+      },
     },
     {
       name: "id",
       label: "Action",
       options: {
         filter: true,
+        customHeadRender: ({ index, ...column }) => {
+          return (
+            
+            <TableCell key={index} style={{textAlign: "right"}} className="pr-8">
+              <TableHead>ACTION</TableHead>
+            </TableCell>
+          
+          )
+
+        },
         customBodyRender: (value, tableMeta, updateValue) => {
 
   
           return (
+            <div
+            style={{
+              textAlign: "right"
+            }}
+            className="pr-8"
+          >
             <IconButton onClick={() => removeData(tableMeta.rowData[2])
             } style={{columnStyleWithWidth1}}
             >
               <Icon color="error">delete</Icon>
             </IconButton>
-
+            </div>
 
 
           )
@@ -312,10 +308,10 @@ const resetform = () =>{
     maxWidth={maxWidth}>
       <div className="p-6"  >
         {catid &&(
-        <h4 className="mb-5">Add Sub Category</h4>
+        <h5 className="mb-5">ADD SUB CATEGORY</h5>
         )}
         {!catid &&(
-         <h4 className="mb-5">Add Category</h4>   
+         <h5 className="mb-5">ADD CATEGORY</h5>   
         )}
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
@@ -402,7 +398,7 @@ const resetform = () =>{
         {/* <Divider className="mb-2" /> */}
         {!isAlive &&
           <MUIDataTable
-            title={"Category"}
+            title={"CATEGORY"}
             columns={columns}
             data={userList}
             options={{

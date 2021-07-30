@@ -39,8 +39,8 @@ const CustomerViewer = () => {
       <div className="flex flex-wrap justify-between pt-2">
         <Breadcrumb
           routeSegments={[
-            { name: "Party", path: "/party/viewparty" },
-            { name: "Party Details" },
+            { name: "PARTY", path: "/party/viewparty" },
+            { name: "PARTY DETAILS" },
           ]}
         />
         </div>
@@ -81,6 +81,6 @@ const CustomerViewer = () => {
   );
 };
 
-const tabList = ["Company Details", "Contact Details", "Bank Details","Invoices"];
+const tabList = ["COMPANY DETAILS", "CONTACT DETAILS", "BANK DETAILS","INVOICES"];
 
 export default CustomerViewer;

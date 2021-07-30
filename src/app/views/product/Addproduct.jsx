@@ -17,8 +17,8 @@ class BasicForm extends Component {
           <Breadcrumb
             routeSegments={[
 
-              { name: "Product Category", path: `/product/viewsubcategory` },
-              { name: "New Product" }
+              { name: "PRODUCT CATEGORY", path: `/product/viewsubcategory` },
+              { name: "NEW PRODUCT" }
             ]}
           />
         </div>

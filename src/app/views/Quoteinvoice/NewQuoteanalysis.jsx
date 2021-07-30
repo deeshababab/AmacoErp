@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
-  FormControlLabel,
   Divider,
-  RadioGroup,
-  Grid,
   Card,
   Select,
   MenuItem,
@@ -14,7 +11,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Link,
   InputLabel,
   Icon,
   TextField,
@@ -26,34 +22,23 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice,getCustomerList} from "../invoice/InvoiceService";
+import { getCustomerList} from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import axios from "axios";
-import url,{getVendorList,capitalize_arr} from "../invoice/InvoiceService";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import url from "../invoice/InvoiceService";
+
 // expandable table
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import IconButton from '@material-ui/core/IconButton';
+
 // import Select from 'react-select';
-import Axios from "axios";
 import Swal from "sweetalert2";
-import { Breadcrumb, ConfirmationDialog } from "matx";
+import { ConfirmationDialog } from "matx";
 import FormDialog from "../product/productprice";
 import MemberEditorDialog from "../product/productprice";
 import FormDialog_product from "../../views/product/Addproduct_popup"
 import MemberEditorDialog_product from "../../views/product/Addproduct_popup";
 import moment from "moment";
-import { sortedLastIndex } from "lodash";
-import ListSubheader from '@material-ui/core/ListSubheader';
-import { Autocomplete } from "@material-ui/lab";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield/dist/CurrencyTextField";
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -92,24 +77,16 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [discount,setdiscount] =useState('0')
   const [contactid,setcontactid] =useState('')
   const [dstatus, setdstatus] = useState(false);
-  const [price, setprice] = useState(0);
-  const [pprice, setpprice] = useState(0);
-  const [marginprice, setmarginprice] = useState(0);
   const [productid, setproductid] = useState('');
   const [indexset, setindex] = useState(0);
   const [productname, setproductname] = useState('');
   const [indexvalue, setindexvalue] = useState();
   const [CustomerList, setCustomerList] = useState([]);
   const [customercontact, setcustomercontact] = useState([]);
-  const [PriceList, setPriceList] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
-  const [pricestatus, setpricestatus] = useState(false);
-  const [fstatus, setfstatus] = useState(-1);
-  let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const [shouldOpenEditorDialogproduct, setshouldOpenEditorDialogproduct] = useState(false);
   const [Quote_date,setQuote_date]=useState(moment(new Date()).format('DD MMM YYYY'))
@@ -140,16 +117,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempItemList = [...state.item];
     
     tempItemList.map((element, i) => {
-      let sum=0;
+  
     
       if (index === i) 
       {
        
-        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+        
         element['src'] = URL.createObjectURL(event.target.files[0]);
         let files = event.target.files[0];
-        // formData.append('files',event.target.files[0])
         
     
         
@@ -183,13 +158,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       let tempItemList = [...state.item];
       
       tempItemList.map((element, i) => {
-        let sum=0;
       
         if (index === i) 
         {
          
-          // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-          // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+          
           element['src'] =null;
           element[`files`]=null;
          
@@ -215,7 +188,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
 
   const handleChange = (event,fieldName) => {
-    // setState({ ...state, ['discount']:event.target.value });
     event.persist();
    
     
@@ -224,9 +196,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     setdiscount(event.target.value)
     setdiscounts(event.target.value)
  
-    // setState({ ...state, ['vat']: vat });
-    // setState({ ...state, ['net_amount']: GTotal });
-    // setdstatus(true)
     
    
 
@@ -234,16 +203,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   
   
 
-  const handleSellerBuyerChange = (event, fieldName) => {
-    event.persist();
-    setState({
-      ...state,
-      [fieldName]: {
-        ...state[fieldName],
-        [event.target.name]: event.target.value,
-      },
-    });
-  };
+  
   const setremark = (event, index) => {
     event.persist()
     let tempItemList = [...state.item];
@@ -276,13 +236,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     let tempItemList = [...state.item];
     
     tempItemList.map((element, i) => {
-      let sum=0;
+     
     
       if (index === i) 
       {
        
-        // element['sell_price']=parseFloat((event.target.value * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-        // element['total_amount']=((element['sell_price'])*element.quantity_required).toFixed(2);
+       
         element[event.target.name] = event.target.value;
         
       
@@ -361,57 +320,10 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   })
   };
 
-  const handleDateChange = (rdate) => {
-    setState({
-      rdate: date
-    });
-  };
-  const calcualteprice = (pprice,marginprice) => {
-    let tempItemList = [...state.item];
-    tempItemList.map((element, i) => {
-      let sum=0;
-    
-      if (indexset === i) 
-      {
-        
-        
-        element['sell_price']=parseFloat((marginprice * pprice/100)+parseFloat(element['purchase_price'])).toFixed(2);
-        element['total_amount']=((element['sell_price'])*element.quantity).toFixed(2);
-        element['margin'] = marginprice;
-        // element['name'] = pprice;
-        
-        element['purchase_price']=pprice;
-
-        
-      
-
-      }
-      return element;
-      
-    });
-
-    setState({
-      ...state,
-      item: tempItemList,
-    });
   
-    // setprice(parseInt(event.target.value))
-  }
-  const priceset = (a,b,c) => {
-    url.get("parties/" + c).then(({ data }) => {
-
-      setproList(data[0].contacts);
-      
-    });
   
-  };
-  const expandData= (id) => {
-   
-    var filtered = proList.filter(a => a.id == id);
-    
-    setProductList(filtered)
-   
-  };
+  
+  
   const calcualtep = (event,index) => {
    
     let tempItemList = [...state.item];
@@ -422,8 +334,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       if (index === i) 
       {
         
-        // element.sell_price=parseFloat((element.margin * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
-        // element.total_amount=((element.sell_price)*element.quantity).toFixed(2);
+        
         element[event.target.name] = event.target.value;
         element.sell_price=parseFloat((element.margin * element.purchase_price/100)+parseFloat(element.purchase_price)).toFixed(2);
         element.total_amount=((element.sell_price)*element.quantity).toFixed(2);
@@ -443,7 +354,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
 
   const handleSubmit = () => {
     
-    // setState({ ...state, ['subTotalCost']: subTotalCost });
     setState({ ...state, loading: true });
     
     let tempState = { ...state };
@@ -451,9 +361,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     delete tempState.loading;
     let tempItemList =[...state.item];
 
-    // arr.push({
-    // Quotedetails:tempItemList,
-    // });
+    
     arr.quotation_details=tempItemList
     arr.discount_in_p=discount
     arr.total_value=parseFloat(subTotalCost).toFixed(2)
@@ -486,7 +394,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('ps_date',Quote_date)
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
-    // JSON.stringify(values.rfq_details)
    
     
     tempItemList.map((answer, i) => {  
@@ -508,7 +415,6 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         .then((result) => {
         history.push("/quoateview")
         })
-        // window.location.href="../quoateview"
       })
       .catch(function (error) {
         
@@ -603,55 +509,41 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       setproList(data)
 
       
-    // setState({
-    //     ...state,
-    //     item: data,
-    //   }); 
+    
     
     });
  
     return setIsAlive(false)
     
     
-//     url.get(url+"rfq/"+ id).then(({ data }) => {
-     
-//       setcname(data[0].party[0].firm_name)
-//       setcontactid(data[0].contact.id)
-//       setrdate(moment(data[0].created_at).format('DD MMM YYYY'))
-//       setddate(moment(data[0].require_date).format('DD MMM YYYY'))
-//       setparty_id(data[0].party_id)
-//      setState({
-//       ...state,
-//       item: data[0].rfq_details,
-//     });
-//    });
-    let tempItemList = [...state.item];
+//     
+    // let tempItemList = [...state.item];
    
-    tempItemList.push({
-      product_id: "",
-      description:"",
-      descriptions:"",
-      files:[],
-      quantity:0,
-      product_price_list:[
-        {
-          price:"",
-          firm_name:"",
-          id:""
-        }
-      ],
-      purchase_price:0.00,
-      margin:0,
-      sell_price:0.00,
-      remark:"",
-      total_amount:0.00
+    // tempItemList.push({
+    //   product_id: "",
+    //   description:"",
+    //   descriptions:"",
+    //   files:[],
+    //   quantity:0,
+    //   product_price_list:[
+    //     {
+    //       price:"",
+    //       firm_name:"",
+    //       id:""
+    //     }
+    //   ],
+    //   purchase_price:0.00,
+    //   margin:0,
+    //   sell_price:0.00,
+    //   remark:"",
+    //   total_amount:0.00
       
 
-    });
-    setState({
-      ...state,
-      item: tempItemList,
-    });
+    // });
+    // setState({
+    //   ...state,
+    //   item: tempItemList,
+    // });
 
 
   }, [id, isNewInvoice, isAlive, generateRandomId]);

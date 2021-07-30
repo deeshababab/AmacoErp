@@ -32,7 +32,7 @@ const PartyInfo = () => {
   
   return (
     <Card elevation={3}>
-      <h5 className="p-4 m-0">Other Info</h5>
+      <h5 className="p-4 m-0">OTHER INFO</h5>
       <Divider />
       <Table className="mb-4">
         <TableBody>

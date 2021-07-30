@@ -5,8 +5,8 @@ import {
 } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import React, { useState, useEffect } from "react";
-import url,{urlphp} from "../../../../views/invoice/InvoiceService";
-import Axios from "axios";
+import url from "../../../../views/invoice/InvoiceService";
+
 import moment from "moment";
 import Swal from "sweetalert2";
 import history from "history.js";
@@ -47,7 +47,8 @@ const setstatus=(id)=>{
   }).then((result) => {
     if (result.value) {
       const status={
-        status:'verified'
+        status:'verified',
+        id:id
       }
       url.put(`expense/${id}`,status).then(({ data }) => {
         Swal.fire({
@@ -57,18 +58,7 @@ const setstatus=(id)=>{
           text: 'Updated successfully.',
         });
         
-    //     Axios.get(`${urlphp}/php_file/controller/bulkexpense.php`, {
-    //       method: 'GET',
-    //       headers: { 
-    //         "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
-    // "Access-Control-Allow-Headers": "Content-Type, x-requested-with",
-    // "Access-Control-Max-Age": 86400
-    //       },
-    //     })
-    //       .then(({ data }) => {
-            
-    //         setexpenseList(data);
-    //       })
+    
       setisAlive(false)
       
      
@@ -235,7 +225,7 @@ const columns = [
             ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),
 
-            item?.payment_account.name,
+            item.payment_account[0]?.name,
             item.referrence_bill_no,
 
             item.paid_to,
@@ -261,30 +251,5 @@ const columns = [
   );
 };
 
-const invoiceList = [
-  {
-    _id: "5ece2cef3e562cbd61996dfds",
-    date: new Date(),
-    description: "Bit Bass Headphone",
-    method: "PayPal",
-    total: 15.25,
-    status: "paid",
-  },
-  {
-    _id: "5ece2cef3efdsfsdfcbd61996",
-    date: new Date(),
-    description: "Comlion Watch",
-    method: "Visa Card",
-    total: 75.25,
-    status: "unpaid",
-  },
-  {
-    _id: "5ece2cef3e56dsfdsfds61996",
-    date: new Date(),
-    description: "Beats Headphone",
-    method: "Master Card",
-    total: 45.25,
-    status: "paid",
-  },
-];
+
 export default CustomerInvoice;
