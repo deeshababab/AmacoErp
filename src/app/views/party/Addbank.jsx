@@ -4,7 +4,7 @@ import { ValidatorForm } from "react-material-ui-form-validator";
 import { Icon } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import url, { capitalize_arr } from "../invoice/InvoiceService";
+import url  from "../invoice/InvoiceService";
 
 const MemberEditorDialog = ({
   uid,
@@ -39,8 +39,8 @@ const MemberEditorDialog = ({
       const frmdetails = {
         party_id: foo,
         iban_no: iban_no,
-        bank_name: bank_name ? capitalize_arr(bank_name) : "",
-        bank_address: bank_address ? capitalize_arr(bank_address) : "",
+        bank_name: bank_name ?(bank_name) : "",
+        bank_address: bank_address ?(bank_address) : "",
         account_no: account_no,
       };
 
@@ -65,8 +65,8 @@ const MemberEditorDialog = ({
       const frmdetails = {
         party_id: foo,
         iban_no: iban_no,
-        bank_name: bank_name ? capitalize_arr(bank_name) : "",
-        bank_address: bank_address ? capitalize_arr(bank_address) : "",
+        bank_name: bank_name ?(bank_name) : "",
+        bank_address: bank_address ?(bank_address) : "",
         account_no: account_no,
       };
 

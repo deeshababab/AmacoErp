@@ -7,16 +7,16 @@ import history from "history.js";
 import { ValidatorForm  } from "react-material-ui-form-validator";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield'
 import MenuItem from "@material-ui/core/MenuItem";
-import { Icon,TextField} from "@material-ui/core";
+import { Icon,TextField,Select,InputLabel,FormControl,FormGroup} from "@material-ui/core";
 import Swal from "sweetalert2";
-import url, {getpaymentaccount}from "../invoice/InvoiceService";
+import url, {getpaymentaccount,getcompanybank}from "../invoice/InvoiceService";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
   } from "@material-ui/pickers";
   import DateFnsUtils from "@date-io/date-fns";
 
-const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
+const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList,id }) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -33,28 +33,68 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
   const [narration, setnarration] = useState('');
   const [payment_account_id, setpayment_account_id] = useState('');
   const [paymentaccount, setpaymentaccount] = useState([]);
+  const [check_no, setcheck_no] = useState();
+  const [bank_id, setbank_id] = useState();
+  const [companybank, setcompanybank] = useState([]);
+  const [payment_mode, setpayment_mode] = useState('');
 
 
   
 
   
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("sm");
+  const [maxWidth, setMaxWidth] = React.useState("md");
 
   const handleDateChange = (date) => {
     setreceived_date(date)
   };
 
+  const option =[
+    {
+        name:'cash',
+        value:'cash'
+    },
+  //   {
+  //     name:'cheque',
+  //     value:'cheque'
+  // },
+  {
+      name:'Bank Transfer',
+      value:'banktransfer'
+  }
+]
   const handleFormSubmit = () => {
 
     const formdata={
        
-        amount:amount,
+        amount:amount?amount:'',
         received_date:received_date,
         narration:narration,
+        payment_mode:payment_mode,
+        bank_id:bank_id,
         payment_account_id,
+        id:id
         
     }
+    if(id){
+      url.post('updateAdvancePay ', formdata)
+      .then(function (response) {
+         
+       
+        Swal.fire({
+          title: 'Success',
+          type: 'success',
+          icon: 'success',
+          text: 'Data updated successfully.',
+        });
+        handleClose()
+        history.push('/transaction') 
+      })
+      .catch(function (error) {
+  
+      })                               
+    }
+    else{
     url.post('advance-payments', formdata)
     .then(function (response) {
        
@@ -72,6 +112,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
 
     })
   }
+  }
  
   const setcatid =()=>{
    
@@ -86,6 +127,24 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
        
 
     });
+    getcompanybank().then(({ data }) => {
+      setcompanybank(data)
+     
+  
+  })
+  if(id)
+{
+  url.get('advance-payments/'+id).then(({data})=>
+  {
+    console.log(data.party_id)
+    setpayment_account_id(data[0]?.payment_account_id)
+   
+    setamount(data[0]?.amount)
+    setnarration(data[0]?.narration)
+    setpayment_mode(data[0]?.payment_mode)
+    
+  })
+}
     
    
   },[])
@@ -99,7 +158,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
       <div className="p-6"  >
        
        
-         <h4 className="mb-5">Advance Payment</h4>   
+         <h4 className="mb-5">ADVANCE PAYMENT</h4>   
        
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           
@@ -116,6 +175,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 type="text"
                 name="cname"
                 size="small"
+                value={payment_account_id}
                 validators={["required"]}
                 errorMessages={["this field is required"]}
                 select
@@ -132,10 +192,9 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 label="Amount"
                 currencySymbol="SAR"
                 variant="outlined"
-                onChange={e => setamount(e.target.value)
-                  // .log(isAlive)
-                }
+                onChange={(event, value)=> setamount(value)}
                 type="text"
+                value={amount}
                 name="cname"
                 size="small"
                 required
@@ -156,7 +215,66 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                       required
                     />
                   </MuiPickersUtilsProvider>
+              
               <TextField
+                className="w-full mb-4"
+                label="Payment Mode"
+                onChange={e => setpayment_mode(e.target.value)
+                }
+                variant="outlined"
+                type="text"
+                name="cdescription"
+                size="small"
+                value={payment_mode}
+                required
+                select
+              >
+                  {option.map((item, ind) => (
+                <MenuItem value={item.value} key={item}>
+                  {item.name}
+                </MenuItem>
+              ))}
+                  </TextField>
+           {payment_mode==='cheque' &&(<TextField
+                className="w-full mb-4"
+                label="Cheque Number"
+                onChange={e => setcheck_no(e.target.value)
+                }
+                variant="outlined"
+                type="text"
+                name="cdescription"
+                size="small"
+                value={check_no}
+              
+              ></TextField>
+           )}
+             <FormGroup>
+          {payment_mode==='banktransfer'&&
+                   <FormControl variant="outlined" size="small" className="w-full mb-4">
+        <InputLabel htmlFor="outlined-age-native-simple">Bank</InputLabel>
+        <Select
+          native
+          value={bank_id}
+          // onChange={handleChange}
+
+          onChange={e => setbank_id(e.target.value)}
+          
+          label="Bank"
+          inputProps={{
+
+            name: 'Bank',
+            
+            id: 'outlined-age-native-simple',
+          }}
+        >
+         {companybank.map((item, ind) => (
+          <option value={item.id}>{item.name}-{item.ac_no}</option>
+         ))}
+        </Select>
+      </FormControl>
+          }
+       </FormGroup>
+       <TextField
                 className="w-full mb-4"
                 label="Narration"
                 
@@ -171,21 +289,21 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,catid,catList }) => {
                 value={narration}
                 
               ></TextField>
-              
              
             
           
-          <div className="flex justify-between items-center">
+          <div className="flex  items-center">
             <Button variant="outlined" color="primary" type="submit">
-             <Icon>save</Icon> Save
+             <Icon>save</Icon> SAVE
             </Button>
             <div className="flex justify-between items-center">
             <Button
               variant="outlined"
               color="secondary"
+              className="ml-4"
               onClick={() => setcatid()}
             >
-              <Icon>cancel</Icon>Cancel
+              <Icon>cancel</Icon>CANCEL
             </Button>
             
             {/* <Button

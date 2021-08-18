@@ -466,8 +466,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
         <Breadcrumb
           routeSegments={[
             { name: "RFQ", path: '../sales/rfq-form/rfqview' },
-            { name: "RFQ View", path: `/invoice/${id}` },
-            { name: "Update RFQ" },
+            { name: "RFQ VIEW", path: `/invoice/${id}` },
+            { name: "UPDATE RFQ" },
           ]}
         />
       </div>
@@ -483,7 +483,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 color="secondary"
                 onClick={() => Rfqpush()}
               >
-               <Icon>cancel</Icon> Cancel
+               <Icon>cancel</Icon> CANCEL
             </Button>
               <Button
                 type="submit"
@@ -492,7 +492,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 color="primary"
                 disabled={loading}
               >
-               <Icon>save</Icon> Save
+               <Icon>save</Icon> SAVE
             </Button>
             </div>
           </div>
@@ -572,13 +572,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
             <TableHead>
               <TableRow className="bg-default">
-                <TableCell className="pl-2" width={50}>S.No.</TableCell>
-                <TableCell className="px-0" width={200}>Item Name</TableCell>
+                <TableCell className="pl-2 text-center" width={50} >S.NO.</TableCell>
+                <TableCell className="pl-2" width={200}>ITEM NAME</TableCell>
 
-                <TableCell className="px-0" width={100}>Quantity</TableCell>
-                <TableCell className="px-0" width={700}>description</TableCell>
+                <TableCell className="px-0" width={100}>QUANTITY</TableCell>
+                <TableCell className="px-0" width={700}>DESCRIPTION</TableCell>
                 {/* <TableCell className="px-0">Cost</TableCell> */}
-                <TableCell className="p-0" align="center">Action</TableCell>
+                <TableCell className="p-0" align="center">ACTION</TableCell>
               </TableRow>
             </TableHead>
 
@@ -588,11 +588,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                 const id = item.product[0].id
                 return (
                   <TableRow key={index}>
-                    <TableCell className="pl-2 capitalize" align="left" width={50}>
+                    <TableCell className="pl-2 capitalize" align="lcenter" width={50}>
                       {index + 1}
                     </TableCell>
 
-                    <TableCell className="pl-0 capitalize" align="left">
+                    <TableCell className="pl-2 capitalize" align="left">
                       {/* <Select
                    className="mb-4 w-full"
                     name="name"

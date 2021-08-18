@@ -11,9 +11,9 @@ import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import url, {getmanufacturer,capitalize_arr}from "../invoice/InvoiceService"
+import url, {getmanufacturer,capitalize_arr}from "../../../invoice/InvoiceService"
 
-const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
+const Addpaidaccount = ({ uid, open, handleClose, paymentaccount}) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -42,7 +42,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     const frmdetails = {
 
       name: cname?capitalize_arr(cname):'',
-      description:cdescription?capitalize_arr(cdescription):""
+      
 
 
     }
@@ -50,7 +50,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     // setcname('')
    
    
-    url.post('manufacturer', frmdetails)
+    url.post('payment-account', frmdetails)
       .then(function (response) {
         getmanufacturer()
         Swal.fire({
@@ -59,9 +59,9 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
           text: 'Data saved successfully.',
         });
 
-        getmanufacturer().then(({ data }) => {
-          manufacture(data)
-          setUserList(data)
+       url.get("payment-account").then(({ data }) => {
+          
+          paymentaccount(data);
           
   
         });
@@ -79,7 +79,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   };
   const removeData = (id) => {
     Swal.fire({
-      text: 'Are you sure you want to delete this manufacturer?',
+      title: 'Are you sure you want to delete this manufacturer?',
+      text: '.',
       icon: 'warning',
       showCancelButton: true,
       customClass: {
@@ -125,7 +126,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   }
 
   useEffect(() => {
-    url.get('manufacturer').then(({ data }) => {
+    url.get('payment-account').then(({ data }) => {
       setUserList(data);
      
     
@@ -138,9 +139,9 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   },[])
   function getrow(e) {
     setIsAlive(false)
-    getmanufacturer().then(({ data }) => {
-      setUserList(data);
-      manufacture(data);
+    url.get("payment-account").then(({ data }) => {
+      
+      paymentaccount(data);
 
     });
     // return () => setIsAlive(true);
@@ -153,13 +154,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
         filter: true,
       },
     },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
-    },
+    
     {
       name: "id",
       label: "Action",
@@ -169,7 +164,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
 
   
           return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
+            <IconButton onClick={() => removeData(tableMeta.rowData[1])
             }
             >
               <Icon color="error">delete</Icon>
@@ -189,7 +184,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     <Dialog onClose={handleClose} open={open} className="px-6 pt-2 pb-4" style={{zIndex:1000}} fullWidth={fullWidth}
     maxWidth={maxWidth}>
       <div className="p-6"  >
-        <h4 className="mb-5">Add Manufacturer</h4>
+        <h4 className="mb-5">ADD PAYMENT ACCOUNT</h4>
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
             <Grid item sm={6} xs={12}>
@@ -243,8 +238,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               /> */}
             </Grid>
 
-            {/* <Grid item sm={6} xs={12}>
-              <TextValidator
+            <Grid item sm={6} xs={12}>
+              {/* <TextValidator
                 className="w-full mb-4"
                 label="Description"
                 onChange={e => setcdescription(e.target.value)
@@ -254,10 +249,30 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
                 type="textarea"
                 name="cdescription"
                 value={cdescription}
+              /> */}
+              {/* <TextValidator
+                className="w-full mb-4"
+                label="Company"
+                onChange={handleChange}
+                type="text"
+                name="company"
+                value={setState.company}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
               />
-              
+              <TextValidator
+                className="w-full mb-4"
+                label="Address"
+                onChange={handleChange}
+                type="text"
+                name="address"
+                value={setState.address}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              /> */}
 
-            </Grid> */}
+
+            </Grid>
           </Grid>
 
           {/* <div className="flex justify-between items-center"> */}
@@ -274,21 +289,22 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
              <Icon>cancel</Icon> Cancel
             </Button>
             
-            <Button
+            {/* <Button
             
               variant="outlined"
               color="primary"
+              className="py-2"
               onClick={() => getrow()}
             >
              <Icon>remove_red_eye</Icon> view
-            </Button>
+            </Button> */}
           
           {/* </div> */}
         </ValidatorForm>
         <Divider className="mb-2" />
         {!isAlive && (
           <MUIDataTable
-            title={"Category"}
+            title={"PAYMENT ACCOUNT"}
             columns={columns}
             data={userList}
             options={{
@@ -306,4 +322,4 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   );
 };
 
-export default MemberEditorDialog1;
+export default Addpaidaccount;

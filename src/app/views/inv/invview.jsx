@@ -352,7 +352,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             color="secondary"
             variant="outlined"
           >
-            Print DeliveryNote
+            PRINT DELIVERYNOTE
           </Button>
         </div>
       </div>

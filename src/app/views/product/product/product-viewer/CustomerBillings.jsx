@@ -126,8 +126,8 @@ const columns = [
           filter: true,
           customHeadRender: ({index, ...column}) =>{
             return (
-              <TableCell key={index} width={50}>  
-                <span style={{marginLeft:15}}>S.NO.</span> 
+              <TableCell key={index}  style={{width:50,textAlign:"center"}}>  
+                <span >S.NO.</span> 
               </TableCell>
             )
          },
@@ -139,6 +139,16 @@ const columns = [
     options: {
        
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{wordBreak: "break-word",textAlign:"center"}}>  
+              <span >PARTY NAME</span>
+            </TableCell>
+          )
+       },
+        setCellProps:()=>({
+          align:"center"
+        })
     },
 },
 {
@@ -147,6 +157,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{wordBreak: "break-word",textAlign:"right"}} className="pr-2">  
+            <span >PRICE</span>
+          </TableCell>
+        )
+     },
+      setCellProps:()=>({
+        align:"right"
+      })
   },
 },
 {

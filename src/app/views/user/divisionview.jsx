@@ -3,7 +3,7 @@ import { Breadcrumb,ConfirmationDialog } from "matx";
 import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import MemberEditorDialog from "./partycontact"
+import Adddivision from "../expense/customers/customer-form/Adddivision";
 import Tooltip from '@material-ui/core/Tooltip';
 import url from "../invoice/InvoiceService";
 import {
@@ -16,12 +16,11 @@ const columnStyleWithWidth = {
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "600px",
+  width: "400px",
   wordBreak: "break-word",
   wordWrap: "break-word",
   overflowWrap:"break-word",
-  hyphens:"auto",
-  textAlign:"center"
+  hyphens:"auto"
 }
 const columnStyleWithWidthSno = {
   top: "0px",
@@ -30,21 +29,27 @@ const columnStyleWithWidthSno = {
   position: "sticky",
   backgroundColor: "#fff",
   width: "50px",
-  textAlign:"center"
 }
 
 
-const SimpleMuiTable = () => {
+const Division = () => {
     const [isAlive, setIsAlive] = useState(true);
-    const [userList, setUserList] = useState([]);
+    const [DivisionList, setDivisionList] = useState([]);
    
     const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
+    const [divid, setdivid] = useState();
     const [
     shouldOpenConfirmationDialog,
     setShouldOpenConfirmationDialog,
   ] = useState(false);
   const handleDialogClose = () => {
+      setdivid('')
     setShouldOpenEditorDialog(false);
+   
+  };
+  const handleChange = (id) => {
+      setdivid(id)
+    setShouldOpenEditorDialog(true);
    
   };
 
@@ -52,8 +57,8 @@ const SimpleMuiTable = () => {
   
     useEffect(() => {
       // get the party Information
-        url.get("parties").then(({ data }) => {
-            if (isAlive) setUserList(data);
+        url.get("division").then(({ data }) => {
+            if (isAlive) setDivisionList(data);
            
         });
         
@@ -90,14 +95,11 @@ const columns = [
         </TableCell>
       )
    },
-   setCellProps:()=>({
-     align:"center"
-   })
   }
 },
   {
     name: "firm_name",
-    label: "COMPANY NAME",
+    label: "DIVISION NAME",
     options: {
       
       customHeadRender: ({index, ...column}) =>{
@@ -107,45 +109,16 @@ const columns = [
           </TableCell>
         )
      },
-     setCellProps:()=>({
-      align:"center"
-    })
   },
 },
 {
   name: "vat_no",
-  label: "VAT NO",
+  label: "OPENING BALANCE",
   options: {
       filter: true,
-      customHeadRender: ({index, ...column}) =>{
-        return (
-          <TableCell key={index}  style={{textAlign:"center"}}>  
-            <span style={{paddingLeft:15}}>VAT NO</span>
-          </TableCell>
-        )
-     },
-      setCellProps:()=>({
-        align:"center"
-      })
   },
 },
-{
-  name: "vendor code",
-  label: "VENDOR CODE",
-  options: {
-      filter: true,
-      customHeadRender: ({index, ...column}) =>{
-        return (
-          <TableCell key={index}  style={{textAlign:"center"}}>  
-            <span style={{paddingLeft:15}}>VENDOR CODE</span>
-          </TableCell>
-        )
-     },
-      setCellProps:()=>({
-        align:"center"
-      })
-  },
-}, 
+
 
 
  
@@ -174,15 +147,14 @@ const columns = [
             className="pr-8"
           >
               
-              <Link style={{textAlign:"right",paadingRight:20}} to={"/pages/view-customer?id=" +tableMeta.rowData[4] }>
+              <Button style={{textAlign:"right",paadingRight:20}} onClick={()=>handleChange(tableMeta.rowData[3])}>
             
                 <Tooltip title="Party contact details">
-                <Icon color="primary" style={{transform: "rotate(270deg)",
-  transition: "all 0.25s ease-in-out",textAlign:"right"}}>arrow_drop_down_circle</Icon>
+                <Icon color="secondary" style={{textAlign:"right"}}>edit</Icon>
                 
                 </Tooltip>
             
-            </Link>
+            </Button>
            </div>
          
             
@@ -198,19 +170,17 @@ const columns = [
   
   return ( 
     <div>
+       
        <div className="m-sm-30">
-      <div  className="mb-sm-30">
-      <div className="flex flex-wrap justify-between">
-          <Breadcrumb
-            routeSegments={[
-              // { name: "", path: "./Addparty" },
-              { name: "PARTY" }
-            ]}
-          />
+      <div className="mb-sm-30">
+
            {shouldOpenEditorDialog && (
-          <MemberEditorDialog
+          <Adddivision
             handleClose={handleDialogClose}
             open={shouldOpenEditorDialog}
+            // paymentaccount={setpayment_account}
+            divid={divid}
+            division={setDivisionList}
           />
         )}
         {shouldOpenConfirmationDialog && (
@@ -223,33 +193,35 @@ const columns = [
       
        
         <div className="text-right">
-                <Link to={"./Addparty"}>
+               
                 <Button
             className="py-2"
             color="primary"
             variant="outlined"
+            onClick={()=>setShouldOpenEditorDialog(true)}
           >
           <Icon>add</Icon>
           ADD NEW
           </Button>
-          </Link>
+         
           
           </div>
           </div>
-          </div>
+        
       <MUIDataTable
-                title={"PARTY"}
+                // title={"DIVISION"}
                 data={
-                  userList.map((item, index) => {
+                  DivisionList.map((item, index) => {
                     console.log(item)
                    
                       return [
           
                         ++index,
-                        item.firm_name,
-                        // (item.post_box_no?item.post_box_no+",":'')+""+(item.street?item.street+",":'')+""+(item.city?item.city+", \n":'')+""+(item.proviance?item.proviance+",":'')+""+(item.zip_code?item.zip_code:''),
-                        item.vat_no,
-                        item.party_code,
+                        item.name,
+                       
+                        item.opening_bal?parseFloat(item.opening_bal).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                          }):"0.00",
                         item.id,
                       ]
                     
@@ -265,7 +237,8 @@ const columns = [
             />
     </div> 
     </div>
+  
   ); } 
    
 
-export default SimpleMuiTable;
+export default Division;

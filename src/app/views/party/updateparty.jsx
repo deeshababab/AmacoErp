@@ -12,7 +12,7 @@ import {
 import { Breadcrumb } from "matx";
 import "date-fns";
 import Swal from "sweetalert2";
-import url,{getparties,capitalize_arr} from "../invoice/InvoiceService";
+import url,{getparties,} from "../invoice/InvoiceService";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
   const customerList = [
      'Vendor', 
@@ -98,17 +98,17 @@ const SimpleForm = () => {
   const handleSubmit = () => {
     setloading(true);
     const frmdetails = {
-      firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
+      firm_name:Firm_Name?(Firm_Name):'',
       registration_no:regno,
       vat_no:vat_no,
       post_box_no:post_box_no,
-      street:street?capitalize_arr(street):'',
-      proviance:proviance?capitalize_arr(proviance):'',
-      country:country?capitalize_arr(country):'',
+      street:street?(street):'',
+      proviance:proviance?(proviance):'',
+      country:country?(country):'',
       contact:contact,
       zip_code:zip_code,
       website:website,
-      city:city?capitalize_arr(city):'',
+      city:city?(city):'',
       fax:fax,
       opening_balance:parseFloat(ob).toFixed(2),
       party_type:partytype,
@@ -116,7 +116,7 @@ const SimpleForm = () => {
       credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
-      bank_address:bank_address?capitalize_arr(bank_address):'',
+      bank_address:bank_address?(bank_address):'',
       account_no:account_no,
       vendor_id:vendor_id,
       party_code:partycode,
@@ -205,12 +205,17 @@ const SimpleForm = () => {
                                 variant="outlined"
                                 value={regno}
                                 style={{width:'230px'}}
+                                validators={[
+                                  // "minStringLength: 15",
+                                  "maxStringLength: 11",
+                                ]}
+                                errorMessages={["Invalid Registraion Number"]}
                               
                             />
                         
                    <TextField
                                 className="ml-2"
-                                label="Vat number"
+                                label="VAT number"
                                 onChange={e => setvat_no(e.target.value)}
                                 name="vat_no"
                                 size="small"
@@ -223,7 +228,7 @@ const SimpleForm = () => {
 
                         <TextField
                                 className="mb-4 w-full"
-                                label="P.O Box"
+                                label="P.O. Box"
                                 onChange={e => setpost_box_no(e.target.value)}
                                 type="text"
                                 name="post_box_no"

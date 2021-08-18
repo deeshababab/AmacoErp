@@ -5,11 +5,12 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Icon,TextField,Radio, RadioGroup,
-  FormControlLabel,} from "@material-ui/core";
+import { Icon,TextField,Radio, RadioGroup,Checkbox,
+  FormControlLabel} from "@material-ui/core";
 import FormLabel from "@material-ui/core/FormLabel";
 import Swal from "sweetalert2";
 import url, {capitalize_arr}from "../invoice/InvoiceService"
+import { FormGroup } from "@material-ui/core";
 
 const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [state, setState] = useState({
@@ -21,9 +22,10 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
     company: "",
     address: "",
     isActive: false,
-    isAlive: true,
+    
   });
   const [name, setname] = useState('');
+  const [nick_name, setnick_name] = useState('');
   const [email, setemail] = useState('');
   const [code, setcode] = useState('');
   const [contact, setcontact] = useState('');
@@ -34,13 +36,14 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
   const [Roles, setRoles] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
   const [role_id, setrole_id] = useState('');
+  const [isTrue, setisTrue] = useState(false);
+  const [divisions, setdivisions] = useState([]);
   const prefixs = [
     { value: 'Mr', label: 'Mr' },
     { value: 'Mrs', label: 'Mrs' },
     { value: 'Ms', label: 'Ms' }
   ];
   
-
   
 
  
@@ -55,22 +58,64 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
     { value: "+966", label:"+966"},
     { value: "+971", label:"+971"},
     { value: "+967", label:"+967"},
-  ];
 
+  ];
+  
+
+  const handleChange =  (event,id) => {
+
+    
+
+   
+    divisions.map((element, i) => {
+     
+      if(element.id===id )
+      {
+        
+        element.check=element.check===true?false:true;
+        
+        
+       
+         
+        }
+      return element;
+    }) 
+    setdivisions(divisions)
+    
+    console.log(divisions)  
+  };
+  const error = divisions.filter(v => v).length !== 1;
 
   useEffect(() => {
     
     url.get('roles').then(({ data }) => {
         setRoles(data)
-       
+        
 
     })
+    url.get("division").then(({data})=>{
+      let tempList=data
+      tempList.map((element, i) => {
+        
+          element.check=false;
+        
+        return element;
+      }) 
+      setdivisions(tempList)   
+  
+      // setdivisions(data)
+      console.log(tempList)
+     
+    })
+    
     if(userid)
     {
         url.get(`users/${userid}`).then(({ data }) => {
             setname(data.name)
+            setnick_name(data.nick_name)
             setemail(data.email)
             setprefix(data.prefix)
+
             setdesignation(data.designation)
             var res =data.contact.slice(0, 4);
             
@@ -82,8 +127,15 @@ const MemberEditorDialog = ({ uid, open, handleClose,userid ,userList}) => {
             setrole_id(data.role_id)
     
         })  
+        url.get("division").then(({data})=>{
+            setdivisions(data)
+            console.log(data)
+            
+        })
+        
     }
-},[])
+    
+},[isTrue])
   const handleFormSubmit = () => {
 if(userid)
 {
@@ -94,7 +146,8 @@ if(userid)
         role_id:role_id,
         email:email,
         designation:capitalize_arr(designation),
-        prefix:prefix
+        prefix:prefix,
+        nick_name:nick_name
     }
     url.put(`users/${userid}`, formdata)
     .then(function (data) {
@@ -125,7 +178,9 @@ if(userid)
         role_id:role_id,
         email:email,
         designation:capitalize_arr(designation),
-        prefix:prefix
+        prefix:prefix,
+        nick_name,
+        divisions:JSON.stringify(divisions)
     }
     
     url.post('users', formdata)
@@ -143,9 +198,10 @@ if(userid)
       });
      handleClose()
     
-    //  history.push('/transaction') 
+     
    
     })
+    
     .catch(function (error) {
 
     })
@@ -160,11 +216,28 @@ if(userid)
       <div className="p-6"  >
        
        
-         {!userid ?(<h4 className="mb-5">Add User</h4>):<h4 className="mb-5">Edit User</h4>}   
+         {!userid ?(<h4 className="mb-5">ADD USER</h4>):<h4 className="mb-5">EDIT USER</h4>}   
        
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
        
-      
+        <p className="mt-0 mb-1">
+          Please Select the  Divison 
+        </p>
+       <FormGroup row>
+          {divisions.map((item, ind) => (
+            <FormControlLabel
+              error={error}
+              className="block h-32"
+              control={<Checkbox />}
+              label={item.name}
+              value={item.check}
+              // checked={item.check?item.check:false}
+              name={item.name}
+              onChange={(e)=>handleChange(e,item.id)}
+              key={ind}
+            />
+          ))}
+       </FormGroup> 
         <div className="flex">
                              <TextField
                                 className="mr-2"
@@ -174,7 +247,7 @@ if(userid)
                                 name="mobno"
                                 type="text"
                                 size="small"
-                                style={{width:'250px'}}
+                                style={{width:'200px'}}
                                 variant="outlined"
                                 value={prefix}
                                 // fullWidth
@@ -186,7 +259,7 @@ if(userid)
                                 </MenuItem>))}
                             </TextField>
         <TextField
-                className="w-full mb-4"
+                className="w-full mb-4 mr-2"
                 label="Name"
                 variant="outlined"
                 inputProps={{style: {textTransform: 'capitalize'}}}
@@ -197,6 +270,21 @@ if(userid)
                 name="name"
                 size="small"
                 value={name}
+               
+                
+              />
+               <TextField
+                className="w-full mb-4"
+                label="Nick Name"
+                variant="outlined"
+                inputProps={{style: {textTransform: 'capitalize'}}}
+                onChange={e => setnick_name(e.target.value)
+                  // .log(isAlive)
+                }
+                type="textarea"
+                name="nick_name"
+                size="small"
+                value={nick_name}
                
                 
               />
@@ -268,7 +356,7 @@ if(userid)
                                                               
                             />
                             </div>
-                            {/* <TextField
+                           {!userid &&(<TextField
                                className="w-full mb-4"
                                 label="Password"
                                 autoComplete="none"
@@ -280,7 +368,7 @@ if(userid)
                                 value={password}
                                 fullWidth
                                                               
-                            /> */}
+                            />)}
                             
               <TextValidator
                 className="w-full mb-4"
@@ -308,7 +396,7 @@ if(userid)
           
           <div className="flex  items-center">
             <Button variant="outlined" color="primary" type="submit" className="py-2">
-             <Icon>save</Icon> Save
+             <Icon>save</Icon> SAVE
             </Button>
             
             <Button
@@ -317,7 +405,7 @@ if(userid)
               onClick={handleClose}
               className="py-2 ml-2"
             >
-              <Icon>cancel</Icon>Cancel
+              <Icon>cancel</Icon>CANCEL
             </Button>
             
             

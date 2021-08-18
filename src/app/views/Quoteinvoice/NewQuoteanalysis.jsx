@@ -14,7 +14,8 @@ import {
   InputLabel,
   Icon,
   TextField,
-  Tooltip
+  Tooltip,
+  FormGroup
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -27,7 +28,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import url from "../invoice/InvoiceService";
+import url,{getusers} from "../invoice/InvoiceService";
 
 // expandable table
 
@@ -84,6 +85,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [CustomerList, setCustomerList] = useState([]);
   const [customercontact, setcustomercontact] = useState([]);
   const [rfqstatus, setrfqstatus] = useState(false);
+  const [users, setusers] = useState([]);
+  const [sign, setsign] = useState();
   const history = useHistory();
   const { id } = useParams();
   const classes = useStyles();
@@ -394,6 +397,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('ps_date',Quote_date)
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
+    formData.append('sign',sign)
    
     
     tempItemList.map((answer, i) => {  
@@ -503,6 +507,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     
 
     });
+    getusers().then(({data})=>{
+      setusers(data)
+    })
     
    
     url.get("products").then(({ data }) => {
@@ -674,7 +681,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Create Sales Quotation</h3>
+          <h3 align="left"> CREATE SALES QUOTATION</h3>
           </div>
           <div className="mb-6">
          
@@ -684,7 +691,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="secondary"
               onClick={cancelform}
             >
-             <Icon>cancel</Icon> Cancel
+             <Icon>cancel</Icon> CANCEL
             </Button>
            
 
@@ -695,7 +702,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="primary"
               disabled={loading}
             >
-              <Icon>save</Icon> Save & Print Quotation
+              <Icon>save</Icon> SAVE & PRINT QUOTATION
             </Button>
           </div>
         </div>
@@ -803,17 +810,17 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
+              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.NO.</TableCell>
               <TableCell className="px-0" style={{width:'50px'}}></TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Item Name</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Rfq Description</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Our Description</TableCell>
-              <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Price</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
-              <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'140px'}}>Remark</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>ITEM NAME</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>RFQ DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>OUR DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>QUANTITY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>PRICE</TableCell>
+              <TableCell className="px-0" style={{width:'80px'}}>MARGIN %</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>SELL PRICE</TableCell>
+              <TableCell className="px-0"style={{width:'100px'}}>TOTAL</TableCell>
+              <TableCell className="px-0"style={{width:'140px'}}>REMARK</TableCell>
                <TableCell className="px-0" style={{width:'50px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
@@ -916,7 +923,7 @@ file_upload
                   
 
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
-                    <TextValidator
+                    <TextField
                       label="description"
                       onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
@@ -924,23 +931,25 @@ file_upload
                       fullWidth
                       variant="outlined"
                       inputProps={{style: {textTransform: 'capitalize'}}}
-                      
+                      multiline
                       size="small"
                       value={item? item.description: null}
                       
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
-                    <TextValidator
+                    <TextField
                       label="Our description"
                       // onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
-                      
+                      onChange={(event) => handleIvoiceListChange(event, index)}
                       variant="outlined"
+                      
                       size="small"
-                      name="quotedescription"
+                      name="descriptionss"
                       inputProps={{style: {textTransform: 'capitalize'}}}
                       fullWidth
+                      multiline
                       value={item.descriptionss?item.descriptionss :"" }
               
                     />
@@ -1116,6 +1125,7 @@ file_upload
                       variant="outlined"
                       size="small"
                       name="remark"
+                      multiline
           
                       fullWidth
                       value={item.remark ?item.remark:"" }
@@ -1148,6 +1158,7 @@ file_upload
         <h6 className="px-4"><strong>Terms</strong></h6>
         <div className="px-4 flex justify-between">
         <div className="flex">
+          
         
         <div className="pr-12">
         
@@ -1158,6 +1169,8 @@ file_upload
               <p className="mb-8">Waranty:</p>
               <p className="mb-8">Delivery Time:</p>
               <p className="mb-8">Inco-Term:</p>
+              <p className="mb-8">Signature:</p>
+            
           </div>
           <div>
           <TextValidator
@@ -1229,6 +1242,32 @@ file_upload
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
+              <FormGroup>
+        <FormControl variant="outlined" minWidth="120" size="small">
+        <InputLabel htmlFor="outlined-age-native-simple" className="mr-5" width="20px">Signature</InputLabel>
+        <Select
+          native
+          value={sign}
+          // onChange={handleChange}
+          onChange={e => setsign(e.target.value)}
+          size="small"
+          label="Signature"
+          inputProps={{
+            name: 'Bank',
+            id: 'outlined-age-native-simple',
+           
+          }}
+          
+        >
+          <option aria-label="None" value="" />
+         {users.map((item, ind) => (
+          <option value={item.name}>{item.name}</option>
+         ))}
+        </Select>
+      </FormControl>
+      </FormGroup>
+     
+              
           </div>
           
           </div>
@@ -1350,6 +1389,9 @@ file_upload
           </div>
           </div>
         </div>
+
+        
+         
       </ValidatorForm>
       </div>
       

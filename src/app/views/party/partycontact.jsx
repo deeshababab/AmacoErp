@@ -9,7 +9,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Icon } from "@material-ui/core";
 import {useParams} from "react-router-dom";
 import Swal from "sweetalert2";
-import url,{capitalize_arr} from "../invoice/InvoiceService"
+import url from "../invoice/InvoiceService"
 const prefixs = [
   { value: 'Mr', label: 'Mr' },
   { value: 'Mrs', label: 'Mrs' },
@@ -100,13 +100,13 @@ const MemberEditorDialog = ({ uid, open, handleClose,contactid,customercontact})
     {
     const frmdetails = {
         party_id:foo,
-        fname: capitalize_arr(fname),
-        lname: capitalize_arr(lname),
-        designation:capitalize_arr(designation),
+        fname: (fname),
+        lname: (lname),
+        designation:(designation),
         mobno:contact1,
         landline:contact2,
         email:email,
-        address:capitalize_arr(address),
+        address:(address),
         prefix:prefix
 
 

@@ -50,7 +50,7 @@ const CustomerViewer = () => {
       <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Sales Quotation" },
+            { name: "SALES QUOTATION" },
           ]}
         />
 
@@ -61,7 +61,7 @@ const CustomerViewer = () => {
               variant="outlined"
               color="primary"
             >
-              <Icon>add</Icon> Add New 
+              <Icon>add</Icon> ADD NEW 
           </Button>
           </Link>
         </div>
@@ -103,6 +103,6 @@ const CustomerViewer = () => {
   );
 };
 
-const tabList = ["New", "Accepted Quotation", "Rejected Quotation"];
+const tabList = ["NEW", "ACCEPTED QUOTATION", "REJECTED QUOTATION"];
 
 export default CustomerViewer;

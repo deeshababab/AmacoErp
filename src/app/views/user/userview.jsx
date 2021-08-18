@@ -30,7 +30,8 @@ const columnStyleWithWidth = {
   wordBreak: "break-word",
   wordWrap: "break-word",
   overflowWrap:"break-word",
-  hyphens:"auto"
+  hyphens:"auto",
+  textAlign:"center"
 }
 const columnStyleWithWidthSno = {
   top: "0px",
@@ -39,29 +40,30 @@ const columnStyleWithWidthSno = {
   position: "sticky",
   backgroundColor: "#fff",
   width: "50px",
+  textAlign:"center"
 }
 
 const SimpleMuiTable = () => {
-    const [isAlive, setIsAlive] = useState(true);
+    const [isAlive, setIsAlive] = useState(false);
     const [userList, setUserList] = useState([]);
     const [userid, setuserid] = useState(null);
 
     useEffect(() => {
         url.get("users").then(({ data }) => {
-            if (isAlive) setUserList(data);
+            setUserList(data);
            
         });
         
-        return () => setIsAlive(false);
+        setIsAlive(true);
     }, [isAlive]);
     
     const [count, setCount] = useState(0);
   
     function getrow(e) {
       url.get("users").then(({ data }) => {
-        if (isAlive) setUserList(data);
+         setUserList(data);
     });
-    return () => setIsAlive(false);
+    // return () => setIsAlive(false);
     }
   
    
@@ -72,7 +74,9 @@ const SimpleMuiTable = () => {
     setShouldOpenConfirmationDialog,
   ] = useState(false);
   const handleDialogClose = () => {
+    setuserid()
     setShouldOpenEditorDialog(false);
+    setIsAlive(true)
    
   };
 
@@ -94,6 +98,7 @@ const SimpleMuiTable = () => {
   const edituser = (id) => {
       setuserid(id)
       setShouldOpenEditorDialog(true)
+      
 
   }
   const removeData = (id) => {
@@ -136,10 +141,14 @@ const columns = [
     customHeadRender: ({index, ...column}) =>{
       return (
         <TableCell key={index} style={columnStyleWithWidthSno}>  
-          <span align="center">S.No.</span> 
+          <span align="center">S.NO.</span> 
         </TableCell>
       )
    },
+   setCellProps: () => ({
+    align: "center",
+    
+  })
   }
 },
   {
@@ -150,10 +159,13 @@ const columns = [
       customHeadRender: ({index, ...column}) =>{
         return (
           <TableCell key={index} style={columnStyleWithWidth}>  
-            <span style={{paddingLeft:15}}>Name</span>
+            <span >NAME</span>
           </TableCell>
         )
      },
+     setCellProps: ()=>({
+       align:"center"
+     })
   },
 },
 {
@@ -162,28 +174,72 @@ const columns = [
   options: {
     customHeadRender: ({index, ...column}) =>{
       return (
-        <TableCell key={index} style={columnStyleWithWidth}>  
-          <span style={{paddingLeft:15}}>Email</span>
+        <TableCell key={index} style={{textAlign:"center"}} >  
+          <span>EMAIL</span>
         </TableCell>
       )
    },
+   setCellProps: () => ({
+    align: "center",
+    
+  })
 },
 },
  
-  
+{
+  name: "address",
+  label: "",
+  options: {
+    customHeadRender: ({index, ...column}) =>{
+      return (
+        <TableCell key={index} style={{textAlign:"center",wordBreak: "break-word",
+        wordWrap: "break-word",width:350}}>  
+          <span style={{paddingLeft:15}}>DESIGNATION</span>
+        </TableCell>
+      )
+   },
+   setCellProps: () => ({
+    align: "center",
+   
+    
+  })
+},
+}, 
 
 {
   name: "vat_no",
-  label: "Role",
+  label: "ROLE",
   options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}}>  
+            <span >ROLE</span>
+          </TableCell>
+        )
+     },
+      setCellProps: () => ({
+        align: "center",
+        
+      })
   },
 },
 {
   name: "contact",
-  label: "Contact",
+  label: "CONTACT",
   options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}}>  
+            <span >CONTACT</span>
+          </TableCell>
+        )
+     },
+      setCellProps: () => ({
+        align: "center",
+        
+      })
   },
 }, 
 
@@ -191,14 +247,21 @@ const columns = [
  
   {
     name: "id",
-    label: "Action",
+    label: "ACTION",
     options: {
         
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-8">  
+              <span style={{paddingLeft:15}}>ACTION</span>
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
            
             return (
-              <span>
+              <div style={{textAlign:"right"}} className="pr-8" >
               {/* <Link to={"/pages/view-customer?id=" +tableMeta.rowData[5] }> */}
             
                 <Tooltip title="Delete User">
@@ -209,12 +272,16 @@ const columns = [
                 </Tooltip>
             
             {/* </Link> */}
-            </span>
+            </div>
             
             
             )
             
         },
+        setCellProps: () => ({
+          align: "right",
+          
+        })
     },
 },
 ];
@@ -229,7 +296,7 @@ const columns = [
           <Breadcrumb
             routeSegments={[
               // { name: "", path: "./Addparty" },
-              { name: "Users" }
+              { name: "USERS" }
             ]}
           />
         {shouldOpenEditorDialog && (
@@ -258,7 +325,7 @@ const columns = [
             onClick={e=>setShouldOpenEditorDialog(true)}
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
           {/* </Link> */}
           
@@ -266,7 +333,7 @@ const columns = [
           </div>
           </div>
       <MUIDataTable
-                title={"Users"}
+                title={"USERS"}
                 data={
                   userList.map((item, index) => {
                    
@@ -276,6 +343,7 @@ const columns = [
                         ++index,
                         item.name,
                         item.email,
+                        item.designation,
                         item.role_name,
                         item.contact,
                         item.id,

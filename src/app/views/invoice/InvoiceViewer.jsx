@@ -393,7 +393,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        Action<Icon>expand_more</Icon>
+        ACTION<Icon>expand_more</Icon>
       </Button>
       <Menu
         
@@ -405,13 +405,13 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                    
                       
                       <MenuItem  onClick={() => deleteRfq()}>
-                      Delete RFQ
+                      DELETE RFQ
                       </MenuItem>
                       <MenuItem  onClick={handlePrinting}>
-                      Print RFQ
+                      PRINT RFQ
                       </MenuItem>
                       <MenuItem  onClick={() => updateRfq()}>
-                      Edit RFQ
+                      EDIT RFQ
                       </MenuItem>
                     
           </Menu>
@@ -422,7 +422,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             variant="outlined"
             onClick={() => quoteView({ mode: "on" })}
           >
-            Generate Purchase Order
+            GENERATE PURCHASE ORDER
           </Button>
           
         </div>

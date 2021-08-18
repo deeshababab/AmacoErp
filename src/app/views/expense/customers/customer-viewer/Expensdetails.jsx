@@ -12,6 +12,7 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Circular
 } from "@material-ui/core";
 import url, { urlphp } from "../../../invoice/InvoiceService";
 import pdf from "../../pdf.png";
@@ -115,13 +116,34 @@ const CustomerInfo = () => {
                 </TableRow>
                 <TableRow>
                   <TableCell className="pl-4">Paid To</TableCell>
-                  <TableCell>{ExpenseList.paid_to}</TableCell>
+                  <TableCell>
+                    {ExpenseList.paid_to}
+                  </TableCell>
                 </TableRow>
-                {columndata.map((item, index) => {
+               
+                {ExpenseList.company!==null &&(<TableRow>
+                    <TableCell className="pl-4">Company</TableCell>
+                    <TableCell>
+                      {ExpenseList.company}
+                    </TableCell>
+                  </TableRow>)}
+                  {ExpenseList.vatno!==null&&(<TableRow>
+                    <TableCell className="pl-4">Vat No</TableCell>
+                    <TableCell>
+                      {ExpenseList.vatno}
+                    </TableCell>
+                  </TableRow>)}
+                  {ExpenseList.inv_no!==null&&(<TableRow>
+                    <TableCell className="pl-4">Invoice No</TableCell>
+                    <TableCell>
+                      {ExpenseList.inv_no}
+                    </TableCell>
+                  </TableRow>)}
+                {columndata?.map((item, index) => {
                   return (
                     <TableRow>
-                      <TableCell className="pl-4">{item.column.name}</TableCell>
-                      {item.column.type === "file" ? (
+                      <TableCell className="pl-4">{item.column?.name}</TableCell>
+                      {item.column?.type === "file" ? (
                         <TableCell>
                           <Tooltip title="View">
                             <a href={item.file} target="_blank">
@@ -139,14 +161,16 @@ const CustomerInfo = () => {
                         </TableCell>
                       ) : (
                         <TableCell>
-                          {item.column.type === "date"
+                          {item.column?.type === "date"
                             ? moment(item.value).format("DD  MMM, YYYY ")
                             : item.value}
                         </TableCell>
                       )}
                     </TableRow>
+                
                   );
                 })}
+                 
               </TableBody>
             </Table>
           </Grid>
@@ -162,29 +186,30 @@ const CustomerInfo = () => {
                     })}
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell className="pl-4">Reference Bill Number</TableCell>
-                  <TableCell>{ExpenseList.referrence_bill_no}</TableCell>
-                </TableRow>
+                
 
                 {ref_img === "No file Uploaded" ? (
                   ""
                 ) : (
                   <TableRow>
-                    <TableCell className="pl-4">Reference Bill</TableCell>
+                   {ExpenseList.file_path &&<TableCell className="pl-4">Reference Bill</TableCell>}
                     <TableCell>
-                      <Tooltip title="View">
+                      {ExpenseList.file_path&&<Tooltip title="View">
+                      
                         <a href={ref_img} target="_blank">
                           {
                             <img
-                              src={filetype(ref_img.split(".")[3], ref_img)}
+                              // src={filetype(ref_img.split(".")[3], ref_img)}
+                              src={ExpenseList.file_path?filetype((ref_img.substring(ref_img.lastIndexOf('.'))).split('.')[1], ref_img):""}
                               href={ref_img}
                               className="border-radius-4 w-100 mr-3"
                               style={{ width: 100, height: 100 }}
                             ></img>
                           }
                         </a>
+                      
                       </Tooltip>
+                      }
                       
                     </TableCell>
                   </TableRow>

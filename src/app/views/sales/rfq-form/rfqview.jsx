@@ -29,11 +29,13 @@ const columnStyleWithWidth = {
   backgroundColor: "#fff",
   width: "80px",
   wordBreak: "break-all",
+  textAlign:"center"
 }
 const columnStyleWithWidth1 = {
   top: "0px",
   left: "0px",
   zIndex: "100",
+  textAlign:"center",
   position: "sticky",
   backgroundColor: "#fff",
   width: "500px",
@@ -136,11 +138,14 @@ const SimpleMuiTable = () => {
        
         customHeadRender: ({index, ...column}) =>{
           return (
-            <TableCell key={index} style={columnStyleWithWidth}>  
-              <p style={{marginLeft:18}}>S.NO.</p> 
+            <TableCell key={index} style={columnStyleWithWidth} className="pr-0">  
+              <span >S.NO.</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps:()=>({
+         align:"center"
+       })
       }
     },
     {
@@ -150,23 +155,26 @@ const SimpleMuiTable = () => {
 				customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>COMPANY NAME</p> 
+              <span style={{marginLeft:18,align:"center"}}>COMPANY NAME</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps:()=>({
+         align:"center"
+       })
 			}
     },
     {
       name: "name",
       label: "RFQ DATE",
       options : {
-				customBodyRender : (value, tableMeta, updateValue) => {
+				customHeadRender : (value, tableMeta, updateValue) => {
 					return (
-						<Typography component={'span'} noWrap={false}>
-							{value}
-						</Typography>
-					)
-				}
+						<TableCell   style={{textAlign:"center"}}> <span style={{align:"center"}}>RFQ DATE</span>  </TableCell> )
+				},
+        setCellProps:()=>({
+          align:"center"
+        })
 			}
     },
     {
@@ -174,6 +182,13 @@ const SimpleMuiTable = () => {
       label: "BID CLOSING DATE",
       options: {
         filter: true,
+        customHeadRender : (value, tableMeta, updateValue) => {
+					return (
+						<TableCell   style={{textAlign:"center"}}> <span style={{align:"center"}}>RFQ DATE</span>  </TableCell> )
+				},
+        setCellProps:()=>({
+          align:"center"
+        })
       },
     },
     {
@@ -184,7 +199,7 @@ const SimpleMuiTable = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={{textAlign:'right'}} className="pr-8">  
-              <p style={{marginLeft:18}}>ACTION</p> 
+              <span style={{marginLeft:18}}>ACTION</span> 
             </TableCell>
           )
        },
@@ -286,7 +301,6 @@ const SimpleMuiTable = () => {
           rowsPerPageOptions: [10, 20, 40, 80, 100],
           selectableRows: "none",
           // filterType: "dropdown",
-          responsive: "scrollMaxHeight",
           rowsPerPage: 10,
           // expandableRows: true,
           // expandableRowsOnClick: true,

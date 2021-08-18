@@ -12,6 +12,10 @@ const userRoutes = [
     component: React.lazy(() => import("./companyInfo"))
   },
   {
+    path: "/division",
+    component: React.lazy(() => import("./divisionview"))
+  },
+  {
     path: "/bankaccount",
     component: React.lazy(() => import("./bankaccount"))
   },

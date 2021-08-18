@@ -45,6 +45,10 @@ const SimpleMuiTable = () => {
     position: "sticky",
     backgroundColor: "#fff",
     width: "500px",
+    wordBreak: "break-word",
+  wordWrap: "break-word",
+  overflowWrap:"break-word",
+  textAlign:"center"
  }
  const columnStyleWithWidth1 = {
   top: "0px",
@@ -54,6 +58,9 @@ const SimpleMuiTable = () => {
   backgroundColor: "#fff",
   width: "300px",
   wordBreak: "break-word",
+  wordWrap: "break-word",
+  overflowWrap:"break-word",
+  textAlign:"center"
 }
   const classes = useStyles();
     const [isAlive, setIsAlive] = useState(true);
@@ -226,8 +233,8 @@ const columns = [
           filter: true,
           customHeadRender: ({index, ...column}) =>{
             return (
-              <TableCell key={index} style={{width:50}}>  
-                <span style={{paddingLeft:15}}>S.NO.</span>
+              <TableCell key={index} style={{width:50,textAlign:"center"}}>  
+                <span >S.NO.</span>
               </TableCell>
             )
          },
@@ -241,11 +248,14 @@ const columns = [
        
       customHeadRender: ({index, ...column}) =>{
         return (
-          <TableCell key={index} style={{width:200,wordBreak: "break-word",}}>  
-            <span style={{paddingLeft:15}}>NAME</span>
+          <TableCell key={index} style={{width:200,wordBreak: "break-word",textAlign:"center"}}>  
+            <span >NAME</span>
           </TableCell>
         )
      },
+     setCellProps:()=>({
+       align:"center"
+     })
     },
 },
   {
@@ -261,25 +271,30 @@ const columns = [
               </TableCell>
             )
          },
+         setCellProps:()=>({
+          align:"center"
+        })
       },
   },
   {
       name: "unit_of_measure",
       label: "Unit_of_measure",
       options: {
+        filter:true,
         customHeadRender: ({index, ...column}) =>{
           return (
-            <TableCell key={index} style={{top: "0px",
-            left: "0px",
-            zIndex: "100",
-            position: "sticky",
-            backgroundColor: "#fff",
-            width: "60px"}} >  
+            <TableCell key={index} style={{
+           
+            width: "150px",
+            textAlign:"center"
+            }} >  
               <span style={{paddingLeft:15}}>UOM</span> 
             </TableCell>
           )
        },
-          filter: true,
+       setCellProps:()=>({
+        align:"center"
+      })
       },
   },
 
@@ -295,6 +310,9 @@ const columns = [
           </TableCell>
         )
      },
+     setCellProps:()=>({
+       align:"center"
+     })
     },
 },
 
@@ -420,8 +438,14 @@ const columns = [
                       return [
           
                         ++index,
-                        item.name,
-                        item.description,
+                        item.name?.toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' '),
+                        item.description?.toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' '),
                         item.unit_of_measure,
                         item.category_name,
                         item.id,

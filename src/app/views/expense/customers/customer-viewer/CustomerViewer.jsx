@@ -20,7 +20,7 @@ const CustomerViewer = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Add Expense", path: "/addexpense" },
-            { name: "Expenses" },
+            { name: "EXPENSES" },
           ]}
         />
         <div className="text-right">
@@ -31,7 +31,7 @@ const CustomerViewer = () => {
             variant="outlined"
           >
           <Icon>add</Icon>
-          Add New
+          ADD NEW
           </Button>
           </Link>
           </div>
@@ -57,6 +57,6 @@ const CustomerViewer = () => {
   );
 };
 
-const tabList = ["New", "Verified"];
+const tabList = ["PENDING", "VERIFIED"];
 
 export default CustomerViewer;

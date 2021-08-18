@@ -487,10 +487,10 @@ const SimpleMuiTable = () => {
                           </MenuItem>
                         ))}
                       </Menu>
-                <div className="pb-5 flex justify-between">
-                    <div style={{ display: 'flex', marginLeft: '0.5rem' }}>
+                <div className="pb-5 flex justify-center">
+                    <div style={{ display: 'flex', marginLeft: '0.5rem',textAlign:"center" }}>
 
-                      <strong><h6 align="center" style={{ display: 'inline-block'}} >{item.name}</h6></strong>
+                      <strong><h6 align="center" style={{ display: 'inline-block',textAlign:"center"}} >{item.name.toUpperCase()}</h6></strong>
                       </div>
                       <div className="px-4">
                       {/* <IconButton size="small"  aria-owns={anchorEl ? "simple-menu" : undefined}

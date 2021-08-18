@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import "date-fns";
 import Axios from "axios";
-import url,{capitalize_arr} from "../../invoice/InvoiceService"
+import url from "../../invoice/InvoiceService"
 
 
 
@@ -234,8 +234,8 @@ const SimpleForm = ({open, handleClose}) => {
     {
     const frmdetails = {
       party_id:vendors,
-      name: capitalize_arr(product),
-      description:description?capitalize_arr(description):'',
+      name: (product),
+      description:description?(description):'',
       unit_price: unit_Price,
       unit_of_measure: unit_of_measue,
       category_id: id,
@@ -384,7 +384,7 @@ const SimpleForm = ({open, handleClose}) => {
               </TextField>
               <TextField
                 className="ml-2"
-                label="Modal Number"
+                label="Model Number"
                 variant="outlined"
                 value={modelno}
                 size="small"

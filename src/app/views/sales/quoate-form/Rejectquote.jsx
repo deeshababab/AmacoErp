@@ -143,11 +143,17 @@ const RejectQuote = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", 
+      label: "S.NO.", 
      // column title that will be shown in table
       options: {
         filter: true,
-       
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{width:80}}>  
+              <span style={{marginLeft:18}}>S.NO.</span> 
+            </TableCell>
+          )
+       }
         // cellStyle: {
         //   width: 20,
         //   maxWidth: 20
@@ -165,7 +171,7 @@ const RejectQuote = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth} >  
-              <span style={{marginLeft:18}}>Quotation No</span> 
+              <span style={{marginLeft:18}}>QUOTATION NO</span> 
             </TableCell>
           )
        }
@@ -179,7 +185,7 @@ const RejectQuote = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1} >  
-              <span style={{marginLeft:18}}>Company Name</span> 
+              <span style={{marginLeft:18}}>COMPANY NAME</span> 
             </TableCell>
           )
        }
@@ -187,14 +193,14 @@ const RejectQuote = () => {
     },
     {
       name: "name",
-      label: "Quote Date",
+      label: "QUOTE DATE",
       options: {
         filter: true,
       },
     },
     {
       name: "require_date",
-      label: "Amount",
+      label: "AMOUNT",
       options: {
         filter: true,
       },
@@ -225,10 +231,17 @@ const RejectQuote = () => {
       label: "Action",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:'right'}} className="pr-8" >  
+              <span style={{marginLeft:18}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
          
           return (
-            <span>
+            <div style={{textAlign:'right'}} className="pr-8">
             <Link to={`/quote/${tableMeta.rowData[5]}/reject`}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
@@ -239,7 +252,7 @@ const RejectQuote = () => {
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+          </div>
 
           )
 
@@ -292,7 +305,7 @@ const RejectQuote = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Sales Quotation"}
+        title={"SALES QUOTATION"}
         
         data={qdetails.map((item, index) => {
        

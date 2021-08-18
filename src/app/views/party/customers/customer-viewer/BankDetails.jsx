@@ -141,11 +141,14 @@ const columns = [
           filter: true,
           customHeadRender: ({index, ...column}) =>{
             return (
-              <TableCell key={index} width={50}>  
+              <TableCell key={index} width={50} style={{textAlign:"center"}}>  
                 <span style={{marginLeft:15}}>S.NO.</span> 
               </TableCell>
             )
          },
+         setCellProps:()=>({
+           align:"center"
+         })
       },
   },
   {
@@ -154,6 +157,16 @@ const columns = [
     options: {
        
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index}  style={{textAlign:"center"}}>  
+              <span style={{marginLeft:15}}>BANK NAME</span> 
+            </TableCell>
+          )
+       },
+        setCellProps:()=>({
+          align:"center"
+        })
     },
 },
 {
@@ -162,6 +175,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index}  style={{textAlign:"center"}}>  
+            <span style={{marginLeft:15}}>ACCOUNT NUMBER</span> 
+          </TableCell>
+        )
+     },
+      setCellProps:()=>({
+        align:"center"
+      })
   },
 },
 {
@@ -170,6 +193,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index}  style={{textAlign:"center"}}>  
+            <span style={{marginLeft:15}}>IBAN NUMBER</span> 
+          </TableCell>
+        )
+     },
+      setCellProps:()=>({
+        align:"center"
+      })
   },
 },
 {
@@ -178,6 +211,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index}  style={{textAlign:"center"}}>  
+            <span style={{marginLeft:15}}>BANK ADDRESS</span> 
+          </TableCell>
+        )
+     },
+      setCellProps:()=>({
+        align:"center"
+      })
   },
 },
 {
@@ -297,10 +340,16 @@ const columns = [
                       return [
           
                         ++index,
-                        item.bank_name,
+                        item.bank_name?.toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' '),
                         item.account_no,
                         item.iban_no,
-                        item.bank_address,
+                        item.bank_address?.toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' '),
                         item.id,
                       ]
                     

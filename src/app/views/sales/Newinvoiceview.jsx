@@ -28,13 +28,13 @@ const SimpleMuiTable = () => {
   const [poid, setpoid] = useState("");
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const columnStyleWithWidth = {
-    top: "0px",
-    left: "0px",
+   
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
     width: "100px",
     wordBreak: "break-all",
+    textAlign:"center"
   }
   const columnStyleWithWidth1 = {
     top: "0px",
@@ -44,6 +44,7 @@ const SimpleMuiTable = () => {
     backgroundColor: "#fff",
     width: "480px",
     wordBreak: "break-all",
+    textAlign:"center"
   }
 
   useEffect(() => {
@@ -147,17 +148,30 @@ const SimpleMuiTable = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth}>  
-              <span style={{marginLeft:18}}>S.No.</span> 
+              <span >S.NO.</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps:()=>({
+         align:"center"
+       })
       },
     },
     {
       name: "id", // field name in the row object
-      label: "PO Number", // column title that will be shown in table
+      label: "PO NUMBER", // column title that will be shown in table
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"center"}} >  
+              <span >PO NUMBER</span> 
+            </TableCell>
+          )
+       },
+       setCellProps:()=>({
+         align:"center"
+       })
       },
     },
     {
@@ -167,24 +181,47 @@ const SimpleMuiTable = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <span style={{marginLeft:18}}>Company Name</span> 
+              <span style={{marginLeft:18}}>COMPANY NAME</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps:()=>({
+        align:"center"
+      })
       },
     },
     {
       name: "name",
-      label: "Created Date",
+      label: "CREATED DATE",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"center"}}>  
+              <span >CREATED DATE</span> 
+            </TableCell>
+          )
+       },
+       setCellProps:()=>({
+         align:"center"
+       })
       },
     },
     {
       name: "net_amount",
-      label: "Amount",
+      label: "AMOUNT",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-2">  
+              <span >AMOUNT</span> 
+            </TableCell>
+          )
+       },
+        setCellProps:()=>({
+          align:"right"
+        })
       },
     },
 
@@ -210,13 +247,20 @@ const SimpleMuiTable = () => {
     // },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-8">  
+              <span style={{marginLeft:18}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
           
           return (
-            <span>
+            <div style={{textAlign:"right"}} className="pr-8">
                {/* <Link to={"/newinvoice/"+tableMeta.rowData[5]}></Link> */}
             <Link to={"/poinvoice/"+tableMeta.rowData[5]}>
               <Tooltip title="View More">
@@ -228,7 +272,7 @@ const SimpleMuiTable = () => {
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+          </div>
 
           )
 
@@ -265,7 +309,7 @@ const SimpleMuiTable = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Purchase Order" },
+            { name: "PURCHASE ORDER" },
           ]}
         />
 
@@ -283,7 +327,7 @@ const SimpleMuiTable = () => {
         </div>
       </div>
       <MUIDataTable
-        title={"Purchase Order"}
+        title={"PURCHASE ORDER"}
         data={podetails.map((item, index) => {
           
             return [

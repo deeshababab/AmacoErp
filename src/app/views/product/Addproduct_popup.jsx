@@ -15,6 +15,8 @@ import history from "history.js";
 import {getVendorList,getcategories,getmanufacturer} from "../invoice/InvoiceService"
 import MemberEditorDialog1 from "../../views/product/manufacture";
 import NestedMenuItem from "material-ui-nested-menu-item";
+import FormDialog_product from "./Addcategory_popup";
+import MemberEditorDialog_category from "./Addcategory_popup";
 
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -164,6 +166,17 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
     getcategory()
 
   };
+  const handleDialogClose = () => {
+    setcategory_id('')
+    setShouldOpenEditorDialog(false);
+    getcategory()
+
+  };
+  const onchange1 = (id,name) => {
+    setcat_id(id)
+    setcategory_name(name)
+   
+  };
   const [selectedValue, setSelectedValue] = useState(1);
   const [selectedValue1, setSelectedValue1] = useState('');
   const [product, setproduct] = useState('');
@@ -190,6 +203,9 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
   const [cat, setcat] = useState([]);
   const [message, setmessage] = useState(false);
   const [catid, setcatid] = useState('');
+  const [category_id, setcategory_id] = useState('');
+  const [category_name, setcategory_name] = useState('');
+  const [catList, setcatList] = useState([]);
 
   
   
@@ -312,7 +328,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
    }
    else
    {
-     setmessage(true)
+     setmessage(false)
    }
   })
 
@@ -360,7 +376,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
     maxWidth={maxWidth}>
       <div className="p-6"  >
         
-        <h4 className="mb-5">Add Product</h4>
+        <h4 className="mb-5">ADD PRODUCT</h4>
         
         
       <ValidatorForm 
@@ -439,7 +455,7 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
               </TextField>
               <TextField
                 className="ml-2"
-                label="Modal Number"
+                label="Model Number"
                 variant="outlined"
                 value={modelno}
                 size="small"
@@ -472,6 +488,31 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
  
            />
          )}  
+
+         <>
+         {shouldOpenEditorDialog && (
+           
+           <MemberEditorDialog_category
+             handleClose={handleDialogClose}
+             open={shouldOpenEditorDialog}
+             catid={category_id}
+            catList={setcat}
+            //  setid={setproductcatid}
+            //  manufacture={setmanufacture}
+           />
+           
+         )}
+         {shouldOpenConfirmationDialog && (
+           
+           <ConfirmationDialog
+             open={shouldOpenConfirmationDialog1}
+             onConfirmDialogClose={handleDialogClose1}
+             text="Are you sure to delete?"
+ 
+           />
+         )} 
+         </> 
+ 
              
             </Grid>
             
@@ -637,30 +678,62 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
         anchorReference="anchorPosition"
         anchorPosition={menuPosition}
       >
-        
+        <MenuItem  onClick={() => {
+                    setShouldOpenEditorDialog(true);
+                    setMenuPosition(null)
+                  }}>
+        <Icon>add</Icon>Category
+        </MenuItem>
         {cat.map((item,i)=>
         (
-         
+        
        
+    
         <NestedMenuItem
           label={item.category.name}
           parentMenuOpen={!!menuPosition}
          
         >
+           <MenuItem  onClick={() => {
+                    setShouldOpenEditorDialog(true);
+                    setMenuPosition(null)
+                    setcategory_id(item.category.id)
+                  }}>
+          <Icon>add</Icon>Sub Category
+          </MenuItem>
         {item.sub_categories.length>0 && item.sub_categories.map((items,i)=>
           (
-          <MenuItem onClick={()=>setcat_id(items.id)}>{items.name}</MenuItem>
+            <>
+            
+          <MenuItem onClick={()=>onchange1(items.id,items.name)}>{items.name}</MenuItem>
+          </>
           ))}
          
           
         </NestedMenuItem>
-      )
-
+        )
+       
         )}
+       
         
         
       </Menu>
       </Button>
+     {category_name &&<TextField
+                className="ml-0"
+                label="Category"
+                variant="outlined"
+                value={category_name}
+                type="text"
+                size="small"
+                validators={[
+                  "required",
+                ]}
+                errorMessages={["this field is required"]}
+              
+                // onChange={e => setmq(e.target.value)}
+                fullWidth
+              />}
      
             </Grid>
             {message &&(<><Icon onClose={()=>setmessage(false)} color="error">error</Icon><span>Select the category</span></> )}
@@ -669,16 +742,16 @@ const MemberEditorDialog_product = ({uid, open, handleClose,productid,margin,ppr
       
           <Button className="mr-4 py-2" color="primary" variant="outlined" type="submit">
            <Icon>save</Icon> 
-          <span className="pl-2 capitalize">Save</span>
+          <span className="pl-2 capitalize">SAVE</span>
         </Button>
         
         <Button className="mr-4 py-2" color="secondary" variant="outlined" onClick={handleClose}>
           <Icon>cancel</Icon>
-          <span className="pl-2 capitalize">cancel</span>
+          <span className="pl-2 capitalize">CANCEL</span>
         </Button>
-        <Button color=".bg-green" variant="outlined" type="reset" onClick={resetform}>
+        <Button color=".bg-green" className="py-2" variant="outlined" type="reset" onClick={resetform}>
           <Icon>loop</Icon>
-          <span className="pl-2 capitalize">reset</span>
+          <span className="pl-2 capitalize">RESET</span>
         </Button>
         </ValidatorForm>
         </div>

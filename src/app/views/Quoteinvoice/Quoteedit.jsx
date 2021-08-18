@@ -19,7 +19,9 @@ import {
   Link,
   Icon,
   TextField,
-  Tooltip
+  Tooltip,
+  FormGroup,
+
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {
@@ -27,7 +29,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getInvoiceById, addInvoice, updateInvoice, getCustomerList } from "../invoice/InvoiceService";
+import { getInvoiceById, addInvoice, updateInvoice, getCustomerList,getusers } from "../invoice/InvoiceService";
 import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -101,6 +103,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
   const [catid,setcatid]=useState()
   const [indexvalue,setindexvalue]=useState()
   const [productprice,setproductprice]=useState([])
+  const [users,setusers]=useState([])
+  const [sign,setsign]=useState('')
   let calculateAmount=[];
   const history = useHistory();
   const { id } = useParams();
@@ -234,7 +238,8 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       margin:0,
       sell_price:0.00,
       remark:"",
-      total_amount:0.00
+      total_amount:0.00,
+      amaco_description:""
       
     });
     setState({
@@ -519,10 +524,12 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     formData.append('rfq_id',null)
     formData.append('transaction_type',"sale")
     formData.append('id',id)
+    formData.append('sign',sign)
     // JSON.stringify(values.rfq_details)
    
     
     tempItemList.map((answer, i) => {  
+      console.log(answer)
       formData.append(`quotation_detail${i}`,JSON.stringify(answer))
       answer.files&& (formData.append(`file${i}`,answer.files))
     })
@@ -624,6 +631,11 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
 
     });
+    getusers().then(({ data }) => {
+      setusers(data);
+      
+
+    });
     url.get("products").then(({ data }) => {
       setproList(data)
       
@@ -635,6 +647,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
     url.get(`sale-quotation/${id}`).then(({ data }) => {
       
       setQuote_date(data[0].ps_date)
+      setsign(data[0].sign)
      
       setProductList1(data[0].quotation_details[0].product_price_list)
       if(data[0].contact!==null)
@@ -775,7 +788,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left"> Update Sales Quotation</h3>
+          <h3 align="left"> UPDATE SALES QUOTATION</h3>
           </div>
           <div className="mb-6">
          
@@ -785,7 +798,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="secondary"
               onClick={cancelform}
             >
-             <Icon>cancel</Icon> Cancel
+             <Icon>cancel</Icon> CANCEL
             </Button>
            
 
@@ -796,7 +809,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="primary"
               disabled={loading}
             >
-              <Icon>save</Icon> Save & Print Quotation
+              <Icon>save</Icon> SAVE & PRINT QUOTATION
             </Button>
           </div>
         </div>
@@ -902,24 +915,24 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'50px'}}>Item</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Item Name</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'130px'}}>Our Description</TableCell>
-              <TableCell className="px-0" style={{width:'70px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'120px'}}>Price</TableCell>
-              <TableCell className="px-0" style={{width:'70px'}}>Margin %</TableCell>
-              <TableCell className="px-0" style={{width:'100px'}}>Sell price</TableCell>
-              <TableCell className="px-0"style={{width:'100px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'120px'}}>Remark</TableCell>
+              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.NO.</TableCell>
+              <TableCell className="px-0" style={{width:'50px'}}>ITEM</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>ITEM NAME</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>RFQ DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'130px'}}>AMACO DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>QUANTITY</TableCell>
+              <TableCell className="px-0" style={{width:'120px'}}>PRICE</TableCell>
+              <TableCell className="px-0" style={{width:'70px'}}>MARGIN %</TableCell>
+              <TableCell className="px-0" style={{width:'100px'}}>SELL PRICE</TableCell>
+              <TableCell className="px-0"style={{width:'100px'}}>TOTAL</TableCell>
+              <TableCell className="px-0"style={{width:'120px'}}>REMARK</TableCell>
                <TableCell className="px-0" style={{width:'40px'}}><Icon>delete</Icon></TableCell> 
             </TableRow>
           </TableHead>
 
           <TableBody>
             {invoiceItemList.map((item, index) => {
-              
+              console.log(item)
               if(!dstatus)
               {
               subTotalCost += parseFloat(item.total_amount)
@@ -1005,20 +1018,22 @@ file_upload
                       size="small"
                       value={item? item.description: null}
                       validators={["required"]}
+                      multiline
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'150px'}}>
                     <TextValidator
-                      label="Our description"
-                      // onChange={(event) => handleIvoiceListChange(event, index)}
+                      label="Amaco Description"
+                      onChange={(event) => handleIvoiceListChange(event, index)}
                       type="text"
                       
                       variant="outlined"
                       size="small"
-                      name="quotedescription"
+                      name="amaco_description"
                       fullWidth
-                      value={item.descriptionss?item.descriptionss :"" }
+                      multiline
+                      value={item?.amaco_description}
               
                     />
                   </TableCell>
@@ -1155,6 +1170,7 @@ file_upload
                       variant="outlined"
                       size="small"
                       name="remark"
+                      multiline
           
                       fullWidth
                       value={item.remark ?item.remark:"" }
@@ -1268,6 +1284,31 @@ file_upload
                 validators={["required"]}
                 errorMessages={["this field is required"]}
               />
+              <FormGroup>
+        <FormControl variant="outlined" minWidth="120" size="small">
+        <InputLabel htmlFor="outlined-age-native-simple" className="mr-5" width="20px">Signature</InputLabel>
+        <Select
+          native
+          value={sign}
+          // onChange={handleChange}
+          onChange={e => setsign(e.target.value)}
+          size="small"
+          label="Signature"
+          inputProps={{
+            name: 'Bank',
+            id: 'outlined-age-native-simple',
+           
+          }}
+          
+        >
+          <option aria-label="None" value="" />
+         {users.map((item, ind) => (
+          <option value={item.name}>{item.name}</option>
+         ))}
+        </Select>
+      </FormControl>
+      </FormGroup>
+     
           </div>
           
           </div>

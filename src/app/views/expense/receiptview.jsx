@@ -7,6 +7,7 @@ import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../../views/invoice/InvoiceService";
 import moment from "moment";
+import MemberEditorDialog from "./addreceipt";
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -23,11 +24,12 @@ import {
 } from "@material-ui/core";
 const columnStyleWithWidth = {
   top: "0px",
-  left: "0px",
-  zIndex: "100",
+  // left: "0px",
+  // zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
   width: "80px",
+  align:"center",
   wordBreak: "break-all",
 }
 const columnStyleWithWidth1 = {
@@ -37,13 +39,31 @@ const columnStyleWithWidth1 = {
   position: "sticky",
   backgroundColor: "#fff",
   width: "600px",
+  textAlign:"center",
   wordBreak: "break-all",
 }
 
 const SimpleMuiTable = ({data1}) => {
   
-  const [userList, setUserList] = useState([]); 
+  const [userList, setUserList] = useState([]);
+  const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false); 
   const [IsAlive, setIsAlive] = useState(false);
+  const [id, setid] = useState();
+
+  const handleDialogClose = () => {
+    
+    setShouldOpenEditorDialog(false);
+    url.get('receipts').then(({ data }) => {
+      setUserList(data)
+
+    });
+  }
+  const setreceiptid = (id) => {
+    
+    setShouldOpenEditorDialog(true);
+    setid(id)
+    
+  }
   const columns = [
     {
       name: "id", // field name in the row object
@@ -53,10 +73,14 @@ const SimpleMuiTable = ({data1}) => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth}>  
-              <p style={{marginLeft:18}}>S.No.</p> 
+              <span style={{marginLeft:18}}>S.NO.</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps: () => ({
+        align: "center",
+        
+      })
       }
     },
     {
@@ -67,42 +91,101 @@ const SimpleMuiTable = ({data1}) => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1}>  
-              <p style={{marginLeft:18}}>Company Name</p> 
+              <span style={{marginLeft:18}}>COMPANY NAME</span> 
             </TableCell>
           )
-       }
+       },
+       setCellProps: () => ({
+        align: "center",
+        
+      })
       }
     },
-    
     {
       name: "paid_date",
-      label: "Paid Date",
+      label: "DIVISION",
       options : {
-				filter: true,
+			
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"center",position: "sticky"}}>  
+              <span style={{marginLeft:18}}>DIVISION</span> 
+            </TableCell>
+          )
+       },
+        setCellProps:()=>({
+          align:"center"
+        })
 			}
     },
     {
+      name: "paid_date",
+      label: "PAID DATE",
+      options : {
+
+			
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"center",position: "sticky"}}>  
+              <span style={{marginLeft:18}}>PAID DATE</span> 
+            </TableCell>
+          )
+       },
+       setCellProps:()=>({
+        align:"center"
+      })
+    }
+			
+    },
+    {
       name: "amount",
-      label: "Amount",
+      label: "AMOUNT",
+      className:"text-right",
+      
       options: {
-        filter: true,
+       
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right",position: "sticky"}}>  
+              <span style={{marginLeft:18}}>AMOUNT</span> 
+            </TableCell>
+          )
+       },
+        setCellProps: () => ({
+          align: "right",
+          
+        })
       },
     },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
-        filter: true,
+       
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right",position: "sticky"}} className="pr-8">  
+              <span >ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <span>
+            <div style={{textAlign:"right"}} className="pr-8" >
             {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
               <Tooltip title="View More">
-                <Icon color="error" onClick={e=>removeData(tableMeta.rowData[4])}>delete</Icon>
+                <Icon color="error" onClick={e=>removeData(tableMeta.rowData[5])}>delete</Icon>
              </Tooltip>
-            {/* </Link> */}
+             <Tooltip title="View More">
+                <Icon color="secondary" onClick={e=>setreceiptid(tableMeta.rowData[5])}>edit</Icon>
+             </Tooltip>
+             <Link to={"/SingleReceipts/" + tableMeta.rowData[5]}>
+             <Tooltip title="View More">
+                <Icon color="primary">remove_red_eye</Icon>
+             </Tooltip>
+            </Link>
            
-          </span>
+          </div >
 
           )
 
@@ -167,14 +250,17 @@ const removeData = (id) => {
     <div>
       
       <MUIDataTable
-        title={"Receipt"}
+        title={"RECEIPT"}
         data={userList.map((item, index) => {
         
           return [
             ++index,
             item.party.firm_name,
+            item?.div_name,
             moment(item.paid_date).format('DD MMM YYYY'),
-            item.paid_amount,
+            parseFloat(item.paid_amount).toLocaleString(undefined,{
+              minimumFractionDigits:2
+            }),
             item.id
           ]
         
@@ -185,11 +271,21 @@ const removeData = (id) => {
             rowsPerPageOptions: [10, 20, 40, 80, 100],
             selectableRows: "none",
             // filterType: "dropdown",
-            responsive: "scrollMaxHeight",
+            // responsive: "scrollMaxHeight",
             rowsPerPage: 10, 
          }}        
                    
       />
+      {shouldOpenEditorDialog && (
+        <MemberEditorDialog
+          handleClose={handleDialogClose}
+          open={shouldOpenEditorDialog}
+          id={id}
+          
+          
+
+        />
+      )}
     </div>
    
   );

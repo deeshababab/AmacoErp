@@ -278,7 +278,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
           
           <div className="flex  items-center">
             <Button variant="outlined"  className="mr-4 py-2"color="primary" type="submit">
-              <Icon>save</Icon>Save
+              <Icon>save</Icon>SAVE
             </Button>
             <Button
               variant="outlined"
@@ -286,7 +286,7 @@ const MemberEditorDialog = ({ uid, open, handleClose,catid,catList,productprice,
               color="secondary"
               onClick={() => handleClose()}
             >
-              <Icon>cancel</Icon>Cancel
+              <Icon>cancel</Icon>CANCEL
             </Button>
             {/* <div className="flex justify-between items-center">
             <Button

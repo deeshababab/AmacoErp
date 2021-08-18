@@ -190,13 +190,13 @@ const InvoiceForm = ({}) => {
                   <div className="">
                     <Button
                       color="primary"
-                      className="mt-2 py-2"
+                      className="mt-2 py-2 mb-2"
                       variant="outlined"
                       type="submit"
                       disabled={loading}
                       fullWidth
                     >
-                      <Icon>save</Icon> Save
+                      <Icon>save</Icon> SAVE
                     </Button>
                   </div>
                 </div>

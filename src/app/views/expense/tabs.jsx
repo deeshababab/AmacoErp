@@ -79,7 +79,7 @@ const TabViewer = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Add Expense", path: "/addexpense" },
-            { name: "Transactions" },
+            { name: "TRANSACTIONS" },
           ]}
         />
         <div className="text-right ">
@@ -91,7 +91,7 @@ const TabViewer = () => {
             onClick={e=>setShouldOpenEditorDialog(true)}
           >
           <Icon>add</Icon>
-          New Receipt
+          NEW RECEIPT
           </Button>
           )
         }
@@ -120,7 +120,7 @@ const TabViewer = () => {
             onClick={e=>setShouldOpenEditorDialog1(true)}
           >
           <Icon>add</Icon>
-          New Advance Payment
+          NEW ADVANCE PAYMENT
           </Button>
         
          )}
@@ -163,6 +163,6 @@ const TabViewer = () => {
   );
 };
 
-const tabList = ["Receipt", "Advance Payment"];
+const tabList = ["RECEIPT", "ADVANCE PAYMENT"];
 
 export default TabViewer;

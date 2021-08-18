@@ -11,9 +11,10 @@ import MUIDataTable from "mui-datatables";
 import { Icon } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import url, {getmanufacturer,capitalize_arr}from "../invoice/InvoiceService"
+import url, {getmanufacturer,capitalize_arr}from "../../../invoice/InvoiceService";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
-const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
+const Adddivision = ({ uid, open, handleClose, division,divid}) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -25,8 +26,8 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     isActive: false,
     isAlive: true,
   });
-  const [cname, setcname] = useState('');
-  const [cdescription, setcdescription] = useState('');
+  const [name, setname] = useState('');
+  const [opening_balance, setopening_balance] = useState('');
   const [userList, setUserList] = useState([]);
   const [isAlive, setIsAlive] = useState(true);
  
@@ -41,45 +42,70 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     
     const frmdetails = {
 
-      name: cname?capitalize_arr(cname):'',
-      description:cdescription?capitalize_arr(cdescription):""
-
+      name: name?capitalize_arr(name):'',
+      opening_bal:opening_balance,
+      id:divid
 
     }
+    const formData=new FormData()
     // setcdescription('')
     // setcname('')
+    formData.append("name",name)
+    formData.append("opening_balance",opening_balance)
    
-   
-    url.post('manufacturer', frmdetails)
+   if(divid)
+   {
+     console.log(frmdetails);
+    url.put(`division/${divid}`,frmdetails)
       .then(function (response) {
-        getmanufacturer()
+      
         Swal.fire({
           icon: 'success',
           type: 'success',
-          text: 'Data saved successfully.',
+          text: 'Data updated successfully.',
         });
 
-        getmanufacturer().then(({ data }) => {
-          manufacture(data)
-          setUserList(data)
+       url.get("division").then(({ data }) => {
+          
+          division(data);
           
   
         });
       })
+   } 
+   else
+   {
+    url.post('division', formData)
+    .then(function (response) {
+    
+      Swal.fire({
+        icon: 'success',
+        type: 'success',
+        text: 'Data saved successfully.',
+      });
+
+     url.get("division").then(({ data }) => {
         
+        division(data);
+        
+
+      });
+    })
+   }   
        
        
-        handleClose()
+         handleClose()
 
       
-    setcdescription('')
-    setcname('')
+    // setopening_balance('')
+    // setname('')
     
 
   };
   const removeData = (id) => {
     Swal.fire({
-      text: 'Are you sure you want to delete this manufacturer?',
+      title: 'Are you sure you want to delete this manufacturer?',
+      text: '.',
       icon: 'warning',
       showCancelButton: true,
       customClass: {
@@ -125,7 +151,21 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   }
 
   useEffect(() => {
-    url.get('manufacturer').then(({ data }) => {
+    if(divid)
+    {
+      url.get(`singleDivision/${divid}`).then(({ data }) => {
+       
+        setname(data[0].name);
+        setopening_balance(data[0].opening_bal);
+       
+      
+  
+     
+  
+  
+      });
+    }
+    url.get('payment-account').then(({ data }) => {
       setUserList(data);
      
     
@@ -138,9 +178,9 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   },[])
   function getrow(e) {
     setIsAlive(false)
-    getmanufacturer().then(({ data }) => {
-      setUserList(data);
-      manufacture(data);
+    url.get("payment-account").then(({ data }) => {
+      
+      division(data);
 
     });
     // return () => setIsAlive(true);
@@ -153,13 +193,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
         filter: true,
       },
     },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-      },
-    },
+    
     {
       name: "id",
       label: "Action",
@@ -169,7 +203,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
 
   
           return (
-            <IconButton onClick={() => removeData(tableMeta.rowData[2])
+            <IconButton onClick={() => removeData(tableMeta.rowData[1])
             }
             >
               <Icon color="error">delete</Icon>
@@ -189,7 +223,7 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
     <Dialog onClose={handleClose} open={open} className="px-6 pt-2 pb-4" style={{zIndex:1000}} fullWidth={fullWidth}
     maxWidth={maxWidth}>
       <div className="p-6"  >
-        <h4 className="mb-5">Add Manufacturer</h4>
+        {divid?(<h4 className="mb-5">EDIT DIVISION</h4>):(<h4 className="mb-5">ADD DIVISION</h4>)}
         <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
             <Grid item sm={6} xs={12}>
@@ -198,13 +232,13 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
                 label="Name"
                 autoComplete="none"
                 variant="outlined"
-                onChange={e => setcname(e.target.value)
+                onChange={e => setname(e.target.value)
                   // .log(isAlive)
                 }
                 type="text"
-                name="cname"
+                name="name"
                 autoComplete="none"
-                value={cname}
+                value={name}
                 validators={["required"]}
                 inputProps={{style: {textTransform: 'capitalize'}}}
                 errorMessages={["this field is required"]}
@@ -243,21 +277,42 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
               /> */}
             </Grid>
 
-            {/* <Grid item sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
+              
+              <CurrencyTextField
+                    className="mb-4 w-full"
+                    label="Amount"
+                    name="Amount"
+                    variant="outlined"
+                    value={opening_balance}
+                    currencySymbol="SAR"
+                    autoComplete="none"
+                    required
+                    onChange={(event, value) => setopening_balance(value)}
+                  />
+              {/* <TextValidator
+                className="w-full mb-4"
+                label="Company"
+                onChange={handleChange}
+                type="text"
+                name="company"
+                value={setState.company}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              />
               <TextValidator
                 className="w-full mb-4"
-                label="Description"
-                onChange={e => setcdescription(e.target.value)
-                }
-                inputProps={{style: {textTransform: 'capitalize'}}}
-                variant="outlined"
-                type="textarea"
-                name="cdescription"
-                value={cdescription}
-              />
-              
+                label="Address"
+                onChange={handleChange}
+                type="text"
+                name="address"
+                value={setState.address}
+                validators={["required"]}
+                errorMessages={["this field is required"]}
+              /> */}
 
-            </Grid> */}
+
+            </Grid>
           </Grid>
 
           {/* <div className="flex justify-between items-center"> */}
@@ -274,21 +329,22 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
              <Icon>cancel</Icon> Cancel
             </Button>
             
-            <Button
+            {/* <Button
             
               variant="outlined"
               color="primary"
+              className="py-2"
               onClick={() => getrow()}
             >
              <Icon>remove_red_eye</Icon> view
-            </Button>
+            </Button> */}
           
           {/* </div> */}
         </ValidatorForm>
         <Divider className="mb-2" />
         {!isAlive && (
           <MUIDataTable
-            title={"Category"}
+            title={"PAYMENT ACCOUNT"}
             columns={columns}
             data={userList}
             options={{
@@ -306,4 +362,4 @@ const MemberEditorDialog1 = ({ uid, open, handleClose,setid,manufacture}) => {
   );
 };
 
-export default MemberEditorDialog1;
+export default Adddivision;

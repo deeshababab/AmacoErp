@@ -12,8 +12,16 @@ const statementRoutes = [
     component: React.lazy(() => import("./account"))
   },
   {
+    path: "/master",
+    component: React.lazy(() => import("./master"))
+  },
+  {
     path: "/employee",
     component: React.lazy(() => import("./employee"))
+  },
+  {
+    path: "/dashboard",
+    component: React.lazy(() => import("./dashboard"))
   },
   
     

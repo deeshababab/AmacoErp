@@ -5,6 +5,7 @@ export const navigations = [
   {
     name: "DASHBOARD",
     path: "/dashboard/default",
+    // path: "/dashboard",
     icon: "dashboard",
     
   },
@@ -89,7 +90,25 @@ export const navigations = [
         {
           name: "ACCOUNT",
           icon: "account_balance",
-          path: "/account",
+          // path: "/account",
+          children: [
+            {
+              name: "MASTER",
+              // icon: "account_balance",
+               path: "/master",
+            },
+            {
+              name: "PERSONAL",
+              // icon: "account_balance",
+              path: "/account",
+            },
+            {
+              name: "DASHBOARD",
+              // icon: "account_balance",
+              path: "/dashboard",
+            }
+          ]
+
         },
         
       ]

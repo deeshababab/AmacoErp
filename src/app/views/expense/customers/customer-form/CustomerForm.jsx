@@ -25,6 +25,8 @@ import {
 import { Breadcrumb, ConfirmationDialog } from "matx";
 
 import MemberEditorDialog from "./paymentaccount";
+import Addpaidaccount from "./Addpaidaccount";
+import Adddivision from "./Adddivision";
 
 import MemberEditorDialog1 from "./AddField";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -71,6 +73,7 @@ const CustomerForm = () => {
   const [shouldOpenEditorDialog, setShouldOpenEditorDialog] = useState(false);
   const [shouldOpenEditorDialog1, setShouldOpenEditorDialog1] = useState(false);
   const [menuPosition, setMenuPosition] = useState(null);
+  const [divPosition, setdivPosition] = useState(null);
   const [cat, setcat] = useState([]);
   const [field, setfield] = useState([]);
   const [catid, setcatid] = useState("");
@@ -89,7 +92,24 @@ const CustomerForm = () => {
   const [isAlive, setisAlive] = useState(false);
   const [billtype, setbilltype] = useState(false);
   const [payee, setpayee] = useState(false);
-  const [payeename, setpayeename] = useState(null);
+  const [payeename, setpayeename] = useState();
+  const [div_id, setdiv_id] = useState(null);
+  const [utilize_id, setutilize_id] = useState(null);
+  const [div_name, setdiv_name] = useState(null);
+  const [utilize_name, setutilize_name] = useState(null);
+  const [divPositionutilize, setdivPositionutilize] = useState(null);
+  const [division_account, setdivision_account] = useState([]);
+  const [div_company, setdiv_company] = useState('');
+  const [vatno, setvatno] = useState('');
+  const [inv_no, setinv_no] = useState('');
+  const [
+    shouldOpenConfirmationDialogbox,
+    setShouldOpenConfirmationDialogbox,
+  ] = useState(false);
+  const [
+    DialogAdddivision,
+    setDialogAdddivision,
+  ] = useState(false);
   const handlebankSelect = (event, f) => {
     setclose(true);
     setindex1(f);
@@ -108,6 +128,24 @@ const CustomerForm = () => {
     console.log(null);
     setref_billno(null);
   };
+  const utilizedivisionation = (id,name) => {
+    
+    setutilize_id(id);
+    setutilize_name(name);
+    setdivPositionutilize(null)
+  };
+  const paidivisionation = (id,name) => {
+    
+    setdiv_id(id);
+    setdiv_name(name);
+    setdivPosition(null)
+  };
+  const adddiv =()=>{
+    setDialogAdddivision(true);
+    setdivPositionutilize(null);
+    setdivPosition(null)
+
+  }
 
   const handleFileSelect = (event, f) => {
     let files = event.target.files;
@@ -185,8 +223,31 @@ const CustomerForm = () => {
     setMenuPosition({
       top: event.pageY,
       left: event.pageX,
+      
     });
   };
+
+  const handleRight = (event: React.MouseEvent) => {
+    if (divPosition) {
+      return;
+    }
+    event.preventDefault();
+    setdivPosition({
+      top: event.pageY,
+      left: event.pageX,
+    });
+  };
+  const handlePostion = (event: React.MouseEvent) => {
+    if (divPositionutilize) {
+      return;
+    }
+    event.preventDefault();
+    setdivPositionutilize({
+      top: event.pageY,
+      left: event.pageX,
+    });
+  };
+
 
   const searchcat = (event, name, i) => {
     if (event) {
@@ -222,13 +283,22 @@ const CustomerForm = () => {
     useState(false);
   const handleDialogClose = () => {
     setShouldOpenEditorDialog(false);
-    setisAlive(true);
+    setisAlive(false);
+  };
+  const handleDialogDivisionClose = () => {
+    setDialogAdddivision(false);
+    setisAlive(false);
+    setdivPositionutilize(false)
   };
   const [shouldOpenConfirmationDialog1, setShouldOpenConfirmationDialog1] =
     useState(false);
   const handleDialogClose1 = () => {
     setShouldOpenEditorDialog1(false);
-    setisAlive(true);
+    setisAlive(false);
+  };
+  const handleDialogClosepayee = () => {
+    setShouldOpenConfirmationDialogbox(false);
+    setisAlive(false);
   };
 
   useEffect(() => {
@@ -251,6 +321,9 @@ const CustomerForm = () => {
     });
     url.get("payment-account").then(({ data }) => {
       setpayment_account(data);
+    });
+    url.get("division").then(({ data }) => {
+      setdivision_account(data);
     });
    
     return setisAlive(true);
@@ -276,7 +349,7 @@ const CustomerForm = () => {
       newItem.append("item", files[key].file);
     }
     if (tax) {
-      formData.append("tax", parseFloat(taxamount).toFixed(2));
+      formData.append("tax", (parseFloat(amount)*15)/(100+15).toFixed(2));
       formData.append("company_name", company);
     }
     formData.append("paid_date", paid_date?moment(paid_date).format('Y-MM-DD'):'');
@@ -295,6 +368,12 @@ const CustomerForm = () => {
     formData.append("bank_ref_no", bank_ref_no);
     formData.append("bank_slip", bank_slip);
     formData.append("file_path", file_path);
+    formData.append("company", div_company?div_company:'');
+    formData.append("div_id", div_id);
+    formData.append("utilize_div_id",utilize_id);
+
+    formData.append("vatno", vatno?vatno:'');
+    formData.append("inv_no", inv_no?inv_no:'');
 
     files.map((answer, i) => {
       formData.append(`file${answer.column_id}`, answer.file);
@@ -373,8 +452,8 @@ const CustomerForm = () => {
       <div className="mb-sm-30">
         <Breadcrumb
           routeSegments={[
-            { name: "Expense", path: "/expenseview" },
-            { name: "Expense Entry" },
+            { name: "EXPENSE", path: "/expenseview" },
+            { name: "EXPENSE ENTRY" },
           ]}
         />
       </div>
@@ -403,6 +482,7 @@ const CustomerForm = () => {
           catid={catid}
           catname={catname}
           setcat={setcat}
+
         />
       )}
       {shouldOpenConfirmationDialog1 && (
@@ -413,9 +493,55 @@ const CustomerForm = () => {
         />
       )}
 
+{shouldOpenConfirmationDialogbox && (
+        <Addpaidaccount
+          // handleClose={handleDialogClose}
+          open={shouldOpenConfirmationDialogbox}
+          paymentaccount={setpayment_account}
+          handleClose={handleDialogClosepayee}
+        
+
+        />
+      )}
+      {DialogAdddivision && (
+        <Adddivision
+          handleClose={handleDialogDivisionClose}
+          open={DialogAdddivision}
+          paymentaccount={setpayment_account}
+          division={setdivision_account}
+         
+        
+
+        />
+      )}
+      
+
       <Card elevation={3}>
-        <div className="flex p-4">
-          <h4 className="m-0">Expense Entry</h4>
+        <div className="flex px-4">
+          <h4 className="m-0 mr-4 mt-4 mb-4">EXPENSE ENTRY</h4>
+          {/* <Button
+                    className="mb-4 ml-4"
+                    variant="outlined"
+                    size="small"
+                    onClick={handleRight}
+                  >
+                    <span style={{ textAlign: "left" }}>
+                      Account Division
+                      <Menu
+                        open={!!divPosition}
+                        onClose={() => setdivPosition(null)}
+                        anchorReference="anchorPosition"
+                        anchorPosition={divPosition}
+                      >
+                        
+                        
+                        {division_account.map((items, index) => (
+                          (<MenuItem id={items.id} onClick={(e) => setdiv_id(items.id,setdivPosition(null))}>{items.name} </MenuItem>)
+                        ))}
+                        
+                      </Menu>
+                    </span>
+                  </Button> */}
         </div>
         <Divider className="mb-2" />
 
@@ -439,14 +565,55 @@ const CustomerForm = () => {
             <form className="p-4" onSubmit={handleSubmit} autoComplete="off">
               <Grid container spacing={6}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
+                <div className="px-0 flex justify-between">
+                  <div>
+                <Button
+                    className="mb-4 ml-0"
+                    variant="outlined"
+                    size="small"
+                    onClick={handlePostion}
+                    style={{width:320,height:37}}
+                  >
+                    <span style={{ textAlign: "left" }}>
+                      Utilized Division
+                      <Menu
+                        open={!!divPositionutilize}
+                        onClose={() => setdivPositionutilize(null)}
+                        anchorReference="anchorPosition"
+                        anchorPosition={divPositionutilize}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                      >
+                        
+                        <MenuItem  onClick={()=>adddiv()}>
+                      <Icon >
+                          add
+                      </Icon>Add New
+                      </MenuItem>
+                        {division_account.map((items, index) => (
+                          (<MenuItem id={items.id} onClick={(e) => utilizedivisionation(items.id,items.name)}>{items.name} </MenuItem>)
+                        ))}
+                        
+                      </Menu>
+                    </span>
+                  </Button>
+                  </div>
+                  <div>
                   <Button
-                    className="mb-4 w-full"
+                    className="px-4 mb-4 w-full"
                     variant="outlined"
                     size="small"
                     onClick={handleRightClick}
+                    style={{width:320,height:37}}
                   >
                     <span style={{ textAlign: "left" }}>
-                      Choose Expenses Category
+                      Expenses Category
                       <Menu
                         open={!!menuPosition}
                         onClose={() => setMenuPosition(null)}
@@ -462,20 +629,43 @@ const CustomerForm = () => {
                       </Menu>
                     </span>
                   </Button>
+                  </div>
+                  </div>
 
-                  {accountstatus && (
+                
                     <span>
-                      <TextField
+                      <div className="px-0 flex justify-between">
+                      <div>
+                      {utilize_id&&(<TextField
                         className="mb-4 w-full"
-                        label="Payment Account"
+                        label="Utilized Division"
                         name="payment_account_name"
+                        inputProps={{style: {textTransform: 'capitalize'}}}
                         size="small"
                         variant="outlined"
                         autoComplete="none"
+                        style={{width:320}}
+                        value={utilize_name}
+                        required
+                        // onChange={e => setpayment_account_id(e.target.value)}
+                      />)}
+                      </div>
+                      {accountstatus && (<div>
+                      <TextField
+                        className="mb-4 w-full "
+                        label="Expense category"
+                        name="payment_account_name"
+                        inputProps={{style: {textTransform: 'capitalize'}}}
+                        size="small"
+                        variant="outlined"
+                        autoComplete="none"
+                        style={{width:320}}
                         value={payment_account_name}
                         required
                         // onChange={e => setpayment_account_id(e.target.value)}
                       />
+                      </div>)}
+                      </div>
                       {field.map((item, index) => {
                         return (
                           <span>
@@ -534,6 +724,7 @@ const CustomerForm = () => {
                                 name="payment_account_id"
                                 size="small"
                                 variant="outlined"
+                                inputProps={{style: {textTransform: 'capitalize'}}}
                                 name={item.name}
                                 value={item.text}
                                 autoComplete="none"
@@ -571,7 +762,7 @@ const CustomerForm = () => {
                         );
                       })}
                     </span>
-                  )}
+                  
 
                   <TextField
                     className="mb-4 w-full"
@@ -582,7 +773,6 @@ const CustomerForm = () => {
                     variant="outlined"
                     autoComplete="none"
                     value={paid_to}
-                    required
                     onChange={(e) => setpaid_to(e.target.value)}
                   />
 
@@ -630,10 +820,65 @@ const CustomerForm = () => {
                     
                   >
                       choose categories */}
+                  <div className="px-0 flex justify-between">
+                  <div>
+                <Button
+                    className="mb-4 w-full"
+                    variant="outlined"
+                    size="small"
+                    onClick={handleRight}
+                    style={{width:320,height:37}}
+                  >
+                    <span style={{ textAlign: "left" }}>
+                      Paid Division
+                      <Menu
+                        open={!!divPosition}
+                        onClose={() => setdivPosition(null)}
+                        anchorReference="anchorPosition"
+                        anchorPosition={divPosition}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                      >
+                        
+                        <MenuItem  onClick={()=>adddiv()}>
+                      <Icon >
+                          add
+                      </Icon>Add New
+                      </MenuItem>
+                        {division_account.map((items, index) => (
+                          (<MenuItem id={items.id} onClick={(e) => paidivisionation(items.id,items.name)}>{items.name} </MenuItem>)
+                        ))}
+                        
+                      </Menu>
+                    </span>
+                  </Button>
+                  </div>
+                  <div>
+                  {div_id&&(<TextField
+                      className=" w-full"
+                      label="Paid Division"
+                      name="payeename"
+                      size="small"
+                      variant="outlined"
+                      value={div_name}
+                      inputProps={{style: {textTransform: 'capitalize'}}}
+                      autoComplete="none"
+                      style={{width:320}}
+                      onChange={(e) => setdiv_name(e.target.value)}
+                    ></TextField>)}
+                  </div>
+                  </div>
                   {role === "SA" ? (
                     <TextField
                       className="mb-4 w-full"
-                      label="Paid By"
+                      label="Paid Account"
+                      style={{"text-transform": 'uppercase'}}
                       name="firstName"
                       size="small"
                       variant="outlined"
@@ -643,12 +888,14 @@ const CustomerForm = () => {
                       required
                       onChange={(e) => setpaid_by(e.target.value)}
                     >
-                      <MenuItem value="other" onClick={()=>setpayee(true)}>
-                          Other
+                      <MenuItem  onClick={()=>setShouldOpenConfirmationDialogbox(true)}>
+                      <Icon >
+                          add
+                      </Icon>Add New
                       </MenuItem>
                       {payment_account.map((item, ind) => (
                        
-                        <MenuItem value={item.id} key={item}>
+                        <MenuItem value={item.id} key={item}  style={{"text-transform": 'uppercase'}}>
                           {item.name}
                         </MenuItem>
                         
@@ -659,7 +906,7 @@ const CustomerForm = () => {
                   ) : (
                     <TextField
                       className="mb-4 w-full"
-                      label="Paid By"
+                      label="Paid Account"
                       name="firstName"
                       size="small"
                       variant="outlined"
@@ -683,6 +930,7 @@ const CustomerForm = () => {
                       name="payeename"
                       size="small"
                       variant="outlined"
+                      inputProps={{style: {textTransform: 'capitalize'}}}
                       value={payeename}
                       autoComplete="none"
                       onChange={(e) => setpayeename(e.target.value)}
@@ -709,7 +957,7 @@ const CustomerForm = () => {
                                   size="small"
                                   autoComplete="none"
                                   onChange={(event) => handlebillSelect(event)}
-                                  required
+                                  
                                   
                                 />
                                 
@@ -775,7 +1023,7 @@ const CustomerForm = () => {
                     </div>
                   </div> */}
 
-                  <TextField
+                  {/* <TextField
                     className="mb-4 w-full"
                     label="Referrence Bill No"
                     name="website"
@@ -785,7 +1033,7 @@ const CustomerForm = () => {
                     autoComplete="none"
                     value={referrence_bill_no}
                     onChange={(e) => setreferrence_bill_no(e.target.value)}
-                  />
+                  /> */}
 
                   {(paid_by === 11 || paid_by === 12) && (
                     <span>
@@ -806,6 +1054,7 @@ const CustomerForm = () => {
                   <TextField
                     className="mb-4 w-full"
                     label="Description"
+                    inputProps={{style: {textTransform: 'capitalize'}}}
                     name="workPhone"
                     size="small"
                     variant="outlined"
@@ -839,34 +1088,76 @@ const CustomerForm = () => {
                       labelPlacement="end"
                     />{" "}
                     {tax && (
-                      <CurrencyTextField
-                        label="Tax Amount"
-                        name="website"
-                        size="small"
-                        type="text"
-                        variant="outlined"
-                        fullWidth
-                        value={taxamount}
-                        currencySymbol="SAR"
-                        onChange={(event, value) => settaxamount(value)}
-                      />
-                    )}
+                      // <CurrencyTextField
+                      //   label="Tax Amount"
+                      //   name="website"
+                      //   size="small"
+                      //   type="text"
+                      //   variant="outlined"
+                      //   fullWidth
+                      //   value={taxamount}
+                      //   currencySymbol="SAR"
+                      //   onChange={(event, value) => settaxamount(value)}
+                      // />
+                      <TextField
+                    className="mb-4 w-full"
+                    label="Company Name"
+                    name="workPhone"
+                    size="small"
+                    variant="outlined"
+                    value={div_company}
+                    inputProps={{ style: { textTransform: "capitalize" } }}
+                    autoComplete="Disabled"
+                     onChange={(e) => setdiv_company(e.target.value)}
+                  />)}
+                  {tax && 
+                  (<TextField
+                    className="mb-4 w-full"
+                    label="VAT Number"
+                    name="workPhone"
+                    type="text"
+                    size="small"
+                    variant="outlined"
+                    value={vatno}
+                    onChange={(e) => setvatno(vatno)}
+                  />)}
+                  {tax && 
+                  (<TextField
+                    className="mb-4 w-full"
+                    label="Invoice Number"
+                    name="workPhone"
+                    size="small"
+                    variant="outlined"
+                    value={inv_no}
+                    inputProps={{ style: { textTransform: "capitalize" } }}
+                    autoComplete="Disabled"
+                    onChange={(e) => setinv_no(e.target.value)}
+                  />)}
                   </RadioGroup>
 
                   {tax && (
                     <div className="mb-4">
+                      
+
                       <FormControlLabel
                         style={{ fontWeight: 1000 }}
                         className="block h-32"
                         control={<Checkbox />}
-                        label="Is company name mentioned in invoice?"
+                        label={`I agree The above mentioned`}
+                        // The above mentioned company name, invoice number & VAT number is as per the uploaded file.`}
                         value={company}
                         onChange={(e) => setcompany(!company)}
                       />
+                      <label>Company name</label><br></br>
+                      <label>Invoice Number</label><br></br>
+                      <label>VAT Number is as per the uploaded file</label>
+                      
+                      
                     </div>
                   )}
                 </Grid>
               </Grid>
+
 
               <div className="mt-6">
                 <Button
@@ -875,7 +1166,7 @@ const CustomerForm = () => {
                   type="submit"
                   className="mr-4 py-2"
                 >
-                  <Icon>save</Icon> Save
+                  <Icon>save</Icon> SAVE
                 </Button>
                 <Button
                   className="mr-4 py-2"
@@ -885,7 +1176,7 @@ const CustomerForm = () => {
                   onClick={() => history.push("/expenseview")}
                 >
                   <Icon>cancel</Icon>
-                  <span className="pl-2 capitalize">cancel</span>
+                  <span className="pl-2 capitalize">CANCEL</span>
                 </Button>
 
                 <Button
@@ -896,7 +1187,7 @@ const CustomerForm = () => {
                   className="mr-4 py-2"
                 >
                   <Icon>loop</Icon>
-                  <span className="pl-2 capitalize">reset</span>
+                  <span className="pl-2 capitalize">RESET</span>
                 </Button>
               </div>
             </form>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import history from "history.js";
-import url, {getparties,capitalize_arr,  ApiKey} from "../../invoice/InvoiceService"
+import url, {getparties,  ApiKey} from "../../invoice/InvoiceService"
 import {
   Icon,
   Grid,
@@ -102,36 +102,36 @@ const Addparty = ({open, handleClose}) => {
       
    
     const frmdetails = {
-      firm_name:Firm_Name?capitalize_arr(Firm_Name):'',
+      firm_name:Firm_Name?Firm_Name:'',
       registration_no:regno,
       vat_no:vat_no,
       post_box_no:post_box_no,
-      street:street?capitalize_arr(street):'',
-      proviance:proviance?capitalize_arr(proviance):'',
-      country:country?capitalize_arr(country):'',
+      street:street?street:'',
+      proviance:proviance?proviance:'',
+      country:country?country:'',
       contact:contact?contactcode+contact:'',
       zip_code:zip_code,
       mobno:mobno?mobnocode+mobno:'',
       landline:landline?landlinecode+landline:'',
       email:email,
       website:website,
-      city:city?capitalize_arr(city):"",
+      city:city?city:"",
       fax:fax+"/"+faxext,
-      fname:fname?capitalize_arr(fname):"",
-      lname:lname?capitalize_arr(lname):"",
-      designation:suffix?capitalize_arr(suffix):"",
+      fname:fname?fname:"",
+      lname:lname?lname:"",
+      designation:suffix?suffix:"",
       opening_balance:parseFloat(ob).toFixed(2),
       party_type:selectedValue, 
       credit_days:creditdays,
       credit_limit:parseFloat(creditlimit).toFixed(2),
       iban_no:iban_no,
       bank_name:bank_name,
-      bank_address:bank_address?capitalize_arr(bank_address):"",
+      bank_address:bank_address?bank_address:"",
       account_no:account_no,
       vendor_id:vendor_id,
-      address:address?capitalize_arr(address):"",
+      address:address?address:"",
       party_code:partycode,
-      prefix:prefix?capitalize_arr(prefix):"",
+      prefix:prefix?prefix:"",
       company_name_ar:data.data.translations[0].translatedText
     }
     
@@ -418,7 +418,7 @@ const resetform = () => {
           <TextValidator
                     className="mb-4 w-full"
                     label="Company Name"
-                    inputProps={{style: {textTransform: 'capitalize'}}}
+                    inputProps={{style: {textTransform:"capitalize"}}}
                     autoComplete="none"
                     onChange={e => setFirm_name(e.target.value)}
                                 type="text"
@@ -430,37 +430,50 @@ const resetform = () => {
                                 
                             />
                       <div className="flex mb-4">
-                            <TextField
-                                className="mr-2"
+                            <TextValidator
+                                className="mr-2 w-full"
+                                inputProps={{style: {width:"250px"}}}
                                 label="Commercial Registration Number"
                                 autoComplete="none"
                                 onChange={e => setregno(e.target.value)}
                                 name="regno"
-                                size="small"
+                                size="small"  
                                 type="text"
                                 variant="outlined"
                                 value={regno}
+                                validators={[
+                                  // "minStringLength: 15",
+                                  "maxStringLength: 11",
+                                ]}
+                                errorMessages={["Invalid Registraion Number"]}
                                 fullWidth
                               
                             />
                         
-                            <TextField
-                                className="ml-2"
-                                label="Vat Number"
+                            <TextValidator
+                                className="ml-2 w-full"
+                                label="VAT Number"
                                 autoComplete="none"
                                 onChange={e => setvat_no(e.target.value)}
+                                inputProps={{style: {width:"310px"}}}
                                 name="vat_no"
                                 size="small"
                                 type="text"
                                 fullWidth
                                 variant="outlined"
+                                validators={[
+                                  // "minStringLength: 15",
+                                  "maxStringLength: 15",
+                                ]}
+                                errorMessages={["Invalid VAT Number"]}
+                               
                                 value={vat_no}
                             />
                             </div>
 
                       <TextValidator
                                 className="mb-4 w-full"
-                                label="P.O Box"
+                                label="P.O. Box"
                                 autoComplete="none"
                                 onChange={e => setpost_box_no(e.target.value)}
                                 type="text"
@@ -512,7 +525,7 @@ const resetform = () => {
           <TextField
             className="mr-2"
             autoComplete="none"
-            label="Zip_code"
+            label="Zip Code"
             variant="outlined"
             onChange={e => setzip_code(e.target.value)}
             value={zip_code}
@@ -551,7 +564,7 @@ const resetform = () => {
                             <TextField
                                 className="ml-2"
                                 autoComplete="none"
-                                label="Ext"
+                                label="Ext."
                                 style={{width:'180px'}}
                                 onChange={e => setfaxext(e.target.value)}
                                 name="fax"
@@ -696,16 +709,16 @@ const resetform = () => {
         <div>
         <Button   className="mr-4 py-2" color="primary" variant="outlined" type="submit" disabled={loading}>
           <Icon>save</Icon>
-          <span className="pl-2 capitalize">Save</span>
+          <span className="pl-2 capitalize">SAVE</span>
         </Button>
         <Button  className="mr-4 py-2" color="secondary" variant="outlined" type="submit" onClick={() => history.push("../party/Viewparty")}>
         <Icon>cancel</Icon>
-          <span className="pl-2 capitalize">cancel</span>
+          <span className="pl-2 capitalize">CANCEL</span>
         </Button>
       
         <Button color=".bg-green" variant="outlined" type="reset" onClick={resetform} className="mr-4 py-2">
         <Icon>loop</Icon>
-          <span className="pl-2 capitalize">reset</span>
+          <span className="pl-2 capitalize">RESET</span>
         </Button>
         </div>
         

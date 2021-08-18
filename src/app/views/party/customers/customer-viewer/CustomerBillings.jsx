@@ -13,7 +13,8 @@ import {
   TableCell,
   IconButton,
   TableRow,
-  Tooltip
+  Tooltip,
+  capitalize
 } from "@material-ui/core";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import url, { getparties } from "../../../invoice/InvoiceService"
@@ -139,11 +140,14 @@ const columns = [
           filter: true,
           customHeadRender: ({index, ...column}) =>{
             return (
-              <TableCell key={index} width={50}>  
-                <span style={{marginLeft:15}}>S.NO.</span> 
+              <TableCell key={index} width={50} style={{textAlign:"center"}} >  
+                <span style={{marginLeft:15}} >S.NO.</span> 
               </TableCell>
             )
          },
+         setCellProps:()=>({
+           align:"center"
+         })
       },
   },
   {
@@ -152,6 +156,16 @@ const columns = [
     options: {
        
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index}  style={{textAlign:"center"}} >  
+              <span  >NAME</span> 
+            </TableCell>
+          )
+       },
+       setCellProps:()=>({
+        align:"center"
+      })
     },
 },
 {
@@ -160,6 +174,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index}  style={{textAlign:"center"}} >  
+            <span >DESIGNATION</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:"center"
+    })
   },
 },
 // {
@@ -176,6 +200,16 @@ const columns = [
   options: {
      
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index}  style={{textAlign:"center"}} >  
+            <span >CONTACT</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:"center"
+    })
   },
 },
 {
@@ -186,11 +220,14 @@ const columns = [
       filter: true,
       customHeadRender: ({index, ...column}) =>{
         return (
-          <TableCell key={index} width={300}>  
-            <span style={{marginLeft:15}}>EMAIL</span> 
+          <TableCell key={index} width={300} style={{textAlign:"center"}} >  
+            <span style={{marginLeft:15}} >EMAIL</span> 
           </TableCell>
         )
      },
+     setCellProps:()=>({
+      align:"center"
+    })
   },
 },
 {
@@ -317,8 +354,14 @@ data={
       return [
 
         ++index,
-        item.fname,
-        item.designation,
+        item.fname?.toLowerCase()
+        .split(' ')
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(' '),
+        item.designation?.toLowerCase()
+        .split(' ')
+        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+        .join(' '),
         // item.address,
         item.mobno,
         item.email,
@@ -331,9 +374,11 @@ columns={columns}
 options={{
     filterType: "textField",
     responsive: "simple",
-    selectableRows: "none", 
+    selectableRows: "none",
+     
     rowsPerPageOptions: [10, 20, 40, 80, 100],
 }}
+
 />
       <div>
         {shouldOpenEditorDialog && (

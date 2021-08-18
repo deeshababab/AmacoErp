@@ -123,6 +123,9 @@ const MemberEditorDialog1 = ({
         icon: "success",
         text: "Data saved successfully.",
       });
+      url.get("columns").then(({data})=>{
+
+      })
       handleClose();
     });
   };
@@ -204,6 +207,7 @@ const MemberEditorDialog1 = ({
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
+          console.log(tableMeta.rowData)
           return (
             <IconButton onClick={() => removeData(tableMeta.rowData[2])}>
               <Icon color="error">delete</Icon>
@@ -372,7 +376,8 @@ const MemberEditorDialog1 = ({
             <MUIDataTable
               columns={columns}
               data={field.map((item, index) => {
-                return [++index, item.name, item.type, item.id];
+                console.log(item)
+                return [++index, item.name,  item.id];
               })}
               options={{
                 filterType: "textField",

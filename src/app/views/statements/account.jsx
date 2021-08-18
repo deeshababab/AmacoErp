@@ -142,7 +142,7 @@ const Customer = ({
   const [payment_account_id, setpayment_account_id] = useState("");
   const [IsAlive, setIsAlive] = useState(false);
   const [thstatus, setthstatus] = useState(false);
-  const [from_date, setfrom_date] = useState(new Date());
+  const [from_date, setfrom_date] = useState('01-01-'+new Date().getFullYear());
   const [to_date, setto_date] = useState(new Date());
   const [fdate, setfdate] = useState();
   const [tdate, settdate] = useState();
@@ -202,7 +202,7 @@ const Customer = ({
             sum1 += parseFloat(item[0].credit);
           }
         });
-        setfrom_date(new Date())
+        setfrom_date(from_date)
         setto_date(new Date())
         setpayment_account_id('')
         setdsum(sum);
@@ -305,7 +305,7 @@ const Customer = ({
        
        
         
-        setfrom_date(new Date())
+        setfrom_date(from_date)
         setto_date(new Date())
         setpayment_account_id('')
         setdsum(sum);
@@ -394,7 +394,7 @@ const Customer = ({
           <Breadcrumb
             routeSegments={[
               // { name: "Expense", path: "/expenseview" },
-              { name: "Account Statements" },
+              { name: "ACCOUNT STATEMENTS" },
             ]}
           />
           <div className="text-right">
@@ -404,7 +404,7 @@ const Customer = ({
               variant="outlined"
               onClick={handlePrinting}
             >
-              <Icon>print</Icon> Print Statement
+              <Icon>print</Icon> PRINT STATEMENT
             </Button>
           </div>
         </div>
@@ -504,8 +504,8 @@ const Customer = ({
               <tr>
                 <td>
                   <div class="empty-header">
-                    {/* <header> */}
-                    <div className="px-2 flex justify-between">
+                   
+                    {/* <div className="px-2 flex justify-between">
                       <div className="flex">
                         <div className="pr-12">
                           <img
@@ -544,8 +544,8 @@ const Customer = ({
                           </h5>
                         </div>
                       </div>
-                    </div>
-                    {/* </header> */}
+                    </div> */}
+                   
                   </div>
                 </td>
               </tr>
@@ -603,7 +603,7 @@ const Customer = ({
                               fontSize: 16,
                             }}
                           >
-                            <h3>Statement of Account</h3>
+                            <h3>STATEMENT OF ACCOUNT</h3>
                           </TableCell>
                         </TableRow>
                         <TableRow
@@ -704,6 +704,7 @@ const Customer = ({
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
                               fontSize: 16,
+                              
                             }}
                           >
                             Current Balance
@@ -715,6 +716,7 @@ const Customer = ({
                               border: "1px solid #ccc",
                               fontFamily: "Calibri",
                               fontSize: 16,
+                              fontWeight:1000
                             }}
                           >
                             {(current_bal.slice(current_bal.length-1))}
@@ -809,7 +811,20 @@ const Customer = ({
                             >
                               PARTICULARS
                             </TableCell>
-                            
+                            <TableCell
+                              className="px-0"
+                              style={{
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                color: "#fff",
+                                width: 80,
+                                fontWeight: 1000,
+                                fontSize: 16,
+                              }}
+                              align="center"
+                            >
+                              USER
+                            </TableCell>
                             <TableCell
                               className="px-0"
                               style={{
@@ -892,7 +907,7 @@ const Customer = ({
                             </TableCell>
                             <TableCell
                               className="pl-2 capitalize"
-                              align="left"
+                              align="center"
                               style={{
                                 border: "1px solid #ccc",
                                 wordBreak: "break-word",
@@ -907,7 +922,7 @@ const Customer = ({
                             {opening_balance >= 0 ? (
                               <TableCell
                                 className="pl-0 capitalize"
-                                align="right"
+                                align="center"
                                 style={{
                                   border: "1px solid #ccc",
                                   fontFamily: "Calibri",
@@ -915,12 +930,12 @@ const Customer = ({
                                   width:150
                                 }}
                               >
-                                {parseFloat(Math.abs(opening_balance)).toLocaleString(
+                                {/* {parseFloat((opening_balance)).toLocaleString(
                                   undefined,
                                   {
                                     minimumFractionDigits: 2,
                                   }
-                                )}
+                                )} */}---
                               </TableCell>
                             ) : (
                               <TableCell
@@ -931,24 +946,24 @@ const Customer = ({
                                   fontFamily: "Calibri",
                                   fontSize: 16,
                                 }}
-                              ></TableCell>
+                              >---</TableCell>
                             )}
                             {opening_balance < 0 ? (
                               <TableCell
                                 className=" capitalize"
-                                align="right"
+                                align="center"
                                 style={{
                                   border: "1px solid #ccc",
                                   fontFamily: "Calibri",
                                   fontSize: 16,
                                 }}
                               >
-                               {parseFloat(Math.abs(opening_balance)).toLocaleString(
+                               {/* {parseFloat((opening_balance)).toLocaleString(
                                   undefined,
                                   {
                                     minimumFractionDigits: 2,
                                   }
-                                )}
+                                )} */}---
                               </TableCell>
                             ) : (
                               <TableCell
@@ -959,8 +974,24 @@ const Customer = ({
                                   fontFamily: "Calibri",
                                   fontSize: 16,
                                 }}
-                              > </TableCell>
+                              > ---</TableCell>
                             )}
+                            <TableCell
+                              className="pl-0 capitalize"
+                              style={{
+                                textAlign: "center",
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                fontSize: 16,
+                              }}
+                            >
+                              {/* {parseFloat((opening_balance)).toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                }
+                              )} */}---
+                            </TableCell>
                             <TableCell
                               className="pl-0 capitalize"
                               style={{
@@ -970,13 +1001,13 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                              {parseFloat(Math.abs(opening_balance)).toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 2,
-                                }
-                              )}
-                            </TableCell>
+                              {parseFloat((opening_balance)).toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                              }
+                            )}
+                              </TableCell>
                             
                           </TableRow>
                           {statements.map((item, index) => {
@@ -1019,7 +1050,7 @@ const Customer = ({
                                 </TableCell>
                                 <TableCell
                                   className="pl-2 capitalize"
-                                  align="left"
+                                  align="center"
                                   style={{
                                     border: "1px solid #ccc",
                                     wordBreak: "break-word",
@@ -1031,6 +1062,19 @@ const Customer = ({
                                     ? "Advance Payment"
                                     : item[0].description}
                                 </TableCell>
+                                <TableCell
+                              className="px-0"
+                              style={{
+                                border: "1px solid #ccc",
+                                fontFamily: "Calibri",
+                                width: 80,
+                               
+                                fontSize: 16,
+                              }}
+                              align="center"
+                            >
+                            {item[0].name}
+                            </TableCell>
                                 <TableCell
                                   className=" capitalize"
                                   align="right"
@@ -1170,7 +1214,21 @@ const Customer = ({
                                 fontFamily: "Calibri",
                                 fontSize: 16,
                               }}
-                            ></TableCell>
+                            >
+                             
+                            </TableCell>
+                            <TableCell
+                              className="pl-2 capitalize"
+                              align="left"
+                              style={{
+                                border: "1px solid #ccc",
+                                wordBreak: "break-word",
+                                fontFamily: "Calibri",
+                                fontSize: 16,
+                              }}
+                            >
+                             
+                            </TableCell>
 
                             <TableCell
                               className="pl-0 capitalize"
@@ -1181,7 +1239,9 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                             
+                              {parseFloat(dsum).toLocaleString(undefined,{
+                                minimumFractionDigits:2
+                              })}
                             </TableCell>
                             <TableCell
                               className="pl-0 capitalize"
@@ -1192,7 +1252,9 @@ const Customer = ({
                                 fontSize: 16,
                               }}
                             >
-                              
+                              {parseFloat(csum).toLocaleString(undefined,{
+                                minimumFractionDigits:2
+                              })} 
                             </TableCell>
                             <TableCell
                               className="pl-0 capitalize"

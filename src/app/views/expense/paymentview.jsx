@@ -7,6 +7,9 @@ import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../../views/invoice/InvoiceService"
 import moment from "moment";
+import MemberEditorDialog1 from "./addpayment";
+
+
 // import { Button } from 'react-bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,12 +25,12 @@ import {
   Tooltip
 } from "@material-ui/core";
 const columnStyleWithWidth = {
-  top: "0px",
-  left: "0px",
+  // top: "0px",
+  // left: "8px",
   zIndex: "100",
   position: "sticky",
   backgroundColor: "#fff",
-  width: "80px",
+  width: "200px",
   wordBreak: "break-all",
 }
 const columnStyleWithWidth1 = {
@@ -42,7 +45,10 @@ const columnStyleWithWidth1 = {
 
 
 const PaymentTable = ({data1}) => {
-  const [userList, setuserList] = useState([]); 
+  const [userList, setuserList] = useState([]);
+  const [shouldOpenEditorDialog1, setShouldOpenEditorDialog1] = useState(false);
+  const [id, setid] = useState('');
+ 
 useEffect(() => {
     
   url.get("advance-payments").then(({ data }) => {
@@ -51,6 +57,23 @@ useEffect(() => {
 
   })
 },[data1])
+
+const handleDialogClose1 = () => {
+  
+  setShouldOpenEditorDialog1(false);
+  // setTabIndex(0)
+  url.get('advance-payments').then(({ data }) => {
+    setuserList(data)
+
+  });
+
+};
+const setpaymenttid = (id) => {
+    
+  setShouldOpenEditorDialog1(true);
+  setid(id);
+  
+}
 const removeData = (id) => {
   // alert(id)
   // let url = `https://jsonplaceholder.typicode.com/users/${id}`
@@ -98,21 +121,25 @@ const removeData = (id) => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", // column title that will be shown in table
-    //   options: {
+      label: "S.NO.", // column title that will be shown in table
+      options: {
        
-    //     customHeadRender: ({index, ...column}) =>{
-    //       return (
-    //         <TableCell key={index} style={columnStyleWithWidth}>  
-    //           <p style={{marginLeft:18}}>S.No.</p> 
-    //         </TableCell>
-    //       )
-    //    }
-    //   }
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{width:80}}>  
+              <span style={{marginLeft:18}}>S.No.</span> 
+            </TableCell>
+          )
+       },
+    setCellProps: () => ({
+      align: "center",
+      
+    })
+    }
     },
     {
       name: "fname", // field name in the row object
-      label: "Payment Account", // column title that will be shown in table
+      label: "PAYMENT ACCOUNT", // column title that will be shown in table
     //   options : {
 	// 			customHeadRender: ({index, ...column}) =>{
     //       return (
@@ -125,39 +152,50 @@ const removeData = (id) => {
     },
     {
       name: "name",
-      label: "Received Date",
+      label: "RECEIVED DATE",
       options : {
 				customBodyRender : (value, tableMeta, updateValue) => {
 					return (
-						<Typography component={'span'} noWrap={false}>
+						<Typography component={'span'} noWrap={false} style={{textAlign:"center"}}>
 							{value}
 						</Typography>
 					)
-				}
+				},
+        
 			}
     },
     {
       name: "amount",
-      label: "Amount",
+      label: "AMOUNT",
       options: {
         filter: true,
       },
     },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={columnStyleWithWidth}>  
+              <span style={{maginLeft:18}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <span>
+            <div className="pr-8">
             {/* <Link to={"/invoice/" + tableMeta.rowData[4]}> */}
-              <Tooltip title="View More">
+              <Tooltip title="Edit">
+                <Icon color="secondary" onClick={e=>setpaymenttid(tableMeta.rowData[4])}>edit</Icon>
+             </Tooltip>
+             <Tooltip title="View More">
                 <Icon color="error" onClick={e=>removeData(tableMeta.rowData[4])}>delete</Icon>
              </Tooltip>
             {/* </Link> */}
            
-          </span>
+          </div>
 
           )
 
@@ -173,14 +211,14 @@ const removeData = (id) => {
     <div>
       
       <MUIDataTable
-        title={"Receipt"}
+        title={"RECEIPT"}
        data={userList.map((item, index) => {
         
         return [
          ++index,
           item.payment_account?item.payment_account.name:'',
           moment(item.received_date).format('DD MMM YYYY'),
-          item.amount,
+          parseFloat(item.amount).toLocaleString(undefined,{minimumFractionDigits:2}),
            item.id
        ]
         
@@ -196,6 +234,15 @@ const removeData = (id) => {
          }}          
                    
       />
+       {shouldOpenEditorDialog1 && (
+        <MemberEditorDialog1
+          handleClose={handleDialogClose1}
+          open={shouldOpenEditorDialog1}
+          id={id}
+          
+
+        />
+      )}
     </div>
    
   );

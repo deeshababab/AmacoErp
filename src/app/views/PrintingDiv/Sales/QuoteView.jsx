@@ -167,7 +167,7 @@ const SimpleMuiTable = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", 
+      label: "S.NO.", 
      // column title that will be shown in table
       options: {
         filter: true,
@@ -182,7 +182,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "quotation_no", // field name in the row object
-      label: "Quotation No", // column title that will be shown in table
+      label: "QUOTATION NO", // column title that will be shown in table
       options: {
         filter: true,
         wordBreak:'break-word',
@@ -198,7 +198,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Company Name", // column title that will be shown in table
+      label: "COMPANY NAME", // column title that will be shown in table
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
@@ -211,7 +211,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "name",
-      label: "Quote Date",
+      label: "QUOTE DATE",
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
@@ -224,7 +224,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "require_date",
-      label: "Amount",
+      label: "AMOUNT",
       options: {
         filter: true,
       },
@@ -252,7 +252,7 @@ const SimpleMuiTable = () => {
     // },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
         customBodyRender: (value, tableMeta, updateValue) => {
@@ -322,7 +322,7 @@ const SimpleMuiTable = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Sales Quotation"}
+        title={"SALES QUOTATION"}
         
         data={dummydata.map((item, index) => {
        

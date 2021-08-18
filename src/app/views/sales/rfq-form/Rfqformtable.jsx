@@ -15,7 +15,7 @@ import {
 import { FieldArray } from "formik";
 import { Autocomplete } from "@material-ui/lab";
 import { calculateAmount ,getCustomerList} from "./Rfqformservice";
-import {getProductList,capitalize_arr} from "../../../../app/views/invoice/InvoiceService"
+import {getProductList} from "../../../../app/views/invoice/InvoiceService"
 
 const InvoiceItemTable = ({ values, handleChange, setFieldValue,CustomerList }) => {
   const [isAlive, setIsAlive] = useState(true);

@@ -153,29 +153,39 @@ const SimpleMuiTable = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", 
+      label: "S.NO.", 
      // column title that will be shown in table
       options: {
         filter: true,
+      
+          customHeadRender: ({index, ...column}) =>{
+            return (
+              <TableCell key={index} style={{width:80}}>  
+                <span style={{marginLeft:18}}>S.NO.</span> 
+              </TableCell>
+            )
+         }
+        },
+        
        
         // cellStyle: {
         //   width: 20,
         //   maxWidth: 20
         // },
         
-      },
+
      
     },
     {
       name: "quotation_no", // field name in the row object
-      label: "Quotation No", // column title that will be shown in table
+      label: "QUOTATION NO", // column title that will be shown in table
       options: {
         filter: true,
         wordBreak:'break-word',
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth} >  
-              <span style={{marginLeft:18}}>Quotation No</span> 
+              <span style={{marginLeft:18}}>QUOTATION NO</span> 
             </TableCell>
           )
        }
@@ -184,12 +194,12 @@ const SimpleMuiTable = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Company Name", // column title that will be shown in table
+      label: "COMPANY NAME", // column title that will be shown in table
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1} >  
-              <span style={{marginLeft:18}}>Company Name</span> 
+              <span style={{marginLeft:18}}>COMPANY NAME</span> 
             </TableCell>
           )
        }
@@ -202,7 +212,7 @@ const SimpleMuiTable = () => {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth2} >  
-              <span style={{marginLeft:18}}>Quote Date</span> 
+              <span style={{marginLeft:18}}>QUOTE DATE</span> 
             </TableCell>
           )
        }
@@ -210,7 +220,7 @@ const SimpleMuiTable = () => {
     },
     {
       name: "require_date",
-      label: "Amount",
+      label: "AMOUNT",
       options: {
         filter: true,
       },
@@ -238,13 +248,20 @@ const SimpleMuiTable = () => {
     // },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-8" >  
+              <span style={{marginLeft:18}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
          
           return (
-            <span>
+            <div style={{textAlign:"right"}} className="pr-8">
             <Link to={"/quote/" + tableMeta.rowData[5]+"/new"}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
@@ -255,7 +272,7 @@ const SimpleMuiTable = () => {
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+          </div>
 
           )
 
@@ -308,7 +325,7 @@ const SimpleMuiTable = () => {
         </div> */}
       </div>
       <MUIDataTable
-        title={"Sales Quotation"}
+        title={"SALES QUOTATION"}
         
         data={qdetails.map((item, index) => {
        

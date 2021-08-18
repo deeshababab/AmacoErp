@@ -73,13 +73,13 @@ const CustomerActions = () => {
           <Icon className="mr-2" fontSize="small">
             edit
           </Icon>{" "}
-          Edit Party
+          EDIT PARTY
         </Button>
         <Button className="py-2 " variant="outlined" onClick={() => removeData(foo)} style={{border:'1px solid #ff3d57',color:'#ff3d57'}}>
           <Icon className="mr-2" fontSize="small">
             delete
           </Icon>{" "}
-          Delete Party
+          DELETE PARTY
         </Button>
         </span>
         

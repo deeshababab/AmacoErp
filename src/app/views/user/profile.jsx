@@ -17,6 +17,8 @@ import logo from "../../../matx/components/logo.png"
 import Bank_Account from "./bankaccount";
 import CompanyInfo from "./companyInfo";
 import useAuth from "../../../app/hooks/useAuth";
+import Division from "./divisionview";
+import url from "../invoice/InvoiceService";
 
 const UserList4 = () => {
   const [isAlive, setIsAlive] = useState(true);
@@ -43,14 +45,15 @@ const UserList4 = () => {
   };
 
   useEffect(() => {
-    // Axios.get("/api/user/all").then(({ data }) => {
-    //   if (isAlive) setUserList(data);
-    // });
-    // return () => setIsAlive(false);
+  url.get('users/'+user.id).then(({ data }) => {
+       setUserList(data);
+     
+    });
+    
   
       
     
-  }, [isAlive]);
+  }, [ ]);
 
   return (
     <div className="m-sm-30">
@@ -58,7 +61,7 @@ const UserList4 = () => {
         <Breadcrumb
           routeSegments={[
             // { name: "Pages", path: "/pages" },
-            { name: "Profile" },
+            { name: "PROFILE" },
           ]}
         />
       </div>
@@ -79,20 +82,44 @@ const UserList4 = () => {
             <Divider className="mb-8" />
             <div className="mb-8">
               
-                <>
-              <Button variant="text" className="w-full justify-start px-3">
+            <div className="px-4 flex justify-start">
+            <div className="flex " >
+             
+             
                 
-               <span className="ml-2">Name: <strong>{user.name}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-3">
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+              <div className="pr-12">
+              
                 
-              <span className="ml-2">Email: <strong>{user.email}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-3">
+               <p className="ml-2">Name:</p>
+               {userList.nick_name&&<p className="ml-2">Nick Name:</p>}
+              
+              
                 
-              <span className="ml-2">Contact: <strong>{user.contact}</strong></span>
-              </Button>
-              </>
+              <p className="ml-2">Email:</p>
+              
+              
+                
+              <p className="ml-2">Contact:</p>
+              
+             </div>
+             </div>
+             <div className="pr-12">
+              
+                
+               <p className="ml-2"><strong>{userList?.name}</strong></p>
+               <p className="ml-2"><strong>{userList?.nick_name}</strong></p>
+              
+              
+                
+              <p className="ml-2"><strong>{userList?.email}</strong></p>
+              
+              
+                
+              <p className="ml-2"><strong>{userList?.contact}</strong></p>
+              
+             </div>
+             </div>
               
               
             </div>
@@ -122,7 +149,7 @@ const UserList4 = () => {
 
        {tabIndex === 0 && <CompanyInfo />}
       {tabIndex === 1 && <Bank_Account />}
-      
+      {tabIndex === 2 && <Division />}
     
             </Card>
          
@@ -133,4 +160,4 @@ const UserList4 = () => {
 };
 
 export default UserList4;
-const tabList = ["Company", "Bank Account"];
+const tabList = ["COMPANY", "BANK ACCOUNT","DIVISION"];

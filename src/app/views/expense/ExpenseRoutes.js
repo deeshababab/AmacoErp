@@ -15,6 +15,12 @@ const ExpenseRoutes = [
     ),
   },
   {
+    path: "/Singlereceipts/:id",
+    component: React.lazy(() =>
+      import("./SingleReceipt")
+    ),
+  },
+  {
     path: "/payby",
     component: React.lazy(() =>
       import("./payby")

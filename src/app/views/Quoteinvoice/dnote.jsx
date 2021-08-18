@@ -235,7 +235,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
         <div className="viewer_actions px-4 flex justify-between">
           <div className="mb-6">
-          <h3 align="left">Delivery Note</h3>
+          <h3 align="left">DELIVERY NOTE</h3>
           </div>
           <div className="mb-6">
          
@@ -245,7 +245,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="secondary"
               onClick={cancelform}
             >
-              <Icon>cancel</Icon> Cancel
+              <Icon>cancel</Icon> CANCEL
             </Button>
            
 
@@ -256,7 +256,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="primary"
               disabled={loading}
             >
-              <Icon>save</Icon> Save 
+              <Icon>save</Icon> SAVE 
             </Button>
           </div>
         </div>
@@ -308,13 +308,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'400px'}}>Rfq description</TableCell> 
+              <TableCell className="pl-sm-24" style={{width:70}} align="left">S.NO.</TableCell>
+              <TableCell className="px-0" style={{width:'400px'}}>RFQ DESCRIPTION</TableCell> 
               <TableCell className="px-0" style={{width:70}}>UOM</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Delivered Qty</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Delivering Qty</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Balance Qty</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>QUANTITY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>DELIVERED QTY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>DELIVERING QTY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>BALANCE QTY</TableCell>
             </TableRow>
           </TableHead>
 

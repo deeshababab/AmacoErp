@@ -19,6 +19,13 @@ const columnStyleWithWidth = {
   width: "80px",
   wordBreak: "break-all",
 }
+const round={
+  width: "1em",
+  height: "1em",
+  "border-radius": "50%",
+  background: "#ffaf38",
+  color:'#fff'
+}
 
 
 const CustomerInvoice = () => {
@@ -116,63 +123,132 @@ const removeData = (id) => {
 
 }
 const columns = [
-  {
-    name: "id", // field name in the row object
-    label: "S.No.", // column title that will be shown in table
-    options: {
+  // {
+  //   name: "id", // field name in the row object
+  //   label: "S.No.", // column title that will be shown in table
+  //   options: {
      
-      customHeadRender: ({index, ...column}) =>{
-        return (
-          <TableCell key={index} style={columnStyleWithWidth}>  
-            <span style={{marginLeft:18}}>S.No.</span> 
-          </TableCell>
-        )
-     }
-    }
-  },
+  //     customHeadRender: ({index, ...column}) =>{
+  //       return (
+  //         <TableCell key={index} style={columnStyleWithWidth}>  
+  //           <span style={{marginLeft:18}}>S.NO.</span> 
+  //         </TableCell>
+  //       )
+  //    }
+  //   }
+  // },
   {
     name: "name",
-    label: "Date",
+    label: "DATE",
     options: {
-     
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}} >  
+            <span >DATE</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:'center'
+
+    })
     }
   },
   
-  {
-    name: "paid_date",
-    label: "Account",
-    options : {
-      filter: true,
-    }
-  },
+  // {
+  //   name: "paid_date",
+  //   label: "ACCOUNT",
+  //   options : {
+  //     filter: true,
+  //   }
+  // },
+  // {
+  //   name: "amount",
+  //   label: "REFERRENCE BILL NUMBER",
+  //   options: {
+  //     filter: true,
+  //   },
+  // },
   {
     name: "amount",
-    label: "Referrence Bill Number",
+    label: "PAID TO",
     options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}} >  
+            <span >PAID TO</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:'center'
+
+    })
     },
   },
   {
     name: "amount",
-    label: "Paid To",
+    label: "EXPENSE CATEGORY",
     options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}} >  
+            <span >EXPENSE CATEGORY</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:'center'
+
+    })
+      
     },
   },
   {
     name: "amount",
-    label: "Amount",
+    label: "PAID FROM",
     options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}} >  
+            <span >PAID FROM</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:'center'
+
+    })
     },
   },
   {
     name: "amount",
-    label: "Tax Amount",
+    label: "AMOUNT",
     options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"right"}} >  
+            <span >AMOUNT</span> 
+          </TableCell>
+        )
+     },
+     setCellProps:()=>({
+      align:'right'
+
+    })
     },
   },
+  // {
+  //   name: "amount",
+  //   label: "TAX AMOUNT",
+  //   options: {
+  //     filter: true,
+  //   },
+  // },
   {
     name: "",
     label: " ",
@@ -183,30 +259,37 @@ const columns = [
   },
   {
     name: "id",
-    label: "Action",
+    label: "ACTION",
     options: {
       filter: true,
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{textAlign:"center"}} className="pr-16">  
+            <span >ACTION</span> 
+          </TableCell>
+        )
+     },
       customBodyRender: (value, tableMeta, updateValue) => {
         console.log(tableMeta.rowData)
         return (
-          <span>
+          <div style={{textAlign:"center"}} >
           <Tooltip title="Verify">
-            <Icon style={{color:'#00FF00',cursor:'pointer'}} onClick={e => setstatus(tableMeta.rowData[7])} >check</Icon>
+            <Icon style={{color:'#28a745',cursor:'pointer'}}  onClick={e => setstatus(tableMeta.rowData[5])} >check_circle</Icon>
           </Tooltip>
           {/* </Link> */}
           <Tooltip title="delete">
-               <Icon color="error" onClick={() => removeData(tableMeta.rowData[7])} style={{cursor:'pointer'}}>close</Icon>
+               <Icon color="error" onClick={() => removeData(tableMeta.rowData[5])} style={{cursor:'pointer'}}>cancel</Icon>
             </Tooltip>
             <Tooltip title="Edit">
-                 <Icon color="secondary" onClick={() =>history.push(`/editexpense/${tableMeta.rowData[7]}/`+tableMeta.rowData[8])
-         } style={{cursor:'pointer'}}>edit</Icon>
+                 <Icon color="secondary" className="ml-4 mr-4 " onClick={() =>history.push(`/editexpense/${tableMeta.rowData[5]}/`+tableMeta.rowData[6])
+         }   >edit</Icon>
         </Tooltip>
             <Tooltip title="view more">
-                 <Icon color="primary" onClick={() =>history.push(`/expensedetails/${tableMeta.rowData[7]}`)
-         } style={{cursor:'pointer'}}>arrow_forward</Icon>
+                 <Icon color="primary" onClick={() =>history.push(`/expensedetails/${tableMeta.rowData[5]}`)
+         } style={{cursor:'pointer'}}>play_circle_filled</Icon>
         </Tooltip>
          
-        </span>
+        </div>
 
         )
 
@@ -218,19 +301,21 @@ const columns = [
   return (
     <div>
       <MUIDataTable
-        title={"New Expenses List"}
+        title={"PENDING EXPENSES LIST"}
         data={expenseList.map((item, index) => {
             console.log(item) 
           return [
-            ++index,
+            // ++index,
             moment(item.paid_date).format('DD  MMM, YYYY '),
+            
+            item?.paid_towards,
+            item?.name,
+            item?.paid_from,
+            // item.referrence_bill_no,
 
-            item.payment_account[0]?.name,
-            item.referrence_bill_no,
-
-            item.paid_to,
+            // item.paid_to,
             parseFloat(item.amount).toLocaleString(undefined, {minimumFractionDigits:2}),
-            item.tax!==null?parseFloat(item.tax).toLocaleString(undefined, {minimumFractionDigits:2}):('0.00'),
+            // item.tax!==null?Math.floor(parseFloat(item.tax)).toLocaleString(undefined, {minimumFractionDigits:2}):('0.00'),
             item.id,
             item?.account_category_id
           ]
@@ -244,8 +329,14 @@ const columns = [
             // filterType: "dropdown",
             responsive: "scrollMaxHeight",
             rowsPerPage: 10, 
+            textLabels: {
+              body: {
+                  noMatch: 
+                      'Sorry,no new pending expense entry found',
+              },
+          },
          }}        
-                   
+              
       />
     </div>
   );

@@ -29,7 +29,7 @@ import ReactSelectMaterialUi from "react-select-material-ui";
 import Axios from "axios";
 import { useParams, matchPath } from "react-router-dom";
 import { database } from "firebase/app";
-import url,{ApiKey, capitalize_arr} from "../../invoice/InvoiceService"
+import url,{ApiKey} from "../../invoice/InvoiceService"
 
 
 
@@ -278,8 +278,8 @@ const SimpleForm = () => {
 
    
     const frmdetails = {
-      name: product?capitalize_arr(product):'',
-      description: description?capitalize_arr(description):'',
+      name: product?(product):'',
+      description: description?(description):'',
       // unit_price: unit_Price,
       unit_of_measure: unit_of_measure,
       division_id: selectedValue,

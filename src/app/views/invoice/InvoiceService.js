@@ -36,7 +36,7 @@ export const getInvoice = () => {
 //     // headers: {'Authorization': 'Bearer '+localStorage.getItem('rememberMe')}
 //   });
   export const urlphp="/amaco_test";
-export const ApiKey="";
+export const ApiKey=" ";
 // export const ApiKey="";
   const role =localStorage.getItem('role')
 
@@ -71,6 +71,15 @@ export const getpaymentaccount = () => {
 };
 export const getpaymentaccountcategory = () => {
     return url.get("account-categories");
+};
+export const getdivisions = () => {
+    return url.get("division");
+};
+export const getcompanybank = () => {
+    return url.get("company-bank");
+};
+export const getusers = () => {
+    return url.get("users");
 };
 export const capitalize_arr =(value) =>{
     let wordsArray = value.split(' ')

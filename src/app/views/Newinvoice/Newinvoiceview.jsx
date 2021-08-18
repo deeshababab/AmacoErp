@@ -566,7 +566,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        Action<Icon>expand_more</Icon>
+        ACTION<Icon>expand_more</Icon>
       </Button>
           <Menu
         
@@ -580,10 +580,10 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       </MenuItem> */}
                       
                       <MenuItem  onClick={() => deleteinvoice()}>
-                      Delete Invoice
+                      DELETE INVOICE
                       </MenuItem>
                       <MenuItem  onClick={() => handlePrinting()}>
-                      Print Invoice
+                      PRINT INVOICE
                       </MenuItem>
                       
                     
@@ -594,7 +594,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
             variant="outlined"
             onClick={() => dnotegenrate({ mode: "on" })}
           >
-            Generate Delivery Note
+            GENERATE DELIVERY NOTE
           </Button>
        
           
@@ -956,7 +956,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 })}
                 
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={8}>
+                  <TableCell className="pl-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri" }} rowspan={2} colspan={7}>
                     <div className="px-4 flex justify-between" style={{ fontFamily: "Calibri" }}>
                       <div className="flex">
                         <div className="pr-12">
@@ -984,7 +984,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                     </div>
 
                   </TableCell>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16 }} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16 }} colSpan={2}>
                     االمجموع الفرعي        
                     <br></br>
                  SUB TOTAL
@@ -1012,7 +1012,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                   </TableCell>
                 </TableRow> */}
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pr-0 pl-1 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} >
+                  <TableCell className="pr-0 pl-1 capitalize" align="center" style={{ border: "1px solid #ccc",wordBreak:'break-word',fontFamily: "Calibri",fontSize: 16  }} colSpan={2}>
                     القيمة الضريبية
                   <br></br>
                   TOTAL VAT AMOUNT (15%)
@@ -1028,7 +1028,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                 </TableCell>
                 </TableRow>
                 <TableRow style={{ border: "1px solid #ccc" }}>
-                  <TableCell className="pl-0 capitalize" colspan={8} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}>
+                  <TableCell className="pl-0 capitalize" colspan={7} style={{ border: "1px solid #ccc",fontFamily: "Calibri",fontSize: 16 }}>
                     <div className="px-4 flex justify-between">
                       <div className="flex">
                         <div className="pr-12" style={{wordBreak:'break-word'}}>
@@ -1038,7 +1038,7 @@ const InvoiceViewer = ({ toggleInvoiceEditor }) => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word",fontSize:16 }} >
+                  <TableCell className="pr-0 capitalize" align="center" style={{ border: "1px solid #ccc",fontFamily: "Calibri",wordBreak:"break-word",fontSize:16 }} colSpan={2}>
                   المجموع الكلي <br></br>
                   GRAND TOTAL
                   </TableCell>

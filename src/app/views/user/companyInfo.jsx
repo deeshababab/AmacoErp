@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Breadcrumb, ConfirmationDialog } from "matx";
 import Axios from "axios";
 import MUIDataTable from "mui-datatables";
-import { Icon, Tooltip } from "@material-ui/core";
+import { Icon, Tooltip,TextField } from "@material-ui/core";
 import { Link,useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import url from "../invoice/InvoiceService";
@@ -315,48 +315,72 @@ const CompanyInfo = () => {
             </div>
           
             <div className="mb-8">
-            
+            <div className="px-4 flex justify-start">
+            <div className="flex " >
+             
+             
+                
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+              <div className="pr-12">
+                <p className="mb-4">1.Name:</p>
+              {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">2.Email:</p>
+              {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">3.C.R. No.:</p>
+              {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">4.Contact No:</p> 
+              {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">5.P.O.Box:</p> 
+               {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">6.Fax:</p> 
+              {/* // </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">7.Website:</p> 
+              {/* </div> */}
+              {/* <div variant="text" className="w-full justify-start px-5"> */}
+                
+                <p className="mb-4">8.Address:</p> 
+              
+              {/* </div> */}
+              </div>
+              </div>
+              <div className="flex " >
               {company.map((item,i)=>
              (
-               <>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Name: <strong>{item.name}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Email: <strong>{item.email}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">C.R. No.: <strong>{item.cr_no}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Contact No: <strong>{item.contact}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">P.O.Box: <strong>{item.po_box}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Fax: <strong>{item.fax}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Website: <strong>{item.website}</strong></span>
-              </Button>
-              <Button variant="text" className="w-full justify-start px-5">
-                <Icon color="primary">open_with</Icon>
-                <span className="ml-8">Address: <strong>{item.address}</strong></span>
-              </Button>
-              </>
-                ) )}
-              <div className="pb-6">
+              
+               <div className="pl-4" >
+               <p className="mb-4"><strong>{item.name}</strong></p>
+          <p className="mb-4"><strong>{item.email}</strong></p>
+          <p className="mb-4"><strong>{item.cr_no}</strong></p>
+          <p className="mb-4"><strong>{item.contact}</strong></p>
+          <p className="mb-4"><strong>{item.po_box}</strong></p>
+          <p className="mb-4"><strong>{item.fax}</strong></p>
+          <p className="mb-4"><strong>{item.website}</strong></p>
+          <p className="mb-4"><strong>{item.address}</strong></p>
+             
+             </div> 
+          ) )}   
+              </div>
+            
+            
+                
+              
+            </div>
+              <div className="pb-4">
           <Button  onClick={e=>setShouldOpenEditorDialog(true)} className="mr-4 py-2" style={{position:'absolute',right:50}} variant="outlined" color="primary" type="submit" aignItem="right">
           <Icon>edit</Icon>
-          <span className="pl-2 capitalize">Update Profile</span>
+          <span className="pl-2 capitalize">UPDATE PROFILE</span>
         </Button>
         {shouldOpenEditorDialog && (
         <MemberEditorDialog

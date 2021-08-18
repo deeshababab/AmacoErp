@@ -139,22 +139,22 @@ const SimpleMuiTable = () => {
   const columns = [
     {
       name: "id", // field name in the row object
-      label: "S.No.", 
+      label: "S.NO.", 
      // column title that will be shown in table
-      options: {
-        filter: true,
-       
-        // cellStyle: {
-        //   width: 20,
-        //   maxWidth: 20
-        // },
-        
-      },
+     options: {
+      customHeadRender: ({index, ...column}) =>{
+        return (
+          <TableCell key={index} style={{width:50}}>  
+            <span style={{marginLeft:15}}>S.NO.</span> 
+          </TableCell>
+        )
+     },
+    }
      
     },
     {
       name: "delivery_number", // field name in the row object
-      label: "Delivery Number", // column title that will be shown in table
+      label: "DELIVERY NUMBER", // column title that will be shown in table
       options: {
         filter: true,
         wordBreak:'break-word',
@@ -165,14 +165,14 @@ const SimpleMuiTable = () => {
     
     {
       name: "po_number",
-      label: "P.O. Number",
+      label: "P.O. NUMBER",
       options: {
         filter: true,
       },
     },
     {
       name: "created_date",
-      label: "Date",
+      label: "DATE",
       options: {
         filter: true,
       },
@@ -199,13 +199,20 @@ const SimpleMuiTable = () => {
     // },
     {
       name: "id",
-      label: "Action",
+      label: "ACTION",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}}  className="pr-8">  
+              <span style={{marginLeft:15}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
        
           return (
-            <span>
+            <div style={{textAlign:"right"}} className="pr-8">
             <Link to={"/invview/" + tableMeta.rowData[4]}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
@@ -216,7 +223,7 @@ const SimpleMuiTable = () => {
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+         </div>
 
           )
 
@@ -252,7 +259,7 @@ const SimpleMuiTable = () => {
       <Breadcrumb
           routeSegments={[
             // { name: "Add new", path: "/sales/rfq-form/Rfqform" },
-            { name: "Delivery Notes" },
+            { name: "DELIVERY NOTES" },
           ]}
         />
 
@@ -269,7 +276,7 @@ const SimpleMuiTable = () => {
         </div>  */}
       </div>
       <MUIDataTable
-        title={"Delivery Notes"}
+        title={"DELIVERY NOTES"}
         
         data={qdetails.map((item, index) => {
        

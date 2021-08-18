@@ -19,7 +19,7 @@ import { Icon } from "@material-ui/core";
 import Swal from "sweetalert2";
 import url, {getcategories}from "../invoice/InvoiceService"
 
-const MemberEditorDialog = ({ uid, open, handleClose,catid,catList }) => {
+const MemberEditorDialog_category = ({ uid, open, handleClose,catid,catList }) => {
   const [state, setState] = useState({
     name: "abc",
     email: "",
@@ -70,7 +70,7 @@ const resetform = () =>{
   setcname('')
   setcdescription('')
 }
-  const handleFormSubmit = () => {
+  const handleFormSubmit1 = () => {
     setloading(true)
     var arr=[]
      getcategories().then(({ data }) => {
@@ -117,7 +117,7 @@ const resetform = () =>{
             .then((result) => {
             
           
-           getcategories().then(({ data }) => {
+           url.get("all-categories").then(({ data }) => {
             catList(data)
     
             });
@@ -145,7 +145,7 @@ const resetform = () =>{
   };
   const removeData = (id) => {
     Swal.fire({
-      title: 'Are you sure you want to delete?',
+      text: 'Are you sure you want to delete?',
       text: 'Any products, services will be uncategorised.',
       icon: 'warning',
       showCancelButton: true,
@@ -159,7 +159,7 @@ const resetform = () =>{
         url.delete(`categories/${id}`)
           .then(res => {
             
-            getcategories().then(({ data }) => {
+            url.get("all-categories").then(({ data }) => {
               catList(data)
       
               });
@@ -313,12 +313,12 @@ const resetform = () =>{
         {!catid &&(
          <h5 className="mb-5">ADD CATEGORY</h5>   
         )}
-        <ValidatorForm onSubmit={handleFormSubmit} autoComplete="off">
+        <ValidatorForm onSubmit={handleFormSubmit1} autoComplete="off">
           <Grid className="mb-4" container spacing={4}>
             <Grid item sm={6} xs={12}>
               <TextValidator
                 className="w-full mb-4"
-                label="SubCategory Name"
+                label="Category Name"
                 autoComplete="off"
                 variant="outlined"
                 onChange={e => setcname(e.target.value)
@@ -417,4 +417,4 @@ const resetform = () =>{
   );
 };
 
-export default MemberEditorDialog;
+export default MemberEditorDialog_category;

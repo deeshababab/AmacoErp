@@ -202,7 +202,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       
         <div className="viewer_actions px-4 flex justify-between">
           <div className="mb-6">
-          <h3 align="left">Sales Invoice</h3>
+          <h3 align="left">SALES INVOICE</h3>
           </div>
           <div className="mb-6">
          
@@ -212,7 +212,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="secondary"
               onClick={cancelform}
             >
-              <Icon>cancel</Icon> Cancel
+              <Icon>cancel</Icon> CANCEL
             </Button>
            
 
@@ -223,7 +223,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               color="primary"
               disabled={loading}
             >
-              <Icon>save</Icon> Save & Print Invoice
+              <Icon>save</Icon> SAVE & PRINT INVOICE
             </Button>
           </div>
         </div>
@@ -346,13 +346,13 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="pl-2" width={80}>S.No.</TableCell>
-              <TableCell className="px-0">Item Name</TableCell>
-              <TableCell className="px-0">RFQ Description</TableCell> 
+              <TableCell className="pl-2" width={80}>S.NO.</TableCell>
+              <TableCell className="px-0">ITEM NAME</TableCell>
+              <TableCell className="px-0">RFQ DESCRIPTION</TableCell> 
               <TableCell className="px-0" width={100}>UOM</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Unit Price</TableCell>
-              <TableCell className="px-0">Total</TableCell>
+              <TableCell className="px-0" style={{width:'80px'}}>QUANTITY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>UNIT PRICE</TableCell>
+              <TableCell className="px-0">TOTAL</TableCell>
               {/* <TableCell className="px-0">Action</TableCell> */}
             </TableRow>
           </TableHead>
@@ -448,6 +448,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       fullWidth
                       value={item? item.product.name : null}
                       validators={["required"]}
+                      multiline
                       errorMessages={["this field is required"]}
                       
                       
@@ -473,6 +474,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       inputProps={{style: {textTransform: 'capitalize'}}}
                       value={item? item.description: null}
                       validators={["required"]}
+                      multiline
                       errorMessages={["this field is required"]}
                     />
                   </TableCell>

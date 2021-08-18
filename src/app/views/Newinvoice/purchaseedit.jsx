@@ -22,10 +22,11 @@ import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { useCallback } from "react";
-import url from "../invoice/InvoiceService";
+import url,{capitalize_arr} from "../invoice/InvoiceService";
 
 import Swal from "sweetalert2";
 import moment from "moment";
+import { TextField } from "@material-ui/core";
 
 
 const useStyles = makeStyles(({ palette, ...theme }) => ({
@@ -319,7 +320,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
       <ValidatorForm onSubmit={handleSubmit} onError={(errors) => null}>
         <div className="viewer_actions px-4 flex justify-between">
         <div className="mb-6">
-          <h3 align="left">Edit PurchaseOrder</h3>
+          <h3 align="left">EDIT PURCHASEORDER</h3>
           </div>
           <div className="mb-6">
          
@@ -414,14 +415,14 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
           <Table className="mb-4">
           <TableHead>
             <TableRow className="bg-default">
-              <TableCell className="px-2" style={{width:'80px'}} align="left">S.No.</TableCell>
-              <TableCell className="px-0" style={{width:'250px'}} >Rfq description</TableCell>
-              <TableCell className="px-0" style={{width:'250px'}}>Our Description</TableCell>
-              <TableCell className="px-0" style={{width:'80px'}}>Quantity</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}} >Price</TableCell>
-              <TableCell className="px-0" style={{width:'150px'}}>Total</TableCell>
-              <TableCell className="px-0"style={{width:'200px'}}>Remark</TableCell>
-               <TableCell className="px-0" style={{width:'50px'}}>Action</TableCell> 
+              <TableCell className="px-2" style={{width:'80px'}} align="left">S.NO.</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}} >RFQ DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'250px'}}>OUR DESCRIPTION</TableCell>
+              <TableCell className="px-0" style={{width:'80px'}}>QUANTITY</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}} >PRICE</TableCell>
+              <TableCell className="px-0" style={{width:'150px'}}>TOTAL</TableCell>
+              <TableCell className="px-0"style={{width:'200px'}}>REMARK</TableCell>
+               <TableCell className="pr-2" style={{width:'50px'}}>ACTION</TableCell> 
             </TableRow>
           </TableHead>
 
@@ -467,6 +468,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       value={item? item.description: null}
                       validators={["required"]}
                       errorMessages={["this field is required"]}
+                      multiline
                     />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'250px'}}>
@@ -479,6 +481,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                       name="quotedescription"
                       fullWidth
                       value={item ?item.descriptionss :null }
+                      multiline
               
                     />
                   </TableCell>
@@ -552,8 +555,9 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
               />
                   </TableCell>
                   <TableCell className="pl-0 capitalize" align="left" style={{width:'200px'}}>
-                    <TextValidator
+                    <TextField
                       label="Remark"
+                      inputProps={{style: {textTransform: 'capitalize'}}}
                       onChange={(event) => setremark(event, index)}
                       type="text"
                       variant="outlined"
@@ -567,7 +571,7 @@ const InvoiceEditor = ({ isNewInvoice, toggleInvoiceEditor }) => {
                     />
   
                   </TableCell>
-                  <TableCell className="pl-0 capitalize" align="left" style={{width:'50px'}}>
+                  <TableCell className="pr-2 capitalize" align="left" >
                
                         <Icon color="error" fontSize="small" onClick={() => deleteItemFromInvoiceList(index)}>
                           delete

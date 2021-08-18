@@ -76,7 +76,7 @@ const Bank_Account = () => {
     zIndex: "100",
     position: "sticky",
     backgroundColor: "#fff",
-    width: "580px",
+    width: "200px",
     wordBreak: "break-all",
     
   }
@@ -194,6 +194,13 @@ const Bank_Account = () => {
      // column title that will be shown in table
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+      return (
+        <TableCell key={index} style={{width:50}}>  
+          <span style={{marginLeft:15}}>S.NO.</span> 
+        </TableCell>
+      )
+   },
        
         // cellStyle: {
         //   width: 20,
@@ -205,14 +212,14 @@ const Bank_Account = () => {
     },
     {
       name: "quotation_no", // field name in the row object
-      label: "Quotation No", // column title that will be shown in table
+      label: "BANK NAME", // column title that will be shown in table
       options: {
         filter: true,
         wordBreak:'break-word',
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth} >  
-              <span style={{marginLeft:18}}>Quotation No</span> 
+              <span style={{marginLeft:18}}>BANK NAME</span> 
             </TableCell>
           )
        }
@@ -221,12 +228,12 @@ const Bank_Account = () => {
     },
     {
       name: "fname", // field name in the row object
-      label: "Company Name", // column title that will be shown in table
+      label: "ACCOUNT NUMBER", // column title that will be shown in table
       options: {
         customHeadRender: ({index, ...column}) =>{
           return (
             <TableCell key={index} style={columnStyleWithWidth1} >  
-              <span style={{marginLeft:18}}>Company Name</span> 
+              <span style={{marginLeft:18}}>ACCOUNT NUMBER</span> 
             </TableCell>
           )
        }
@@ -234,14 +241,14 @@ const Bank_Account = () => {
     },
     {
       name: "name",
-      label: "Quote Date",
+      label: "IBAN NUMBER",
       options: {
         filter: true,
       },
     },
     {
       name: "require_date",
-      label: "Amount",
+      label: "BANK ADDRESS",
       options: {
         filter: true,
       },
@@ -272,21 +279,29 @@ const Bank_Account = () => {
       label: "Action",
       options: {
         filter: true,
+        customHeadRender: ({index, ...column}) =>{
+          return (
+            <TableCell key={index} style={{textAlign:"right"}} className="pr-2" >  
+              <span style={{marginLeft:18}}>ACTION</span> 
+            </TableCell>
+          )
+       },
         customBodyRender: (value, tableMeta, updateValue) => {
          
           return (
-            <span>
-            <Link to={`/quote/${tableMeta.rowData[5]}/reject`}>
+            <div style={{textAlign:"right"}} className="">
+            {/* <Link to={`/quote/${tableMeta.rowData[5]}/reject`}>
               <Tooltip title="View More">
                 <Icon color="primary">remove_red_eye</Icon>
            </Tooltip>
-            </Link>
+            </Link> */}
+            <Tooltip title="Delete"><Icon color="error" className="pr-2" onClick={e=>deletebank(tableMeta.rowData[5])}>delete</Icon></Tooltip><Tooltip title="Edit"><Icon color="secondary"  onClick={e=>editbank(tableMeta.rowData[5])}>edit</Icon></Tooltip>
             {/* <Link to={"/sales/rfq-form/rfqanalysis?id=" + tableMeta.rowData[0]}>
             <IconButton>
               <Icon color="secondary">find_in_page</Icon>
             </IconButton>
           </Link> */}
-          </span>
+          </div >
 
           )
 
@@ -319,16 +334,26 @@ const Bank_Account = () => {
     <div>
       <div className="m-sm-30">
       <div className="mb-sm-30">
-        </div>
-        </div>
+      <div className="text-right">
                
-            <div className="mb-8">
+               <Button  onClick={e=>setShouldOpenEditorDialog(true)} className="py-2"  variant="outlined" color="primary" type="submit" aignItem="right">
+          <Icon>add</Icon>
+          <span className="pl-2 capitalize">ADD NEW</span>
+        </Button>
+        
+         
+         </div>
+        </div>
+       
+        
+               
+            {/* <div className="mb-8">
             {BankList.map((item,i)=>(
               <>
               <div>
               <Button variant="text" className="w-full justify-start px-1 ml-0">
-              <Icon className="ml-2" color="primary">open_with</Icon>
-                <span className="ml-4">Bank Name: <strong>{item.name}</strong></span>
+              <span className="ml-2" color="primary">{++i}</span>
+                <span className="ml-8">Bank Name: <strong>{item.name}</strong></span>
               </Button>
               <Button variant="text" className="w-full justify-start px-5">
                 <span className="ml-8">Account Number: <strong>{item.ac_no}</strong></span>
@@ -350,7 +375,33 @@ const Bank_Account = () => {
           <Icon>add</Icon>
           <span className="pl-2 capitalize">Add New</span>
         </Button>
-        </div>
+        </div> */}
+        <MUIDataTable
+                // title={"DIVISION"}
+                data={
+                  BankList.map((item, index) => {
+                    console.log(item)
+                   
+                      return [
+          
+                        ++index,
+                        item.name,
+                        item.ac_no,
+                        item.iban_no,
+                        item.bank_address,
+                        item.id,
+                      ]
+                    
+                  })
+                }
+                columns={columns}
+                options={{
+                    filterType: "textField",
+                    responsive: "simple",
+                    selectableRows: "none", 
+                    rowsPerPageOptions: [10, 20, 40, 80, 100],
+                }}
+            />
         {shouldOpenEditorDialog && (
         <MemberEditorDialog
           handleClose={handleDialogClose}
@@ -368,9 +419,10 @@ const Bank_Account = () => {
         />
       )}
     </div>
+    </div>
          
     
-    </div>
+    
   );
 }
 
